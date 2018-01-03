@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3B9018A4-631D-4759-8DFE-C39209700602}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DDD.HealthcareDelivery.Infrastructure</RootNamespace>
+    <AssemblyName>DDD.HealthcareDelivery.Infrastructure</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\DDD.HealthcareDelivery.Infrastructure.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\DDD.HealthcareDelivery.Infrastructure.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Conditions, Version=2.1.0.24, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>L:\Packages\Conditions.2.1.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10\Conditions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>L:\packages\Dapper.1.50.2\lib\net45\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>L:\Packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>L:\Packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>L:\packages\FluentValidation.7.3.4\lib\net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>L:\Packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>L:\packages\RestSharp.105.2.3\lib\net45\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="IAssemblyReference.cs" />
+    <Compile Include="OracleHealthcareContext.cs" />
+    <Compile Include="SqlServerHealthcareContextFactory.cs" />
+    <Compile Include="OracleHealthcareContextFactory.cs" />
+    <Compile Include="SqlServerHealthcareContext.cs" />
+    <Compile Include="Prescriptions\BelgianCreatePharmaceuticalPrescriptionsValidator.cs" />
+    <Compile Include="Prescriptions\BelgianPharmaceuticalPrescriptionDescriptorValidator.cs" />
+    <Compile Include="Prescriptions\BelgianPrescribedMedicationDescriptorValidator.cs" />
+    <Compile Include="Prescriptions\OraclePrescriptionStateConfiguration.cs" />
+    <Compile Include="Prescriptions\SqlServerPrescriptionStateConfiguration.cs" />
+    <Compile Include="Prescriptions\OracleStoredEventConfiguration.cs" />
+    <Compile Include="Prescriptions\SqlServerStoredEventConfiguration.cs" />
+    <Compile Include="Prescriptions\PharmaceuticalPrescriptionRepository.cs" />
+    <Compile Include="HealthcareContext.cs" />
+    <Compile Include="Prescriptions\PrescriptionStateConfiguration.cs" />
+    <Compile Include="Prescriptions\PharmaceuticalPrescriptionStateConfiguration.cs" />
+    <Compile Include="Prescriptions\PrescribedMedicationStateConfiguration.cs" />
+    <Compile Include="Prescriptions\StoredEventConfiguration.cs" />
+    <Compile Include="IHealthcareConnectionFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Prescriptions\PrescribedMedicationsByPrescriptionFinder.cs" />
+    <Compile Include="Prescriptions\PharmaceuticalPrescriptionsByPatientFinder.cs" />
+    <Compile Include="Prescriptions\MedicationOrdersByIdFinder.cs" />
+    <Compile Include="Prescriptions\MedicationRenewalValidator.cs" />
+    <Compile Include="Prescriptions\PrescriptionIdentifierGenerator.cs" />
+    <Compile Include="Prescriptions\SchedulePharmaceuticalPrescriptionsValidator.cs" />
+    <Compile Include="SqlScripts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SqlScripts.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+    <None Include="DDD.HealthcareDelivery.Infrastructure.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DDD.Common.Application\DDD.Common.Application.csproj">
+      <Project>{8800b694-301f-41ea-a9bd-279cdcf1198d}</Project>
+      <Name>DDD.Common.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Common.Domain\DDD.Common.Domain.csproj">
+      <Project>{0B70B4FD-F5A0-4A6C-A3FD-90031E08C1C2}</Project>
+      <Name>DDD.Common.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core.Application\DDD.Core.Application.csproj">
+      <Project>{e8d98462-5ecf-4b48-9d73-a0c0df3fadc6}</Project>
+      <Name>DDD.Core.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core.Domain\DDD.Core.Domain.csproj">
+      <Project>{c6c3e419-b9aa-44ad-9dbf-789294687ae6}</Project>
+      <Name>DDD.Core.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core.Infrastructure.Dapper\DDD.Core.Infrastructure.Dapper.csproj">
+      <Project>{701da58b-ae36-429f-8621-64109b8d29d7}</Project>
+      <Name>DDD.Core.Infrastructure.Dapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core.Infrastructure.EF\DDD.Core.Infrastructure.EF.csproj">
+      <Project>{6d227aa7-ff90-48ca-b13d-ed23c1fffba5}</Project>
+      <Name>DDD.Core.Infrastructure.EF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core.Infrastructure.Exceptions\DDD.Core.Infrastructure.Exceptions.csproj">
+      <Project>{53b04658-5f46-46e4-9b54-ea26a0fd20f1}</Project>
+      <Name>DDD.Core.Infrastructure.Exceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core.Infrastructure.FluentValidation\DDD.Core.Infrastructure.FluentValidation.csproj">
+      <Project>{5e3745fc-ca80-4d0f-8a25-20ee0f9cf163}</Project>
+      <Name>DDD.Core.Infrastructure.FluentValidation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core.Infrastructure\DDD.Core.Infrastructure.csproj">
+      <Project>{0673db02-015e-4257-8aaf-e42b91196486}</Project>
+      <Name>DDD.Core.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core\DDD.Core.csproj">
+      <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
+      <Name>DDD.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.HealthcareDelivery.Application\DDD.HealthcareDelivery.Application.csproj">
+      <Project>{2733bfca-4468-415c-a31d-f7621c32d84f}</Project>
+      <Name>DDD.HealthcareDelivery.Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.HealthcareDelivery.Domain\DDD.HealthcareDelivery.Domain.csproj">
+      <Project>{5b8fffd3-9a1c-4620-9db3-cd76cd9e79bf}</Project>
+      <Name>DDD.HealthcareDelivery.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="SqlScripts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>SqlScripts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\FindMedicationOrdersById.sql" />
+    <EmbeddedResource Include="Scripts\FindPharmaceuticalPrescriptionsByPatient.sql" />
+    <EmbeddedResource Include="Scripts\FindPrescribedMedicationsByPrescription.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

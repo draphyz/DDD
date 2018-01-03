@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5B8FFFD3-9A1C-4620-9DB3-CD76CD9E79BF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DDD.HealthcareDelivery.Domain</RootNamespace>
+    <AssemblyName>DDD.HealthcareDelivery.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\DDD.HealthcareDelivery.Domain.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\DDD.HealthcareDelivery.Domain.XML</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Conditions, Version=2.1.0.24, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>L:\Packages\Conditions.2.1.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10\Conditions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Runtime.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="IAssemblyReference.cs" />
+    <Compile Include="Patients\BelgianPatientTranslator.cs" />
+    <Compile Include="Prescriptions\ElectronicPharmaceuticalPrescription.cs" />
+    <Compile Include="Prescriptions\IElectronicPrescription.cs" />
+    <Compile Include="Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
+    <Compile Include="Prescriptions\PharmaceuticalPrescriptionDelivered.cs" />
+    <Compile Include="Prescriptions\PrescribedPharmaceuticalCompounding.cs" />
+    <Compile Include="Prescriptions\PrescribedPharmaceuticalProduct.cs" />
+    <Compile Include="Prescriptions\PrescribedPharmaceuticalSubstance.cs" />
+    <Compile Include="Providers\BelgianHealthcareProviderTranslator.cs" />
+    <Compile Include="Facilities\BelgianHealthFacilityTranslator.cs" />
+    <Compile Include="Facilities\BelgianHealthFacilityLicenseNumber.cs" />
+    <Compile Include="Prescriptions\BelgianElectronicPrescriptionNumber.cs" />
+    <Compile Include="Prescriptions\BelgianPrescribedMedicationTranslator.cs" />
+    <Compile Include="Facilities\HealthcareCenter.cs" />
+    <Compile Include="Providers\HealthcareProviderState.cs" />
+    <Compile Include="Providers\HealthcareProviderType.cs" />
+    <Compile Include="Facilities\HealthFacility.cs" />
+    <Compile Include="Facilities\HealthFacilityState.cs" />
+    <Compile Include="Facilities\HealthFacilityType.cs" />
+    <Compile Include="Facilities\Hospital.cs" />
+    <Compile Include="Prescriptions\PharmaceuticalPrescription.cs" />
+    <Compile Include="Prescriptions\PharmaceuticalPrescriptionSent.cs" />
+    <Compile Include="Prescriptions\PharmaceuticalPrescriptionRevoked.cs" />
+    <Compile Include="Prescriptions\PharmaceuticalPrescriptionCreated.cs" />
+    <Compile Include="Providers\Physician.cs" />
+    <Compile Include="Prescriptions\PrescribedMedicationType.cs" />
+    <Compile Include="Prescriptions\PrescriptionIdentifier.cs" />
+    <Compile Include="Patients\PatientState.cs" />
+    <Compile Include="Facilities\HealthFacilityLicenseNumber.cs" />
+    <Compile Include="Providers\HealthcareProvider.cs" />
+    <Compile Include="Prescriptions\ElectronicPrescriptionNumber.cs" />
+    <Compile Include="Prescriptions\PrescribedMedication.cs" />
+    <Compile Include="Patients\Patient.cs" />
+    <Compile Include="Prescriptions\BelgianMedicationCode.cs" />
+    <Compile Include="Providers\BelgianPractitionerLicenseNumber.cs" />
+    <Compile Include="Prescriptions\Prescription.cs" />
+    <Compile Include="Prescriptions\MedicationCode.cs" />
+    <Compile Include="Providers\PractitionerLicenseNumber.cs" />
+    <Compile Include="Prescriptions\PrescribedMedicationState.cs" />
+    <Compile Include="Prescriptions\PharmaceuticalPrescriptionState.cs" />
+    <Compile Include="Prescriptions\PrescriptionState.cs" />
+    <Compile Include="Prescriptions\PrescriptionStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="DDD.HealthcareDelivery.Domain.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DDD.Common.Domain\DDD.Common.Domain.csproj">
+      <Project>{0b70b4fd-f5a0-4a6c-a3fd-90031e08c1c2}</Project>
+      <Name>DDD.Common.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core.Domain\DDD.Core.Domain.csproj">
+      <Project>{c6c3e419-b9aa-44ad-9dbf-789294687ae6}</Project>
+      <Name>DDD.Core.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core\DDD.Core.csproj">
+      <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
+      <Name>DDD.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
