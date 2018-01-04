@@ -21,7 +21,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             this.OccurredOn = occuredOn;
         }
 
-        public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, string reason)
+        public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, string reason) 
             : this(prescriptionIdentifier, reason, DateTime.Now)
         {
         }

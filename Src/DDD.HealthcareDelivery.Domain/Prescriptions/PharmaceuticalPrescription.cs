@@ -20,17 +20,17 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Constructors
 
-        public PharmaceuticalPrescription(PrescriptionIdentifier identifier,
-                                          HealthcareProvider prescriber,
-                                          Patient patient,
-                                          HealthFacility healthFacility,
+        public PharmaceuticalPrescription(PrescriptionIdentifier identifier, 
+                                          HealthcareProvider prescriber, 
+                                          Patient patient, 
+                                          HealthFacility healthFacility,  
                                           IEnumerable<PrescribedMedication> prescribedMedications,
                                           Alpha2LanguageCode languageCode,
                                           PrescriptionStatus status,
                                           DateTime createdOn,
                                           DateTime? delivrableAt = null,
-                                          EntityState entityState = EntityState.Added,
-                                          IEnumerable<IDomainEvent> events = null)
+                                          EntityState entityState = EntityState.Added, 
+                                          IEnumerable<IDomainEvent> events = null) 
             : base(identifier, prescriber, patient, healthFacility, languageCode, status, createdOn, delivrableAt, entityState, events)
         {
             Condition.Requires(prescribedMedications, nameof(prescribedMedications))
@@ -93,7 +93,12 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             return state;
         }
 
-        private static PrescribedMedicationState ToPrescribedMedicationState(PrescribedMedication medication, 
+        protected override void AddPrescriptionRevokedEvent(string reason)
+        {
+            this.AddEvent(new PharmaceuticalPrescriptionRevoked(this.Identifier.Identifier, reason));
+        }
+
+        private static PrescribedMedicationState ToPrescribedMedicationState(PrescribedMedication medication,
                                                                              int prescriptionIdentifier)
         {
             var state = medication.ToState();
@@ -101,17 +106,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             return state;
         }
 
-        protected override void AddPrescriptionRevokedEvent(string reason)
-        {
-            this.AddEvent(new PharmaceuticalPrescriptionRevoked(this.Identifier.Identifier, reason));
-        }
-
-        protected override void AddPrescriptionDeliveredEvent()
-        {
-            this.AddEvent(new PharmaceuticalPrescriptionDelivered(this.Identifier.Identifier));
-        }
-
         #endregion Methods
-
     }
 }

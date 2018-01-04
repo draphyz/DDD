@@ -11,8 +11,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Properties
 
-        public static TheoryData<Prescription<TState>> DeliverablePrescriptions { get; } = new TheoryData<Prescription<TState>>();
-        public static TheoryData<Prescription<TState>> NotDeliverablePrescriptions { get; } = new TheoryData<Prescription<TState>>();
         public static TheoryData<Prescription<TState>> NotRevocablePrescriptions { get; } = new TheoryData<Prescription<TState>>();
         public static TheoryData<Prescription<TState>> RevocablePrescriptions { get; } = new TheoryData<Prescription<TState>>();
 
@@ -21,40 +19,14 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         #region Methods
 
         [Theory]
-        [CustomMemberData(nameof(DeliverablePrescriptions))]
-        public abstract void Deliver_DeliverablePrescription_AddsPrescriptionDeliveredEvent(Prescription<TState> prescription);
-
-        [Theory]
-        [CustomMemberData(nameof(DeliverablePrescriptions))]
-        public void Deliver_DeliverablePrescription_MarksPrescriptionAsDelivered(Prescription<TState> prescription)
-        {
-            // Act
-            prescription.Deliver();
-            // Assert
-            var status = prescription.ToState().Status;
-            status.Should().Be(PrescriptionStatus.Delivered.Code);
-        }
-
-        [Theory]
-        [CustomMemberData(nameof(NotDeliverablePrescriptions))]
-        public abstract void Deliver_NotDeliverablePrescription_DoesNotAddEvent(Prescription<TState> prescription);
-
-        [Theory]
-        [CustomMemberData(nameof(NotDeliverablePrescriptions))]
-        public void Deliver_NotDeliverablePrescription_DoesNotChangeStatus(Prescription<TState> prescription)
-        {
-            // Arrange
-            var initialStatus = prescription.ToState().Status;
-            // Act
-            prescription.Deliver();
-            // Assert
-            var status = prescription.ToState().Status;
-            status.Should().Be(initialStatus);
-        }
-
-        [Theory]
         [CustomMemberData(nameof(NotRevocablePrescriptions))]
-        public abstract void Revoke_NotRevocablePrescription_DoesNotAddEvent(Prescription<TState> prescription);
+        public void Revoke_NotRevocablePrescription_DoesNotAddEvent(Prescription<PharmaceuticalPrescriptionState> prescription)
+        {
+            // Act
+            prescription.Revoke("Erreur");
+            // Assert
+            prescription.AllEvents().Should().BeEmpty();
+        }
 
         [Theory]
         [CustomMemberData(nameof(NotRevocablePrescriptions))]

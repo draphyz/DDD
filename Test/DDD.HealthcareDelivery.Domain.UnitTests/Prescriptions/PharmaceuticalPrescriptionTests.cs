@@ -17,11 +17,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         static PharmaceuticalPrescriptionTests()
         {
             RevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Created));
-            NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Revoked));
+            NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.InProcess));
             NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Delivered));
-            DeliverablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Created));
-            NotDeliverablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Delivered));
-            NotDeliverablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Revoked));
+            NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Revoked));
+            NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Expired));
+            NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Archived));
         }
 
         #endregion Constructors
@@ -100,30 +100,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             status.Should().Be(PrescriptionStatus.Created.Code);
         }
 
-        public override void Deliver_DeliverablePrescription_AddsPrescriptionDeliveredEvent(Prescription<PharmaceuticalPrescriptionState> prescription)
-        {
-            // Act
-            prescription.Deliver();
-            // Assert
-            prescription.AllEvents().Should().ContainSingle(e => e is PharmaceuticalPrescriptionDelivered);
-        }
-
-        public override void Deliver_NotDeliverablePrescription_DoesNotAddEvent(Prescription<PharmaceuticalPrescriptionState> prescription)
-        {
-            // Act
-            prescription.Deliver();
-            // Assert
-            prescription.AllEvents().Should().BeEmpty();
-        }
-
-        public override void Revoke_NotRevocablePrescription_DoesNotAddEvent(Prescription<PharmaceuticalPrescriptionState> prescription)
-        {
-            // Act
-            prescription.Revoke("Erreur");
-            // Assert
-            prescription.AllEvents().Should().BeEmpty();
-        }
-
         public override void Revoke_RevocablePrescription_AddsPrescriptionRevokedEvent(Prescription<PharmaceuticalPrescriptionState> prescription)
         {
             // Act
@@ -131,6 +107,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             // Assert
             prescription.AllEvents().Should().ContainSingle(e => e is PharmaceuticalPrescriptionRevoked);
         }
+
         private static PharmaceuticalPrescription CreatePrescription(PrescriptionStatus status)
         {
             return new PharmaceuticalPrescription

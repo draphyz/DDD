@@ -44,7 +44,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                     new PharmaceuticalPrescriptionSummary
                     {
                         Identifier = 1,
-                        Status = PrescriptionStatus.Sent,
+                        Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
                         DelivrableAt = null,
                         IsElectronic = true,
@@ -54,7 +54,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                     new PharmaceuticalPrescriptionSummary
                     {
                         Identifier = 2,
-                        Status = PrescriptionStatus.Sent,
+                        Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
                         DelivrableAt = new DateTime(2017, 2, 18),
                         IsElectronic = true,
@@ -64,7 +64,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                     new PharmaceuticalPrescriptionSummary
                     {
                         Identifier = 3,
-                        Status = PrescriptionStatus.Sent,
+                        Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
                         DelivrableAt = new DateTime(2017, 3, 18),
                         IsElectronic = true,
@@ -74,7 +74,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                     new PharmaceuticalPrescriptionSummary
                     {
                         Identifier = 4,
-                        Status = PrescriptionStatus.Sent,
+                        Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
                         DelivrableAt = new DateTime(2017, 4, 18),
                         IsElectronic = true,
@@ -92,7 +92,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                     new PharmaceuticalPrescriptionSummary
                     {
                         Identifier = 5,
-                        Status = PrescriptionStatus.Sent,
+                        Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2017, 9, 25),
                         DelivrableAt = null,
                         IsElectronic = true,
@@ -102,7 +102,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                     new PharmaceuticalPrescriptionSummary
                     {
                         Identifier = 6,
-                        Status = PrescriptionStatus.Sent,
+                        Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2017, 9, 25),
                         DelivrableAt = new DateTime(2017, 12, 25),
                         IsElectronic = true,

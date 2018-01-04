@@ -15,21 +15,21 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Constructors
 
-        public ElectronicPharmaceuticalPrescription(PrescriptionIdentifier identifier,
-                                                    HealthcareProvider prescriber,
-                                                    Patient patient,
+        public ElectronicPharmaceuticalPrescription(PrescriptionIdentifier identifier, 
+                                                    HealthcareProvider prescriber, 
+                                                    Patient patient, 
                                                     HealthFacility healthFacility,
                                                     IEnumerable<PrescribedMedication> prescribedMedications,
                                                     Alpha2LanguageCode languageCode,
                                                     PrescriptionStatus status,
                                                     DateTime createdOn,
                                                     DateTime? delivrableAt = null,
-                                                    ElectronicPrescriptionNumber electronicNumber = null,
-                                                    EntityState entityState = EntityState.Added,
-                                                    IEnumerable<IDomainEvent> events = null)
+                                                    ElectronicPrescriptionNumber electronicNumber = null, 
+                                                    EntityState entityState = EntityState.Added, 
+                                                    IEnumerable<IDomainEvent> events = null) 
             : base(identifier, prescriber, patient, healthFacility, prescribedMedications, languageCode, status, createdOn, delivrableAt, entityState, events)
         {
-
+            this.ElectronicNumber = electronicNumber;
         }
 
         #endregion Constructors
@@ -81,10 +81,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         public void Send(ElectronicPrescriptionNumber number)
         {
             Condition.Requires(number, nameof(number)).IsNotNull();
-            if (this.Status == PrescriptionStatus.Created)
+            if (!this.IsSent())
             {
                 this.ElectronicNumber = number;
-                this.Status = PrescriptionStatus.Sent;
                 this.MarkAsModified();
                 this.AddEvent(new PharmaceuticalPrescriptionSent(this.Identifier.Identifier, number.Number));
             }
@@ -97,9 +96,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             state.ElectronicNumber = this.ElectronicNumber?.Number;
             return state;
         }
-        protected override bool IsDelivrable() => this.Status == PrescriptionStatus.Sent;
 
-        protected override bool IsRevocable() => this.Status == PrescriptionStatus.Created || this.Status == PrescriptionStatus.Sent;
+        protected bool IsSent() => this.ElectronicNumber != null;
 
         #endregion Methods
 

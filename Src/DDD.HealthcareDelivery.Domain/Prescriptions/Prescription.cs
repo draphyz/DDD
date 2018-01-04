@@ -71,16 +71,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Methods
 
-        public void Deliver()
-        {
-            if (this.IsDelivrable())
-            {
-                this.Status = PrescriptionStatus.Delivered;
-                this.MarkAsModified();
-                this.AddPrescriptionDeliveredEvent();
-            }
-        }
-
         public override IEnumerable<ComparableValueObject> IdentityComponents()
         {
             yield return this.Identifier;
@@ -96,7 +86,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 this.AddPrescriptionRevokedEvent(reason);
             }
         }
-
         public virtual TState ToState()
         {
             return new TState
@@ -114,13 +103,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             };
         }
 
-        protected abstract void AddPrescriptionDeliveredEvent();
-
         protected abstract void AddPrescriptionRevokedEvent(string reason);
 
-        protected virtual bool IsDelivrable() => this.Status == PrescriptionStatus.Created;
-
-        protected virtual bool IsRevocable() => this.Status == PrescriptionStatus.Created;
+        protected bool IsRevocable() => this.Status == PrescriptionStatus.Created;
 
         #endregion Methods
 

@@ -17,25 +17,14 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         static ElectronicPharmaceuticalPrescriptionTests()
         {
             RevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Created));
-            RevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Sent));
-            NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Revoked));
+            NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.InProcess));
             NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Delivered));
-            DeliverablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Sent));
-            NotDeliverablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Delivered));
-            NotDeliverablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Revoked));
-            NotDeliverablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Created));
-            NotTransmittablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Sent));
-            NotTransmittablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Delivered));
-            NotTransmittablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Revoked));
+            NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Revoked));
+            NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Expired));
+            NotRevocablePrescriptions.Add(CreatePrescription(PrescriptionStatus.Archived));
         }
 
         #endregion Constructors
-
-        #region Properties
-
-        public static TheoryData<ElectronicPharmaceuticalPrescription> NotTransmittablePrescriptions { get; } = new TheoryData<ElectronicPharmaceuticalPrescription>();
-
-        #endregion Properties
 
         #region Methods
 
@@ -111,30 +100,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             status.Should().Be(PrescriptionStatus.Created.Code);
         }
 
-        public override void Deliver_DeliverablePrescription_AddsPrescriptionDeliveredEvent(Prescription<PharmaceuticalPrescriptionState> prescription)
-        {
-            // Act
-            prescription.Deliver();
-            // Assert
-            prescription.AllEvents().Should().ContainSingle(e => e is PharmaceuticalPrescriptionDelivered);
-        }
-
-        public override void Deliver_NotDeliverablePrescription_DoesNotAddEvent(Prescription<PharmaceuticalPrescriptionState> prescription)
-        {
-            // Act
-            prescription.Deliver();
-            // Assert
-            prescription.AllEvents().Should().BeEmpty();
-        }
-
-        public override void Revoke_NotRevocablePrescription_DoesNotAddEvent(Prescription<PharmaceuticalPrescriptionState> prescription)
-        {
-            // Act
-            prescription.Revoke("Erreur");
-            // Assert
-            prescription.AllEvents().Should().BeEmpty();
-        }
-
         public override void Revoke_RevocablePrescription_AddsPrescriptionRevokedEvent(Prescription<PharmaceuticalPrescriptionState> prescription)
         {
             // Act
@@ -143,31 +108,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             prescription.AllEvents().Should().ContainSingle(e => e is PharmaceuticalPrescriptionRevoked);
         }
 
-        [Theory]
-        [MemberData(nameof(NotTransmittablePrescriptions))]
-        public void Send_NotTransmittablePrescription_DoesNotAddEvent(ElectronicPharmaceuticalPrescription prescription)
-        {
-            // Act
-            prescription.Send(new BelgianElectronicPrescriptionNumber("BEP1E4RFVHV6"));
-            // Assert
-            prescription.AllEvents().Should().BeEmpty();
-        }
-
-        [Theory]
-        [MemberData(nameof(NotTransmittablePrescriptions))]
-        public void Send_NotTransmittablePrescription_DoesNotChangeStatus(ElectronicPharmaceuticalPrescription prescription)
-        {
-            // Arrange
-            var initialStatus = prescription.ToState().Status;
-            // Act
-            prescription.Send(new BelgianElectronicPrescriptionNumber("BEP1E4RFVHV6"));
-            // Assert
-            var status = prescription.ToState().Status;
-            status.Should().Be(initialStatus);
-        }
-
         [Fact]
-        public void Send_TransmittablePrescription_AddsPrescriptionSentEvent()
+        public void Send_NotSentPrescription_AddsPrescriptionSentEvent()
         {
             // Arrange
             var prescription = CreatePrescription(PrescriptionStatus.Created);
@@ -178,18 +120,43 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         }
 
         [Fact]
-        public void Send_TransmittablePrescription_MarksPrescriptionAsSent()
+        public void Send_NotSentPrescription_InitializesElectronicNumber()
         {
             // Arrange
             var prescription = CreatePrescription(PrescriptionStatus.Created);
+            var specifiedNumber = new BelgianElectronicPrescriptionNumber("BEP1E4RFVHV6");
             // Act
-            prescription.Send(new BelgianElectronicPrescriptionNumber("BEP1E4RFVHV6"));
+            prescription.Send(specifiedNumber);
             // Assert 
-            var status = prescription.ToState().Status;
-            status.Should().Be(PrescriptionStatus.Sent.Code);
+            var number = prescription.ToState().ElectronicNumber;
+            number.Should().Be(specifiedNumber.Number);
         }
 
-        private static ElectronicPharmaceuticalPrescription CreatePrescription(PrescriptionStatus status)
+        [Fact]
+        public void Send_SentPrescription_DoesNotAddEvent()
+        {
+            // Arrange
+            var prescription = CreatePrescription(PrescriptionStatus.Created, new BelgianElectronicPrescriptionNumber("BEP1LZS1LS97"));
+            // Act
+            prescription.Send(new BelgianElectronicPrescriptionNumber("BEP1E4RFVHV6"));
+            // Assert
+            prescription.AllEvents().Should().BeEmpty();
+        }
+
+        [Fact]
+        public void Send_SentPrescription_DoesNotChangeElectronicNumber()
+        {
+            // Arrange
+            var initialNumber = "BEP1LZS1LS97";
+            var prescription = CreatePrescription(PrescriptionStatus.Created, new BelgianElectronicPrescriptionNumber(initialNumber));
+            // Act
+            prescription.Send(new BelgianElectronicPrescriptionNumber("BEP1E4RFVHV6"));
+            // Assert
+            var number = prescription.ToState().ElectronicNumber;
+            number.Should().Be(initialNumber);
+        }
+
+        private static ElectronicPharmaceuticalPrescription CreatePrescription(PrescriptionStatus status, ElectronicPrescriptionNumber electronicNumber = null)
         {
             return new ElectronicPharmaceuticalPrescription
             (
@@ -200,7 +167,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 new PrescribedMedication[] { new PrescribedPharmaceuticalProduct("ADALAT OROS 30 COMP 28 X 30 MG", "appliquer 2 fois par jour") },
                 new Alpha2LanguageCode("FR"),
                 status,
-                new DateTime(2016, 2, 7)
+                new DateTime(2016, 2, 7),
+                null,
+                electronicNumber
             );
         }
 

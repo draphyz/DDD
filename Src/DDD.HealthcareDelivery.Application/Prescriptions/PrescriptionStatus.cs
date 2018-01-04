@@ -3,8 +3,10 @@
     public enum PrescriptionStatus
     {
         Created = 1,
-        Revoked = 2,
-        Sent = 3,
-        Delivered = 4
+        InProcess = 2,
+        Delivered = 3,
+        Revoked = 4,
+        Expired = 5,
+        Archived = 6
     }
 }

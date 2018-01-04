@@ -52,7 +52,6 @@
     <Compile Include="Prescriptions\ElectronicPharmaceuticalPrescription.cs" />
     <Compile Include="Prescriptions\IElectronicPrescription.cs" />
     <Compile Include="Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
-    <Compile Include="Prescriptions\PharmaceuticalPrescriptionDelivered.cs" />
     <Compile Include="Prescriptions\PrescribedPharmaceuticalCompounding.cs" />
     <Compile Include="Prescriptions\PrescribedPharmaceuticalProduct.cs" />
     <Compile Include="Prescriptions\PrescribedPharmaceuticalSubstance.cs" />
