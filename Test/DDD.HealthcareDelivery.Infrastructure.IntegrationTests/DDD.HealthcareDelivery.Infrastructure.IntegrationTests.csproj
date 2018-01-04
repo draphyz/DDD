@@ -173,7 +173,7 @@
     <Content Include="Scripts\SqlServer\FindPharmaceuticalPrescriptionsByPatient.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="L:\Packages\xunit.analyzers.0.8.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+    <Analyzer Include="L:\packages\xunit.analyzers.0.8.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

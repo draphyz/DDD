@@ -2,7 +2,7 @@
 using System.Transactions;
 using System;
 
-namespace Xperthis.HealthcareDelivery.Application.Prescriptions
+namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Domain.Prescriptions;
     using Core.Application;
@@ -59,9 +59,7 @@ namespace Xperthis.HealthcareDelivery.Application.Prescriptions
             {
                 if (prescription is ElectronicPharmaceuticalPrescription)
                     this.networkRevoker.Revoke(prescription.ToState(),
-                                               command.RevocationReason,
-                                               command.PrescriberCertificatePath,
-                                               command.PrescriberCertificatePassword);
+                                               command.RevocationReason);
                 prescription.Revoke(command.RevocationReason);
                 this.repository.Save(prescription);
             }

@@ -60,9 +60,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         {
             try
             {
-                var electronicNumber = this.networkTransmitter.Transmit(prescription.ToState(),
-                                                                        command.PrescriberCertificatePath,
-                                                                        command.PrescriberCertificatePassword);
+                var electronicNumber = this.networkTransmitter.Transmit(prescription.ToState());
                 prescription.Send(electronicNumber);
                 this.repository.Save(prescription);
             }

@@ -1,4 +1,4 @@
-﻿namespace Xperthis.HealthcareDelivery.Application.Prescriptions
+﻿namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Domain.Prescriptions;
 
@@ -7,7 +7,7 @@
 
         #region Methods
 
-        void Revoke(PharmaceuticalPrescriptionState prescription, string reason, string certficatePath, string certificatePassword);
+        void Revoke(PharmaceuticalPrescriptionState prescription, string reason);
 
         #endregion Methods
 

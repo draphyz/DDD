@@ -10,10 +10,6 @@
 
         #region Properties
 
-        public string PrescriberCertificatePassword { get; set; }
-
-        public string PrescriberCertificatePath { get; set; }
-
         public int PrescriptionIdentifier { get; set; }
 
         #endregion Properties

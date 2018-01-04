@@ -7,7 +7,7 @@
 
         #region Methods
 
-        ElectronicPrescriptionNumber Transmit(PharmaceuticalPrescriptionState prescription, string certficatePath, string certificatePassword);
+        ElectronicPrescriptionNumber Transmit(PharmaceuticalPrescriptionState prescription);
 
         #endregion Methods
 

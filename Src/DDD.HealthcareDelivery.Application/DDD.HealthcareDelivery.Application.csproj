@@ -49,9 +49,12 @@
     </Compile>
     <Compile Include="IAssemblyReference.cs" />
     <Compile Include="Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
+    <Compile Include="Prescriptions\INetworkPharmaceuticalPrescriptionRevoker.cs" />
     <Compile Include="Prescriptions\INetworkPharmaceuticalPrescriptionTransmitter.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionDescriptor.cs" />
+    <Compile Include="Prescriptions\PharmaceuticalPrescriptionRevoker.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionTransmitter.cs" />
+    <Compile Include="Prescriptions\RevokePharmaceuticalPrescription.cs" />
     <Compile Include="Prescriptions\SendPharmaceuticalPrescription.cs" />
     <Compile Include="Prescriptions\CreatePharmaceuticalPrescriptions.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionsCreator.cs" />
