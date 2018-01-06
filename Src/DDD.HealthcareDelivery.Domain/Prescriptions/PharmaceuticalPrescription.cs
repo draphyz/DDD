@@ -23,7 +23,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         public PharmaceuticalPrescription(PrescriptionIdentifier identifier, 
                                           HealthcareProvider prescriber, 
                                           Patient patient, 
-                                          HealthFacility healthFacility,  
+                                          HealthFacility healthFacility , 
                                           IEnumerable<PrescribedMedication> prescribedMedications,
                                           Alpha2LanguageCode languageCode,
                                           PrescriptionStatus status,
@@ -71,7 +71,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 createdOn,
                 delivrableAt
             );
-            prescription.AddEvent(new PharmaceuticalPrescriptionCreated(identifier.Identifier, false, createdOn));
+            prescription.AddEvent(new PharmaceuticalPrescriptionCreated(identifier.Identifier, createdOn));
             return prescription;
         }
 

@@ -11,11 +11,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public DateTime? DelivrableAt { get; set; }
 
-        public string ElectronicNumber { get; set; }
-
         public int Identifier { get; set; }
-
-        public bool IsElectronic { get; set; }
 
         public string PrescriberDisplayName { get; set; }
 

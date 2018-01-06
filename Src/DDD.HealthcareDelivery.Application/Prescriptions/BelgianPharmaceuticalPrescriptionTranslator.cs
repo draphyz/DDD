@@ -12,7 +12,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Domain.Providers;
     using Common.Domain;
 
-    public class BelgianPharmaceuticalPrescriptionTranslator 
+    public class BelgianPharmaceuticalPrescriptionTranslator
         : IObjectTranslator<CreatePharmaceuticalPrescriptions, IEnumerable<PharmaceuticalPrescription>>
     {
 
@@ -25,36 +25,18 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             var patient = ToPatient(command);
             var facility = ToHealthFacility(command);
             var languageCode = new Alpha2LanguageCode(command.LanguageCode);
-            if (command.IsElectronic)
-            {
-                foreach (var prescription in command.Prescriptions)
-                    yield return ElectronicPharmaceuticalPrescription.Create
-                    (
-                        new PrescriptionIdentifier(prescription.PrescriptionIdentifier),
-                        provider,
-                        patient,
-                        facility,
-                        prescription.Medications.Select(m => ToPrescribedMedication(m)),
-                        prescription.CreatedOn,
-                        languageCode,
-                        prescription.DelivrableAt
-                    );
-            }
-            else
-            {
-                foreach (var prescription in command.Prescriptions)
-                    yield return PharmaceuticalPrescription.Create
-                    (
-                        new PrescriptionIdentifier(prescription.PrescriptionIdentifier),
-                        provider,
-                        patient,
-                        facility,
-                        prescription.Medications.Select(m => ToPrescribedMedication(m)),
-                        prescription.CreatedOn,
-                        languageCode,
-                        prescription.DelivrableAt
-                    );
-            }
+            foreach (var prescription in command.Prescriptions)
+                yield return PharmaceuticalPrescription.Create
+                (
+                    new PrescriptionIdentifier(prescription.PrescriptionIdentifier),
+                    provider,
+                    patient,
+                    facility,
+                    prescription.Medications.Select(m => ToPrescribedMedication(m)),
+                    prescription.CreatedOn,
+                    languageCode,
+                    prescription.DelivrableAt
+                );
         }
 
         private static HealthcareCenter ToCenter(CreatePharmaceuticalPrescriptions command)

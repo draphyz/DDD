@@ -49,8 +49,6 @@
     </Compile>
     <Compile Include="IAssemblyReference.cs" />
     <Compile Include="Patients\BelgianPatientTranslator.cs" />
-    <Compile Include="Prescriptions\ElectronicPharmaceuticalPrescription.cs" />
-    <Compile Include="Prescriptions\IElectronicPrescription.cs" />
     <Compile Include="Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
     <Compile Include="Prescriptions\PrescribedPharmaceuticalCompounding.cs" />
     <Compile Include="Prescriptions\PrescribedPharmaceuticalProduct.cs" />
@@ -58,7 +56,6 @@
     <Compile Include="Providers\BelgianHealthcareProviderTranslator.cs" />
     <Compile Include="Facilities\BelgianHealthFacilityTranslator.cs" />
     <Compile Include="Facilities\BelgianHealthFacilityLicenseNumber.cs" />
-    <Compile Include="Prescriptions\BelgianElectronicPrescriptionNumber.cs" />
     <Compile Include="Prescriptions\BelgianPrescribedMedicationTranslator.cs" />
     <Compile Include="Facilities\HealthcareCenter.cs" />
     <Compile Include="Providers\HealthcareProviderState.cs" />
@@ -68,7 +65,6 @@
     <Compile Include="Facilities\HealthFacilityType.cs" />
     <Compile Include="Facilities\Hospital.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescription.cs" />
-    <Compile Include="Prescriptions\PharmaceuticalPrescriptionSent.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionRevoked.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionCreated.cs" />
     <Compile Include="Providers\Physician.cs" />
@@ -77,7 +73,6 @@
     <Compile Include="Patients\PatientState.cs" />
     <Compile Include="Facilities\HealthFacilityLicenseNumber.cs" />
     <Compile Include="Providers\HealthcareProvider.cs" />
-    <Compile Include="Prescriptions\ElectronicPrescriptionNumber.cs" />
     <Compile Include="Prescriptions\PrescribedMedication.cs" />
     <Compile Include="Patients\Patient.cs" />
     <Compile Include="Prescriptions\BelgianMedicationCode.cs" />

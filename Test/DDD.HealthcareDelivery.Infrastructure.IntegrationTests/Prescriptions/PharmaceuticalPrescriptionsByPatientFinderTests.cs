@@ -47,8 +47,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
                         DelivrableAt = null,
-                        IsElectronic = true,
-                        ElectronicNumber = "BEL27423142",
                         PrescriberDisplayName = "Dr. Duck Donald"
                     },
                     new PharmaceuticalPrescriptionSummary
@@ -57,8 +55,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
                         DelivrableAt = new DateTime(2017, 2, 18),
-                        IsElectronic = true,
-                        ElectronicNumber = "BEL31802668",
                         PrescriberDisplayName = "Dr. Duck Donald"
                     },
                     new PharmaceuticalPrescriptionSummary
@@ -67,8 +63,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
                         DelivrableAt = new DateTime(2017, 3, 18),
-                        IsElectronic = true,
-                        ElectronicNumber = "BEL95523055",
                         PrescriberDisplayName = "Dr. Duck Donald"
                     },
                     new PharmaceuticalPrescriptionSummary
@@ -77,8 +71,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
                         DelivrableAt = new DateTime(2017, 4, 18),
-                        IsElectronic = true,
-                        ElectronicNumber = "BEL65670306",
                         PrescriberDisplayName = "Dr. Duck Donald"
                     }
 
@@ -95,8 +87,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2017, 9, 25),
                         DelivrableAt = null,
-                        IsElectronic = true,
-                        ElectronicNumber = "BEL98694269",
                         PrescriberDisplayName = "Dr. Duck Donald"
                     },
                     new PharmaceuticalPrescriptionSummary
@@ -105,8 +95,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2017, 9, 25),
                         DelivrableAt = new DateTime(2017, 12, 25),
-                        IsElectronic = true,
-                        ElectronicNumber = "BEL73420042",
                         PrescriberDisplayName = "Dr. Duck Donald"
                     }
                 }

@@ -49,30 +49,19 @@
     </Compile>
     <Compile Include="IAssemblyReference.cs" />
     <Compile Include="Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
-    <Compile Include="Prescriptions\INetworkPharmaceuticalPrescriptionRevoker.cs" />
-    <Compile Include="Prescriptions\INetworkPharmaceuticalPrescriptionTransmitter.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionDescriptor.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionRevoker.cs" />
-    <Compile Include="Prescriptions\PharmaceuticalPrescriptionTransmitter.cs" />
     <Compile Include="Prescriptions\RevokePharmaceuticalPrescription.cs" />
-    <Compile Include="Prescriptions\SendPharmaceuticalPrescription.cs" />
     <Compile Include="Prescriptions\CreatePharmaceuticalPrescriptions.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionsCreator.cs" />
     <Compile Include="Prescriptions\PrescribedMedicationDescriptor.cs" />
     <Compile Include="Prescriptions\PrescriptionStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Prescriptions\DurationUnit.cs" />
-    <Compile Include="Prescriptions\FindMedicationOrdersById.cs" />
     <Compile Include="Prescriptions\FindPrescribedMedicationsByPrescription.cs" />
     <Compile Include="Prescriptions\FindPharmaceuticalPrescriptionsByPatient.cs" />
     <Compile Include="Prescriptions\GeneratePrescriptionIdentifier.cs" />
-    <Compile Include="Prescriptions\MedicationOrder.cs" />
-    <Compile Include="Prescriptions\MedicationRenewal.cs" />
-    <Compile Include="Prescriptions\OrderedMedication.cs" />
     <Compile Include="Prescriptions\PrescribedMedicationDetails.cs" />
-    <Compile Include="Prescriptions\PharmaceuticalPrescriptionsScheduler.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionSummary.cs" />
-    <Compile Include="Prescriptions\SchedulePharmaceuticalPrescriptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

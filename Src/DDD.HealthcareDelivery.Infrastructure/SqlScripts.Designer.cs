@@ -61,42 +61,22 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SELECT     P.PrescriptionId AS Identifier,
-        ///		   P.Language As LanguageCode,
-        ///		   P.IsElectronic,
-        ///           P.ElectronicNum AS ElectronicNumber,
-        ///           P.CreatedOn,
-        ///           P.DelivrableAt,
-        ///           P.PrescriberLastName,
-        ///           P.PrescriberFirstName,
-        ///		   P.PrescriberDisplayName,
-        ///           P.PrescriberLicenseNum AS PrescriberLicenseNumber,
-        ///           P.PrescriberSpeciality,
-        ///           P.PrescriberPhone1 AS PrescriberPrimaryTelephoneNumber,
-        ///           P.PrescriberPhone2 AS Prescriber [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string FindMedicationOrdersById {
-            get {
-                return ResourceManager.GetString("FindMedicationOrdersById", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to SELECT   PrescriptionId AS Identifier,
         ///         CASE Status
         ///			WHEN &apos;CRT&apos; THEN 1
-        ///			WHEN &apos;RVK&apos; THEN 2
-        ///			WHEN &apos;SNT&apos; THEN 3
+        ///			WHEN &apos;INP&apos; THEN 2
+        ///			WHEN &apos;DLV&apos; THEN 3
+        ///			WHEN &apos;RVK&apos; THEN 4
+        ///			WHEN &apos;EXP&apos; THEN 5
+        ///			WHEN &apos;ARC&apos; THEN 6
         ///		 END AS Status,
-        ///         IsElectronic,
-        ///         ElectronicNum AS ElectronicNumber,
         ///         CreatedOn,
         ///         DelivrableAt,
         ///		 PrescriberDisplayName
         ///FROM     Prescription
         ///WHERE    PrescriptionType = &apos;PHARM&apos;
         ///AND      PatientId = @PatientId
-        ///ORDER BY CreatedOn.
+        ///ORDER BY CreatedOn, PrescriptionId.
         /// </summary>
         internal static string FindPharmaceuticalPrescriptionsByPatient {
             get {

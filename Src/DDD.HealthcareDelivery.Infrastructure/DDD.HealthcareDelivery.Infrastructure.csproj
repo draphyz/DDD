@@ -98,10 +98,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Prescriptions\PrescribedMedicationsByPrescriptionFinder.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionsByPatientFinder.cs" />
-    <Compile Include="Prescriptions\MedicationOrdersByIdFinder.cs" />
-    <Compile Include="Prescriptions\MedicationRenewalValidator.cs" />
     <Compile Include="Prescriptions\PrescriptionIdentifierGenerator.cs" />
-    <Compile Include="Prescriptions\SchedulePharmaceuticalPrescriptionsValidator.cs" />
     <Compile Include="SqlScripts.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -172,7 +169,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\FindMedicationOrdersById.sql" />
     <EmbeddedResource Include="Scripts\FindPharmaceuticalPrescriptionsByPatient.sql" />
     <EmbeddedResource Include="Scripts\FindPrescribedMedicationsByPrescription.sql" />
   </ItemGroup>

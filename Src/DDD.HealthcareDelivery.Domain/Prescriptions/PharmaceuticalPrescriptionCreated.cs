@@ -12,11 +12,10 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionCreated(int prescriptionIdentifier, bool isElectronic, DateTime occuredOn)
+        public PharmaceuticalPrescriptionCreated(int prescriptionIdentifier, DateTime occuredOn)
         {
             Condition.Requires(prescriptionIdentifier, nameof(prescriptionIdentifier)).IsGreaterThan(0);
             this.PrescriptionIdentifier = prescriptionIdentifier;
-            this.IsElectronic = isElectronic;
             this.OccurredOn = occuredOn;
         }
 
@@ -26,9 +25,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         [DataMember(Name = "PrescriptionId")]
         public int PrescriptionIdentifier { get; private set; }
-
-        [DataMember(Name = "Electronic")]
-        public bool IsElectronic { get; private set; }
 
         [DataMember(Name = "OccurredOn")]
         public DateTime OccurredOn { get; private set; }

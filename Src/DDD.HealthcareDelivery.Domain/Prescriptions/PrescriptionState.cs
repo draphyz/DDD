@@ -16,13 +16,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public DateTime? DelivrableAt { get; set; }
 
-        public string ElectronicNumber { get; set; }
         public EntityState EntityState { get; set; }
+
         public HealthFacilityState HealthFacility { get; set; }
 
         public int Identifier { get; set; }
-
-        public bool IsElectronic { get; set; }
 
         public string LanguageCode { get; set; }
 

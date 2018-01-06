@@ -7,15 +7,13 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
     internal class BelgianPharmaceuticalPrescriptionDescriptorValidator : AbstractValidator<PharmaceuticalPrescriptionDescriptor>
     {
-        private readonly bool isElectronic;
 
         #region Constructors
 
-        public BelgianPharmaceuticalPrescriptionDescriptorValidator(bool isElectronic)
+        public BelgianPharmaceuticalPrescriptionDescriptorValidator()
         {
-            this.isElectronic = isElectronic;
             RuleFor(p => p.PrescriptionIdentifier).GreaterThan(0).WithErrorCode("PrescriptionIdentifierInvalid");
-            RuleFor(p => p.Medications).SetCollectionValidator(new BelgianPrescribedMedicationDescriptorValidator(isElectronic))
+            RuleFor(p => p.Medications).SetCollectionValidator(new BelgianPrescribedMedicationDescriptorValidator())
                                        .NotEmpty().WithErrorCode("MedicationsEmpty")
                                        .MaximumCount(10).WithErrorCode("MedicationsCountInvalid");
             RuleForEach(p => p.Medications).NotNull().WithErrorCode("MedicationNull");

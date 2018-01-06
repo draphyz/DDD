@@ -95,7 +95,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 Patient = this.Patient.ToState(),
                 HealthFacility = this.HealthFacility.ToState(),
                 Status = this.Status.Code,
-                IsElectronic = false,
                 CreatedOn = this.CreatedOn,
                 DelivrableAt = this.DelivrableAt,
                 LanguageCode = this.LanguageCode.Code,

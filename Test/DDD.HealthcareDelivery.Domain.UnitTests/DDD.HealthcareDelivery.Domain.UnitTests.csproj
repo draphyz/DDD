@@ -69,7 +69,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Prescriptions\ElectronicPharmaceuticalPrescriptionTests.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionTests.cs" />
     <Compile Include="Prescriptions\PrescriptionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

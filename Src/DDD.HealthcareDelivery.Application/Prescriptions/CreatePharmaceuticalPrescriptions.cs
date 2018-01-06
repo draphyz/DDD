@@ -26,8 +26,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public HealthFacilityType HealthFacilityType { get; set; }
 
-        public bool IsElectronic { get; set; } = true;
-
         public string LanguageCode { get; set; }
 
         public DateTime? PatientBirthdate { get; set; }

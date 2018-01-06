@@ -61,7 +61,8 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to USE [master]
+        ///   Looks up a localized string similar to /****** Object:  Database [Test]    Script Date: 16/08/2017 12:09:20 ******/
+        ///USE [master]
         ///GO
         ///IF EXISTS(SELECT * FROM [sys].[databases] where [name] = &apos;Test&apos;)
         ///begin
@@ -69,7 +70,6 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         ///DROP DATABASE [Test]
         ///end
         ///GO
-        ////****** Object:  Database [Test]    Script Date: 16/08/2017 12:09:20 ******/
         ///CREATE DATABASE [Test]
         /// CONTAINMENT = NONE
         /// ON  PRIMARY 
@@ -88,22 +88,7 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[PARAM_CACHET] ([USERNUM], [SITENUM], [SITENAME], [OPHTALMO], [TEL1], [TEL2], [ADRESSE], [NUMLOC], [MAIL1], [MAIL2], [WEB1], [WEB2], [CENTRE]) VALUES (1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0)
-        ///GO
-        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [IsElectronic], [ElectronicNum], [CreatedOn], [DelivrableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [Prescr [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string FindMedicationOrdersById {
-            get {
-                return ResourceManager.GetString("FindMedicationOrdersById", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to USE [Test]
-        ///GO
-        ///EXEC spClearDatabase
-        ///GO
-        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [IsElectronic], [ElectronicNum], [CreatedOn], [DelivrableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [Prescr [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [CreatedOn], [DelivrableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [PrescriberBoxNum], [PrescriberPostCode], [P [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FindPharmaceuticalPrescriptionsByPatient {
             get {
@@ -116,9 +101,7 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[PARAM_CACHET] ([USERNUM], [SITENUM], [SITENAME], [OPHTALMO], [TEL1], [TEL2], [ADRESSE], [NUMLOC], [MAIL1], [MAIL2], [WEB1], [WEB2], [CENTRE]) VALUES (1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0)
-        ///GO
-        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [IsElectronic], [ElectronicNum], [CreatedOn], [DelivrableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [Prescr [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [CreatedOn], [DelivrableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [PrescriberBoxNum], [PrescriberPostCode] [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FindPrescribedMedicationsByPrescription {
             get {

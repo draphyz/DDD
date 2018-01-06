@@ -80,16 +80,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OracleScripts.resx</DependentUpon>
     </Compile>
-    <Compile Include="Prescriptions\OracleMedicationOrdersByIdFinderTests.cs" />
     <Compile Include="Prescriptions\OraclePharmaceuticalPrescriptionsByPatientFinderTests.cs" />
     <Compile Include="Prescriptions\OraclePrescribedMedicationsByPrescriptionFinderTests.cs" />
     <Compile Include="Prescriptions\SqlServerPrescribedMedicationsByPrescriptionFinderTests.cs" />
     <Compile Include="Prescriptions\SqlServerPharmaceuticalPrescriptionsByPatientFinderTests.cs" />
-    <Compile Include="Prescriptions\SqlServerMedicationOrdersByIdFinderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Prescriptions\PrescribedMedicationsByPrescriptionFinderTests.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionsByPatientFinderTests.cs" />
-    <Compile Include="Prescriptions\MedicationOrdersByIdFinderTests.cs" />
     <Compile Include="SqlServerCollection.cs" />
     <Compile Include="SqlServerConnectionFactory.cs" />
     <Compile Include="SqlServerFixture.cs" />
@@ -165,11 +162,9 @@
     <Content Include="..\DDD.HealthcareDelivery.Application.IntegrationTests\Scripts\SqlServer\CreateDatabase.sql">
       <Link>Scripts\SqlServer\CreateDatabase.sql</Link>
     </Content>
-    <Content Include="Scripts\Oracle\FindMedicationOrdersById.sql" />
     <Content Include="Scripts\Oracle\FindPharmaceuticalPrescriptionsByPatient.sql" />
     <Content Include="Scripts\Oracle\FindPrescribedMedicationsByPrescription.sql" />
     <Content Include="Scripts\SqlServer\FindPrescribedMedicationsByPrescription.sql" />
-    <Content Include="Scripts\SqlServer\FindMedicationOrdersById.sql" />
     <Content Include="Scripts\SqlServer\FindPharmaceuticalPrescriptionsByPatient.sql" />
   </ItemGroup>
   <ItemGroup>

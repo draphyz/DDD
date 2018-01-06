@@ -89,7 +89,7 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         ///   CREATE SEQUENCE  TEST.EVENTID  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE 
         ////
         /// --------------------------------------------------------
-        /// [rest of string was truncated]&quot;;.
+        ///--  DDL fo [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FillSchema {
             get {
@@ -98,22 +98,11 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EXECUTE TEST.SPCLEARSCHEMA
+        ///   Looks up a localized string similar to BEGIN
+        ///  SPCLEARSCHEMA();
+        ///END;
         ////
-        ///INSERT INTO TEST.PARAM_CACHET (USERNUM, SITENUM, SITENAME, OPHTALMO, TEL1, TEL2, ADRESSE, NUMLOC, MAIL1, MAIL2, WEB1, WEB2, CENTRE) VALUES (1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0)
-        ////
-        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, IsElectronic, ElectronicNum, CreatedOn, DelivrableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, Prescrib [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string FindMedicationOrdersById {
-            get {
-                return ResourceManager.GetString("FindMedicationOrdersById", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to EXECUTE TEST.SPCLEARSCHEMA
-        ////
-        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, IsElectronic, ElectronicNum, CreatedOn, DelivrableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, Prescrib [rest of string was truncated]&quot;;.
+        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DelivrableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, Patien [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FindPharmaceuticalPrescriptionsByPatient {
             get {
@@ -122,11 +111,11 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to EXECUTE TEST.SPCLEARSCHEMA
+        ///   Looks up a localized string similar to BEGIN
+        ///  SPCLEARSCHEMA();
+        ///END;
         ////
-        ///INSERT INTO TEST.PARAM_CACHET (USERNUM, SITENUM, SITENAME, OPHTALMO, TEL1, TEL2, ADRESSE, NUMLOC, MAIL1, MAIL2, WEB1, WEB2, CENTRE) VALUES (1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0)
-        ////
-        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, IsElectronic, ElectronicNum, CreatedOn, DelivrableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, Prescrib [rest of string was truncated]&quot;;.
+        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DelivrableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, Pa [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FindPrescribedMedicationsByPrescription {
             get {

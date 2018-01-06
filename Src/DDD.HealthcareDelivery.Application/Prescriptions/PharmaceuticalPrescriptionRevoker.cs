@@ -1,6 +1,5 @@
 ﻿using Conditions;
 using System.Transactions;
-using System;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
@@ -18,21 +17,16 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         private readonly IRepository<PharmaceuticalPrescription> repository;
 
-        private readonly INetworkPharmaceuticalPrescriptionRevoker networkRevoker;
-
         #endregion Fields
 
         #region Constructors
 
         public PharmaceuticalPrescriptionRevoker(IRepository<PharmaceuticalPrescription> repository,
-                                                 INetworkPharmaceuticalPrescriptionRevoker networkRevoker,
                                                  IDomainEventPublisher publisher)
         {
             Condition.Requires(repository, nameof(repository)).IsNotNull();
-            Condition.Requires(networkRevoker, nameof(networkRevoker)).IsNotNull();
             Condition.Requires(publisher, nameof(publisher)).IsNotNull();
             this.repository = repository;
-            this.networkRevoker = networkRevoker;
             this.publisher = publisher;
         }
 
@@ -57,13 +51,10 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         {
             try
             {
-                if (prescription is ElectronicPharmaceuticalPrescription)
-                    this.networkRevoker.Revoke(prescription.ToState(),
-                                               command.RevocationReason);
                 prescription.Revoke(command.RevocationReason);
                 this.repository.Save(prescription);
             }
-            catch (Exception ex) when (ex is RepositoryException || ex is ClientServerRequestException)
+            catch (RepositoryException ex)
             {
                 throw new CommandException("The pharmaceutical prescription could not be revoked.", ex, command);
             }

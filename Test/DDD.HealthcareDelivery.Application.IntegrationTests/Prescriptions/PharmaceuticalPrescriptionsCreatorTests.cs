@@ -69,7 +69,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             return new CreatePharmaceuticalPrescriptions
             {
                 LanguageCode = "fr",
-                IsElectronic = true,
                 PrescriberIdentifier = 1,
                 PrescriberLicenseNumber = "19006951001",
                 PrescriberType = HealthcareProviderType.Physician,
