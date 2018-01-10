@@ -82,7 +82,9 @@ namespace DDD.Common.Domain
         {
             return new ContactInformationState
             {
-                PostalAddress = this.PostalAddress?.ToState(),
+                PostalAddress = this.PostalAddress == null ? 
+                                new PostalAddressState() 
+                                : this.PostalAddress.ToState(), // EF6 complex types cannot be null
                 PrimaryTelephoneNumber = this.PrimaryTelephoneNumber,
                 SecondaryTelephoneNumber = this.SecondaryTelephoneNumber,
                 FaxNumber = this.FaxNumber,

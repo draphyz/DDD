@@ -68,7 +68,9 @@ namespace DDD.HealthcareDelivery.Domain.Patients
                 FullName = this.FullName.ToState(),
                 Sex = this.Sex.Code,
                 SocialSecurityNumber = this.SocialSecurityNumber?.Number,
-                ContactInformation = this.ContactInformation?.ToState(),
+                ContactInformation = this.ContactInformation == null ? 
+                                     new ContactInformationState() // EF6 complex types cannot be null
+                                     : this.ContactInformation.ToState(), 
                 Birthdate = this.Birthdate,
             };
         }
