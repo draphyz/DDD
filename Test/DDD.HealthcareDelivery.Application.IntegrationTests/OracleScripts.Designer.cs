@@ -61,11 +61,28 @@ namespace DDD.HealthcareDelivery.Application {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE USER TEST IDENTIFIED BY dev;
-        ///GRANT CREATE TABLE TO TEST;
-        ///GRANT CREATE SEQUENCE TO TEST;
-        ///GRANT CREATE SESSION TO TEST;
-        ///GRANT UNLIMITED TABLESPACE TO TEST;.
+        ///   Looks up a localized string similar to BEGIN
+        ///  SPCLEARSCHEMA();
+        ///END;
+        ////.
+        /// </summary>
+        internal static string CreatePharmaceuticalPrescriptions {
+            get {
+                return ResourceManager.GetString("CreatePharmaceuticalPrescriptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DECLARE 
+        ///    usercount NUMBER;
+        ///BEGIN
+        ///    SELECT COUNT(*) INTO usercount FROM dba_users WHERE username = &apos;TEST&apos;;
+        ///    IF usercount &gt; 0 THEN
+        ///        EXECUTE IMMEDIATE &apos;DROP USER TEST CASCADE&apos;;
+        ///    END IF;
+        ///    EXECUTE IMMEDIATE &apos;CREATE USER TEST IDENTIFIED BY dev&apos;;
+        ///    EXECUTE IMMEDIATE &apos;GRANT ALL PRIVILEGES TO TEST&apos;;
+        ///END;.
         /// </summary>
         internal static string CreateSchema {
             get {
@@ -78,16 +95,30 @@ namespace DDD.HealthcareDelivery.Application {
         ///--  File created - Monday-November-13-2017   
         ///--------------------------------------------------------
         ///--------------------------------------------------------
-        ///--  DDL for Sequence EventId
+        ///--  DDL for Sequence EVENTID
         ///--------------------------------------------------------
         ///
-        ///   CREATE SEQUENCE  &quot;TEST&quot;.&quot;EventId&quot;  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE ;
+        ///   CREATE SEQUENCE  TEST.EVENTID  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE 
+        ////
         /// --------------------------------------------------------
-        ///--  DDL [rest of string was truncated]&quot;;.
+        ///--  DDL fo [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FillSchema {
             get {
                 return ResourceManager.GetString("FillSchema", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BEGIN
+        ///  SPCLEARSCHEMA();
+        ///END;
+        ////
+        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DelivrableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, Pa [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string RevokePharmaceuticalPrescription {
+            get {
+                return ResourceManager.GetString("RevokePharmaceuticalPrescription", resourceCulture);
             }
         }
     }

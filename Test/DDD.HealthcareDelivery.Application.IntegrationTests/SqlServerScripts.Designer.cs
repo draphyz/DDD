@@ -61,19 +61,50 @@ namespace DDD.HealthcareDelivery.Application {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to USE [master]
+        ///   Looks up a localized string similar to /****** Object:  Database [Test]    Script Date: 16/08/2017 12:09:20 ******/
+        ///USE [master]
         ///GO
-        ////****** Object:  Database [Test]    Script Date: 16/08/2017 12:09:20 ******/
+        ///IF EXISTS(SELECT * FROM [sys].[databases] where [name] = &apos;Test&apos;)
+        ///begin
+        ///ALTER DATABASE [Test] SET SINGLE_USER WITH ROLLBACK IMMEDIATE
+        ///DROP DATABASE [Test]
+        ///end
+        ///GO
         ///CREATE DATABASE [Test]
         /// CONTAINMENT = NONE
         /// ON  PRIMARY 
         ///( NAME = N&apos;Test&apos;, FILENAME = N&apos;C:\Program Files\Microsoft SQL Server\MSSQL11.SQLEXPRESS\MSSQL\DATA\Test.mdf&apos; , SIZE = 5120KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
         /// LOG ON 
-        ///( NAME = N&apos;Test_log&apos;, FILENAME = N&apos;C:\Program Files\Microsoft SQL Server\MSSQL11.SQLEXPRESS\MSSQL\DATA\Test_log.ldf&apos; , SIZE = 1024KB  [rest of string was truncated]&quot;;.
+        ///( NAME = [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CreateDatabase {
             get {
                 return ResourceManager.GetString("CreateDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USE [Test]
+        ///GO
+        ///EXEC spClearDatabase
+        ///GO.
+        /// </summary>
+        internal static string CreatePharmaceuticalPrescriptions {
+            get {
+                return ResourceManager.GetString("CreatePharmaceuticalPrescriptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USE [Test]
+        ///GO
+        ///EXEC spClearDatabase
+        ///GO
+        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [CreatedOn], [DelivrableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [PrescriberBoxNum], [PrescriberPostCode] [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string RevokePharmaceuticalPrescription {
+            get {
+                return ResourceManager.GetString("RevokePharmaceuticalPrescription", resourceCulture);
             }
         }
     }

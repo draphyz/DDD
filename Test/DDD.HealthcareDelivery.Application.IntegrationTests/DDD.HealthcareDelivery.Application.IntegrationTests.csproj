@@ -92,7 +92,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>OracleScripts.resx</DependentUpon>
     </Compile>
+    <Compile Include="Prescriptions\OraclePharmaceuticalPrescriptionRevokerTests.cs" />
     <Compile Include="Prescriptions\OraclePharmaceuticalPrescriptionsCreatorTests.cs" />
+    <Compile Include="Prescriptions\PharmaceuticalPrescriptionRevokerTests.cs" />
+    <Compile Include="Prescriptions\SqlServerPharmaceuticalPrescriptionRevokerTests.cs" />
     <Compile Include="Prescriptions\SqlServerPharmaceuticalPrescriptionsCreatorTests.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionsCreatorTests.cs" />
     <Compile Include="OracleCollection.cs" />
@@ -180,7 +183,11 @@
   <ItemGroup>
     <Content Include="Scripts\Oracle\CreateSchema.sql" />
     <Content Include="Scripts\Oracle\FillSchema.sql" />
+    <Content Include="Scripts\Oracle\CreatePharmaceuticalPrescriptions.sql" />
+    <Content Include="Scripts\Oracle\RevokePharmaceuticalPrescription.sql" />
     <Content Include="Scripts\SqlServer\CreateDatabase.sql" />
+    <Content Include="Scripts\SqlServer\CreatePharmaceuticalPrescriptions.sql" />
+    <Content Include="Scripts\SqlServer\RevokePharmaceuticalPrescription.sql" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="L:\packages\xunit.analyzers.0.8.0\analyzers\dotnet\cs\xunit.analyzers.dll" />

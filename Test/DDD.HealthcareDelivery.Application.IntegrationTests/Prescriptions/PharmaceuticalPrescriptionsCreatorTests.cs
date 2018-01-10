@@ -3,6 +3,7 @@ using System.Threading;
 using System.Security.Principal;
 using System.Linq;
 using System;
+using FluentAssertions;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
@@ -46,9 +47,10 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         #region Methods
 
         [Fact]
-        public void Handle_WhenCalled_CreatePharmaceuticalPrescription()
+        public void Handle_WhenCalled_CreatePharmaceuticalPrescriptions()
         {
             // Arrange
+            this.Fixture.ExecuteScriptFromResources("CreatePharmaceuticalPrescriptions");
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("d.duck"), new string[] { "User" });
             var command = CreateCommand();
             // Act
@@ -57,9 +59,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             var prescription = this.Repository.Find(new PrescriptionIdentifier(command.Prescriptions.First().PrescriptionIdentifier))
                                               .ToState();
             var medications = prescription.PrescribedMedications;
-            Assert.NotNull(prescription);
-            Assert.True(prescription.Status == Domain.Prescriptions.PrescriptionStatus.Created.Code);
-            Assert.True(medications.Count() == 1);
+            prescription.Should().NotBeNull();
+            prescription.Status.Should().Be(Domain.Prescriptions.PrescriptionStatus.Created.Code);
+            medications.Should().NotBeNullOrEmpty();
         }
 
         protected abstract IRepository<PharmaceuticalPrescription> CreateRepository();
