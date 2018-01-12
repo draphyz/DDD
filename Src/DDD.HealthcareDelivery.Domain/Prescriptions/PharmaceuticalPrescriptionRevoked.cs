@@ -12,7 +12,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, string reason, DateTime occuredOn)
+        public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, DateTime occuredOn, string reason = null)
         {
             Condition.Requires(prescriptionIdentifier, nameof(prescriptionIdentifier)).IsGreaterThan(0);
             Condition.Requires(reason, nameof(reason)).IsNotNullOrWhiteSpace();
@@ -21,8 +21,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             this.OccurredOn = occuredOn;
         }
 
-        public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, string reason) 
-            : this(prescriptionIdentifier, reason, DateTime.Now)
+        public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, string reason = null) 
+            : this(prescriptionIdentifier, DateTime.Now, reason)
         {
         }
 
