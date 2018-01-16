@@ -59,6 +59,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.Infrastructure.Exc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.HealthcareDelivery.Domain.UnitTests", "Test\DDD.HealthcareDelivery.Domain.UnitTests\DDD.HealthcareDelivery.Domain.UnitTests.csproj", "{FC63B24C-269F-413F-A8E3-AA8DB2094527}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{862B0E9C-B685-4C40-ACFB-83A193C82254}"
+	ProjectSection(SolutionItems) = preProject
+		Doc\CommandComponents.png = Doc\CommandComponents.png
+		Doc\PrescriptionLifecycle.png = Doc\PrescriptionLifecycle.png
+		Doc\QueryComponents.png = Doc\QueryComponents.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
