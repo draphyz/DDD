@@ -1,4 +1,6 @@
-﻿namespace DDD.Core.Application
+﻿using System.Threading.Tasks;
+
+namespace DDD.Core.Application
 {
     using Validation;
 
@@ -12,7 +14,11 @@
 
         TResult Process<TResult>(IQuery<TResult> query);
 
+        Task<TResult> ProcessAsync<TResult>(IQuery<TResult> query);
+
         ValidationResult Validate<TQuery>(TQuery query, string ruleSet = null) where TQuery : class, IQuery;
+
+        Task<ValidationResult> ValidateAsync<TQuery>(TQuery query, string ruleSet = null) where TQuery : class, IQuery;
 
         #endregion Methods
 

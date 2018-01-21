@@ -1,5 +1,6 @@
 ﻿using Conditions;
 using System.Transactions;
+using System.Threading.Tasks;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
@@ -8,20 +9,20 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Core.Domain;
     using Core.Infrastructure;
 
-    public class PharmaceuticalPrescriptionRevoker : ICommandHandler<RevokePharmaceuticalPrescription>
+    public class PharmaceuticalPrescriptionRevoker : ICommandHandlerAsync<RevokePharmaceuticalPrescription>
     {
 
         #region Fields
 
         private readonly IDomainEventPublisher publisher;
 
-        private readonly IRepository<PharmaceuticalPrescription> repository;
+        private readonly IRepositoryAsync<PharmaceuticalPrescription> repository;
 
         #endregion Fields
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionRevoker(IRepository<PharmaceuticalPrescription> repository,
+        public PharmaceuticalPrescriptionRevoker(IRepositoryAsync<PharmaceuticalPrescription> repository,
                                                  IDomainEventPublisher publisher)
         {
             Condition.Requires(repository, nameof(repository)).IsNotNull();
@@ -34,25 +35,25 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
-        public void Handle(RevokePharmaceuticalPrescription command)
+        public async Task HandleAsync(RevokePharmaceuticalPrescription command)
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
-            var prescription = this.repository.Find(new PrescriptionIdentifier(command.PrescriptionIdentifier));
-            using (var scope = new TransactionScope())
+            var prescription = await this.repository.FindAsync(new PrescriptionIdentifier(command.PrescriptionIdentifier));
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                this.Revoke(prescription, command);
+                await this.RevokeAsync(prescription, command);
                 this.publisher.PublishAll(prescription.AllEvents());
                 scope.Complete();
             }
         }
 
-        private void Revoke(PharmaceuticalPrescription prescription,
-                            RevokePharmaceuticalPrescription command)
+        private async Task RevokeAsync(PharmaceuticalPrescription prescription,
+                                       RevokePharmaceuticalPrescription command)
         {
             try
             {
                 prescription.Revoke(command.RevocationReason);
-                this.repository.Save(prescription);
+                await this.repository.SaveAsync(prescription);
             }
             catch (RepositoryException ex)
             {

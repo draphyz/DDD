@@ -1,5 +1,6 @@
 ﻿using Conditions;
 using System;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
@@ -38,12 +39,29 @@ namespace DDD.Core.Application
             return handler.Handle((dynamic)query);
         }
 
+        public Task<TResult> ProcessAsync<TResult>(IQuery<TResult> query)
+        {
+            Condition.Requires(query, nameof(query)).IsNotNull();
+            var handlerType = typeof(IQueryHandlerAsync<,>).MakeGenericType(query.GetType(), typeof(TResult));
+            dynamic handler = this.serviceProvider.GetService(handlerType);
+            if (handler == null) throw new InvalidOperationException($"The query handler for type {handlerType} could not be found.");
+            return handler.HandleAsync((dynamic)query);
+        }
+
         public ValidationResult Validate<TQuery>(TQuery query, string ruleSet = null) where TQuery : class, IQuery
         {
             Condition.Requires(query, nameof(query)).IsNotNull();
             var validator = this.serviceProvider.GetService<IQueryValidator<TQuery>>();
             if (validator == null) throw new InvalidOperationException($"The query validator for type {typeof(IQueryValidator<TQuery>)} could not be found.");
             return validator.Validate(query, ruleSet);
+        }
+
+        public Task<ValidationResult> ValidateAsync<TQuery>(TQuery query, string ruleSet = null) where TQuery : class, IQuery
+        {
+            Condition.Requires(query, nameof(query)).IsNotNull();
+            var validator = this.serviceProvider.GetService<IQueryValidatorAsync<TQuery>>();
+            if (validator == null) throw new InvalidOperationException($"The query validator for type {typeof(IQueryValidator<TQuery>)} could not be found.");
+            return validator.ValidateAsync(query, ruleSet);
         }
 
         #endregion Methods

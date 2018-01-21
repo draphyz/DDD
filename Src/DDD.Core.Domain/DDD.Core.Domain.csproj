@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DDD.Core.Domain</RootNamespace>
     <AssemblyName>DDD.Core.Domain</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,6 +58,7 @@
     <Compile Include="IDomainEventHandler`1.cs" />
     <Compile Include="IDomainEventPublisher.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="IRepositoryAsync.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IStateObjectConvertible.cs" />
     <Compile Include="IStateEntity.cs" />

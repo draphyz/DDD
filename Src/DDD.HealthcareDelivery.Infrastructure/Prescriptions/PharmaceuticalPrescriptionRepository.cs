@@ -12,7 +12,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
     public class PharmaceuticalPrescriptionRepository
         : EFRepositoryWithEventStoring<PharmaceuticalPrescription, PharmaceuticalPrescriptionState, HealthcareContext>,
-          IRepository<PharmaceuticalPrescription>
+          IRepositoryAsync<PharmaceuticalPrescription>
     {
 
         #region Constructors

@@ -1,5 +1,6 @@
 ﻿using Conditions;
 using System;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
@@ -37,12 +38,28 @@ namespace DDD.Core.Application
             handler.Handle(command);
         }
 
+        public Task ProcessAsync<TCommand>(TCommand command) where TCommand : class, ICommand
+        {
+            Condition.Requires(command, nameof(command)).IsNotNull();
+            var handler = this.serviceProvider.GetService<ICommandHandlerAsync<TCommand>>();
+            if (handler == null) throw new InvalidOperationException($"The command handler for type {typeof(ICommandHandler<TCommand>)} could not be found.");
+            return handler.HandleAsync(command);
+        }
+
         public ValidationResult Validate<TCommand>(TCommand command, string ruleSet = null) where TCommand : class, ICommand
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
             var validator = this.serviceProvider.GetService<ICommandValidator<TCommand>>();
             if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(ICommandValidator<TCommand>)} could not be found.");
             return validator.Validate(command, ruleSet);
+        }
+
+        public Task<ValidationResult> ValidateAsync<TCommand>(TCommand command, string ruleSet = null) where TCommand : class, ICommand
+        {
+            Condition.Requires(command, nameof(command)).IsNotNull();
+            var validator = this.serviceProvider.GetService<ICommandValidatorAsync<TCommand>>();
+            if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(ICommandValidator<TCommand>)} could not be found.");
+            return validator.ValidateAsync(command, ruleSet);
         }
 
         #endregion Methods

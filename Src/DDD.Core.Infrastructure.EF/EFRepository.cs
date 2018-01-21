@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
+using System.Threading.Tasks;
 using Conditions;
 
 namespace DDD.Core.Infrastructure.Data
@@ -16,7 +17,7 @@ namespace DDD.Core.Infrastructure.Data
     using Domain;
 
     public abstract class EFRepository<TDomainEntity, TStateEntity, TContext>
-        : IRepository<TDomainEntity>
+        : IRepositoryAsync<TDomainEntity>
         where TDomainEntity : DomainEntity, IStateObjectConvertible<TStateEntity>
         where TStateEntity : class, IStateEntity, new()
         where TContext : StateEntitiesContext
@@ -45,17 +46,17 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public virtual void Save(TDomainEntity aggregate)
+        public async virtual Task SaveAsync(TDomainEntity aggregate)
         {
             Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
             using (var context = this.CreateContext())
             {
                 context.Set<TStateEntity>().Add(aggregate.ToState());
-                SaveChanges(context);
+                await SaveChangesAsync(context);
             }
         }
 
-        public virtual void SaveAll(IEnumerable<TDomainEntity> aggregates)
+        public async virtual Task SaveAllAsync(IEnumerable<TDomainEntity> aggregates)
         {
             Condition.Requires(aggregates, nameof(aggregates))
                      .IsNotNull()
@@ -64,11 +65,11 @@ namespace DDD.Core.Infrastructure.Data
             using (var context = this.CreateContext())
             {
                 context.Set<TStateEntity>().AddRange(aggregates.Select(a => a.ToState()));
-                SaveChanges(context);
+                await SaveChangesAsync(context);
             }
         }
 
-        public TDomainEntity Find(params ComparableValueObject[] identityComponents)
+        public async Task<TDomainEntity> FindAsync(params ComparableValueObject[] identityComponents)
         {
             Condition.Requires(identityComponents, nameof(identityComponents))
                      .IsNotNull()
@@ -81,7 +82,7 @@ namespace DDD.Core.Infrastructure.Data
                 var query = context.Set<TStateEntity>().AsQueryable();
                 foreach (var path in this.RelatedEntitiesPaths()) query = query.Include(path);
                 var findExpression = FindExpression(keyNames, keyValues);
-                var stateEntity = query.FirstOrDefault(findExpression);
+                var stateEntity = await query.FirstOrDefaultAsync(findExpression);
                 if (stateEntity == null) return null;
                 return this.EntityTranslator.Translate(stateEntity);
             }
@@ -103,11 +104,11 @@ namespace DDD.Core.Infrastructure.Data
             }
         }
 
-        protected static void SaveChanges(TContext context)
+        protected static async Task SaveChangesAsync(TContext context)
         {
             try
             {
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)
             {

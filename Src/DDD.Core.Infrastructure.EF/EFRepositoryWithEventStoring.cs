@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -39,7 +40,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public override void Save(TDomainEntity aggregate)
+        public override async Task SaveAsync(TDomainEntity aggregate)
         {
             Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
             var events = ToStoredEvents(new TDomainEntity[] { aggregate });
@@ -47,11 +48,11 @@ namespace DDD.Core.Infrastructure.Data
             {
                 context.Set<TStateEntity>().Add(aggregate.ToState());
                 context.Set<StoredEvent>().AddRange(events);
-                SaveChanges(context);
+                await SaveChangesAsync(context);
             }
         }
 
-        public override void SaveAll(IEnumerable<TDomainEntity> aggregates)
+        public override async Task SaveAllAsync(IEnumerable<TDomainEntity> aggregates)
         {
             Condition.Requires(aggregates, nameof(aggregates))
                      .IsNotNull()
@@ -62,7 +63,7 @@ namespace DDD.Core.Infrastructure.Data
             {
                 context.Set<TStateEntity>().AddRange(aggregates.Select(a => a.ToState()));
                 context.Set<StoredEvent>().AddRange(events);
-                SaveChanges(context);
+                await SaveChangesAsync(context);
             }
         }
 

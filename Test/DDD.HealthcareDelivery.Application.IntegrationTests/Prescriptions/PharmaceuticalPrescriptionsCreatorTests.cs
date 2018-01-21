@@ -1,5 +1,6 @@
 ﻿using Xunit;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Security.Principal;
 using System.Linq;
 using System;
@@ -40,31 +41,31 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         protected TFixture Fixture { get; }
         protected PharmaceuticalPrescriptionsCreator Handler { get; }
-        protected IRepository<PharmaceuticalPrescription> Repository { get; }
+        protected IRepositoryAsync<PharmaceuticalPrescription> Repository { get; }
 
         #endregion Properties
 
         #region Methods
 
         [Fact]
-        public void Handle_WhenCalled_CreatePharmaceuticalPrescriptions()
+        public async Task HandleAsync_WhenCalled_CreatePharmaceuticalPrescriptions()
         {
             // Arrange
             this.Fixture.ExecuteScriptFromResources("CreatePharmaceuticalPrescriptions");
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("d.duck"), new string[] { "User" });
             var command = CreateCommand();
             // Act
-            this.Handler.Handle(command);
+            await this.Handler.HandleAsync(command);
             // Assert
-            var prescription = this.Repository.Find(new PrescriptionIdentifier(command.Prescriptions.First().PrescriptionIdentifier))
-                                              .ToState();
+            var prescription = (await this.Repository.FindAsync(new PrescriptionIdentifier(command.Prescriptions.First().PrescriptionIdentifier)))
+                                                     .ToState();
             var medications = prescription.PrescribedMedications;
             prescription.Should().NotBeNull();
             prescription.Status.Should().Be(Domain.Prescriptions.PrescriptionStatus.Created.Code);
             medications.Should().NotBeNullOrEmpty();
         }
 
-        protected abstract IRepository<PharmaceuticalPrescription> CreateRepository();
+        protected abstract IRepositoryAsync<PharmaceuticalPrescription> CreateRepository();
 
         private static CreatePharmaceuticalPrescriptions CreateCommand()
         {
