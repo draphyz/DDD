@@ -30,8 +30,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         {
             Condition.Requires(nameOrDescription, nameof(nameOrDescription)).IsNotNullOrWhiteSpace();
             Condition.Requires(identifier, nameof(identifier)).IsGreaterOrEqual(0);
-            if (string.IsNullOrWhiteSpace(posology) && string.IsNullOrWhiteSpace(duration))
-                throw new ArgumentException("A posology or a duration must be specified.");
             this.NameOrDescription = nameOrDescription;
             this.Posology = posology;
             if (!string.IsNullOrWhiteSpace(quantity))
