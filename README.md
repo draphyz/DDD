@@ -4,7 +4,7 @@ This project is a sample of .NET implementation of a medical prescription model 
 
 **Points of interest**
 
-The goal of the project is to test and provide some .NET implementations of core concepts of DDD (entities, value objects, domain events, ...) and CQRS (commands, queries, command and query handlers, ...) on the basis of a concrete model.
+The goal of the project is to experiment some .NET implementations of core concepts of DDD (entities, value objects, domain events, ...) and CQRS (commands, queries, command and query handlers, ...) on the basis of a concrete model.
 
 Only a lightweight version of CQRS (no data projection, one data store) has been considered.
 
