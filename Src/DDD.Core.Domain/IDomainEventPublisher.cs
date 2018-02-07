@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DDD.Core.Domain
+﻿namespace DDD.Core.Domain
 {
     public interface IDomainEventPublisher
     {
+
+        #region Methods
+
         void Publish(IDomainEvent @event);
 
-        void PublishAll(IEnumerable<IDomainEvent> events);
+        void Subscribe(IDomainEventHandler subscriber);
 
-        void Register(IDomainEventHandler subscriber);
+        void UnSubscribe(IDomainEventHandler subscriber);
 
-        void Register<TEvent>(Action<TEvent> subscriber) where TEvent : IDomainEvent;
+        #endregion Methods
 
-        void RegisterAll(IEnumerable<IDomainEventHandler> subscribers);
-
-        void Unregister(IDomainEventHandler subscriber);
-
-        void UnregisterAll();
     }
 }
