@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DDD.Core.Domain
 {
-    public interface IRepositoryAsync<TDomainEntity>
+    public interface IAsyncRepository<TDomainEntity>
         where TDomainEntity : DomainEntity
     {
         #region Methods

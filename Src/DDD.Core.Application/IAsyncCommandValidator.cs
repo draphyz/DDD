@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines a method that validates asynchronously a command of a specified type.
     /// </summary>
-    public interface ICommandValidatorAsync<in TCommand> : IObjectValidatorAsync<TCommand>
+    public interface IAsyncCommandValidator<in TCommand> : IObjectValidatorAsync<TCommand>
         where TCommand : class, ICommand
     {
     }

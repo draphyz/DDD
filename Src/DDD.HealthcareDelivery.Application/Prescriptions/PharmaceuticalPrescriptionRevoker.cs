@@ -9,20 +9,20 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Core.Domain;
     using Core.Infrastructure;
 
-    public class PharmaceuticalPrescriptionRevoker : ICommandHandlerAsync<RevokePharmaceuticalPrescription>
+    public class PharmaceuticalPrescriptionRevoker : IAsyncCommandHandler<RevokePharmaceuticalPrescription>
     {
 
         #region Fields
 
         private readonly IDomainEventPublisher publisher;
 
-        private readonly IRepositoryAsync<PharmaceuticalPrescription> repository;
+        private readonly IAsyncRepository<PharmaceuticalPrescription> repository;
 
         #endregion Fields
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionRevoker(IRepositoryAsync<PharmaceuticalPrescription> repository,
+        public PharmaceuticalPrescriptionRevoker(IAsyncRepository<PharmaceuticalPrescription> repository,
                                                  IDomainEventPublisher publisher)
         {
             Condition.Requires(repository, nameof(repository)).IsNotNull();

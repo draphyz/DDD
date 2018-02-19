@@ -35,7 +35,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         protected TFixture Fixture { get; }
         protected PharmaceuticalPrescriptionRevoker Handler { get; }
-        protected IRepositoryAsync<PharmaceuticalPrescription> Repository { get; }
+        protected IAsyncRepository<PharmaceuticalPrescription> Repository { get; }
 
         #endregion Properties
 
@@ -56,7 +56,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             prescription.Status.Should().Be(Domain.Prescriptions.PrescriptionStatus.Revoked.Code);
         }
 
-        protected abstract IRepositoryAsync<PharmaceuticalPrescription> CreateRepository();
+        protected abstract IAsyncRepository<PharmaceuticalPrescription> CreateRepository();
 
         private static RevokePharmaceuticalPrescription CreateCommand()
         {

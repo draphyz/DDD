@@ -41,7 +41,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         protected TFixture Fixture { get; }
         protected PharmaceuticalPrescriptionsCreator Handler { get; }
-        protected IRepositoryAsync<PharmaceuticalPrescription> Repository { get; }
+        protected IAsyncRepository<PharmaceuticalPrescription> Repository { get; }
 
         #endregion Properties
 
@@ -65,7 +65,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             medications.Should().NotBeNullOrEmpty();
         }
 
-        protected abstract IRepositoryAsync<PharmaceuticalPrescription> CreateRepository();
+        protected abstract IAsyncRepository<PharmaceuticalPrescription> CreateRepository();
 
         private static CreatePharmaceuticalPrescriptions CreateCommand()
         {

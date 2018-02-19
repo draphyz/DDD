@@ -41,7 +41,7 @@ namespace DDD.Core.Application
         public Task ProcessAsync<TCommand>(TCommand command) where TCommand : class, ICommand
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
-            var handler = this.serviceProvider.GetService<ICommandHandlerAsync<TCommand>>();
+            var handler = this.serviceProvider.GetService<IAsyncCommandHandler<TCommand>>();
             if (handler == null) throw new InvalidOperationException($"The command handler for type {typeof(ICommandHandler<TCommand>)} could not be found.");
             return handler.HandleAsync(command);
         }
@@ -57,7 +57,7 @@ namespace DDD.Core.Application
         public Task<ValidationResult> ValidateAsync<TCommand>(TCommand command, string ruleSet = null) where TCommand : class, ICommand
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
-            var validator = this.serviceProvider.GetService<ICommandValidatorAsync<TCommand>>();
+            var validator = this.serviceProvider.GetService<IAsyncCommandValidator<TCommand>>();
             if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(ICommandValidator<TCommand>)} could not be found.");
             return validator.ValidateAsync(command, ruleSet);
         }

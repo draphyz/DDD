@@ -51,13 +51,13 @@
     <Compile Include="CommandProcessor.cs" />
     <Compile Include="IAssemblyReference.cs" />
     <Compile Include="ICommand.cs" />
-    <Compile Include="ICommandHandlerAsync.cs" />
-    <Compile Include="ICommandValidatorAsync.cs" />
+    <Compile Include="IAsyncCommandHandler.cs" />
+    <Compile Include="IAsyncCommandValidator.cs" />
     <Compile Include="ICommandValidator.cs" />
     <Compile Include="ICommandHandler.cs" />
     <Compile Include="ICommandProcessor.cs" />
-    <Compile Include="IQueryHandlerAsync.cs" />
-    <Compile Include="IQueryValidatorAsync.cs" />
+    <Compile Include="IAsyncQueryHandler.cs" />
+    <Compile Include="IAsyncQueryValidator.cs" />
     <Compile Include="IQueryValidator.cs" />
     <Compile Include="IQueryHandler.cs" />
     <Compile Include="IQuery.cs" />

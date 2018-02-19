@@ -5,7 +5,7 @@ namespace DDD.Core.Application
     /// <summary>
     /// Defines a method that handles asynchronously a command of a specified type.
     /// </summary>
-    public interface ICommandHandlerAsync<in TCommand>
+    public interface IAsyncCommandHandler<in TCommand>
         where TCommand : class, ICommand
     {
 

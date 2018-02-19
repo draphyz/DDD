@@ -7,7 +7,7 @@ namespace DDD.Core.Application
     /// </summary>
     /// <typeparam name="TQuery">The type of the query.</typeparam>
     /// <typeparam name="TResult">The type of the result.</typeparam>
-    public interface IQueryHandlerAsync<in TQuery, TResult>
+    public interface IAsyncQueryHandler<in TQuery, TResult>
         where TQuery : class, IQuery<TResult>
     {
         #region Methods

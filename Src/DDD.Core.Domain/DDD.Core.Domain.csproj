@@ -59,7 +59,7 @@
     <Compile Include="IDomainEventPublisher.cs" />
     <Compile Include="IDomainEventPublisherExtensions.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
-    <Compile Include="IRepositoryAsync.cs" />
+    <Compile Include="IAsyncRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IStateObjectConvertible.cs" />
     <Compile Include="IStateEntity.cs" />

@@ -23,7 +23,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
-        protected override IRepositoryAsync<PharmaceuticalPrescription> CreateRepository()
+        protected override IAsyncRepository<PharmaceuticalPrescription> CreateRepository()
         {
             return new PharmaceuticalPrescriptionRepository
             (

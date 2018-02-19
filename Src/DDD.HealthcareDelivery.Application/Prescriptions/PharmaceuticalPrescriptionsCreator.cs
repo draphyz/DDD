@@ -12,14 +12,14 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Core.Application;
 
     public class PharmaceuticalPrescriptionsCreator
-        : ICommandHandlerAsync<CreatePharmaceuticalPrescriptions>
+        : IAsyncCommandHandler<CreatePharmaceuticalPrescriptions>
     {
 
         #region Fields
 
         private readonly IDomainEventPublisher publisher;
 
-        private readonly IRepositoryAsync<PharmaceuticalPrescription> repository;
+        private readonly IAsyncRepository<PharmaceuticalPrescription> repository;
 
         private readonly IObjectTranslator<CreatePharmaceuticalPrescriptions, IEnumerable<PharmaceuticalPrescription>> translator;
 
@@ -28,7 +28,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         #region Constructors
 
         public PharmaceuticalPrescriptionsCreator(IObjectTranslator<CreatePharmaceuticalPrescriptions, IEnumerable<PharmaceuticalPrescription>> translator,
-                                                  IRepositoryAsync<PharmaceuticalPrescription> repository, 
+                                                  IAsyncRepository<PharmaceuticalPrescription> repository, 
                                                   IDomainEventPublisher publisher)
         {
             Condition.Requires(translator, nameof(translator)).IsNotNull();

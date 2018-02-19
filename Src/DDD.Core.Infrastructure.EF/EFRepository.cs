@@ -17,7 +17,7 @@ namespace DDD.Core.Infrastructure.Data
     using Domain;
 
     public abstract class EFRepository<TDomainEntity, TStateEntity, TContext>
-        : IRepositoryAsync<TDomainEntity>
+        : IAsyncRepository<TDomainEntity>
         where TDomainEntity : DomainEntity, IStateObjectConvertible<TStateEntity>
         where TStateEntity : class, IStateEntity, new()
         where TContext : StateEntitiesContext
