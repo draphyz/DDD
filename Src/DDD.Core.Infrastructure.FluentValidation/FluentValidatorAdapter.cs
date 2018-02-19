@@ -7,7 +7,7 @@ namespace DDD.Core.Infrastructure.Validation
 {
     using Mapping;
 
-    public class FluentValidatorAdaptor<T> 
+    public class FluentValidatorAdapter<T> 
         : Core.Validation.IObjectValidator<T>, Core.Validation.IAsyncObjectValidator<T>
         where T : class
     {
@@ -19,7 +19,7 @@ namespace DDD.Core.Infrastructure.Validation
 
         #endregion Fields
 
-        public FluentValidatorAdaptor(IValidator<T> fluentValidator)
+        public FluentValidatorAdapter(IValidator<T> fluentValidator)
         {
             Condition.Requires(fluentValidator, nameof(fluentValidator)).IsNotNull();
             this.fluentValidator = fluentValidator;

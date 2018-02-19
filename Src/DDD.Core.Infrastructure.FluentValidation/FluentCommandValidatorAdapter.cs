@@ -4,13 +4,13 @@ namespace DDD.Core.Infrastructure.Validation
 {
     using Application;
 
-    public class FluentCommandValidatorAdaptor<TCommand> : FluentValidatorAdaptor<TCommand>, ICommandValidator<TCommand>
+    public class FluentCommandValidatorAdapter<TCommand> : FluentValidatorAdapter<TCommand>, ICommandValidator<TCommand>
         where TCommand : class, ICommand
     {
 
         #region Constructors
 
-        public FluentCommandValidatorAdaptor(IValidator<TCommand> fluentValidator) : base(fluentValidator)
+        public FluentCommandValidatorAdapter(IValidator<TCommand> fluentValidator) : base(fluentValidator)
         {
         }
 

@@ -56,15 +56,15 @@
     <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="FluentQueryValidatorAdaptor.cs" />
-    <Compile Include="FluentValidatorAdaptor.cs" />
+    <Compile Include="FluentQueryValidatorAdapter.cs" />
+    <Compile Include="FluentValidatorAdapter.cs" />
     <Compile Include="FluentValidatorExtensions.cs" />
     <Compile Include="IAssemblyReference.cs" />
     <Compile Include="Validators\AlphanumericValidator.cs" />
     <Compile Include="Validators\AlphabeticValidator.cs" />
     <Compile Include="Validators\NumericValidator.cs" />
     <Compile Include="Validators\CountValidator.cs" />
-    <Compile Include="FluentCommandValidatorAdaptor.cs" />
+    <Compile Include="FluentCommandValidatorAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidationResultTranslator.cs" />
     <Compile Include="Validators\MaximumCountValidator.cs" />
