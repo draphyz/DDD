@@ -5,7 +5,7 @@ namespace DDD.Core.Validation
     /// <summary>
     /// Defines a method that validates asynchronously an object of a specified type.
     /// </summary>
-    public interface IObjectValidatorAsync<in T> where T :class
+    public interface IAsyncObjectValidator<in T> where T :class
     {
 
         #region Methods

@@ -8,7 +8,7 @@ namespace DDD.Core.Infrastructure.Validation
     using Mapping;
 
     public class FluentValidatorAdaptor<T> 
-        : Core.Validation.IObjectValidator<T>, Core.Validation.IObjectValidatorAsync<T>
+        : Core.Validation.IObjectValidator<T>, Core.Validation.IAsyncObjectValidator<T>
         where T : class
     {
 
