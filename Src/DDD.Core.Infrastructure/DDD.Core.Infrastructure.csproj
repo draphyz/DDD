@@ -53,9 +53,13 @@
     <Compile Include="Data\DbScriptSplitter.cs" />
     <Compile Include="Data\IDbConnectionFactoryExtensions.cs" />
     <Compile Include="IAssemblyReference.cs" />
+    <Compile Include="Serialization\IJsonSerializer.cs" />
+    <Compile Include="Serialization\ISerializerExtensions.cs" />
+    <Compile Include="Serialization\IXmlSerializer.cs" />
+    <Compile Include="Serialization\SerializationOptions.cs" />
     <Compile Include="Serialization\StoredEvent.cs" />
     <Compile Include="Serialization\StoredEventTranslator.cs" />
-    <Compile Include="Serialization\GenericDataContractSerializer.cs" />
+    <Compile Include="Serialization\DataContractSerializerWrapper.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\DbConnectionFactory.cs" />
@@ -66,6 +70,7 @@
     <Compile Include="Data\IDbStandardExpressions.cs" />
     <Compile Include="Data\Oracle11Expressions.cs" />
     <Compile Include="Data\SqlServer2012Expressions.cs" />
+    <Compile Include="Serialization\XmlSerializerWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDD.Core.Application\DDD.Core.Application.csproj">

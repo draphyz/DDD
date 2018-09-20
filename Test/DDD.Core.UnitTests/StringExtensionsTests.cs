@@ -75,7 +75,7 @@ namespace DDD.Core
             // Act
             Action action = () => instance.Right(-1);
             // Assert
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [Theory]
@@ -99,7 +99,7 @@ namespace DDD.Core
             // Act
             Action action = () => instance.Left(-1);
             // Assert
-            action.ShouldThrow<ArgumentException>();
+            action.Should().Throw<ArgumentException>();
         }
 
         [Theory]

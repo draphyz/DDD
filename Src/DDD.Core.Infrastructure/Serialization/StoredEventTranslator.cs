@@ -9,13 +9,13 @@ namespace DDD.Core.Infrastructure.Serialization
     {
         #region Fields
 
-        private readonly ISerializer<IDomainEvent> eventSerializer;
+        private readonly ISerializer eventSerializer;
 
         #endregion Fields
 
         #region Constructors
 
-        public StoredEventTranslator(ISerializer<IDomainEvent> eventSerializer)
+        public StoredEventTranslator(ISerializer eventSerializer)
         {
             Condition.Requires(eventSerializer, nameof(eventSerializer)).IsNotNull();
             this.eventSerializer = eventSerializer;
@@ -32,7 +32,7 @@ namespace DDD.Core.Infrastructure.Serialization
             {
                 OccurredOn = @event.OccurredOn,
                 EventType = @event.GetType().Name,
-                Body = this.eventSerializer.Serialize(@event)
+                Body = this.eventSerializer.SerializeToString(@event)
             };
         }
 

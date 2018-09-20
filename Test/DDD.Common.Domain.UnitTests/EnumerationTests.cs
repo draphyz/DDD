@@ -129,7 +129,7 @@ namespace DDD.Common.Domain
             // Act
             Action fromCode = () => Enumeration.FromCode<FakeEnumeration>(code, ignoreCase);
             // Assert
-            fromCode.ShouldThrowExactly<ArgumentOutOfRangeException>();
+            fromCode.Should().ThrowExactly<ArgumentOutOfRangeException>();
         }
 
         [Theory]
@@ -153,7 +153,7 @@ namespace DDD.Common.Domain
             // Act
             Action fromName = () => Enumeration.FromName<FakeEnumeration>(name, ignoreCase);
             // Assert
-            fromName.ShouldThrowExactly<ArgumentOutOfRangeException>();
+            fromName.Should().ThrowExactly<ArgumentOutOfRangeException>();
         }
 
         [Theory]
@@ -174,7 +174,7 @@ namespace DDD.Common.Domain
             // Act
             Action fromValue = () => Enumeration.FromValue<FakeEnumeration>(value);
             // Assert
-            fromValue.ShouldThrowExactly<ArgumentOutOfRangeException>();
+            fromValue.Should().ThrowExactly<ArgumentOutOfRangeException>();
         }
 
         [Theory]

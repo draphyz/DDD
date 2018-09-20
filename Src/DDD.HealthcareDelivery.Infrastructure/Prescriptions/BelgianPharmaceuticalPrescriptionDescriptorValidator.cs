@@ -13,10 +13,10 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         public BelgianPharmaceuticalPrescriptionDescriptorValidator()
         {
             RuleFor(p => p.PrescriptionIdentifier).GreaterThan(0).WithErrorCode("PrescriptionIdentifierInvalid");
-            RuleFor(p => p.Medications).SetCollectionValidator(new BelgianPrescribedMedicationDescriptorValidator())
-                                       .NotEmpty().WithErrorCode("MedicationsEmpty")
+            RuleFor(p => p.Medications).NotEmpty().WithErrorCode("MedicationsEmpty")
                                        .MaximumCount(10).WithErrorCode("MedicationsCountInvalid");
-            RuleForEach(p => p.Medications).NotNull().WithErrorCode("MedicationNull");
+            RuleForEach(p => p.Medications).NotNull().WithErrorCode("MedicationNull")
+                                           .SetValidator(new BelgianPrescribedMedicationDescriptorValidator());
         }
 
         #endregion Constructors

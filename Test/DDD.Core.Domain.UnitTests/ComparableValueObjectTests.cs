@@ -152,7 +152,7 @@ namespace DDD.Core.Domain
             // Act
             Action compareTo = () => a.CompareTo(b);
             // Assert
-            compareTo.ShouldThrow<ArgumentException>("because argument is not the same type as the current object.");
+            compareTo.Should().Throw<ArgumentException>("because argument is not the same type as the current object.");
         }
 
         [Theory]
@@ -174,7 +174,7 @@ namespace DDD.Core.Domain
             // Act
             Action compareTo = () => a.CompareTo(b);
             // Assert
-            compareTo.ShouldThrow<ArgumentException>("because argument is null");
+            compareTo.Should().Throw<ArgumentException>("because argument is null");
         }
 
         [Theory]

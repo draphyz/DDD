@@ -32,9 +32,9 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             RuleFor(c => c.HealthFacilityName).NotEmpty().WithErrorCode("HealthFacilityNameEmpty");
             RuleFor(c => c.HealthFacilityLicenseNumber).Length(8).WithErrorCode("HealthFacilityLicenseNumberInvalid")
                                                        .Numeric().WithErrorCode("HealthFacilityLicenseNumberInvalid");
-            RuleFor(c => c.Prescriptions).SetCollectionValidator(c => new BelgianPharmaceuticalPrescriptionDescriptorValidator())
-                                         .NotEmpty().WithErrorCode("PrescriptionsEmpty");
-            RuleForEach(c => c.Prescriptions).NotNull().WithErrorCode("PrescriptionNull");
+            RuleFor(c => c.Prescriptions).NotEmpty().WithErrorCode("PrescriptionsEmpty");
+            RuleForEach(c => c.Prescriptions).NotNull().WithErrorCode("PrescriptionNull")
+                                             .SetValidator(c => new BelgianPharmaceuticalPrescriptionDescriptorValidator());
         }
 
         #endregion Constructors

@@ -111,7 +111,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             // Act
             var results = handler.Handle(query);
             // Assert
-            results.ShouldAllBeEquivalentTo(expectedResults, options => options.WithStrictOrdering());
+            results.Should().BeEquivalentTo(expectedResults, options => options.WithStrictOrdering());
         }
 
         #endregion Methods

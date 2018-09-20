@@ -1,17 +1,15 @@
-﻿using System;
+﻿using System.IO;
 
 namespace DDD.Core.Infrastructure.Serialization
 {
-    public interface ISerializer<TBase>
+    public interface ISerializer
     {
 
         #region Methods
 
-        T Deserialize<T>(string input) where T : TBase;
+        T Deserialize<T>(Stream stream);
 
-        TBase Deserialize(string input, Type type);
-
-        string Serialize(TBase input, bool indented = false);
+        void Serialize(Stream stream, object obj);
 
         #endregion Methods
 
