@@ -16,5 +16,14 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #endregion Properties
 
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"{this.GetType().Name} [patientIdentifier={this.PatientIdentifier}]";
+        }
+
+        #endregion Methods
+
     }
 }

@@ -5,6 +5,7 @@ namespace DDD.Core.Application
     /// <summary>
     /// Exception thrown when a query failed.
     /// </summary>
+    [Serializable]
     public class QueryException : Exception
     {
 
@@ -28,6 +29,12 @@ namespace DDD.Core.Application
             this.Query = query;
         }
 
+        public QueryException(Exception innerException, IQuery query) 
+            : base($"The query '{query.GetType().Name}' failed.", innerException)
+        {
+            this.Query = query;
+        }
+
         #endregion Constructors
 
         #region Properties
@@ -36,5 +43,20 @@ namespace DDD.Core.Application
 
         #endregion Properties
 
+        #region Methods
+
+        public override string ToString()
+        {
+            var s = $"{this.GetType()}: {this.Message} ";
+            if (this.Query != null)
+                s += $"{Environment.NewLine}Query: {this.Query}";
+            if (this.InnerException != null)
+                s += $" ---> {this.InnerException}";
+            if (this.StackTrace != null)
+                s += $"{Environment.NewLine}{this.StackTrace}";
+            return s;
+        }
+
+        #endregion Methods
     }
 }

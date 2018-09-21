@@ -16,5 +16,14 @@
 
         #endregion Properties
 
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"{this.GetType().Name} [prescriptionIdentifier={this.PrescriptionIdentifier}, revocationReason={RevocationReason}]";
+        }
+
+        #endregion Methods
+
     }
 }

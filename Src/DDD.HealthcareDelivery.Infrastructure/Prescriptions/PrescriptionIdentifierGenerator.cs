@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Threading.Tasks;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
@@ -19,9 +20,9 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         #region Methods
 
-        protected override int Execute(GeneratePrescriptionIdentifier query, IDbConnection connection)
+        protected override Task<int> ExecuteAsync(GeneratePrescriptionIdentifier query, IDbConnection connection)
         {
-            return connection.NextValue<int>("PrescriptionId");
+            return connection.NextValueAsync<int>("PrescriptionId");
         }
 
         #endregion Methods

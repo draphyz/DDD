@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using Dapper;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Application.Prescriptions;
     using Core.Infrastructure.Data;
 
-    public class PrescribedMedicationsByPrescriptionFinder : DbQueryHandler<FindPrescribedMedicationsByPrescription, IEnumerable<PrescribedMedicationDetails>>
+    public class PrescribedMedicationsByPrescriptionFinder 
+        : DbQueryHandler<FindPrescribedMedicationsByPrescription, IEnumerable<PrescribedMedicationDetails>>
     {
 
         #region Constructors
@@ -21,11 +23,15 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         #region Methods
 
-        protected override IEnumerable<PrescribedMedicationDetails> Execute(FindPrescribedMedicationsByPrescription query, IDbConnection connection)
+        protected override Task<IEnumerable<PrescribedMedicationDetails>> ExecuteAsync(FindPrescribedMedicationsByPrescription query, 
+                                                                            IDbConnection connection)
         {
             var expressions = connection.Expressions();
-            return connection.Query<PrescribedMedicationDetails>(SqlScripts.FindPrescribedMedicationsByPrescription.Replace("@", expressions.ParameterPrefix()),
-                                                                 new { PrescriptionId = query.PrescriptionIdentifier } );
+            return connection.QueryAsync<PrescribedMedicationDetails>
+            (
+                SqlScripts.FindPrescribedMedicationsByPrescription.Replace("@", expressions.ParameterPrefix()),
+                new { PrescriptionId = query.PrescriptionIdentifier } 
+            );
         }
 
         #endregion Methods

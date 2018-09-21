@@ -12,7 +12,7 @@ namespace DDD.Core.Application
     {
         #region Methods
 
-        Task<TResult> Handle(TQuery query);
+        Task<TResult> HandleAsync(TQuery query);
 
         #endregion Methods
     }

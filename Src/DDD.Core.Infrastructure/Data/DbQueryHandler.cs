@@ -1,5 +1,7 @@
 ﻿using Conditions;
 using System.Data;
+using System.Data.Common;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -10,8 +12,8 @@ namespace DDD.Core.Infrastructure.Data
     /// </summary>
     /// <typeparam name="TQuery">The type of the query.</typeparam>
     /// <typeparam name="TResult">The type of the result.</typeparam>
-    /// <seealso cref="IQueryHandler{TQuery, TResult}" />
-    public abstract class DbQueryHandler<TQuery, TResult> : IQueryHandler<TQuery, TResult>
+    /// <seealso cref="IAsyncQueryHandler{TQuery, TResult}" />
+    public abstract class DbQueryHandler<TQuery, TResult> : IAsyncQueryHandler<TQuery, TResult>
         where TQuery : class, IQuery<TResult>
     {
 
@@ -37,17 +39,24 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public TResult Handle(TQuery query)
+        public async Task<TResult> HandleAsync(TQuery query)
         {
             Condition.Requires(query, nameof(query)).IsNotNull();
-            using (var connection = this.ConnectionFactory.CreateConnection())
+            try
             {
-                connection.Open();
-                return this.Execute(query, connection);
+                using (var connection = await this.ConnectionFactory.CreateOpenConnectionAsync())
+                {
+                    return await this.ExecuteAsync(query, connection);
+                }
             }
+            catch(DbException ex)
+            {
+                throw new QueryException(ex, query);
+            }
+
         }
 
-        protected abstract TResult Execute(TQuery query, IDbConnection connection);
+        protected abstract Task<TResult> ExecuteAsync(TQuery query, IDbConnection connection);
 
         #endregion Methods
 

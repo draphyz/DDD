@@ -7,64 +7,42 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Core.Mapping;
     using Core.Domain;
-    using Core.Infrastructure;
     using Domain.Prescriptions;
     using Core.Application;
 
     public class PharmaceuticalPrescriptionsCreator
-        : IAsyncCommandHandler<CreatePharmaceuticalPrescriptions>
+        : RepositoryCommandHandler<CreatePharmaceuticalPrescriptions, PharmaceuticalPrescription>
     {
-
-        #region Fields
-
-        private readonly IDomainEventPublisher publisher;
-
-        private readonly IAsyncRepository<PharmaceuticalPrescription> repository;
-
-        private readonly IObjectTranslator<CreatePharmaceuticalPrescriptions, IEnumerable<PharmaceuticalPrescription>> translator;
-
-        #endregion Fields
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionsCreator(IObjectTranslator<CreatePharmaceuticalPrescriptions, IEnumerable<PharmaceuticalPrescription>> translator,
-                                                  IAsyncRepository<PharmaceuticalPrescription> repository, 
-                                                  IDomainEventPublisher publisher)
+        public PharmaceuticalPrescriptionsCreator(IAsyncRepository<PharmaceuticalPrescription> repository,
+                                                  IDomainEventPublisher publisher,
+                                                  IObjectTranslator<CreatePharmaceuticalPrescriptions, IEnumerable<PharmaceuticalPrescription>> translator)
+            : base(repository, publisher)
         {
             Condition.Requires(translator, nameof(translator)).IsNotNull();
-            Condition.Requires(repository, nameof(repository)).IsNotNull();
-            Condition.Requires(publisher, nameof(publisher)).IsNotNull();
-            this.translator = translator;
-            this.repository = repository;
-            this.publisher = publisher;
+            this.Translator = translator;
         }
 
         #endregion Constructors
 
+        #region Properties
+
+        protected IObjectTranslator<CreatePharmaceuticalPrescriptions, IEnumerable<PharmaceuticalPrescription>> Translator { get; }
+
+        #endregion Properties
+
         #region Methods
 
-        public async Task HandleAsync(CreatePharmaceuticalPrescriptions command)
+        protected override async Task ExecuteAsync(CreatePharmaceuticalPrescriptions command)
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
-            var prescriptions = this.translator.Translate(command);
+            var prescriptions = this.Translator.Translate(command);
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await this.CreateAsync(prescriptions, command);
-                this.publisher.PublishAll(prescriptions.AllEvents());
+                await this.Repository.SaveAllAsync(prescriptions);
+                this.Publisher.PublishAll(prescriptions.AllEvents());
                 scope.Complete();
-            }
-        }
-
-        private async Task CreateAsync(IEnumerable<PharmaceuticalPrescription> prescriptions, 
-                                       CreatePharmaceuticalPrescriptions command)
-        {
-            try
-            {
-                await this.repository.SaveAllAsync(prescriptions);
-            }
-            catch(RepositoryException ex)
-            {
-                throw new CommandException("The pharmaceutical prescriptions could not be created.", ex, command);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 using System;
 
@@ -103,13 +104,13 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         [Theory]
         [MemberData(nameof(QueriesAndResults))]
-        public void Handle_WhenCalled_ReturnsValidResults(FindPharmaceuticalPrescriptionsByPatient query, IEnumerable<PharmaceuticalPrescriptionSummary> expectedResults)
+        public async Task HandleAsync_WhenCalled_ReturnsValidResults(FindPharmaceuticalPrescriptionsByPatient query, IEnumerable<PharmaceuticalPrescriptionSummary> expectedResults)
         {
             // Arrange
             this.fixture.ExecuteScriptFromResources("FindPharmaceuticalPrescriptionsByPatient");
             var handler = new PharmaceuticalPrescriptionsByPatientFinder(this.fixture.ConnectionFactory);
             // Act
-            var results = handler.Handle(query);
+            var results = await handler.HandleAsync(query);
             // Assert
             results.Should().BeEquivalentTo(expectedResults, options => options.WithStrictOrdering());
         }
