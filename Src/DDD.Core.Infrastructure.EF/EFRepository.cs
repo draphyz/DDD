@@ -81,7 +81,7 @@ namespace DDD.Core.Infrastructure.Data
                 var keyValues = identityComponents.Select(c => c.EqualityComponents().First());
                 var query = context.Set<TStateEntity>().AsQueryable();
                 foreach (var path in this.RelatedEntitiesPaths()) query = query.Include(path);
-                var findExpression = FindExpression(keyNames, keyValues);
+                var findExpression = BuildFindExpression(keyNames, keyValues);
                 var stateEntity = await query.FirstOrDefaultAsync(findExpression);
                 if (stateEntity == null) return null;
                 return this.EntityTranslator.Translate(stateEntity);
@@ -122,27 +122,26 @@ namespace DDD.Core.Infrastructure.Data
 
         protected abstract IEnumerable<Expression<Func<TStateEntity, object>>> RelatedEntitiesPaths();
 
-        private static Expression<Func<TStateEntity, bool>> FindExpression(IEnumerable<string> keyNames, IEnumerable<object> keyValues)
+        private static Expression<Func<TStateEntity, bool>> BuildFindExpression(IEnumerable<string> keyNames, IEnumerable<object> keyValues)
         {
             Condition.Requires(keyNames, nameof(keyNames))
                      .IsNotNull()
                      .IsNotEmpty()
                      .HasLength(keyValues.Count());
-            ParameterExpression parameter = Expression.Parameter(typeof(TStateEntity), "entity");
-            Expression findExpression = null;
+            var entity = Expression.Parameter(typeof(TStateEntity), "entity");
+            Expression find = null;
             for (int i = 0; i < keyNames.Count(); i++)
             {
-                Expression property = Expression.Property(parameter, keyNames.ElementAt(i));
-                Expression constant = Expression.Constant(keyValues.ElementAt(i));
-                MethodInfo equalsInfo = property.Type.GetMethod("Equals", new[] { property.Type });
-                Expression equalsCall = Expression.Call(property, equalsInfo, constant);
-                if (findExpression == null)
-                    findExpression = equalsCall;
+                var KeyName = Expression.Property(entity, keyNames.ElementAt(i));
+                var keyValue = Expression.Constant(keyValues.ElementAt(i));
+                var equals = KeyName.Type.GetMethod("Equals", new[] { KeyName.Type });
+                var keyNameEqualsKeyValue = Expression.Call(KeyName, equals, keyValue);
+                if (find == null)
+                    find = keyNameEqualsKeyValue;
                 else
-                    findExpression = Expression.AndAlso(findExpression, equalsCall);
+                    find = Expression.AndAlso(find, keyNameEqualsKeyValue);
             }
-            Expression<Func<TStateEntity, bool>> lambda = Expression.Lambda<Func<TStateEntity, bool>>(findExpression, parameter);
-            return lambda;
+            return Expression.Lambda<Func<TStateEntity, bool>>(find, entity);
         }
 
         #endregion Methods
