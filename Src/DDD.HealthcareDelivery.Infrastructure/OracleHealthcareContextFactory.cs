@@ -1,10 +1,11 @@
 ﻿using Conditions;
+using System.Threading.Tasks;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Core.Infrastructure.Data;
 
-    public class OracleHealthcareContextFactory : IDbContextFactory<HealthcareContext>
+    public class OracleHealthcareContextFactory : IAsyncDbContextFactory<HealthcareContext>
     {
 
         #region Fields
@@ -25,9 +26,9 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Methods
 
-        public HealthcareContext CreateContext()
+        public async Task<HealthcareContext> CreateContextAsync()
         {
-            return new OracleHealthcareContext(this.connectionFactory.CreateOpenConnection(), true);
+            return new OracleHealthcareContext(await this.connectionFactory.CreateOpenConnectionAsync(), true);
         }
 
         #endregion Methods

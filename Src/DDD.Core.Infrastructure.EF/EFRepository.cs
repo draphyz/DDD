@@ -26,7 +26,7 @@ namespace DDD.Core.Infrastructure.Data
         #region Constructors
 
         protected EFRepository(IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator,
-                               IDbContextFactory<TContext> contextFactory)
+                               IAsyncDbContextFactory<TContext> contextFactory)
         {
             Condition.Requires(entityTranslator, nameof(entityTranslator)).IsNotNull();
             Condition.Requires(contextFactory, nameof(contextFactory)).IsNotNull();
@@ -38,7 +38,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Properties
 
-        protected IDbContextFactory<TContext> ContextFactory { get; }
+        protected IAsyncDbContextFactory<TContext> ContextFactory { get; }
 
         protected IObjectTranslator<TStateEntity, TDomainEntity> EntityTranslator { get; }
 
@@ -49,7 +49,7 @@ namespace DDD.Core.Infrastructure.Data
         public async virtual Task SaveAsync(TDomainEntity aggregate)
         {
             Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
-            using (var context = this.CreateContext())
+            using (var context = await this.CreateContextAsync())
             {
                 context.Set<TStateEntity>().Add(aggregate.ToState());
                 await SaveChangesAsync(context);
@@ -62,7 +62,7 @@ namespace DDD.Core.Infrastructure.Data
                      .IsNotNull()
                      .IsNotEmpty()
                      .DoesNotContain(null);
-            using (var context = this.CreateContext())
+            using (var context = await this.CreateContextAsync())
             {
                 context.Set<TStateEntity>().AddRange(aggregates.Select(a => a.ToState()));
                 await SaveChangesAsync(context);
@@ -75,24 +75,24 @@ namespace DDD.Core.Infrastructure.Data
                      .IsNotNull()
                      .IsNotEmpty()
                      .DoesNotContain(null);
-            using (var context = this.CreateContext(onSave: false))
+            using (var context = await this.CreateContextAsync(onSave: false))
             {
                 var keyNames = context.GetKeyNames<TStateEntity>();
                 var keyValues = identityComponents.Select(c => c.EqualityComponents().First());
                 var query = context.Set<TStateEntity>().AsQueryable();
                 foreach (var path in this.RelatedEntitiesPaths()) query = query.Include(path);
-                var findExpression = BuildFindExpression(keyNames, keyValues);
-                var stateEntity = await query.FirstOrDefaultAsync(findExpression);
+                var find = BuildFindExpression(keyNames, keyValues);
+                var stateEntity = await query.FirstOrDefaultAsync(find);
                 if (stateEntity == null) return null;
                 return this.EntityTranslator.Translate(stateEntity);
             }
         }
 
-        protected TContext CreateContext(bool onSave = true)
+        protected async Task<TContext> CreateContextAsync(bool onSave = true)
         {
             try
             {
-                return this.ContextFactory.CreateContext();
+                return await this.ContextFactory.CreateContextAsync();
             }
             catch (DbException ex) when (onSave == true)
             {
@@ -132,14 +132,14 @@ namespace DDD.Core.Infrastructure.Data
             Expression find = null;
             for (int i = 0; i < keyNames.Count(); i++)
             {
-                var KeyName = Expression.Property(entity, keyNames.ElementAt(i));
+                var key = Expression.Property(entity, keyNames.ElementAt(i));
                 var keyValue = Expression.Constant(keyValues.ElementAt(i));
-                var equals = KeyName.Type.GetMethod("Equals", new[] { KeyName.Type });
-                var keyNameEqualsKeyValue = Expression.Call(KeyName, equals, keyValue);
+                var equals = key.Type.GetMethod("Equals", new[] { key.Type });
+                var keyEqualsKeyValue = Expression.Call(key, equals, keyValue);
                 if (find == null)
-                    find = keyNameEqualsKeyValue;
+                    find = keyEqualsKeyValue;
                 else
-                    find = Expression.AndAlso(find, keyNameEqualsKeyValue);
+                    find = Expression.AndAlso(find, keyEqualsKeyValue);
             }
             return Expression.Lambda<Func<TStateEntity, bool>>(find, entity);
         }

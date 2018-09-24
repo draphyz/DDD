@@ -18,7 +18,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         public PharmaceuticalPrescriptionRepository(IObjectTranslator<PharmaceuticalPrescriptionState, PharmaceuticalPrescription> prescriptionTranslator,
                                                     IObjectTranslator<IDomainEvent, StoredEvent> eventTranslator,
-                                                    IDbContextFactory<HealthcareContext> contextFactory)
+                                                    IAsyncDbContextFactory<HealthcareContext> contextFactory)
             : base(prescriptionTranslator, eventTranslator, contextFactory)
         {
         }

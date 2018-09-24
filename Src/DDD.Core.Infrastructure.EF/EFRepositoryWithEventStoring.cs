@@ -23,7 +23,7 @@ namespace DDD.Core.Infrastructure.Data
 
         protected EFRepositoryWithEventStoring(IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator,
                                                IObjectTranslator<IDomainEvent, StoredEvent> eventTranslator,
-                                               IDbContextFactory<TContext> contextFactory)
+                                               IAsyncDbContextFactory<TContext> contextFactory)
             : base(entityTranslator, contextFactory)
         {
             Condition.Requires(eventTranslator, nameof(eventTranslator)).IsNotNull();
@@ -44,7 +44,7 @@ namespace DDD.Core.Infrastructure.Data
         {
             Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
             var events = ToStoredEvents(new TDomainEntity[] { aggregate });
-            using (var context = this.CreateContext())
+            using (var context = await this.CreateContextAsync())
             {
                 context.Set<TStateEntity>().Add(aggregate.ToState());
                 context.Set<StoredEvent>().AddRange(events);
@@ -59,7 +59,7 @@ namespace DDD.Core.Infrastructure.Data
                      .IsNotEmpty()
                      .DoesNotContain(null);
             var events = ToStoredEvents(aggregates);
-            using (var context = this.CreateContext())
+            using (var context = await this.CreateContextAsync())
             {
                 context.Set<TStateEntity>().AddRange(aggregates.Select(a => a.ToState()));
                 context.Set<StoredEvent>().AddRange(events);
