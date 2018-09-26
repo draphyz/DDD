@@ -8,7 +8,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Core.Domain;
 
     public class PharmaceuticalPrescriptionRevoker 
-        : RepositoryCommandHandler<RevokePharmaceuticalPrescription, PharmaceuticalPrescription>
+        : AsyncRepositoryCommandHandler<RevokePharmaceuticalPrescription, PharmaceuticalPrescription>
     {
 
         #region Constructors

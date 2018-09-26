@@ -11,7 +11,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Core.Application;
 
     public class PharmaceuticalPrescriptionsCreator
-        : RepositoryCommandHandler<CreatePharmaceuticalPrescriptions, PharmaceuticalPrescription>
+        : AsyncRepositoryCommandHandler<CreatePharmaceuticalPrescriptions, PharmaceuticalPrescription>
     {
 
         #region Constructors

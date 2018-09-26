@@ -1,4 +1,5 @@
 ﻿using Conditions;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
@@ -6,11 +7,11 @@ namespace DDD.Core.Application
     using Infrastructure;
 
     /// <summary>
-    /// Base class for handling synchronously commands using the repository pattern.
+    /// Base class for handling asynchronously commands using the repository pattern.
     /// </summary>
     /// <typeparam name="TCommand">The type of the command.</typeparam>
     /// <typeparam name="TDomainEntity">The type of the domain entity.</typeparam>
-    public abstract class RepositoryCommandHandler<TCommand, TDomainEntity> : ICommandHandler<TCommand>
+    public abstract class AsyncRepositoryCommandHandler<TCommand, TDomainEntity> : IAsyncCommandHandler<TCommand>
         where TCommand : class, ICommand
         where TDomainEntity : DomainEntity
 
@@ -18,8 +19,8 @@ namespace DDD.Core.Application
 
         #region Constructors
 
-        protected RepositoryCommandHandler(IRepository<TDomainEntity> repository,
-                                           IDomainEventPublisher publisher)
+        protected AsyncRepositoryCommandHandler(IAsyncRepository<TDomainEntity> repository,
+                                                IDomainEventPublisher publisher)
         {
             Condition.Requires(repository, nameof(repository)).IsNotNull();
             Condition.Requires(publisher, nameof(publisher)).IsNotNull();
@@ -33,18 +34,18 @@ namespace DDD.Core.Application
 
         protected IDomainEventPublisher Publisher { get; }
 
-        protected IRepository<TDomainEntity> Repository { get; }
+        protected IAsyncRepository<TDomainEntity> Repository { get; }
 
         #endregion Properties
 
         #region Methods
 
-        public void Handle(TCommand command)
+        public async Task HandleAsync(TCommand command)
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
             try
             {
-                this.Execute(command);
+                await this.ExecuteAsync(command);
             }
             catch(RepositoryException ex)
             {
@@ -52,7 +53,7 @@ namespace DDD.Core.Application
             }
         }
 
-        protected abstract void Execute(TCommand command);
+        protected abstract Task ExecuteAsync(TCommand command);
 
         #endregion Methods
 
