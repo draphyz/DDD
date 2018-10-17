@@ -1,12 +1,13 @@
 ﻿using System;
 
-namespace DDD.Core.Infrastructure
+namespace DDD.Core.Domain
 {
     /// <summary>
     /// Exception thrown by repositories when a concurrency conflict occurred while saving a domain entity.
     /// </summary>
     public class RepositoryConcurrencyException : RepositoryException
     {
+
         #region Constructors
 
         public RepositoryConcurrencyException() 
@@ -22,6 +23,17 @@ namespace DDD.Core.Infrastructure
         {
         }
 
+        public RepositoryConcurrencyException(string message, Exception innerException, Type entityType) 
+            : base(message, innerException, entityType)
+        {
+        }
+
+        public RepositoryConcurrencyException(Exception innerException, Type entityType)
+            : base($"A concurrency conflict occurred while saving a domain entity of type '{entityType.Name}'.", innerException, entityType)
+        {
+        }
+
         #endregion Constructors
+
     }
 }

@@ -78,10 +78,6 @@
       <Project>{C6C3E419-B9AA-44AD-9DBF-789294687AE6}</Project>
       <Name>DDD.Core.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DDD.Core.Infrastructure.Exceptions\DDD.Core.Infrastructure.Exceptions.csproj">
-      <Project>{53B04658-5F46-46E4-9B54-EA26A0FD20F1}</Project>
-      <Name>DDD.Core.Infrastructure.Exceptions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DDD.Core\DDD.Core.csproj">
       <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
       <Name>DDD.Core</Name>

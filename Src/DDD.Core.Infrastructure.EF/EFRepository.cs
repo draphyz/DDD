@@ -4,7 +4,6 @@ using System.Data.Entity;
 using System.Data.Common;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Threading.Tasks;
@@ -13,7 +12,6 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
-    using Infrastructure;
     using Domain;
 
     public abstract class EFRepository<TDomainEntity, TStateEntity, TContext>
@@ -46,13 +44,22 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public async virtual Task SaveAsync(TDomainEntity aggregate)
+        public async Task<TDomainEntity> FindAsync(params ComparableValueObject[] identityComponents)
         {
-            Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
+            Condition.Requires(identityComponents, nameof(identityComponents))
+                     .IsNotNull()
+                     .IsNotEmpty()
+                     .DoesNotContain(null);
             using (var context = await this.CreateContextAsync())
             {
-                context.Set<TStateEntity>().Add(aggregate.ToState());
-                await SaveChangesAsync(context);
+                var keyNames = context.GetKeyNames<TStateEntity>();
+                var keyValues = identityComponents.Select(c => c.EqualityComponents().First());
+                var query = context.Set<TStateEntity>().AsQueryable();
+                foreach (var path in this.RelatedEntitiesPaths()) query = query.Include(path);
+                var find = BuildFindExpression(keyNames, keyValues);
+                var stateEntity = await query.FirstOrDefaultAsync(find);
+                if (stateEntity == null) return null;
+                return this.EntityTranslator.Translate(stateEntity);
             }
         }
 
@@ -69,41 +76,15 @@ namespace DDD.Core.Infrastructure.Data
             }
         }
 
-        public async Task<TDomainEntity> FindAsync(params ComparableValueObject[] identityComponents)
+        public async virtual Task SaveAsync(TDomainEntity aggregate)
         {
-            Condition.Requires(identityComponents, nameof(identityComponents))
-                     .IsNotNull()
-                     .IsNotEmpty()
-                     .DoesNotContain(null);
-            using (var context = await this.CreateContextAsync(onSave: false))
+            Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
+            using (var context = await this.CreateContextAsync())
             {
-                var keyNames = context.GetKeyNames<TStateEntity>();
-                var keyValues = identityComponents.Select(c => c.EqualityComponents().First());
-                var query = context.Set<TStateEntity>().AsQueryable();
-                foreach (var path in this.RelatedEntitiesPaths()) query = query.Include(path);
-                var find = BuildFindExpression(keyNames, keyValues);
-                var stateEntity = await query.FirstOrDefaultAsync(find);
-                if (stateEntity == null) return null;
-                return this.EntityTranslator.Translate(stateEntity);
+                context.Set<TStateEntity>().Add(aggregate.ToState());
+                await SaveChangesAsync(context);
             }
         }
-
-        protected async Task<TContext> CreateContextAsync(bool onSave = true)
-        {
-            try
-            {
-                return await this.ContextFactory.CreateContextAsync();
-            }
-            catch (DbException ex) when (onSave == true)
-            {
-                throw new RepositoryException($"A problem occurred while saving a domain entity of type '{typeof(TDomainEntity)}'.", ex);
-            }
-            catch (DbException ex) when (onSave == false)
-            {
-                throw new RepositoryException($"A problem occurred while finding a domain entity of type '{typeof(TDomainEntity)}'.", ex);
-            }
-        }
-
         protected static async Task SaveChangesAsync(TContext context)
         {
             try
@@ -112,14 +93,25 @@ namespace DDD.Core.Infrastructure.Data
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                throw new RepositoryConcurrencyException($"A concurrency conflict occurred while saving a domain entity of type '{typeof(TDomainEntity)}'.", ex);
+                throw new RepositoryConcurrencyException(ex, typeof(TDomainEntity));
             }
             catch (Exception ex) when (ex is DbUpdateException || ex is DbEntityValidationException)
             {
-                throw new RepositoryException($"A problem occurred while saving a domain entity of type '{typeof(TDomainEntity)}'.", ex);
+                throw new RepositoryException(ex, typeof(TDomainEntity));
             }
         }
 
+        protected async Task<TContext> CreateContextAsync()
+        {
+            try
+            {
+                return await this.ContextFactory.CreateContextAsync();
+            }
+            catch (DbException ex)
+            {
+                throw new RepositoryException(ex, typeof(TDomainEntity));
+            }
+        }
         protected abstract IEnumerable<Expression<Func<TStateEntity, object>>> RelatedEntitiesPaths();
 
         private static Expression<Func<TStateEntity, bool>> BuildFindExpression(IEnumerable<string> keyNames, IEnumerable<object> keyValues)

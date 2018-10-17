@@ -144,10 +144,6 @@
       <Project>{6d227aa7-ff90-48ca-b13d-ed23c1fffba5}</Project>
       <Name>DDD.Core.Infrastructure.EF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DDD.Core.Infrastructure.Exceptions\DDD.Core.Infrastructure.Exceptions.csproj">
-      <Project>{53b04658-5f46-46e4-9b54-ea26a0fd20f1}</Project>
-      <Name>DDD.Core.Infrastructure.Exceptions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DDD.Core.Infrastructure.FluentValidation\DDD.Core.Infrastructure.FluentValidation.csproj">
       <Project>{5e3745fc-ca80-4d0f-8a25-20ee0f9cf163}</Project>
       <Name>DDD.Core.Infrastructure.FluentValidation</Name>

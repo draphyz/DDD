@@ -64,6 +64,8 @@
     <Compile Include="IStateObjectConvertible.cs" />
     <Compile Include="IStateEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryConcurrencyException.cs" />
+    <Compile Include="RepositoryException.cs" />
     <Compile Include="ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>

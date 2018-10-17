@@ -3,7 +3,6 @@
 namespace DDD.Core.Application
 {
     using Domain;
-    using Infrastructure;
 
     /// <summary>
     /// Base class for handling synchronously commands using the repository pattern.

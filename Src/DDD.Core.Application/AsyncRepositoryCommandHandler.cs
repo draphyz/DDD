@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 namespace DDD.Core.Application
 {
     using Domain;
-    using Infrastructure;
 
     /// <summary>
     /// Base class for handling asynchronously commands using the repository pattern.
