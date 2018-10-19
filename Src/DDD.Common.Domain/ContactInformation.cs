@@ -61,8 +61,8 @@ namespace DDD.Common.Domain
                 state.PrimaryTelephoneNumber,
                 state.SecondaryTelephoneNumber,
                 state.FaxNumber,
-                string.IsNullOrWhiteSpace(state.PrimaryEmailAddress) ? null : new EmailAddress(state.PrimaryEmailAddress),
-                string.IsNullOrWhiteSpace(state.SecondaryEmailAddress) ? null : new EmailAddress(state.SecondaryEmailAddress),
+                EmailAddress.CreateIfNotEmpty(state.PrimaryEmailAddress),
+                EmailAddress.CreateIfNotEmpty(state.SecondaryEmailAddress),
                 string.IsNullOrWhiteSpace(state.WebSite) ? null : new Uri(state.WebSite)
             );
         }

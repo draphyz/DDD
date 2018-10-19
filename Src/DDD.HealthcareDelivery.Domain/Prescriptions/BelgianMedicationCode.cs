@@ -19,5 +19,15 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #endregion Constructors
 
+        #region Methods
+
+        public static BelgianMedicationCode CreateIfNotEmpty(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code)) return null;
+            return new BelgianMedicationCode(code);
+        }
+
+        #endregion Methods
+
     }
 }

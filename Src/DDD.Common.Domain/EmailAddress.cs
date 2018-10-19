@@ -31,6 +31,12 @@ namespace DDD.Common.Domain
 
         #region Methods
 
+        public static EmailAddress CreateIfNotEmpty(string address)
+        {
+            if (string.IsNullOrWhiteSpace(address)) return null;
+            return new EmailAddress(address);
+        }
+
         public static EmailAddress FromParts(string username, string domain)
         {
             Condition.Requires(username, nameof(username)).IsNotNullOrWhiteSpace();

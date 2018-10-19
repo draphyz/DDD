@@ -49,7 +49,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 state.Posology,
                 state.Quantity,
                 state.Duration,
-                string.IsNullOrWhiteSpace(state.Code) ? null : new BelgianMedicationCode(state.Code),
+                BelgianMedicationCode.CreateIfNotEmpty(state.Code),
                 state.Identifier,
                 state.EntityState
             );
@@ -63,7 +63,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 state.Posology,
                 state.Quantity,
                 state.Duration,
-                string.IsNullOrWhiteSpace(state.Code) ? null : new BelgianMedicationCode(state.Code),
+                BelgianMedicationCode.CreateIfNotEmpty(state.Code),
                 state.Identifier,
                 state.EntityState
             );

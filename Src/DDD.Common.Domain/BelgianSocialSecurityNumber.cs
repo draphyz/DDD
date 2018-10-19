@@ -21,5 +21,15 @@ namespace DDD.Common.Domain
 
         #endregion Constructors
 
+        #region Methods
+
+        public static BelgianSocialSecurityNumber CreateIfNotEmpty(string number)
+        {
+            if (string.IsNullOrWhiteSpace(number)) return null;
+            return new BelgianSocialSecurityNumber(number);
+        }
+
+        #endregion Methods
+
     }
 }

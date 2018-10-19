@@ -31,7 +31,7 @@ namespace DDD.HealthcareDelivery.Domain.Providers
                 state.Identifier,
                 FullName.FromState(state.FullName),
                 new BelgianPractitionerLicenseNumber(state.LicenseNumber),
-                string.IsNullOrWhiteSpace(state.SocialSecurityNumber) ? null : new BelgianSocialSecurityNumber(state.SocialSecurityNumber),
+                BelgianSocialSecurityNumber.CreateIfNotEmpty(state.SocialSecurityNumber),
                 ContactInformation.FromState(state.ContactInformation),
                 state.Speciality,
                 state.DisplayName

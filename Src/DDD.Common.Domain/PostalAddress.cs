@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using Conditions;
 
 namespace DDD.Common.Domain
@@ -55,15 +54,34 @@ namespace DDD.Common.Domain
         public static PostalAddress FromState(PostalAddressState state)
         {
             if (state == null) return null;
-            if (string.IsNullOrWhiteSpace(state.Street) || string.IsNullOrWhiteSpace(state.City)) return null;
-            return new PostalAddress
+            return CreateIfNotEmpty
             (
                 state.Street,
                 state.City,
                 state.PostalCode,
-                string.IsNullOrWhiteSpace(state.CountryCode) ? null : new Alpha2CountryCode(state.CountryCode),
+                Alpha2CountryCode.CreateIfNotEmpty(state.CountryCode),
                 state.HouseNumber,
                 state.BoxNumber
+            );
+        }
+
+        public static PostalAddress CreateIfNotEmpty(string street,
+                                                     string city,
+                                                     string postalCode = null,
+                                                     Alpha2CountryCode countryCode = null,
+                                                     string houseNumber = null,
+                                                     string boxNumber = null)
+        {
+            if (string.IsNullOrWhiteSpace(street)) return null;
+            if (string.IsNullOrWhiteSpace(city)) return null;
+            return new PostalAddress
+            (
+                street,
+                city,
+                postalCode,
+                countryCode,
+                houseNumber,
+                boxNumber
             );
         }
 

@@ -90,7 +90,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 command.PatientIdentifier,
                 new FullName(command.PatientLastName, command.PatientFirstName),
                 Enumeration.FromValue<BelgianSex>((int)command.PatientSex),
-                string.IsNullOrWhiteSpace(command.PatientSocialSecurityNumber) ? null : new BelgianSocialSecurityNumber(command.PatientSocialSecurityNumber),
+                BelgianSocialSecurityNumber.CreateIfNotEmpty(command.PatientSocialSecurityNumber),
                 null,
                 command.PatientBirthdate
             );
@@ -103,7 +103,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 command.PrescriberIdentifier,
                 new FullName(command.PrescriberLastName, command.PrescriberFirstName),
                 new BelgianPractitionerLicenseNumber(command.PrescriberLicenseNumber),
-                string.IsNullOrWhiteSpace(command.PrescriberSocialSecurityNumber) ? null : new BelgianSocialSecurityNumber(command.PrescriberSocialSecurityNumber),
+                BelgianSocialSecurityNumber.CreateIfNotEmpty(command.PrescriberSocialSecurityNumber),
                 ToProviderContactInformation(command),
                 command.PrescriberSpeciality,
                 command.PrescriberDisplayName
@@ -133,7 +133,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 medication.Posology,
                 medication.Quantity,
                 medication.Duration,
-                string.IsNullOrWhiteSpace(medication.Code) ? null : new BelgianMedicationCode(medication.Code)
+                BelgianMedicationCode.CreateIfNotEmpty(medication.Code)
             );
         }
 
@@ -155,21 +155,20 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 command.PrescriberPrimaryTelephoneNumber,
                 command.PrescriberSecondaryTelephoneNumber,
                 null,
-                string.IsNullOrWhiteSpace(command.PrescriberPrimaryEmailAddress) ? null : new EmailAddress(command.PrescriberPrimaryEmailAddress),
-                string.IsNullOrWhiteSpace(command.PrescriberSecondaryEmailAddress) ? null : new EmailAddress(command.PrescriberSecondaryEmailAddress),
+                EmailAddress.CreateIfNotEmpty(command.PrescriberPrimaryEmailAddress),
+                EmailAddress.CreateIfNotEmpty(command.PrescriberSecondaryEmailAddress),
                 string.IsNullOrWhiteSpace(command.PrescriberWebSite) ? null : new Uri(command.PrescriberWebSite)
             );
         }
 
         private static PostalAddress ToProviderPostalAddress(CreatePharmaceuticalPrescriptions command)
         {
-            if (string.IsNullOrWhiteSpace(command.PrescriberStreet) || string.IsNullOrWhiteSpace(command.PrescriberCity)) return null;
-            return new PostalAddress
+            return PostalAddress.CreateIfNotEmpty
             (
                 command.PrescriberStreet,
                 command.PrescriberCity,
                 command.PrescriberPostalCode,
-                string.IsNullOrWhiteSpace(command.PrescriberCountryCode) ? null : new Alpha2CountryCode(command.PrescriberCountryCode),
+                Alpha2CountryCode.CreateIfNotEmpty(command.PrescriberCountryCode),
                 command.PrescriberHouseNumber,
                 command.PrescriberBoxNumber
             );
@@ -183,7 +182,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 medication.Posology,
                 medication.Quantity,
                 medication.Duration,
-                string.IsNullOrWhiteSpace(medication.Code) ? null : new BelgianMedicationCode(medication.Code)
+                BelgianMedicationCode.CreateIfNotEmpty(medication.Code)
            );
         }
 

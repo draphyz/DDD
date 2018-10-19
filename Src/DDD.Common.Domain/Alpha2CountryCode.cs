@@ -21,5 +21,15 @@ namespace DDD.Common.Domain
 
         #endregion Constructors
 
+        #region Methods
+
+        public static Alpha2CountryCode CreateIfNotEmpty(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code)) return null;
+            return new Alpha2CountryCode(code);
+        }
+
+        #endregion Methods
+
     }
 }
