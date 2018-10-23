@@ -1,45 +1,15 @@
-﻿using Conditions;
-using System;
-using System.Collections.Generic;
-
-namespace DDD.Common.Domain
+﻿namespace DDD.Common.Domain
 {
-    using Core.Domain;
-
-    public abstract class LanguageCode : ComparableValueObject
+    public abstract class LanguageCode : IdentificationCode
     {
 
         #region Constructors
 
-        protected LanguageCode(string code)
+        protected LanguageCode(string code) : base(code)
         {
-            Condition.Requires(code, nameof(code)).IsNotNullOrWhiteSpace();
-            this.Code = code.ToUpper();
         }
 
         #endregion Constructors
-
-        #region Properties
-
-        public string Code { get; }
-
-        #endregion Properties
-
-        #region Methods
-
-        public override IEnumerable<IComparable> ComparableComponents()
-        {
-            yield return this.Code;
-        }
-
-        public override IEnumerable<object> EqualityComponents()
-        {
-            yield return this.Code;
-        }
-
-        public override string ToString() => $"{this.GetType().Name} [code={this.Code}]";
-
-        #endregion Methods
 
     }
 }

@@ -1,45 +1,17 @@
-﻿using Conditions;
-using System;
-using System.Collections.Generic;
-
-namespace DDD.HealthcareDelivery.Domain.Prescriptions
+﻿namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
-    using Core.Domain;
+    using Common.Domain;
 
-    public abstract class MedicationCode : ComparableValueObject
+    public abstract class MedicationCode : IdentificationCode
     {
 
         #region Constructors
 
-        protected MedicationCode(string code)
+        protected MedicationCode(string code) : base(code)
         {
-            Condition.Requires(code, nameof(code)).IsNotNullOrWhiteSpace();
-            this.Code = code.ToUpper();
         }
 
         #endregion Constructors
-
-        #region Properties
-
-        public string Code { get; }
-
-        #endregion Properties
-
-        #region Methods
-
-        public override IEnumerable<IComparable> ComparableComponents()
-        {
-            yield return this.Code;
-        }
-
-        public override IEnumerable<object> EqualityComponents()
-        {
-            yield return this.Code;
-        }
-
-        public override string ToString() => $"{this.GetType().Name} [code={this.Code}]";
-
-        #endregion Methods
 
     }
 }
