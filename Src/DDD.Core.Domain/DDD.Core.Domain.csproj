@@ -53,6 +53,8 @@
     <Compile Include="DomainEventHandler.cs" />
     <Compile Include="DomainEventPublisher.cs" />
     <Compile Include="IAssemblyReference.cs" />
+    <Compile Include="IRepositoryExtensions.cs" />
+    <Compile Include="IAsyncRepositoryExtensions.cs" />
     <Compile Include="IDomainEvent.cs" />
     <Compile Include="IDomainEventHandler.cs" />
     <Compile Include="IDomainEventHandler`1.cs" />

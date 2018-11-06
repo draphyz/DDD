@@ -10,9 +10,7 @@ namespace DDD.Core.Domain
 
         Task<TDomainEntity> FindAsync(params ComparableValueObject[] identityComponents);
 
-        Task SaveAsync(TDomainEntity aggregate);
-
-        Task SaveAllAsync(IEnumerable<TDomainEntity> aggregates);
+        Task SaveAsync(IEnumerable<TDomainEntity> aggregates);
 
         #endregion Methods
     }

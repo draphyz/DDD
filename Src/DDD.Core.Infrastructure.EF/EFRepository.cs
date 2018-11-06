@@ -63,7 +63,7 @@ namespace DDD.Core.Infrastructure.Data
             }
         }
 
-        public async virtual Task SaveAllAsync(IEnumerable<TDomainEntity> aggregates)
+        public async virtual Task SaveAsync(IEnumerable<TDomainEntity> aggregates)
         {
             Condition.Requires(aggregates, nameof(aggregates))
                      .IsNotNull()
@@ -72,16 +72,6 @@ namespace DDD.Core.Infrastructure.Data
             using (var context = await this.CreateContextAsync())
             {
                 context.Set<TStateEntity>().AddRange(aggregates.Select(a => a.ToState()));
-                await SaveChangesAsync(context);
-            }
-        }
-
-        public async virtual Task SaveAsync(TDomainEntity aggregate)
-        {
-            Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
-            using (var context = await this.CreateContextAsync())
-            {
-                context.Set<TStateEntity>().Add(aggregate.ToState());
                 await SaveChangesAsync(context);
             }
         }

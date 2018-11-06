@@ -9,9 +9,7 @@ namespace DDD.Core.Domain
 
         TDomainEntity Find(params ComparableValueObject[] identityComponents);
 
-        void Save(TDomainEntity aggregate);
-
-        void SaveAll(IEnumerable<TDomainEntity> aggregates);
+        void Save(IEnumerable<TDomainEntity> aggregates);
 
         #endregion Methods
     }

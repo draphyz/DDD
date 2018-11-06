@@ -40,7 +40,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             var prescriptions = this.Translator.Translate(command);
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await this.Repository.SaveAllAsync(prescriptions);
+                await this.Repository.SaveAsync(prescriptions);
                 this.Publisher.PublishAll(prescriptions.AllEvents());
                 scope.Complete();
             }

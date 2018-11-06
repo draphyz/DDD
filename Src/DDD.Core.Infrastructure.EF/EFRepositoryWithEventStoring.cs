@@ -40,19 +40,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public override async Task SaveAsync(TDomainEntity aggregate)
-        {
-            Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
-            var events = ToStoredEvents(new TDomainEntity[] { aggregate });
-            using (var context = await this.CreateContextAsync())
-            {
-                context.Set<TStateEntity>().Add(aggregate.ToState());
-                context.Set<StoredEvent>().AddRange(events);
-                await SaveChangesAsync(context);
-            }
-        }
-
-        public override async Task SaveAllAsync(IEnumerable<TDomainEntity> aggregates)
+        public override async Task SaveAsync(IEnumerable<TDomainEntity> aggregates)
         {
             Condition.Requires(aggregates, nameof(aggregates))
                      .IsNotNull()
