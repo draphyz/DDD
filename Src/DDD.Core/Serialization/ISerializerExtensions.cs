@@ -2,7 +2,7 @@
 using System.Text;
 using System.IO;
 
-namespace DDD.Core.Infrastructure.Serialization
+namespace DDD.Core.Serialization
 {
     public static class ISerializerExtensions
     {

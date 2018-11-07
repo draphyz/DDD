@@ -4,6 +4,7 @@ namespace DDD.Core.Infrastructure.Serialization
 {
     using Mapping;
     using Domain;
+    using Core.Serialization;
 
     public class StoredEventTranslator : IObjectTranslator<IDomainEvent, StoredEvent>
     {

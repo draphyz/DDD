@@ -1,4 +1,4 @@
-﻿namespace DDD.Core.Infrastructure.Serialization
+﻿namespace DDD.Core.Serialization
 {
     public interface IXmlSerializer : ISerializer
     {

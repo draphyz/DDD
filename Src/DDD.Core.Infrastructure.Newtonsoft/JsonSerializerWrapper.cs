@@ -7,6 +7,8 @@ using System.Text;
 
 namespace DDD.Core.Infrastructure.Serialization
 {
+    using Core.Serialization;
+
     public class JsonSerializerWrapper : IJsonSerializer
     {
 

@@ -62,6 +62,10 @@
       <Project>{0673db02-015e-4257-8aaf-e42b91196486}</Project>
       <Name>DDD.Core.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DDD.Core\DDD.Core.csproj">
+      <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
+      <Name>DDD.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

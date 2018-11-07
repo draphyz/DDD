@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace DDD.Core.Infrastructure.Serialization
+namespace DDD.Core.Serialization
 {
     public static class SerializationOptions
     {

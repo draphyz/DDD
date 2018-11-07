@@ -5,6 +5,8 @@ using System.Xml.Serialization;
 
 namespace DDD.Core.Infrastructure.Serialization
 {
+    using Core.Serialization;
+
     public class XmlSerializerWrapper : IXmlSerializer
     {
 
