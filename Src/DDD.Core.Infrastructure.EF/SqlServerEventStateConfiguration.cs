@@ -1,6 +1,6 @@
-﻿namespace DDD.HealthcareDelivery.Infrastructure
+﻿namespace DDD.Core.Infrastructure.Data
 {
-    internal class SqlServerEventStateConfiguration : EventStateConfiguration
+    public class SqlServerEventStateConfiguration : EventStateConfiguration
     {
 
         #region Constructors

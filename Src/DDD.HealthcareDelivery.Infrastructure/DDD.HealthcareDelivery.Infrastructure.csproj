@@ -95,14 +95,11 @@
     <Compile Include="Prescriptions\BelgianPrescribedMedicationDescriptorValidator.cs" />
     <Compile Include="Prescriptions\OraclePrescriptionStateConfiguration.cs" />
     <Compile Include="Prescriptions\SqlServerPrescriptionStateConfiguration.cs" />
-    <Compile Include="OracleEventStateConfiguration.cs" />
-    <Compile Include="SqlServerEventStateConfiguration.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionRepository.cs" />
     <Compile Include="HealthcareContext.cs" />
     <Compile Include="Prescriptions\PrescriptionStateConfiguration.cs" />
     <Compile Include="Prescriptions\PharmaceuticalPrescriptionStateConfiguration.cs" />
     <Compile Include="Prescriptions\PrescribedMedicationStateConfiguration.cs" />
-    <Compile Include="EventStateConfiguration.cs" />
     <Compile Include="IHealthcareConnectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Prescriptions\PrescribedMedicationsByPrescriptionFinder.cs" />

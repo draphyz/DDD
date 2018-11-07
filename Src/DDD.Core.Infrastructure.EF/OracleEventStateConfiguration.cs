@@ -1,6 +1,6 @@
-﻿namespace DDD.HealthcareDelivery.Infrastructure
+﻿namespace DDD.Core.Infrastructure.Data
 {
-    internal class OracleEventStateConfiguration : EventStateConfiguration
+    public class OracleEventStateConfiguration : EventStateConfiguration
     {
 
         #region Constructors

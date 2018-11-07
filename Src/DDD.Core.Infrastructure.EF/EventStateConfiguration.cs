@@ -1,11 +1,11 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDD.HealthcareDelivery.Infrastructure
+namespace DDD.Core.Infrastructure.Data
 {
     using Core.Domain;
 
-    internal abstract class EventStateConfiguration : EntityTypeConfiguration<EventState>
+    public abstract class EventStateConfiguration : EntityTypeConfiguration<EventState>
     {
 
         #region Fields

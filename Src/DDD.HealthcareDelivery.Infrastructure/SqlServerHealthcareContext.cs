@@ -3,6 +3,7 @@ using System.Data.Common;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
+    using Core.Infrastructure.Data;
     using Prescriptions;
 
     public class SqlServerHealthcareContext : HealthcareContext
