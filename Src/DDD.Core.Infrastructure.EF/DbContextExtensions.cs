@@ -25,9 +25,8 @@ namespace DDD.Core.Infrastructure.Data
             var objectItemCollection = ((ObjectItemCollection)metadata.GetItemCollection(DataSpace.OSpace));
 
             // Get metadata for given CLR type
-            var entityMetadata = metadata
-                    .GetItems<EntityType>(DataSpace.OSpace)
-                    .Single(e => objectItemCollection.GetClrType(e) == entityType);
+            var entityMetadata = metadata.GetItems<EntityType>(DataSpace.OSpace)
+                                         .Single(e => objectItemCollection.GetClrType(e) == entityType);
 
             return entityMetadata.KeyProperties.Select(p => p.Name);
         }

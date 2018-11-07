@@ -61,7 +61,6 @@
     <Compile Include="DbEntityValidationExceptionExtensions.cs" />
     <Compile Include="DbModelBuilderExtensions.cs" />
     <Compile Include="EFRepository.cs" />
-    <Compile Include="EFRepositoryWithEventStoring.cs" />
     <Compile Include="IAssemblyReference.cs" />
     <Compile Include="IAsyncDbContextFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

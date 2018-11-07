@@ -6,12 +6,11 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Core.Mapping;
     using Core.Domain;
-    using Core.Infrastructure.Serialization;
     using Domain.Prescriptions;
     using Core.Infrastructure.Data;
 
     public class PharmaceuticalPrescriptionRepository
-        : EFRepositoryWithEventStoring<PharmaceuticalPrescription, PharmaceuticalPrescriptionState, HealthcareContext>
+        : EFRepository<PharmaceuticalPrescription, PharmaceuticalPrescriptionState, HealthcareContext>
     {
 
         #region Constructors
