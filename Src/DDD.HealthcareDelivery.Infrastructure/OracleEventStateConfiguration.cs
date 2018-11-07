@@ -1,11 +1,11 @@
-﻿namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
+﻿namespace DDD.HealthcareDelivery.Infrastructure
 {
-    internal class OracleStoredEventConfiguration : StoredEventConfiguration
+    internal class OracleEventStateConfiguration : EventStateConfiguration
     {
 
         #region Constructors
 
-        public OracleStoredEventConfiguration(bool useUpperCase) : base(useUpperCase)
+        public OracleEventStateConfiguration(bool useUpperCase) : base(useUpperCase)
         {
             // Fields
             this.Property(e => e.OccurredOn)

@@ -1,11 +1,11 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
+namespace DDD.HealthcareDelivery.Infrastructure
 {
-    using Core.Infrastructure.Serialization;
+    using Core.Domain;
 
-    internal abstract class StoredEventConfiguration : EntityTypeConfiguration<StoredEvent>
+    internal abstract class EventStateConfiguration : EntityTypeConfiguration<EventState>
     {
 
         #region Fields
@@ -16,7 +16,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         #region Constructors
 
-        protected StoredEventConfiguration(bool useUpperCase)
+        protected EventStateConfiguration(bool useUpperCase)
         {
             this.useUpperCase = useUpperCase;
             // Table

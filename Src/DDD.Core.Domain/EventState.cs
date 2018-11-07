@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DDD.Core.Infrastructure.Serialization
+namespace DDD.Core.Domain
 {
-    public class StoredEvent
+    public class EventState
     {
 
         #region Properties

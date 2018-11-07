@@ -52,6 +52,7 @@
     <Compile Include="EntityState.cs" />
     <Compile Include="DomainEventHandler.cs" />
     <Compile Include="DomainEventPublisher.cs" />
+    <Compile Include="EventTranslator.cs" />
     <Compile Include="IAssemblyReference.cs" />
     <Compile Include="IRepositoryExtensions.cs" />
     <Compile Include="IAsyncRepositoryExtensions.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryConcurrencyException.cs" />
     <Compile Include="RepositoryException.cs" />
+    <Compile Include="EventState.cs" />
     <Compile Include="ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>

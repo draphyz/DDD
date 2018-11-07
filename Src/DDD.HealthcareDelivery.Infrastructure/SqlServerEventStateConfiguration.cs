@@ -1,11 +1,11 @@
-﻿namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
+﻿namespace DDD.HealthcareDelivery.Infrastructure
 {
-    internal class SqlServerStoredEventConfiguration : StoredEventConfiguration
+    internal class SqlServerEventStateConfiguration : EventStateConfiguration
     {
 
         #region Constructors
 
-        public SqlServerStoredEventConfiguration(bool useUpperCase) : base(useUpperCase)
+        public SqlServerEventStateConfiguration(bool useUpperCase) : base(useUpperCase)
         {
             // Fields
             this.Property(e => e.OccurredOn)

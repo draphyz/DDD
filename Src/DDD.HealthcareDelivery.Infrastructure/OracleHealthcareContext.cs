@@ -43,7 +43,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
         {
             var connectionBuilder = new OracleConnectionStringBuilder(this.Database.Connection.ConnectionString);
             modelBuilder.HasDefaultSchema(connectionBuilder.UserID);
-            modelBuilder.Configurations.Add(new OracleStoredEventConfiguration(this.UseUpperCase));
+            modelBuilder.Configurations.Add(new OracleEventStateConfiguration(this.UseUpperCase));
             modelBuilder.Configurations.Add(new OraclePrescriptionStateConfiguration(this.UseUpperCase));
         }
 

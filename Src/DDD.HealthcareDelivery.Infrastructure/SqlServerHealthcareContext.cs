@@ -29,7 +29,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
         private void AddConfigurations(DbModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema("dbo");
-            modelBuilder.Configurations.Add(new SqlServerStoredEventConfiguration(this.UseUpperCase));
+            modelBuilder.Configurations.Add(new SqlServerEventStateConfiguration(this.UseUpperCase));
             modelBuilder.Configurations.Add(new SqlServerPrescriptionStateConfiguration(this.UseUpperCase));
         }
 

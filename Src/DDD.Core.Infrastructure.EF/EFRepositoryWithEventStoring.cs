@@ -22,7 +22,7 @@ namespace DDD.Core.Infrastructure.Data
         #region Constructors
 
         protected EFRepositoryWithEventStoring(IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator,
-                                               IObjectTranslator<IDomainEvent, StoredEvent> eventTranslator,
+                                               IObjectTranslator<IDomainEvent, EventState> eventTranslator,
                                                IAsyncDbContextFactory<TContext> contextFactory)
             : base(entityTranslator, contextFactory)
         {
@@ -34,7 +34,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Properties
 
-        protected IObjectTranslator<IDomainEvent, StoredEvent> EventTranslator { get; }
+        protected IObjectTranslator<IDomainEvent, EventState> EventTranslator { get; }
 
         #endregion Properties
 
@@ -50,12 +50,12 @@ namespace DDD.Core.Infrastructure.Data
             using (var context = await this.CreateContextAsync())
             {
                 context.Set<TStateEntity>().AddRange(aggregates.Select(a => a.ToState()));
-                context.Set<StoredEvent>().AddRange(events);
+                context.Set<EventState>().AddRange(events);
                 await SaveChangesAsync(context);
             }
         }
 
-        private IEnumerable<StoredEvent> ToStoredEvents(IEnumerable<TDomainEntity> aggregates)
+        private IEnumerable<EventState> ToStoredEvents(IEnumerable<TDomainEntity> aggregates)
         {
             var commitId = Guid.NewGuid();
             var subject = Thread.CurrentPrincipal?.Identity?.Name;

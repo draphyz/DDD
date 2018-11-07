@@ -1,17 +1,17 @@
 ﻿using System.Data.Entity;
 using System.Data.Common;
 using System.Linq;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Core.Infrastructure.Data;
-    using Core.Infrastructure.Serialization;
+    using Core.Domain;
     using Domain.Prescriptions;
     using Domain.Patients;
     using Domain.Providers;
     using Prescriptions;
     using Common.Domain;
-    using System.Data.Entity.ModelConfiguration.Conventions;
 
     public abstract class HealthcareContext : StateEntitiesContext
     {
@@ -27,7 +27,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Properties
 
-        public virtual DbSet<StoredEvent> Events { get; set; }
+        public virtual DbSet<EventState> Events { get; set; }
 
         public virtual DbSet<PharmaceuticalPrescriptionState> PharmaceuticalPrescriptions { get; set; }
 
@@ -60,7 +60,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
         }
         private void SetIdsForEvents()
         {
-            var events = this.ChangeTracker.Entries<StoredEvent>()
+            var events = this.ChangeTracker.Entries<EventState>()
                         .Select(m => m.Entity);
             foreach (var evt in events)
                 evt.Id = this.Database.Connection.NextValue<int>("EventId");
