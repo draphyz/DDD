@@ -19,7 +19,7 @@ namespace DDD.HealthcareDelivery.Infrastructure {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SqlServerScripts {
@@ -88,7 +88,7 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [CreatedOn], [DelivrableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [PrescriberBoxNum], [PrescriberPostCode], [P [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [CreatedOn], [DelivrableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [PrescriberBoxNum], [PrescriberPostCode] [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FindPharmaceuticalPrescriptionsByPatient {
             get {
