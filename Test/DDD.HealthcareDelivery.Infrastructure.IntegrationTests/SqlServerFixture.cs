@@ -3,6 +3,7 @@ using System.Data;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
+    using Core.Infrastructure.Testing;
     using Core.Infrastructure.Data;
 
     public class SqlServerFixture : DbFixture<SqlServerConnectionFactory>

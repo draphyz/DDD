@@ -1,5 +1,7 @@
-﻿namespace DDD.Core.Infrastructure.Data
+﻿namespace DDD.Core.Infrastructure.Testing
 {
+    using Data;
+
     public interface IDbFixture<out TConnectionFactory> 
         where TConnectionFactory : class, IDbConnectionFactory
     {

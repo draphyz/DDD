@@ -3,6 +3,7 @@ using Oracle.ManagedDataAccess.Client;
 
 namespace DDD.HealthcareDelivery.Application
 {
+    using Core.Infrastructure.Testing;
     using Core.Infrastructure.Data;
 
     public class OracleFixture : DbFixture<OracleConnectionFactory>

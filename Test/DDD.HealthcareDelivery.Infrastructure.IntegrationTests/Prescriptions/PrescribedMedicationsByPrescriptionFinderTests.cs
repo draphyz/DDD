@@ -6,7 +6,7 @@ using Xunit;
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Application.Prescriptions;
-    using Core.Infrastructure.Data;
+    using Core.Infrastructure.Testing;
 
     [Trait("Category", "Integration")]
     public abstract class PrescribedMedicationsByPrescriptionFinderTests<TFixture>

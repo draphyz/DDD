@@ -4,8 +4,9 @@ using System.Resources;
 using System.Reflection;
 using System.Linq;
 
-namespace DDD.Core.Infrastructure.Data
+namespace DDD.Core.Infrastructure.Testing
 {
+    using Data;
 
     public abstract class DbFixture<TConnectionFactory> : IDbFixture<TConnectionFactory>
         where TConnectionFactory : class, IDbConnectionFactory

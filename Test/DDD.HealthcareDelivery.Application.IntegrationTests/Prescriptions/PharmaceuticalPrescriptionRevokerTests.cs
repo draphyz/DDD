@@ -8,7 +8,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Core.Domain;
     using Domain.Prescriptions;
-    using Core.Infrastructure.Data;
+    using Core.Infrastructure.Testing;
     using Infrastructure;
 
     [Trait("Category", "Integration")]

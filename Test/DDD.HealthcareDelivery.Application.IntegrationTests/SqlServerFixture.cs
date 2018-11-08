@@ -4,6 +4,7 @@ using System.Data;
 namespace DDD.HealthcareDelivery.Application
 {
     using Core.Infrastructure.Data;
+    using Core.Infrastructure.Testing;
 
     public class SqlServerFixture : DbFixture<SqlServerConnectionFactory>
     {

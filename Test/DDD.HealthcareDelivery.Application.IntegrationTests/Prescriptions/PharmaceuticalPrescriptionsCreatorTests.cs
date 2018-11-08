@@ -13,7 +13,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Domain.Providers;
     using Domain.Facilities;
     using Common.Application;
-    using Core.Infrastructure.Data;
+    using Core.Infrastructure.Testing;
     using Infrastructure;
 
     [Trait("Category", "Integration")]

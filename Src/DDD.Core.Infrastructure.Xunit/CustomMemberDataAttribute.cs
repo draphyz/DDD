@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using Xunit;
 using Xunit.Sdk;
 
-namespace DDD.Core.Infrastructure
+namespace DDD.Core.Infrastructure.Testing
 {
     [CLSCompliant(false)]
     [DataDiscoverer("Xunit.Sdk.MemberDataDiscoverer", "xunit.core")]
