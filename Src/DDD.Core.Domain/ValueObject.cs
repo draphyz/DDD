@@ -8,6 +8,7 @@ namespace DDD.Core.Domain
 
     public abstract class ValueObject : IEquatable<ValueObject>
     {
+
         #region Methods
 
         public static bool operator !=(ValueObject a, ValueObject b)
@@ -36,6 +37,9 @@ namespace DDD.Core.Domain
 
         public override int GetHashCode() => this.EqualityComponents().CombineHashCodes();
 
+        public virtual IEnumerable<object> HashCodeComponents() => this.EqualityComponents();
+
         #endregion Methods
+
     }
 }

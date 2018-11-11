@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using FluentAssertions;
+using System.Collections.Generic;
 using Xunit;
-using FluentAssertions;
 
 namespace DDD.Core.Domain
 {
@@ -12,12 +12,12 @@ namespace DDD.Core.Domain
 
         public static IEnumerable<object[]> ObjectsWithDifferentTypes()
         {
-            yield return new object[] 
+            yield return new object[]
             {
                 new FakeSimpleValueObject("abcd", 1),
                 new object()
             };
-            yield return new object[] 
+            yield return new object[]
             {
                 new FakeSimpleValueObject("abcd", 1),
                 new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("abcd", 1))
@@ -26,41 +26,45 @@ namespace DDD.Core.Domain
 
         public static IEnumerable<object[]> ValueObjectsWithDifferentEqualityComponents()
         {
-            yield return new object[] 
+            yield return new object[]
             {
                 new FakeSimpleValueObject("abcd", 1),
                 new FakeSimpleValueObject("efjh", 1)
             };
-            yield return new object[] 
+            yield return new object[]
             {
                 new FakeSimpleValueObject("abcd", 1),
                 new FakeSimpleValueObject("abcd", 2)
             };
-            yield return new object[] 
+            yield return new object[]
             {
                 new FakeSimpleValueObject("abcd", 1),
                 new FakeSimpleValueObject("ABCD", 2)
             };
-            yield return new object[] 
+            yield return new object[]
             {
                 new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("abcd", 1)),
                 new FakeComplexValueObject("efjh", 1, new FakeSimpleValueObject("abcd", 1))
             };
-            yield return new object[] 
+            yield return new object[]
             {
                 new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("abcd", 1)),
                 new FakeComplexValueObject("abcd", 2, new FakeSimpleValueObject("abcd", 1))
             };
-            yield return new object[] 
+            yield return new object[]
             {
                 new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("abcd", 1)),
                 new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("efjh", 1))
             };
         }
 
+        public static IEnumerable<object[]> ValueObjectsWithDifferentHashCodeComponents()
+
+            => ValueObjectsWithDifferentEqualityComponents();
+
         public static IEnumerable<object[]> ValueObjectsWithDifferentTypes()
         {
-            yield return new object[] 
+            yield return new object[]
             {
                 new FakeSimpleValueObject("abcd", 1),
                 new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("abcd", 1))
@@ -69,17 +73,21 @@ namespace DDD.Core.Domain
 
         public static IEnumerable<object[]> ValueObjectsWithSameEqualityComponents()
         {
-            yield return new object[] 
+            yield return new object[]
             {
                 new FakeSimpleValueObject("abcd", 1),
                 new FakeSimpleValueObject("abcd", 1)
             };
-            yield return new object[] 
+            yield return new object[]
             {
                 new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("abcd", 1)),
                 new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("abcd", 1))
             };
         }
+
+        public static IEnumerable<object[]> ValueObjectsWithSameHashCodeComponents()
+
+            => ValueObjectsWithSameEqualityComponents();
 
         [Theory]
         [MemberData(nameof(ValueObjectsWithDifferentEqualityComponents))]
@@ -256,8 +264,8 @@ namespace DDD.Core.Domain
         }
 
         [Theory]
-        [MemberData(nameof(ValueObjectsWithDifferentEqualityComponents))]
-        public void GetHashCode_ValueObjectsWithDifferentEqualityComponents_ReturnsDifferentValues(ValueObject a, ValueObject b)
+        [MemberData(nameof(ValueObjectsWithDifferentHashCodeComponents))]
+        public void GetHashCode_ValueObjectsWithDifferentHashCodeComponents_ReturnsDifferentValues(ValueObject a, ValueObject b)
         {
             // Act
             var hashCodeOfA = a.GetHashCode();
@@ -267,8 +275,8 @@ namespace DDD.Core.Domain
         }
 
         [Theory]
-        [MemberData(nameof(ValueObjectsWithSameEqualityComponents))]
-        public void GetHashCode_ValueObjectsWithSameEqualityComponents_ReturnsSameValue(ValueObject a, ValueObject b)
+        [MemberData(nameof(ValueObjectsWithSameHashCodeComponents))]
+        public void GetHashCode_ValueObjectsWithSameHashCodeComponents_ReturnsSameValue(ValueObject a, ValueObject b)
         {
             // Act
             var hashCodeOfA = a.GetHashCode();

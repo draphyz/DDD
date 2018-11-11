@@ -50,6 +50,7 @@
     <Compile Include="Alpha2LanguageCode.cs" />
     <Compile Include="Alpha2CountryCode.cs" />
     <Compile Include="ArbitraryIdentifier.cs" />
+    <Compile Include="BinaryContent.cs" />
     <Compile Include="IAssemblyReference.cs" />
     <Compile Include="IdentificationCode.cs" />
     <Compile Include="IdentificationNumber.cs" />
