@@ -5,8 +5,17 @@ namespace DDD.Common.Domain
 {
     using Core.Domain;
 
+    /// <remarks>
+    /// Example of overriding HashCodeComponents(), sacrificing uniqueness of hash codes for speed.
+    /// </remarks>
     public class BinaryContent : ValueObject
     {
+
+        #region Fields
+
+        private static readonly BinaryContent emptyContent = new BinaryContent(new byte[0]);
+
+        #endregion Fields
 
         #region Constructors
 
@@ -25,6 +34,8 @@ namespace DDD.Common.Domain
         #endregion Properties
 
         #region Methods
+
+        public static BinaryContent Empty() => emptyContent;
 
         public override IEnumerable<object> EqualityComponents()
         {
