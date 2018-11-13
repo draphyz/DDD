@@ -35,7 +35,7 @@ namespace DDD.Core.Domain
 
         public override bool Equals(object other) => this.Equals(other as ValueObject);
 
-        public override int GetHashCode() => this.EqualityComponents().CombineHashCodes();
+        public override int GetHashCode() => this.HashCodeComponents().CombineHashCodes();
 
         public virtual IEnumerable<object> HashCodeComponents() => this.EqualityComponents();
 
