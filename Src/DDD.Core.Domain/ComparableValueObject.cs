@@ -9,25 +9,25 @@ namespace DDD.Core.Domain
 
         public static bool operator <(ComparableValueObject a, ComparableValueObject b)
         {
-            if (object.ReferenceEquals(a, null)) return !object.ReferenceEquals(b, null);
+            if (ReferenceEquals(a, null)) return !ReferenceEquals(b, null);
             return a.CompareTo(b) < 0;
         }
 
         public static bool operator <=(ComparableValueObject a, ComparableValueObject b)
         {
-            if (object.ReferenceEquals(a, null)) return true;
+            if (ReferenceEquals(a, null)) return true;
             return a.CompareTo(b) <= 0;
         }
 
         public static bool operator >(ComparableValueObject a, ComparableValueObject b)
         {
-            if (object.ReferenceEquals(a, null)) return false;
+            if (ReferenceEquals(a, null)) return false;
             return a.CompareTo(b) > 0;
         }
 
         public static bool operator >=(ComparableValueObject a, ComparableValueObject b)
         {
-            if (object.ReferenceEquals(a, null)) return object.ReferenceEquals(b, null);
+            if (ReferenceEquals(a, null)) return ReferenceEquals(b, null);
             return a.CompareTo(b) >= 0;
         }
 
@@ -35,7 +35,7 @@ namespace DDD.Core.Domain
 
         public int CompareTo(ComparableValueObject other)
         {
-            if (object.ReferenceEquals(other, null)) return 1;
+            if (ReferenceEquals(other, null)) return 1;
             using (var thisComponents = this.ComparableComponents().GetEnumerator())
             using (var otherComponents = other.ComparableComponents().GetEnumerator())
             {
@@ -44,9 +44,9 @@ namespace DDD.Core.Domain
                     if (thisComponents.MoveNext())
                     {
                         otherComponents.MoveNext();
-                        if (object.ReferenceEquals(thisComponents.Current, null))
+                        if (ReferenceEquals(thisComponents.Current, null))
                         {
-                            if (!object.ReferenceEquals(otherComponents.Current, null)) return -1;
+                            if (!ReferenceEquals(otherComponents.Current, null)) return -1;
                         }
                         else
                         {
@@ -97,9 +97,9 @@ namespace DDD.Core.Domain
 
             public int CompareTo(object other)
             {
-                if (object.ReferenceEquals(this.comparable, null))
+                if (ReferenceEquals(this.comparable, null))
                 {
-                    if (object.ReferenceEquals(other, null)) return 0;
+                    if (ReferenceEquals(other, null)) return 0;
                     return -1;
                 }
                 return this.comparable.CompareTo(other as T);
