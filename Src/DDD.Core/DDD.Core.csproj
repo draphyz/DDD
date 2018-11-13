@@ -66,8 +66,11 @@
     <Compile Include="Serialization\IJsonSerializer.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Serialization\ISerializerExtensions.cs" />
+    <Compile Include="Serialization\ITextSerializer.cs" />
+    <Compile Include="Serialization\ITextSerializerExtensions.cs" />
     <Compile Include="Serialization\IXmlSerializer.cs" />
-    <Compile Include="Serialization\SerializationOptions.cs" />
+    <Compile Include="Serialization\JsonSerializationOptions.cs" />
+    <Compile Include="Serialization\XmlSerializationOptions.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Validation\FailureLevel.cs" />
     <Compile Include="Validation\IAsyncObjectValidator.cs" />

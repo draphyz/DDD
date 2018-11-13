@@ -22,18 +22,13 @@ namespace DDD.Core.Infrastructure.Serialization
 
         public JsonSerializerWrapper()
         {
-            this.serializer = new JsonSerializer
-            {
-                Formatting = SerializationOptions.Indent ? Formatting.Indented : Formatting.None,
-                NullValueHandling = NullValueHandling.Ignore,
-                ContractResolver = new CamelCasePropertyNamesContractResolver()
-            };
-            serializer.Converters.Add(new StringEnumConverter());
+            this.serializer = DefaultSerializer();
         }
 
-        private JsonSerializerWrapper(JsonSerializer serializer)
+        private JsonSerializerWrapper(JsonSerializer serializer, Encoding encoding)
         {
             Condition.Requires(serializer, nameof(serializer)).IsNotNull();
+            Condition.Requires(encoding, nameof(encoding)).IsNotNull();
             this.serializer = serializer;
         }
 
@@ -41,20 +36,25 @@ namespace DDD.Core.Infrastructure.Serialization
 
         #region Properties
 
-        public Encoding Encoding { get; set; } = SerializationOptions.Encoding;
+        public Encoding Encoding { get; } = JsonSerializationOptions.Encoding;
+
+        public bool Indent => this.serializer.Formatting == Formatting.Indented;
 
         #endregion Properties
 
         #region Methods
 
-        public static JsonSerializerWrapper Create(JsonSerializerSettings settings)
+        public static JsonSerializerWrapper Create(Encoding encoding, bool indent = true)
         {
-            Condition.Requires(settings, nameof(settings)).IsNotNull();
-            return new JsonSerializerWrapper(JsonSerializer.Create(settings));
+            Condition.Requires(encoding, nameof(encoding)).IsNotNull();
+            var serializer = DefaultSerializer();
+            serializer.Formatting = indent ? Formatting.Indented : Formatting.None;
+            return new JsonSerializerWrapper(serializer, encoding);
         }
 
         public T Deserialize<T>(Stream stream)
         {
+
             Condition.Requires(stream, nameof(stream)).IsNotNull();
             using (var reader = new StreamReader(stream, this.Encoding))
             using (var jsonReader = new JsonTextReader(reader))
@@ -71,6 +71,18 @@ namespace DDD.Core.Infrastructure.Serialization
             {
                 this.serializer.Serialize(jsonWriter, obj);
             }
+        }
+
+        private static JsonSerializer DefaultSerializer()
+        {
+            var serializer = new JsonSerializer
+            {
+                Formatting = JsonSerializationOptions.Indent ? Formatting.Indented : Formatting.None,
+                NullValueHandling = NullValueHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+            serializer.Converters.Add(new StringEnumConverter());
+            return serializer;
         }
 
         #endregion Methods

@@ -9,13 +9,13 @@ namespace DDD.Core.Domain
     {
         #region Fields
 
-        private readonly ISerializer eventSerializer;
+        private readonly ITextSerializer eventSerializer;
 
         #endregion Fields
 
         #region Constructors
 
-        public EventTranslator(ISerializer eventSerializer)
+        public EventTranslator(ITextSerializer eventSerializer)
         {
             Condition.Requires(eventSerializer, nameof(eventSerializer)).IsNotNull();
             this.eventSerializer = eventSerializer;
