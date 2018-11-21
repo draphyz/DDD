@@ -48,7 +48,6 @@
     <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="IAssemblyReference.cs" />
     <Compile Include="Patients\BelgianPatientTranslator.cs" />
     <Compile Include="Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
     <Compile Include="Prescriptions\PrescribedPharmaceuticalCompounding.cs" />
@@ -89,7 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="DDD.HealthcareDelivery.Domain.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDD.Common.Domain\DDD.Common.Domain.csproj">

@@ -51,7 +51,6 @@
     </Compile>
     <Compile Include="CharExtensions.cs" />
     <Compile Include="Collections\ICollectionExtensions.cs" />
-    <Compile Include="IAssemblyReference.cs" />
     <Compile Include="IServiceProviderExtensions.cs" />
     <Compile Include="Mapping\IMappingProcessor.cs" />
     <Compile Include="Mapping\IObjectMapper.cs" />
@@ -79,7 +78,6 @@
     <Compile Include="Validation\ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DDD.Core.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

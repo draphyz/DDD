@@ -52,7 +52,6 @@
     </Compile>
     <Compile Include="Data\DbScriptSplitter.cs" />
     <Compile Include="Data\IDbConnectionFactoryExtensions.cs" />
-    <Compile Include="IAssemblyReference.cs" />
     <Compile Include="Serialization\DataContractSerializerWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\DbConnectionFactory.cs" />
@@ -81,7 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="DDD.Core.Infrastructure.nuspec" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

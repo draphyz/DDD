@@ -64,10 +64,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="DDD.Core.Infrastructure.Dapper.nuspec" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DDD.Core.Infrastructure\DDD.Core.Infrastructure.csproj">
       <Project>{0673db02-015e-4257-8aaf-e42b91196486}</Project>
       <Name>DDD.Core.Infrastructure</Name>
@@ -76,6 +72,9 @@
       <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
       <Name>DDD.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -68,7 +68,6 @@
     <Compile Include="FluentQueryValidatorAdapter.cs" />
     <Compile Include="FluentValidatorAdapter.cs" />
     <Compile Include="FluentValidatorExtensions.cs" />
-    <Compile Include="IAssemblyReference.cs" />
     <Compile Include="Validators\AlphanumericValidator.cs" />
     <Compile Include="Validators\AlphabeticValidator.cs" />
     <Compile Include="Validators\NumericValidator.cs" />
@@ -82,7 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="DDD.Core.Infrastructure.FluentValidation.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDD.Core.Application\DDD.Core.Application.csproj">

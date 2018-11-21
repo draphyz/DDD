@@ -62,7 +62,6 @@
     <Compile Include="DbModelBuilderExtensions.cs" />
     <Compile Include="EFRepository.cs" />
     <Compile Include="EventStateConfiguration.cs" />
-    <Compile Include="IAssemblyReference.cs" />
     <Compile Include="IAsyncDbContextFactory.cs" />
     <Compile Include="OracleEventStateConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -76,7 +75,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="DDD.Core.Infrastructure.EF.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDD.Core.Domain\DDD.Core.Domain.csproj">

@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8BF8E0BD-B92C-4FC1-BE17-7C10036A2FE2}</ProjectGuid>
+    <ProjectGuid>{9728B38C-E802-4F11-8D60-5BEC62C459C1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DDD.Core.Infrastructure.Serialization</RootNamespace>
-    <AssemblyName>DDD.Core.Infrastructure.Newtonsoft</AssemblyName>
+    <RootNamespace>DDD.Core.Domain</RootNamespace>
+    <AssemblyName>DDD.Core.Domain.Messages</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,12 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Conditions, Version=2.1.0.24, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>L:\packages\Conditions.2.1.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10\Conditions.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>L:\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,24 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="JsonSerializerWrapper.cs" />
+    <Compile Include="IDomainEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DDD.Core.Infrastructure\DDD.Core.Infrastructure.csproj">
-      <Project>{0673db02-015e-4257-8aaf-e42b91196486}</Project>
-      <Name>DDD.Core.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Core\DDD.Core.csproj">
-      <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
-      <Name>DDD.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

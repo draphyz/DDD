@@ -53,7 +53,6 @@
     <Compile Include="DomainEventHandler.cs" />
     <Compile Include="DomainEventPublisher.cs" />
     <Compile Include="EventTranslator.cs" />
-    <Compile Include="IAssemblyReference.cs" />
     <Compile Include="IRepositoryExtensions.cs" />
     <Compile Include="IAsyncRepositoryExtensions.cs" />
     <Compile Include="IDomainEvent.cs" />
@@ -74,7 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="DDD.Core.Domain.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDD.Core\DDD.Core.csproj">

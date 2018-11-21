@@ -51,7 +51,6 @@
     <Compile Include="Alpha2CountryCode.cs" />
     <Compile Include="ArbitraryIdentifier.cs" />
     <Compile Include="BinaryContent.cs" />
-    <Compile Include="IAssemblyReference.cs" />
     <Compile Include="IdentificationCode.cs" />
     <Compile Include="IdentificationNumber.cs" />
     <Compile Include="LanguageCode.cs" />
@@ -72,7 +71,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="DDD.Common.Domain.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDD.Core.Domain\DDD.Core.Domain.csproj">

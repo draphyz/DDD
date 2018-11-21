@@ -64,12 +64,10 @@
     <Compile Include="CustomMemberDataAttribute.cs" />
     <Compile Include="DbFixture.cs" />
     <Compile Include="IDbFixture.cs" />
-    <Compile Include="IAssemblyReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="DDD.Core.Infrastructure.Xunit.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDD.Core.Infrastructure\DDD.Core.Infrastructure.csproj">

@@ -85,7 +85,6 @@
     <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="IAssemblyReference.cs" />
     <Compile Include="OracleHealthcareContext.cs" />
     <Compile Include="SqlServerHealthcareContextFactory.cs" />
     <Compile Include="OracleHealthcareContextFactory.cs" />
@@ -114,7 +113,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="DDD.HealthcareDelivery.Infrastructure.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDD.Common.Application\DDD.Common.Application.csproj">

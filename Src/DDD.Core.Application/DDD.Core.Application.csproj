@@ -50,7 +50,6 @@
     <Compile Include="RepositoryCommandHandler.cs" />
     <Compile Include="CommandException.cs" />
     <Compile Include="CommandProcessor.cs" />
-    <Compile Include="IAssemblyReference.cs" />
     <Compile Include="ICommand.cs" />
     <Compile Include="IAsyncCommandHandler.cs" />
     <Compile Include="IAsyncCommandValidator.cs" />
@@ -71,7 +70,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="DDD.Core.Application.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDD.Core.Domain\DDD.Core.Domain.csproj">
