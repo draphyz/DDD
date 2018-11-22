@@ -6,7 +6,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9CC062C7-73EA-49B4-B694-31A5F48FD09D}</ProjectGuid>
+    <ProjectGuid>{63505329-BD97-4C75-B7D7-77FB42670E79}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DDD.Core</RootNamespace>
@@ -39,12 +39,15 @@
       <HintPath>L:\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="FluentAssertions, Version=5.4.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
-      <HintPath>L:\packages\FluentAssertions.5.4.2\lib\net45\FluentAssertions.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="FluentAssertions, Version=5.5.3.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>L:\packages\FluentAssertions.5.5.3\lib\net47\FluentAssertions.dll</HintPath>
     </Reference>
     <Reference Include="NSubstitute, Version=3.1.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <HintPath>L:\Packages\NSubstitute.3.1.0\lib\net46\NSubstitute.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>L:\packages\Oracle.ManagedDataAccess.18.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -82,28 +85,58 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mapping\FakeObject1.cs" />
-    <Compile Include="Mapping\FakeObject2.cs" />
-    <Compile Include="Mapping\MappingProcessorTests.cs" />
+    <Compile Include="Application\CommandProcessorTests.cs" />
+    <Compile Include="Application\FakeCommand1.cs" />
+    <Compile Include="Application\FakeCommand2.cs" />
+    <Compile Include="Application\FakeQuery1.cs" />
+    <Compile Include="Application\FakeQuery2.cs" />
+    <Compile Include="Application\FakeResult.cs" />
+    <Compile Include="Application\QueryProcessorTests.cs" />
+    <Compile Include="Domain\ComparableValueObjectTests.cs" />
+    <Compile Include="Domain\DomainEntityTests.cs" />
+    <Compile Include="Domain\EventPublisherTests.cs" />
+    <Compile Include="Domain\FakeComplexEntity.cs" />
+    <Compile Include="Domain\FakeComplexValueObject.cs" />
+    <Compile Include="Domain\FakeEvent1.cs" />
+    <Compile Include="Domain\FakeEvent2.cs" />
+    <Compile Include="Domain\FakeEvent3.cs" />
+    <Compile Include="Domain\FakeIntIdentityComponent.cs" />
+    <Compile Include="Domain\FakeSimpleEntity.cs" />
+    <Compile Include="Domain\FakeSimpleValueObject.cs" />
+    <Compile Include="Domain\FakeStringIdentityComponent.cs" />
+    <Compile Include="Domain\ValueObjectTests.cs" />
+    <Compile Include="Infrastructure\Data\DbScriptSplitterTests.cs" />
+    <Compile Include="Infrastructure\Data\DbStandardExpressionsTests.cs" />
+    <Compile Include="Infrastructure\Data\FakeDbStandardExpressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DateTimeExtensionsTests.cs" />
-    <Compile Include="StringExtensionsTests.cs" />
+    <Compile Include="Infrastructure\Data\FakeQuery.cs" />
+    <Compile Include="Infrastructure\Data\IDbConnectionExtensionsTests.cs" />
+    <Compile Include="Infrastructure\Data\Oracle11ExpressionsTests.cs" />
+    <Compile Include="Infrastructure\Data\Sql2012ExpressionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Src\DDD.Core\DDD.Core.csproj">
-      <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
-      <Name>DDD.Core</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="L:\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Src\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj">
+      <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
+      <Name>DDD.Core.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\DDD.Core.Messages\DDD.Core.Messages.csproj">
+      <Project>{2438b31a-3a39-4878-81fa-be5ae715eae5}</Project>
+      <Name>DDD.Core.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Src\DDD.Core\DDD.Core.csproj">
+      <Project>{c6c3e419-b9aa-44ad-9dbf-789294687ae6}</Project>
+      <Name>DDD.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

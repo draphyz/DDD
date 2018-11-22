@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DDD.Core.UnitTests")]
+[assembly: AssemblyTitle("DDD.Core.Infrastructure.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DDD.Core.UnitTests")]
+[assembly: AssemblyProduct("DDD.Core.Infrastructure.UnitTests")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("9cc062c7-73ea-49b4-b694-31a5f48fd09d")]
+[assembly: Guid("63505329-bd97-4c75-b7d7-77fb42670e79")]
 
 // Version information for an assembly consists of the following four values:
 //

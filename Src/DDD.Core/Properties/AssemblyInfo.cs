@@ -2,6 +2,6 @@
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("DDD.Core")]
-[assembly: AssemblyDescription("Usefull extensions of the core .NET libraries and cross-cutting interfaces.")]
+[assembly: AssemblyDescription("Core components for DDD layers.")]
 [assembly: AssemblyProduct("DDD.Core")]
-[assembly: Guid("596a8700-3d18-4a62-b200-1f78a9ea4617")]
+[assembly: Guid("c6c3e419-b9aa-44ad-9dbf-789294687ae6")]
