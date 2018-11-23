@@ -7,7 +7,7 @@
     <ProjectGuid>{40A849C5-C8D7-4F76-856A-138AED73A6C3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DDD.Common.Messages</RootNamespace>
+    <RootNamespace>DDD.Common</RootNamespace>
     <AssemblyName>DDD.Common.Messages</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
