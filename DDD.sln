@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.HealthcareDelivery.Mess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Common.Messages", "Src\DDD.Common.Messages\DDD.Common.Messages.csproj", "{40A849C5-C8D7-4F76-856A-138AED73A6C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.NServiceBus", "Src\DDD.Core.NServiceBus\DDD.Core.NServiceBus.csproj", "{436D869F-7566-4436-90A8-B655145C5BCA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{40A849C5-C8D7-4F76-856A-138AED73A6C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40A849C5-C8D7-4F76-856A-138AED73A6C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40A849C5-C8D7-4F76-856A-138AED73A6C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{436D869F-7566-4436-90A8-B655145C5BCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{436D869F-7566-4436-90A8-B655145C5BCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{436D869F-7566-4436-90A8-B655145C5BCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{436D869F-7566-4436-90A8-B655145C5BCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +155,7 @@ Global
 		{2438B31A-3A39-4878-81FA-BE5AE715EAE5} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
 		{B8BB212C-8AFC-4258-A023-EB1F6937F53D} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
 		{40A849C5-C8D7-4F76-856A-138AED73A6C3} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
+		{436D869F-7566-4436-90A8-B655145C5BCA} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {983C3AB4-301E-47A3-93FF-2E4BD8F2090F}
