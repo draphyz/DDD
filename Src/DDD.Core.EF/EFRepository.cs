@@ -14,6 +14,7 @@ namespace DDD.Core.Infrastructure.Data
 {
     using Domain;
     using Mapping;
+    using Threading;
 
     public abstract class EFRepository<TDomainEntity, TStateEntity, TContext>
         : IAsyncRepository<TDomainEntity>
@@ -56,6 +57,7 @@ namespace DDD.Core.Infrastructure.Data
                      .IsNotNull()
                      .IsNotEmpty()
                      .DoesNotContain(null);
+            await new SynchronizationContextRemover();
             var keyValues = identityComponents.Select(c => c.EqualityComponents().First());
             var stateEntity = await this.FindAsync(keyValues);
             if (stateEntity == null) return null;
@@ -68,6 +70,7 @@ namespace DDD.Core.Infrastructure.Data
                      .IsNotNull()
                      .IsNotEmpty()
                      .DoesNotContain(null);
+            await new SynchronizationContextRemover();
             var stateEntities = aggregates.Select(a => a.ToState());
             var events = ToEventStates(aggregates);
             await this.SaveAsync(stateEntities, events);

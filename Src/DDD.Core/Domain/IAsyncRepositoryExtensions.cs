@@ -3,6 +3,8 @@ using Conditions;
 
 namespace DDD.Core.Domain
 {
+    using Threading;
+
     public static class IAsyncRepositoryExtensions
     {
 
@@ -13,6 +15,7 @@ namespace DDD.Core.Domain
             where TDomainEntity : DomainEntity
         {
             Condition.Requires(repository, nameof(repository)).IsNotNull();
+            await new SynchronizationContextRemover();
             await repository.SaveAsync(aggregates);
         }
 

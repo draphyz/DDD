@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
+    using Threading;
     using Domain;
 
     /// <summary>
@@ -42,6 +43,7 @@ namespace DDD.Core.Application
         public async Task HandleAsync(TCommand command)
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
+            await new SynchronizationContextRemover();
             try
             {
                 await this.ExecuteAsync(command);

@@ -59,6 +59,10 @@
     <Analyzer Include="L:\packages\NServiceBus.7.1.4\analyzers\dotnet\cs\NServiceBus.Core.Analyzer.dll" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj">
+      <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
+      <Name>DDD.Core.Abstractions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DDD.Core.Messages\DDD.Core.Messages.csproj">
       <Project>{2438B31A-3A39-4878-81FA-BE5AE715EAE5}</Project>
       <Name>DDD.Core.Messages</Name>

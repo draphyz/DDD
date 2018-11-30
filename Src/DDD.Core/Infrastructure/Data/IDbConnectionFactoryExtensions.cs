@@ -4,6 +4,8 @@ using Conditions;
 
 namespace DDD.Core.Infrastructure.Data
 {
+    using Threading;
+
     public static class IDbConnectionFactoryExtensions
     {
 
@@ -20,6 +22,7 @@ namespace DDD.Core.Infrastructure.Data
         public static async Task<DbConnection> CreateOpenConnectionAsync(this IDbConnectionFactory factory)
         {
             Condition.Requires(factory, nameof(factory)).IsNotNull();
+            await new SynchronizationContextRemover();
             var connection = factory.CreateConnection();
             await connection.OpenAsync();
             return connection;

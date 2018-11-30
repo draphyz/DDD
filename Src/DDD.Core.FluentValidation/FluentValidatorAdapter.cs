@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace DDD.Core.Infrastructure.Validation
 {
     using Mapping;
+    using Threading;
 
     public class FluentValidatorAdapter<T> 
         : DDD.Validation.IObjectValidator<T>, DDD.Validation.IAsyncObjectValidator<T>
@@ -46,6 +47,7 @@ namespace DDD.Core.Infrastructure.Validation
         /// <param name="ruleSet">The rule set.</param>
         public async Task<DDD.Validation.ValidationResult> ValidateAsync(T obj, string ruleSet = null)
         {
+            await new SynchronizationContextRemover();
             var result = await this.fluentValidator.ValidateAsync(obj, ruleSet: ruleSet);
             return this.resultTranslator.Translate(result);
         }

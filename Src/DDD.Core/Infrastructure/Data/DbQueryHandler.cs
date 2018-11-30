@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using Threading;
 
     /// <summary>
     /// Base class for handling database queries.
@@ -42,6 +43,7 @@ namespace DDD.Core.Infrastructure.Data
         public async Task<TResult> HandleAsync(TQuery query)
         {
             Condition.Requires(query, nameof(query)).IsNotNull();
+            await new SynchronizationContextRemover();
             try
             {
                 using (var connection = await this.ConnectionFactory.CreateOpenConnectionAsync())

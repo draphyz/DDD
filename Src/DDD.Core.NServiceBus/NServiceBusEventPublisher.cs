@@ -5,6 +5,7 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Messaging
 {
     using Domain;
+    using Threading;
 
     public class NServiceBusEventPublisher : IAsyncEventPublisher
     {
@@ -30,6 +31,7 @@ namespace DDD.Core.Infrastructure.Messaging
         public async Task PublishAsync(IEvent @event)
         {
             Condition.Requires(@event, nameof(@event)).IsNotNull();
+            await new SynchronizationContextRemover();
             await this.session.Publish(@event);
         }
 

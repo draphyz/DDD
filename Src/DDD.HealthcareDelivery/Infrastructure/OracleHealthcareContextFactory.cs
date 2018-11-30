@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
+    using Threading;
     using Core.Infrastructure.Data;
 
     public class OracleHealthcareContextFactory : IAsyncDbContextFactory<HealthcareContext>
@@ -28,6 +29,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         public async Task<HealthcareContext> CreateContextAsync()
         {
+            await new SynchronizationContextRemover();
             return new OracleHealthcareContext(await this.connectionFactory.CreateOpenConnectionAsync(), true);
         }
 
