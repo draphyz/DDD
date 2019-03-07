@@ -16,15 +16,13 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Properties
 
-        public string HealthFacilityCode { get; set; }
+        public int FacilityIdentifier { get; set; }
 
-        public int HealthFacilityIdentifier { get; set; }
+        public string FacilityLicenseNumber { get; set; }
 
-        public string HealthFacilityLicenseNumber { get; set; }
+        public string FacilityName { get; set; }
 
-        public string HealthFacilityName { get; set; }
-
-        public HealthFacilityType HealthFacilityType { get; set; }
+        public HealthFacilityType FacilityType { get; set; }
 
         public string LanguageCode { get; set; }
 
@@ -86,7 +84,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public override string ToString()
         {
-            return $"{this.GetType().Name} [prescriberIdentifier={this.PrescriberIdentifier}, patientIdentifier={this.PatientIdentifier}, healthFacilityIdentifier={this.HealthFacilityIdentifier}]";
+            return $"{this.GetType().Name} [prescriberIdentifier={this.PrescriberIdentifier}, patientIdentifier={this.PatientIdentifier}, facilityIdentifier={this.FacilityIdentifier}]";
         }
 
         #endregion Methods

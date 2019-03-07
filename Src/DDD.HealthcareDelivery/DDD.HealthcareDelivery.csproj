@@ -91,7 +91,7 @@
     <Compile Include="Domain\Facilities\BelgianHealthFacilityTranslator.cs" />
     <Compile Include="Domain\Facilities\BelgianHealthFacilityLicenseNumber.cs" />
     <Compile Include="Domain\Prescriptions\BelgianPrescribedMedicationTranslator.cs" />
-    <Compile Include="Domain\Facilities\HealthcareCenter.cs" />
+    <Compile Include="Domain\Facilities\MedicalOffice.cs" />
     <Compile Include="Domain\Practitioners\HealthcarePractitionerState.cs" />
     <Compile Include="Domain\Facilities\HealthFacility.cs" />
     <Compile Include="Domain\Facilities\HealthFacilityState.cs" />

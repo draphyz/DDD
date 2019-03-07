@@ -39,12 +39,13 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 );
         }
 
-        private static HealthcareCenter ToCenter(CreatePharmaceuticalPrescriptions command)
+        private static MedicalOffice ToMedicalOffice(CreatePharmaceuticalPrescriptions command)
         {
-            return new HealthcareCenter
+            return new MedicalOffice
             (
-                command.HealthFacilityIdentifier,
-                command.HealthFacilityName
+                command.FacilityIdentifier,
+                command.FacilityName,
+                BelgianHealthFacilityLicenseNumber.CreateIfNotEmpty(command.FacilityLicenseNumber)
             );
         }
 
@@ -61,14 +62,14 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         private static HealthFacility ToHealthFacility(CreatePharmaceuticalPrescriptions command)
         {
-            switch (command.HealthFacilityType)
+            switch (command.FacilityType)
             {
                 case HealthFacilityType.Hospital:
                     return ToHospital(command);
-                case HealthFacilityType.Center:
-                    return ToCenter(command);
+                case HealthFacilityType.MedicalOffice:
+                    return ToMedicalOffice(command);
                 default:
-                    throw new ArgumentException($"Health facility type '{command.HealthFacilityType}' not expected.", nameof(command));
+                    throw new ArgumentException($"Health facility type '{command.FacilityType}' not expected.", nameof(command));
             }
         }
 
@@ -76,10 +77,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         {
             return new Hospital
             (
-                command.HealthFacilityIdentifier,
-                command.HealthFacilityName,
-                new BelgianHealthFacilityLicenseNumber(command.HealthFacilityLicenseNumber),
-                command.HealthFacilityCode
+                command.FacilityIdentifier,
+                command.FacilityName,
+                new BelgianHealthFacilityLicenseNumber(command.FacilityLicenseNumber)
             );
         }
 

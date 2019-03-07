@@ -82,88 +82,88 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         [InlineData(0)]
         [InlineData(-1)]
         [InlineData(-5)]
-        public void Validate_WhenHealthFacilityIdentifierInvalid_ReturnsExpectedFailure(int healthFacilityIdentifier)
+        public void Validate_WhenFacilityIdentifierInvalid_ReturnsExpectedFailure(int facilityIdentifier)
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { HealthFacilityIdentifier = healthFacilityIdentifier };
+            var command = new CreatePharmaceuticalPrescriptions { FacilityIdentifier = facilityIdentifier };
             // Act
             var results = validator.Validate(command);
             // Assert
-            results.Errors.Should().ContainSingle(f => f.ErrorCode == "HealthFacilityIdentifierInvalid" && f.Severity == Severity.Error);
+            results.Errors.Should().ContainSingle(f => f.ErrorCode == "FacilityIdentifierInvalid" && f.Severity == Severity.Error);
         }
 
         [Theory]
         [InlineData(1)]
         [InlineData(2)]
         [InlineData(5)]
-        public void Validate_WhenHealthFacilityIdentifierValid_ReturnsNoSpecificFailure(int healthFacilityIdentifier)
+        public void Validate_WhenFacilityIdentifierValid_ReturnsNoSpecificFailure(int facilityIdentifier)
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { HealthFacilityIdentifier = healthFacilityIdentifier };
+            var command = new CreatePharmaceuticalPrescriptions { FacilityIdentifier = facilityIdentifier };
             // Act
             var results = validator.Validate(command);
             // Assert
-            results.Errors.Should().NotContain(f => f.ErrorCode == "HealthFacilityIdentifierInvalid");
+            results.Errors.Should().NotContain(f => f.ErrorCode == "FacilityIdentifierInvalid");
         }
 
         [Theory]
         [InlineData("aa")]
         [InlineData("11111")]
         [InlineData("1111111a")]
-        public void Validate_WhenHealthFacilityLicenseNumberInvalid_ReturnsExpectedFailure(string healthFacilityLicenseNumber)
+        public void Validate_WhenFacilityLicenseNumberInvalid_ReturnsExpectedFailure(string facilityLicenseNumber)
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { HealthFacilityLicenseNumber = healthFacilityLicenseNumber };
+            var command = new CreatePharmaceuticalPrescriptions { FacilityLicenseNumber = facilityLicenseNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
-            results.Errors.Should().Contain(f => f.ErrorCode == "HealthFacilityLicenseNumberInvalid" && f.Severity == Severity.Error);
+            results.Errors.Should().Contain(f => f.ErrorCode == "FacilityLicenseNumberInvalid" && f.Severity == Severity.Error);
         }
 
         [Theory]
         [InlineData("11111111")]
         [InlineData("01234567")]
-        public void Validate_WhenHealthFacilityLicenseNumberValid_ReturnsNoSpecificFailure(string healthFacilityLicenseNumber)
+        public void Validate_WhenFacilityLicenseNumberValid_ReturnsNoSpecificFailure(string facilityLicenseNumber)
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { HealthFacilityLicenseNumber = healthFacilityLicenseNumber };
+            var command = new CreatePharmaceuticalPrescriptions { FacilityLicenseNumber = facilityLicenseNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
-            results.Errors.Should().NotContain(f => f.ErrorCode == "HealthFacilityLicenseNumberInvalid");
+            results.Errors.Should().NotContain(f => f.ErrorCode == "FacilityLicenseNumberInvalid");
         }
 
         [Theory]
         [InlineData(null)]
         [InlineData("")]
         [InlineData("  ")]
-        public void Validate_WhenHealthFacilityNameEmpty_ReturnsExpectedFailure(string healthFacilityName)
+        public void Validate_WhenFacilityNameEmpty_ReturnsExpectedFailure(string facilityName)
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { HealthFacilityName = healthFacilityName };
+            var command = new CreatePharmaceuticalPrescriptions { FacilityName = facilityName };
             // Act
             var results = validator.Validate(command);
             // Assert
-            results.Errors.Should().ContainSingle(f => f.ErrorCode == "HealthFacilityNameEmpty" && f.Severity == Severity.Error);
+            results.Errors.Should().ContainSingle(f => f.ErrorCode == "FacilityNameEmpty" && f.Severity == Severity.Error);
         }
 
         [Theory]
         [InlineData("Healthcenter Donald Duck")]
         [InlineData("Centre ophtalmo")]
-        public void Validate_WhenHealthFacilityNameNotEmpty_ReturnsNoSpecificFailure(string healthFacilityName)
+        public void Validate_WhenFacilityNameNotEmpty_ReturnsNoSpecificFailure(string facilityName)
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { HealthFacilityName = healthFacilityName };
+            var command = new CreatePharmaceuticalPrescriptions { FacilityName = facilityName };
             // Act
             var results = validator.Validate(command);
             // Assert
-            results.Errors.Should().NotContain(f => f.ErrorCode == "HealthFacilityNameEmpty");
+            results.Errors.Should().NotContain(f => f.ErrorCode == "FacilityNameEmpty");
         }
 
         [Theory]

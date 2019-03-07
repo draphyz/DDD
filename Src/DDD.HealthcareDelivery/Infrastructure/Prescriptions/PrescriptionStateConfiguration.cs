@@ -175,32 +175,24 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             this.Property(p => p.Patient.Birthdate)
                 .HasColumnName(ToCasingConvention("PatientBirthdate"))
                 .HasColumnOrder(31);
-            this.Property(p => p.Patient.OldIdentifier)
-                .HasColumnName(ToCasingConvention("PatientOldId"))
-                .HasColumnOrder(32);
             this.Property(p => p.HealthFacility.Identifier)
                 .HasColumnName(ToCasingConvention("FacilityId"))
-                .HasColumnOrder(33);
+                .HasColumnOrder(32);
             this.Property(p => p.HealthFacility.FacilityType)
                 .HasColumnName(ToCasingConvention("FacilityType"))
-                .HasColumnOrder(34)
+                .HasColumnOrder(33)
                 .IsUnicode(false)
                 .HasMaxLength(20)
                 .IsRequired();
             this.Property(p => p.HealthFacility.Name)
                 .HasColumnName(ToCasingConvention("FacilityName"))
-                .HasColumnOrder(35)
+                .HasColumnOrder(34)
                 .IsUnicode(false)
                 .HasMaxLength(100)
                 .IsRequired();
             this.Property(p => p.HealthFacility.LicenseNumber)
                 .HasColumnName(ToCasingConvention("FacilityLicenseNum"))
-                .HasColumnOrder(36)
-                .IsUnicode(false)
-                .HasMaxLength(25);
-            this.Property(p => p.HealthFacility.Code)
-                .HasColumnName(ToCasingConvention("FacilityCode"))
-                .HasColumnOrder(37)
+                .HasColumnOrder(35)
                 .IsUnicode(false)
                 .HasMaxLength(25);
         }

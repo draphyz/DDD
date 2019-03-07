@@ -28,10 +28,10 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             RuleFor(c => c.PatientLastName).NotEmpty().WithErrorCode("PatientLastNameEmpty");
             RuleFor(c => c.PatientSocialSecurityNumber).Length(11).WithErrorCode("PatientSocialSecurityNumberInvalid")
                                                        .Numeric().WithErrorCode("PatientSocialSecurityNumberInvalid");
-            RuleFor(c => c.HealthFacilityIdentifier).GreaterThan(0).WithErrorCode("HealthFacilityIdentifierInvalid");
-            RuleFor(c => c.HealthFacilityName).NotEmpty().WithErrorCode("HealthFacilityNameEmpty");
-            RuleFor(c => c.HealthFacilityLicenseNumber).Length(8).WithErrorCode("HealthFacilityLicenseNumberInvalid")
-                                                       .Numeric().WithErrorCode("HealthFacilityLicenseNumberInvalid");
+            RuleFor(c => c.FacilityIdentifier).GreaterThan(0).WithErrorCode("FacilityIdentifierInvalid");
+            RuleFor(c => c.FacilityName).NotEmpty().WithErrorCode("FacilityNameEmpty");
+            RuleFor(c => c.FacilityLicenseNumber).Length(8).WithErrorCode("FacilityLicenseNumberInvalid")
+                                                       .Numeric().WithErrorCode("FacilityLicenseNumberInvalid");
             RuleFor(c => c.Prescriptions).NotEmpty().WithErrorCode("PrescriptionsEmpty");
             RuleForEach(c => c.Prescriptions).NotNull().WithErrorCode("PrescriptionNull")
                                              .SetValidator(c => new BelgianPharmaceuticalPrescriptionDescriptorValidator());

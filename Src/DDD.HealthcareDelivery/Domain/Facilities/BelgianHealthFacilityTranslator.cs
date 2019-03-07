@@ -15,8 +15,8 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
             Condition.Requires(state, nameof(state)).IsNotNull();
             switch (state.FacilityType.ToEnum<HealthFacilityType>())
             {
-                case HealthFacilityType.Center:
-                    return CreateCenter(state);
+                case HealthFacilityType.MedicalOffice:
+                    return CreateMedicalOffice(state);
                 case HealthFacilityType.Hospital:
                     return CreateHospital(state);
                 default:
@@ -24,9 +24,9 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
             }
         }
 
-        private static HealthcareCenter CreateCenter(HealthFacilityState state)
+        private static MedicalOffice CreateMedicalOffice(HealthFacilityState state)
         {
-            return new HealthcareCenter(state.Identifier, state.Name);
+            return new MedicalOffice(state.Identifier, state.Name, BelgianHealthFacilityLicenseNumber.CreateIfNotEmpty(state.LicenseNumber));
         }
 
         private static Hospital CreateHospital(HealthFacilityState state)
@@ -35,8 +35,7 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
             (
                 state.Identifier,
                 state.Name,
-                new BelgianHealthFacilityLicenseNumber(state.LicenseNumber),
-                state.Code
+                new BelgianHealthFacilityLicenseNumber(state.LicenseNumber)
             );
         }
 

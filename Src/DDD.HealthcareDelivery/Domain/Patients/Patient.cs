@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Conditions;
+using System;
 using System.Collections.Generic;
-using Conditions;
 
 namespace DDD.HealthcareDelivery.Domain.Patients
 {
-    using Core.Domain;
     using Common.Domain;
+    using Core.Domain;
 
     public class Patient : ValueObject, IStateObjectConvertible<PatientState>
     {
@@ -68,11 +68,17 @@ namespace DDD.HealthcareDelivery.Domain.Patients
                 FullName = this.FullName.ToState(),
                 Sex = this.Sex.Code,
                 SocialSecurityNumber = this.SocialSecurityNumber?.Number,
-                ContactInformation = this.ContactInformation == null ? 
+                ContactInformation = this.ContactInformation == null ?
                                      new ContactInformationState() // EF6 complex types cannot be null
-                                     : this.ContactInformation.ToState(), 
+                                     : this.ContactInformation.ToState(),
                 Birthdate = this.Birthdate,
             };
+        }
+
+        public override string ToString()
+        {
+            var format = "{0} [identifier={1}, fullName={2}, sex={3}, socialSecurityNumber={4}, contactInformation={5}, birthdate={6}]";
+            return string.Format(format, this.GetType().Name, this.Identifier, this.FullName, this.Sex, this.SocialSecurityNumber, this.ContactInformation, this.Birthdate);
         }
 
         #endregion Methods

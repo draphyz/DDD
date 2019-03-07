@@ -2,7 +2,7 @@
 {
     public enum HealthFacilityType
     {
-        Center,
+        MedicalOffice,
         Hospital
     }
 }

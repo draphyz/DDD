@@ -17,8 +17,6 @@ namespace DDD.HealthcareDelivery.Domain.Patients
 
         public int Identifier { get; set; }
 
-        public int? OldIdentifier { get; set; }
-
         public string Sex { get; set; }
 
         public string SocialSecurityNumber { get; set; }

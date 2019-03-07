@@ -1,5 +1,8 @@
 ﻿namespace DDD.HealthcareDelivery.Domain.Facilities
 {
+    /// <summary>
+    /// Represents a facility that provides ongoing basic care in medicine and surgery with the possibility to stay overnight.
+    /// </summary>
     public class Hospital : HealthFacility
     {
 
@@ -7,9 +10,8 @@
 
         public Hospital(int identifier,
                         string name, 
-                        HealthFacilityLicenseNumber licenseNumber = null, 
-                        string code = null) 
-            : base(identifier, name, licenseNumber, code)
+                        HealthFacilityLicenseNumber licenseNumber = null) 
+            : base(identifier, name, licenseNumber)
         {
         }
 

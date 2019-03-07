@@ -7,8 +7,6 @@
 
         public int Identifier { get; set; }
 
-        public string Code { get; set; }
-
         public string LicenseNumber { get; set; }
 
         public string Name { get; set; }

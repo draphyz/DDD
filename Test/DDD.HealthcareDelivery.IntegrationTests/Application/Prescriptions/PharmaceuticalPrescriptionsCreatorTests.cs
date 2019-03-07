@@ -90,9 +90,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 PatientLastName = "Flintstone",
                 PatientBirthdate = new DateTime(1976, 2, 7),
                 PatientSex = Sex.Male,
-                HealthFacilityIdentifier = 1,
-                HealthFacilityType = HealthFacilityType.Center,
-                HealthFacilityName = "Healthcenter Donald Duck",
+                FacilityIdentifier = 1,
+                FacilityType = HealthFacilityType.MedicalOffice,
+                FacilityName = "Healthcenter Donald Duck",
                 Prescriptions = new PharmaceuticalPrescriptionDescriptor[]
                 {
                     new PharmaceuticalPrescriptionDescriptor

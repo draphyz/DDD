@@ -15,16 +15,13 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
 
         protected HealthFacility(int identifier, 
                                  string name, 
-                                 HealthFacilityLicenseNumber licenseNumber = null, 
-                                 string code = null)
+                                 HealthFacilityLicenseNumber licenseNumber = null)
         {
             Condition.Requires(identifier, nameof(identifier)).IsGreaterThan(0);
             Condition.Requires(name, nameof(name)).IsNotNullOrWhiteSpace();
             this.Identifier = identifier;
             this.Name = name;
             this.LicenseNumber = licenseNumber;
-            if (!string.IsNullOrWhiteSpace(code))
-                this.Code = code.ToUpper();
         }
 
         #endregion Constructors
@@ -32,8 +29,6 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
         #region Properties
 
         public int Identifier { get; }
-
-        public string Code { get; }
 
         public HealthFacilityLicenseNumber LicenseNumber { get; }
 
@@ -45,9 +40,9 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
 
         public override IEnumerable<object> EqualityComponents()
         {
+            yield return this.Identifier;
             yield return this.Name;
             yield return this.LicenseNumber;
-            yield return this.Code;
         }
 
         public virtual HealthFacilityState ToState()
@@ -56,14 +51,13 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
             {
                 Identifier = this.Identifier,
                 Name = this.Name,
-                LicenseNumber = this.LicenseNumber?.Number,
-                Code = this.Code,
+                LicenseNumber = this.LicenseNumber?.Number
             };
         }
 
         public override string ToString()
         {
-            return $"{this.GetType().Name} [name={this.Name}, licenseNumber={this.LicenseNumber}, code={this.Code}]";
+            return $"{this.GetType().Name} [identifier={this.Identifier}, name={this.Name}, licenseNumber={this.LicenseNumber}]";
         }
 
         #endregion Methods
