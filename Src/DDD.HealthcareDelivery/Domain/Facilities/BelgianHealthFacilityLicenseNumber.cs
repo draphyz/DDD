@@ -20,13 +20,34 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
 
         #region Methods
 
+        /// <summary>
+        /// Computes the check digit based on the 6 first digits.
+        /// </summary>
+        public static int ComputeCheckDigit(string number)
+        {
+            Condition.Requires(number, nameof(number)).IsLongerOrEqual(6);
+            var identifier = int.Parse(number.Substring(0, 6));
+            var modulus = 97;
+            return modulus - (identifier % modulus);
+        }
+
         public static BelgianHealthFacilityLicenseNumber CreateIfNotEmpty(string number)
         {
             if (string.IsNullOrWhiteSpace(number)) return null;
             return new BelgianHealthFacilityLicenseNumber(number);
         }
 
-        #endregion Methods
+        /// <summary>
+        /// Returns the check digit based on the 6 first digits.
+        /// </summary>
+        public int CheckDigit() => int.Parse(this.Number.Substring(6, 2));
 
+
+        /// <summary>
+        /// Returns the unique identifier of the health facility.
+        /// </summary>
+        public int FacilityUniqueIdentifier() => int.Parse(this.Number.Substring(0, 6));
+
+        #endregion Methods
     }
 }
