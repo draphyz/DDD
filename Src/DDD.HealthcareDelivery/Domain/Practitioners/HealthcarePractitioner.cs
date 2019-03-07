@@ -1,24 +1,27 @@
 ﻿using System.Collections.Generic;
 using Conditions;
 
-namespace DDD.HealthcareDelivery.Domain.Providers
+namespace DDD.HealthcareDelivery.Domain.Practitioners
 {
     using Common.Domain;
     using Core.Domain;
 
-    public abstract class HealthcareProvider 
-        : ValueObject, IStateObjectConvertible<HealthcareProviderState>
+    /// <summary>
+    /// Represents a person that provides healthcare services.
+    /// </summary>
+    public abstract class HealthcarePractitioner 
+        : ValueObject, IStateObjectConvertible<HealthcarePractitionerState>
     {
 
         #region Constructors
 
-        protected HealthcareProvider(int identifier,
-                                     FullName fullName,
-                                     PractitionerLicenseNumber licenseNumber,
-                                     SocialSecurityNumber socialSecurityNumber = null,
-                                     ContactInformation contactInformation = null,
-                                     string speciality = null,
-                                     string displayName = null)
+        protected HealthcarePractitioner(int identifier,
+                                         FullName fullName,
+                                         HealthcarePractitionerLicenseNumber licenseNumber,
+                                         SocialSecurityNumber socialSecurityNumber = null,
+                                         ContactInformation contactInformation = null,
+                                         string speciality = null,
+                                         string displayName = null)
         {
             Condition.Requires(identifier, nameof(identifier)).IsGreaterThan(0);
             Condition.Requires(fullName, nameof(fullName)).IsNotNull();
@@ -45,7 +48,7 @@ namespace DDD.HealthcareDelivery.Domain.Providers
 
         public int Identifier { get; }
 
-        public PractitionerLicenseNumber LicenseNumber { get; }
+        public HealthcarePractitionerLicenseNumber LicenseNumber { get; }
 
         public SocialSecurityNumber SocialSecurityNumber { get; }
 
@@ -66,9 +69,9 @@ namespace DDD.HealthcareDelivery.Domain.Providers
             yield return this.DisplayName;
         }
 
-        public virtual HealthcareProviderState ToState()
+        public virtual HealthcarePractitionerState ToState()
         {
-            return new HealthcareProviderState
+            return new HealthcarePractitionerState
             {
                 Identifier = this.Identifier,
                 FullName = this.FullName.ToState(),

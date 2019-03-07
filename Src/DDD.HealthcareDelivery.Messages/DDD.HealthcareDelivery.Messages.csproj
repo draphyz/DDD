@@ -56,7 +56,7 @@
     <Compile Include="Domain\Prescriptions\PharmaceuticalPrescriptionCreated.cs" />
     <Compile Include="Domain\Prescriptions\PharmaceuticalPrescriptionRevoked.cs" />
     <Compile Include="Domain\Prescriptions\PrescribedMedicationType.cs" />
-    <Compile Include="Domain\Providers\HealthcareProviderType.cs" />
+    <Compile Include="Domain\Practitioners\HealthcarePractitionerType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

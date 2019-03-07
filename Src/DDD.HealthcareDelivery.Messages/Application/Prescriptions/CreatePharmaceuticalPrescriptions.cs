@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Domain.Facilities;
-    using Domain.Providers;
+    using Domain.Practitioners;
     using Core.Application;
     using Common.Application;
 
@@ -74,7 +74,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public string PrescriberStreet { get; set; }
 
-        public HealthcareProviderType PrescriberType { get; set; }
+        public HealthcarePractitionerType PrescriberType { get; set; }
 
         public string PrescriberWebSite { get; set; }
         public ICollection<PharmaceuticalPrescriptionDescriptor> Prescriptions { get; set; }

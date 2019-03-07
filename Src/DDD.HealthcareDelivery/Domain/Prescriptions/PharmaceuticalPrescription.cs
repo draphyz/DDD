@@ -10,7 +10,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     using Common.Domain;
     using Patients;
     using Facilities;
-    using Providers;
+    using Practitioners;
 
     /// <summary>
     /// Represents a pharmaceutical prescription.
@@ -21,7 +21,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         #region Constructors
 
         public PharmaceuticalPrescription(PrescriptionIdentifier identifier, 
-                                          HealthcareProvider prescriber, 
+                                          HealthcarePractitioner prescriber, 
                                           Patient patient, 
                                           HealthFacility healthFacility , 
                                           IEnumerable<PrescribedMedication> prescribedMedications,
@@ -51,7 +51,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         #region Methods
 
         public static PharmaceuticalPrescription Create(PrescriptionIdentifier identifier,
-                                                        HealthcareProvider prescriber,
+                                                        HealthcarePractitioner prescriber,
                                                         Patient patient,
                                                         HealthFacility healthFacility,
                                                         IEnumerable<PrescribedMedication> prescribedMedications,
@@ -76,7 +76,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         }
 
         public static PharmaceuticalPrescription Create(PrescriptionIdentifier identifier,
-                                                        HealthcareProvider prescriber,
+                                                        HealthcarePractitioner prescriber,
                                                         Patient patient,
                                                         HealthFacility healthFacility,
                                                         IEnumerable<PrescribedMedication> prescribedMedications,

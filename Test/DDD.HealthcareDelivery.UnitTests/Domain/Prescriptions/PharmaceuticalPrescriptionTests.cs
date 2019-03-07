@@ -6,7 +6,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
     using Common.Domain;
     using Patients;
-    using Providers;
+    using Practitioners;
     using Facilities;
 
     public class PharmaceuticalPrescriptionTests : PrescriptionTests<PharmaceuticalPrescriptionState>
@@ -35,7 +35,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             var prescription = PharmaceuticalPrescription.Create
                               (
                                   new PrescriptionIdentifier(1),
-                                  new Physician(1, new FullName("Duck", "Donald"), new BelgianPractitionerLicenseNumber("19006951001")),
+                                  new Physician(1, new FullName("Duck", "Donald"), new BelgianHealthcarePractitionerLicenseNumber("19006951001")),
                                   new Patient(1, new FullName("Fred", "Flintstone"), BelgianSex.Male),
                                   new HealthcareCenter(1, "Healthcenter Donald Duck"),
                                   new PrescribedMedication[] { new PrescribedPharmaceuticalProduct("ADALAT OROS 30 COMP 28 X 30 MG", "appliquer 2 fois par jour") },
@@ -52,7 +52,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             var prescription = PharmaceuticalPrescription.Create
                               (
                                   new PrescriptionIdentifier(1),
-                                  new Physician(1, new FullName("Duck", "Donald"), new BelgianPractitionerLicenseNumber("19006951001")),
+                                  new Physician(1, new FullName("Duck", "Donald"), new BelgianHealthcarePractitionerLicenseNumber("19006951001")),
                                   new Patient(1, new FullName("Fred", "Flintstone"), BelgianSex.Male),
                                   new HealthcareCenter(1, "Healthcenter Donald Duck"),
                                   new PrescribedMedication[] { new PrescribedPharmaceuticalProduct("ADALAT OROS 30 COMP 28 X 30 MG", "appliquer 2 fois par jour") },
@@ -70,7 +70,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             var prescription = PharmaceuticalPrescription.Create
                               (
                                   new PrescriptionIdentifier(1),
-                                  new Physician(1, new FullName("Duck", "Donald"), new BelgianPractitionerLicenseNumber("19006951001")),
+                                  new Physician(1, new FullName("Duck", "Donald"), new BelgianHealthcarePractitionerLicenseNumber("19006951001")),
                                   new Patient(1, new FullName("Fred", "Flintstone"), BelgianSex.Male),
                                   new HealthcareCenter(1, "Healthcenter Donald Duck"),
                                   new PrescribedMedication[] { new PrescribedPharmaceuticalProduct("ADALAT OROS 30 COMP 28 X 30 MG", "appliquer 2 fois par jour") },
@@ -88,7 +88,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             var prescription = PharmaceuticalPrescription.Create
                               (
                                   new PrescriptionIdentifier(1),
-                                  new Physician(1, new FullName("Duck", "Donald"), new BelgianPractitionerLicenseNumber("19006951001")),
+                                  new Physician(1, new FullName("Duck", "Donald"), new BelgianHealthcarePractitionerLicenseNumber("19006951001")),
                                   new Patient(1, new FullName("Fred", "Flintstone"), BelgianSex.Male),
                                   new HealthcareCenter(1, "Healthcenter Donald Duck"),
                                   new PrescribedMedication[] { new PrescribedPharmaceuticalProduct("ADALAT OROS 30 COMP 28 X 30 MG", "appliquer 2 fois par jour") },
@@ -113,7 +113,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             return new PharmaceuticalPrescription
             (
                 new PrescriptionIdentifier(1),
-                new Physician(1, new FullName("Duck", "Donald"), new BelgianPractitionerLicenseNumber("19006951001")),
+                new Physician(1, new FullName("Duck", "Donald"), new BelgianHealthcarePractitionerLicenseNumber("19006951001")),
                 new Patient(1, new FullName("Fred", "Flintstone"), BelgianSex.Male),
                 new HealthcareCenter(1, "Healthcenter Donald Duck"),
                 new PrescribedMedication[] { new PrescribedPharmaceuticalProduct("ADALAT OROS 30 COMP 28 X 30 MG", "appliquer 2 fois par jour") },

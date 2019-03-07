@@ -8,7 +8,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     using Common.Domain;
     using Patients;
     using Facilities;
-    using Providers;
+    using Practitioners;
 
     /// <summary>
     /// Represents a medical prescription.
@@ -21,7 +21,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         #region Constructors
 
         protected Prescription(PrescriptionIdentifier identifier,
-                               HealthcareProvider prescriber,
+                               HealthcarePractitioner prescriber,
                                Patient patient,
                                HealthFacility healthFacility,
                                Alpha2LanguageCode languageCode,
@@ -63,7 +63,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         protected Alpha2LanguageCode LanguageCode { get; }
         protected Patient Patient { get; }
 
-        protected HealthcareProvider Prescriber { get; }
+        protected HealthcarePractitioner Prescriber { get; }
 
         protected PrescriptionStatus Status { get; set; }
 

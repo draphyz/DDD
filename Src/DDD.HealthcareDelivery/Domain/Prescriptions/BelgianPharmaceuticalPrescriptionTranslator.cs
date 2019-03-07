@@ -7,7 +7,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     using Common.Domain;
     using Facilities;
     using Patients;
-    using Providers;
+    using Practitioners;
 
     public class BelgianPharmaceuticalPrescriptionTranslator
         : IObjectTranslator<PharmaceuticalPrescriptionState, PharmaceuticalPrescription>
@@ -18,7 +18,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         private readonly IObjectTranslator<HealthFacilityState, HealthFacility> facilityTranslator;
         private readonly IObjectTranslator<PrescribedMedicationState, PrescribedMedication> medicationTranslator;
         private readonly IObjectTranslator<PatientState, Patient> patientTranslator;
-        private readonly IObjectTranslator<HealthcareProviderState, HealthcareProvider> providerTranslator;
+        private readonly IObjectTranslator<HealthcarePractitionerState, HealthcarePractitioner> practitionerTranslator;
 
         #endregion Fields
 
@@ -26,7 +26,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public BelgianPharmaceuticalPrescriptionTranslator()
         {
-            this.providerTranslator = new BelgianHealthcareProviderTranslator();
+            this.practitionerTranslator = new BelgianHealthcarePractitionerTranslator();
             this.patientTranslator = new BelgianPatientTranslator();
             this.facilityTranslator = new BelgianHealthFacilityTranslator();
             this.medicationTranslator = new BelgianPrescribedMedicationTranslator();
@@ -42,7 +42,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             return new PharmaceuticalPrescription
             (
                 new PrescriptionIdentifier(state.Identifier),
-                this.providerTranslator.Translate(state.Prescriber),
+                this.practitionerTranslator.Translate(state.Prescriber),
                 this.patientTranslator.Translate(state.Patient),
                 this.facilityTranslator.Translate(state.HealthFacility),
                 state.PrescribedMedications.Select(m => this.medicationTranslator.Translate(m)),

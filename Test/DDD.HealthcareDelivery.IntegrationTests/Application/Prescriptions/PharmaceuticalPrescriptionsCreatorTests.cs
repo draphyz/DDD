@@ -10,7 +10,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Core.Domain;
     using Domain.Prescriptions;
-    using Domain.Providers;
+    using Domain.Practitioners;
     using Domain.Facilities;
     using Common.Application;
     using Core.Infrastructure.Testing;
@@ -74,7 +74,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 LanguageCode = "fr",
                 PrescriberIdentifier = 1,
                 PrescriberLicenseNumber = "19006951001",
-                PrescriberType = HealthcareProviderType.Physician,
+                PrescriberType = HealthcarePractitionerType.Physician,
                 PrescriberFirstName = "Donald",
                 PrescriberLastName = "Duck",
                 PrescriberDisplayName = "Dr. Duck Donald",

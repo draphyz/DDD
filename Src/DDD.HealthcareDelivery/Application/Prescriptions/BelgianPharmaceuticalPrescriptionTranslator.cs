@@ -9,7 +9,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Domain.Prescriptions;
     using Domain.Facilities;
     using Domain.Patients;
-    using Domain.Providers;
+    using Domain.Practitioners;
     using Common.Domain;
 
     public class BelgianPharmaceuticalPrescriptionTranslator
@@ -21,7 +21,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         public IEnumerable<PharmaceuticalPrescription> Translate(CreatePharmaceuticalPrescriptions command)
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
-            var provider = ToProvider(command);
+            var prescriber = ToPrescriber(command);
             var patient = ToPatient(command);
             var facility = ToHealthFacility(command);
             var languageCode = new Alpha2LanguageCode(command.LanguageCode);
@@ -29,7 +29,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 yield return PharmaceuticalPrescription.Create
                 (
                     new PrescriptionIdentifier(prescription.PrescriptionIdentifier),
-                    provider,
+                    prescriber,
                     patient,
                     facility,
                     prescription.Medications.Select(m => ToPrescribedMedication(m)),
@@ -102,9 +102,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             (
                 command.PrescriberIdentifier,
                 new FullName(command.PrescriberLastName, command.PrescriberFirstName),
-                new BelgianPractitionerLicenseNumber(command.PrescriberLicenseNumber),
+                new BelgianHealthcarePractitionerLicenseNumber(command.PrescriberLicenseNumber),
                 BelgianSocialSecurityNumber.CreateIfNotEmpty(command.PrescriberSocialSecurityNumber),
-                ToProviderContactInformation(command),
+                ToPrescriberContactInformation(command),
                 command.PrescriberSpeciality,
                 command.PrescriberDisplayName
             );
@@ -137,21 +137,21 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             );
         }
 
-        private static HealthcareProvider ToProvider(CreatePharmaceuticalPrescriptions command)
+        private static HealthcarePractitioner ToPrescriber(CreatePharmaceuticalPrescriptions command)
         {
             switch (command.PrescriberType)
             {
-                case HealthcareProviderType.Physician:
+                case HealthcarePractitionerType.Physician:
                     return ToPhysician(command);
                 default:
                     throw new ArgumentException($"Prescriber type '{command.PrescriberType}' not expected.", nameof(command));
             }
         }
 
-        private static ContactInformation ToProviderContactInformation(CreatePharmaceuticalPrescriptions command)
+        private static ContactInformation ToPrescriberContactInformation(CreatePharmaceuticalPrescriptions command)
         {
             return new ContactInformation
-            (ToProviderPostalAddress(command),
+            (ToPrescriberPostalAddress(command),
                 command.PrescriberPrimaryTelephoneNumber,
                 command.PrescriberSecondaryTelephoneNumber,
                 null,
@@ -161,7 +161,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             );
         }
 
-        private static PostalAddress ToProviderPostalAddress(CreatePharmaceuticalPrescriptions command)
+        private static PostalAddress ToPrescriberPostalAddress(CreatePharmaceuticalPrescriptions command)
         {
             return PostalAddress.CreateIfNotEmpty
             (

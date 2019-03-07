@@ -9,7 +9,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
     using Core.Domain;
     using Domain.Prescriptions;
     using Domain.Patients;
-    using Domain.Providers;
+    using Domain.Practitioners;
     using Prescriptions;
     using Common.Domain;
 
@@ -56,7 +56,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
             modelBuilder.Configurations.Add(new PrescribedMedicationStateConfiguration(this.UseUpperCase));
             modelBuilder.ComplexType<PatientState>().Ignore(p => p.ContactInformation);
             modelBuilder.ComplexType<ContactInformationState>().Ignore(c => c.FaxNumber);
-            modelBuilder.ComplexType<HealthcareProviderState>();
+            modelBuilder.ComplexType<HealthcarePractitionerState>();
         }
         private void SetIdsForEvents()
         {

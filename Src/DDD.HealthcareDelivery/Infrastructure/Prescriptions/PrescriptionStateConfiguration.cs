@@ -50,7 +50,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             this.Property(p => p.Prescriber.Identifier)
                 .HasColumnName(ToCasingConvention("PrescriberId"))
                 .HasColumnOrder(7);
-            this.Property(p => p.Prescriber.ProviderType)
+            this.Property(p => p.Prescriber.PractitionerType)
                 .HasColumnName(ToCasingConvention("PrescriberType"))
                 .HasColumnOrder(8)
                 .IsUnicode(false)

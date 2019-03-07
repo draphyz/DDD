@@ -1,15 +1,18 @@
 ﻿using DDD.Common.Domain;
 
-namespace DDD.HealthcareDelivery.Domain.Providers
+namespace DDD.HealthcareDelivery.Domain.Practitioners
 {
-    public class Physician : HealthcareProvider
+    /// <summary>
+    /// Represents a person who is authorised to practise medicine.
+    /// </summary>
+    public class Physician : HealthcarePractitioner
     {
 
         #region Constructors
 
         public Physician(int identifier, 
                          FullName fullName, 
-                         PractitionerLicenseNumber licenseNumber,
+                         HealthcarePractitionerLicenseNumber licenseNumber,
                          SocialSecurityNumber socialSecurityNumber = null,
                          ContactInformation contactInformation = null, 
                          string speciality = null,
@@ -22,10 +25,10 @@ namespace DDD.HealthcareDelivery.Domain.Providers
 
         #region Methods
 
-        public override HealthcareProviderState ToState()
+        public override HealthcarePractitionerState ToState()
         {
             var state = base.ToState();
-            state.ProviderType = HealthcareProviderType.Physician.ToString();
+            state.PractitionerType = HealthcarePractitionerType.Physician.ToString();
             return state;
         }
 

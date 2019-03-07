@@ -1,8 +1,8 @@
-﻿namespace DDD.HealthcareDelivery.Domain.Providers
+﻿namespace DDD.HealthcareDelivery.Domain.Practitioners
 {
     using Common.Domain;
 
-    public class HealthcareProviderState
+    public class HealthcarePractitionerState
     {
 
         #region Properties
@@ -17,7 +17,7 @@
 
         public string LicenseNumber { get; set; }
 
-        public string ProviderType { get; set; }
+        public string PractitionerType { get; set; }
 
         public string SocialSecurityNumber { get; set; }
 

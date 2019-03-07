@@ -4,7 +4,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
     using Core.Domain;
     using Patients;
-    using Providers;
+    using Practitioners;
     using Facilities;
 
     public abstract class PrescriptionState : IStateEntity
@@ -26,7 +26,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public PatientState Patient { get; set; }
 
-        public HealthcareProviderState Prescriber { get; set; }
+        public HealthcarePractitionerState Prescriber { get; set; }
 
         public string Status { get; set; }
 
