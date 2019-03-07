@@ -92,7 +92,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 PatientSex = Sex.Male,
                 FacilityIdentifier = 1,
                 FacilityType = HealthFacilityType.MedicalOffice,
-                FacilityName = "Healthcenter Donald Duck",
+                FacilityName = "Medical Office Donald Duck",
                 Prescriptions = new PharmaceuticalPrescriptionDescriptor[]
                 {
                     new PharmaceuticalPrescriptionDescriptor

@@ -153,7 +153,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         }
 
         [Theory]
-        [InlineData("Healthcenter Donald Duck")]
+        [InlineData("Medical Office Donald Duck")]
         [InlineData("Centre ophtalmo")]
         public void Validate_WhenFacilityNameNotEmpty_ReturnsNoSpecificFailure(string facilityName)
         {
