@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="Domain\Facilities\BelgianHealthFacilityLicenseNumberTests.cs" />
     <Compile Include="Domain\Practitioners\BelgianHealthcarePractitionerLicenseNumberTests.cs" />
+    <Compile Include="Domain\Prescriptions\BelgianMedicationCodeTests.cs" />
     <Compile Include="Domain\Prescriptions\PharmaceuticalPrescriptionTests.cs" />
     <Compile Include="Domain\Prescriptions\PrescriptionTests.cs" />
     <Compile Include="Infrastructure\Prescriptions\BelgianCreatePharmaceuticalPrescriptionsValidatorTests.cs" />
