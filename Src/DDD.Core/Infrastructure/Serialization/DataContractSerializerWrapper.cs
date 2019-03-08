@@ -1,8 +1,8 @@
 ﻿using Conditions;
 using System.IO;
 using System.Runtime.Serialization;
-using System.Xml;
 using System.Text;
+using System.Xml;
 
 namespace DDD.Core.Infrastructure.Serialization
 {
@@ -30,8 +30,8 @@ namespace DDD.Core.Infrastructure.Serialization
             this.readerSettings = new XmlReaderSettings();
         }
 
-        public DataContractSerializerWrapper(XmlWriterSettings writerSettings,
-                                             XmlReaderSettings readerSettings)
+        private DataContractSerializerWrapper(XmlWriterSettings writerSettings,
+                                              XmlReaderSettings readerSettings)
         {
             Condition.Requires(writerSettings, nameof(writerSettings)).IsNotNull();
             Condition.Requires(readerSettings, nameof(readerSettings)).IsNotNull();
@@ -50,6 +50,12 @@ namespace DDD.Core.Infrastructure.Serialization
         #endregion Properties
 
         #region Methods
+
+        public static DataContractSerializerWrapper Create(XmlWriterSettings writerSettings,
+                                                           XmlReaderSettings readerSettings)
+        {
+            return new DataContractSerializerWrapper(writerSettings, readerSettings);
+        }
 
         public static DataContractSerializerWrapper Create(Encoding encoding, bool indent = true)
         {

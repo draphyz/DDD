@@ -30,8 +30,8 @@ namespace DDD.Core.Infrastructure.Serialization
             this.readerSettings = new XmlReaderSettings();
         }
 
-        public XmlSerializerWrapper(XmlWriterSettings writerSettings,
-                                    XmlReaderSettings readerSettings)
+        private XmlSerializerWrapper(XmlWriterSettings writerSettings,
+                                     XmlReaderSettings readerSettings)
         {
             Condition.Requires(writerSettings, nameof(writerSettings)).IsNotNull();
             Condition.Requires(readerSettings, nameof(readerSettings)).IsNotNull();
@@ -60,6 +60,12 @@ namespace DDD.Core.Infrastructure.Serialization
                 Indent = indent
             };
             var readerSettings = new XmlReaderSettings();
+            return new XmlSerializerWrapper(writerSettings, readerSettings);
+        }
+
+        public static XmlSerializerWrapper Create(XmlWriterSettings writerSettings,
+                                                  XmlReaderSettings readerSettings)
+        {
             return new XmlSerializerWrapper(writerSettings, readerSettings);
         }
 
