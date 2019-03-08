@@ -52,20 +52,21 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Properties
 
-        protected DateTime CreatedOn { get; }
+        public DateTime CreatedOn { get; }
 
-        protected DateTime? DelivrableAt { get; }
+        public DateTime? DelivrableAt { get; }
 
-        protected HealthFacility HealthFacility { get; }
+        public HealthFacility HealthFacility { get; }
 
-        protected PrescriptionIdentifier Identifier { get; }
+        public PrescriptionIdentifier Identifier { get; }
 
-        protected Alpha2LanguageCode LanguageCode { get; }
-        protected Patient Patient { get; }
+        public Alpha2LanguageCode LanguageCode { get; }
 
-        protected HealthcarePractitioner Prescriber { get; }
+        public Patient Patient { get; }
 
-        protected PrescriptionStatus Status { get; set; }
+        public HealthcarePractitioner Prescriber { get; }
+
+        public PrescriptionStatus Status { get; set; }
 
         #endregion Properties
 

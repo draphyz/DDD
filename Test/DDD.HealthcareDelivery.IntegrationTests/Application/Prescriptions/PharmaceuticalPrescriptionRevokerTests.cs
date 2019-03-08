@@ -51,9 +51,8 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             // Act
             await this.Handler.HandleAsync(command);
             // Assert
-            var prescription = (await this.Repository.FindAsync(new PrescriptionIdentifier(command.PrescriptionIdentifier)))
-                                                     .ToState();
-            prescription.Status.Should().Be(Domain.Prescriptions.PrescriptionStatus.Revoked.Code);
+            var prescription = await this.Repository.FindAsync(new PrescriptionIdentifier(command.PrescriptionIdentifier));
+            prescription.Status.Should().Be(Domain.Prescriptions.PrescriptionStatus.Revoked);
         }
 
         protected abstract IAsyncRepository<PharmaceuticalPrescription> CreateRepository();

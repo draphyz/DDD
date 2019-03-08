@@ -57,12 +57,10 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             // Act
             await this.Handler.HandleAsync(command);
             // Assert
-            var prescription = (await this.Repository.FindAsync(new PrescriptionIdentifier(command.Prescriptions.First().PrescriptionIdentifier)))
-                                                     .ToState();
-            var medications = prescription.PrescribedMedications;
+            var prescription = await this.Repository.FindAsync(new PrescriptionIdentifier(command.Prescriptions.First().PrescriptionIdentifier));
             prescription.Should().NotBeNull();
-            prescription.Status.Should().Be(Domain.Prescriptions.PrescriptionStatus.Created.Code);
-            medications.Should().NotBeNullOrEmpty();
+            prescription.Status.Should().Be(Domain.Prescriptions.PrescriptionStatus.Created);
+            prescription.PrescribedMedications().Should().NotBeNullOrEmpty();
         }
 
         protected abstract IAsyncRepository<PharmaceuticalPrescription> CreateRepository();

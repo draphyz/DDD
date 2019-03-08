@@ -59,8 +59,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                   new Alpha2LanguageCode("FR")
                               );
             // Assert
-            var status = prescription.ToState().Status;
-            status.Should().Be(PrescriptionStatus.Created.Code);
+            prescription.Status.Should().Be(PrescriptionStatus.Created);
         }
 
         [Fact]
@@ -96,8 +95,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                   new Alpha2LanguageCode("FR")
                               );
             // Assert
-            var status = prescription.ToState().Status;
-            status.Should().Be(PrescriptionStatus.Created.Code);
+            prescription.Status.Should().Be(PrescriptionStatus.Created);
         }
 
         public override void Revoke_RevocablePrescription_AddsPrescriptionRevokedEvent(Prescription<PharmaceuticalPrescriptionState> prescription)

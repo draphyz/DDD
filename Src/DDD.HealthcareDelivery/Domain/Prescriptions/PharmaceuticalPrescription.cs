@@ -1,15 +1,16 @@
-﻿using System.Linq;
+﻿using Conditions;
 using System;
 using System.Collections.Generic;
-using Conditions;
+using System.Collections.Immutable;
+using System.Linq;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
     using Collections;
-    using Core.Domain;
     using Common.Domain;
-    using Patients;
+    using Core.Domain;
     using Facilities;
+    using Patients;
     using Practitioners;
 
     /// <summary>
@@ -18,35 +19,35 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     public class PharmaceuticalPrescription : Prescription<PharmaceuticalPrescriptionState>
     {
 
+        #region Fields
+
+        private readonly ISet<PrescribedMedication> prescribedMedications = new HashSet<PrescribedMedication>();
+
+        #endregion Fields
+
         #region Constructors
 
-        public PharmaceuticalPrescription(PrescriptionIdentifier identifier, 
-                                          HealthcarePractitioner prescriber, 
-                                          Patient patient, 
-                                          HealthFacility healthFacility , 
+        public PharmaceuticalPrescription(PrescriptionIdentifier identifier,
+                                          HealthcarePractitioner prescriber,
+                                          Patient patient,
+                                          HealthFacility healthFacility,
                                           IEnumerable<PrescribedMedication> prescribedMedications,
                                           Alpha2LanguageCode languageCode,
                                           PrescriptionStatus status,
                                           DateTime createdOn,
                                           DateTime? delivrableAt = null,
-                                          EntityState entityState = EntityState.Added, 
-                                          IEnumerable<IDomainEvent> events = null) 
+                                          EntityState entityState = EntityState.Added,
+                                          IEnumerable<IDomainEvent> events = null)
             : base(identifier, prescriber, patient, healthFacility, languageCode, status, createdOn, delivrableAt, entityState, events)
         {
             Condition.Requires(prescribedMedications, nameof(prescribedMedications))
                      .IsNotNull()
                      .IsNotEmpty()
                      .DoesNotContain(null);
-            this.PrescribedMedications.AddRange(prescribedMedications);
+            this.prescribedMedications.AddRange(prescribedMedications);
         }
 
         #endregion Constructors
-
-        #region Properties
-
-        protected ISet<PrescribedMedication> PrescribedMedications { get; } = new HashSet<PrescribedMedication>();
-
-        #endregion Properties
 
         #region Methods
 
@@ -86,10 +87,12 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             return Create(identifier, prescriber, patient, healthFacility, prescribedMedications, DateTime.Now, languageCode, delivrableAt);
         }
 
+        public IEnumerable<PrescribedMedication> PrescribedMedications() => this.prescribedMedications.ToImmutableHashSet();
+
         public override PharmaceuticalPrescriptionState ToState()
         {
             var state = base.ToState();
-            state.PrescribedMedications.AddRange(this.PrescribedMedications.Select(m => ToPrescribedMedicationState(m, this.Identifier.Identifier)));
+            state.PrescribedMedications.AddRange(this.prescribedMedications.Select(m => ToPrescribedMedicationState(m, this.Identifier.Identifier)));
             return state;
         }
 
@@ -107,5 +110,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         }
 
         #endregion Methods
+
     }
 }

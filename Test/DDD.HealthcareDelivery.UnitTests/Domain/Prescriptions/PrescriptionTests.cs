@@ -33,12 +33,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         public void Revoke_NotRevocablePrescription_DoesNotChangeStatus(Prescription<TState> prescription)
         {
             // Arrange
-            var initialStatus = prescription.ToState().Status;
+            var initialStatus = prescription.Status;
             // Act
             prescription.Revoke("Erreur");
             // Assert
-            var status = prescription.ToState().Status;
-            status.Should().Be(initialStatus);
+            prescription.Status.Should().Be(initialStatus);
         }
 
         [Theory]
@@ -52,8 +51,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             // Act
             prescription.Revoke("Erreur");
             // Assert
-            var status = prescription.ToState().Status;
-            status.Should().Be(PrescriptionStatus.Revoked.Code);
+            prescription.Status.Should().Be(PrescriptionStatus.Revoked);
         }
 
         #endregion Methods
