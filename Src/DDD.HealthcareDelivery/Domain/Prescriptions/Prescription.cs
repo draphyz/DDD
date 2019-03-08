@@ -11,7 +11,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     using Practitioners;
 
     /// <summary>
-    /// Represents a medical prescription.
+    /// Represents a health-care program implemented by a qualified healthcare practitioner (physician, dentist, ...) in the form of instructions that govern the plan of care for an individual patient.
     /// </summary>
     public abstract class Prescription<TState>
         : DomainEntity, IStateObjectConvertible<TState>
