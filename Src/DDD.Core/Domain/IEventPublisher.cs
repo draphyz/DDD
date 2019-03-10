@@ -1,7 +1,7 @@
 ﻿namespace DDD.Core.Domain
 {
     /// <summary>
-    /// Publish synchronously events inside the local bounded context (use to decouple layers).
+    /// Publish synchronously events inside the local bounded context (used to decouple layers).
     /// </summary>
     public interface IEventPublisher
     {
