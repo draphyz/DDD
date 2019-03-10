@@ -26,6 +26,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         /// </summary>
         public static int ComputeCheckDigit(string code)
         {
+            Condition.Requires(code, nameof(code))
+                     .HasLength(6)
+                     .Evaluate(c => c.IsNumeric());
             var identifier = code.Substring(0, 6);
             var sum = 0;
             var alternate = true;
