@@ -27,7 +27,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         public static int ComputeCheckDigit(string code)
         {
             Condition.Requires(code, nameof(code))
-                     .HasLength(6)
+                     .IsLongerOrEqual(6)
                      .Evaluate(c => c.IsNumeric());
             var identifier = code.Substring(0, 6);
             var sum = 0;
