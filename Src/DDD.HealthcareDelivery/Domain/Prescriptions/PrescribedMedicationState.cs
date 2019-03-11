@@ -25,8 +25,6 @@
 
         public string Quantity { get; set; }
 
-        public byte? QuantityAsByte { get; set; }
-
         #endregion Properties
 
     }

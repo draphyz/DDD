@@ -77,26 +77,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 NameOrDescription = this.NameOrDescription,
                 Posology = this.Posology,
                 Quantity = this.Quantity,
-                QuantityAsByte = this.QuantityAsByte(),
                 Duration = this.Duration,
                 Code = this.Code?.Code
             };
-        }
-
-        public virtual byte? QuantityAsByte()
-        {
-            if (this.Quantity == null) return null;
-            string digits = string.Empty;
-            for (var i = 0; i < this.Quantity.Length; i++)
-            {
-                var c = this.Quantity[i];
-                if (c.IsDigit())
-                    digits += c;
-                else if (c.IsLetter())
-                    break;
-            }
-            if (digits == string.Empty) return 1;
-            return byte.Parse(digits);
         }
 
         public override string ToString()

@@ -24,12 +24,6 @@
 
         #region Methods
 
-        public override byte? QuantityAsByte()
-        {
-            if (this.Quantity == null) return 1;
-            return base.QuantityAsByte();
-        }
-
         public override PrescribedMedicationState ToState()
         {
             var state = base.ToState();

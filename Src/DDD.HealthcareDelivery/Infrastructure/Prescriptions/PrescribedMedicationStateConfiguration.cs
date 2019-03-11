@@ -50,15 +50,12 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 .HasColumnOrder(6)
                 .IsUnicode(false)
                 .HasMaxLength(100); ;
-            this.Property(m => m.QuantityAsByte)
-                .HasColumnName(ToCasingConvention("QuantityNum"))
-                .HasColumnOrder(7);
             this.Property(m => m.Duration)
-                .HasColumnOrder(8)
+                .HasColumnOrder(7)
                 .IsUnicode(false)
                 .HasMaxLength(100);
             this.Property(m => m.Code)
-                .HasColumnOrder(9)
+                .HasColumnOrder(8)
                 .IsUnicode(false)
                 .HasMaxLength(20);
         }
