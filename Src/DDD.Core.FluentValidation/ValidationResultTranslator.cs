@@ -2,6 +2,7 @@
 using FluentValidation;
 using Conditions;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace DDD.Core.Infrastructure.Validation
 {
@@ -13,7 +14,8 @@ namespace DDD.Core.Infrastructure.Validation
 
         #region Methods
 
-        public DDD.Validation.ValidationResult Translate(ValidationResult result)
+        public DDD.Validation.ValidationResult Translate(ValidationResult result, 
+                                                         IDictionary<string, object> options)
         {
             Condition.Requires(result, nameof(result)).IsNotNull();
             var isSuccessful = result.Errors.All(f => f.Severity == Severity.Info);

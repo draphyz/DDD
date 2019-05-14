@@ -1,5 +1,6 @@
 ﻿using Conditions;
 using System;
+using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Practitioners
 {
@@ -11,7 +12,8 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
 
         #region Methods
 
-        public HealthcarePractitioner Translate(HealthcarePractitionerState state)
+        public HealthcarePractitioner Translate(HealthcarePractitionerState state,
+                                                IDictionary<string, object> options = null)
         {
             Condition.Requires(state, nameof(state)).IsNotNull();
             switch (state.PractitionerType.ToEnum<HealthcarePractitionerType>())

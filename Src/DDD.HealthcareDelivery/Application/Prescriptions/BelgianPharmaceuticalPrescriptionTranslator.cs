@@ -18,7 +18,8 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
-        public IEnumerable<PharmaceuticalPrescription> Translate(CreatePharmaceuticalPrescriptions command)
+        public IEnumerable<PharmaceuticalPrescription> Translate(CreatePharmaceuticalPrescriptions command,
+                                                                 IDictionary<string, object> options = null)
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
             var prescriber = ToPrescriber(command);

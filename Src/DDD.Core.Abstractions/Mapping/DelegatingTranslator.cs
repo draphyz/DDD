@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Conditions;
 
 namespace DDD.Mapping
@@ -10,13 +11,13 @@ namespace DDD.Mapping
 
         #region Fields
 
-        private readonly Func<TSource, TDestination> toDestination;
+        private readonly Func<TSource, IDictionary<string, object>, TDestination> toDestination;
 
         #endregion Fields
 
         #region Constructors
 
-        public DelegatingTranslator(Func<TSource, TDestination> toDestination)
+        public DelegatingTranslator(Func<TSource, IDictionary<string, object>, TDestination> toDestination)
         {
             Condition.Requires(toDestination).IsNotNull();
             this.toDestination = toDestination;
@@ -26,10 +27,10 @@ namespace DDD.Mapping
 
         #region Methods
 
-        public TDestination Translate(TSource source)
+        public TDestination Translate(TSource source, IDictionary<string, object> options = null)
         {
             Condition.Requires(source).IsNotNull();
-            return this.toDestination(source);
+            return this.toDestination(source, options);
         }
 
         #endregion Methods

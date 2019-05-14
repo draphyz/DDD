@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Conditions;
+using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
@@ -36,7 +37,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Methods
 
-        public PharmaceuticalPrescription Translate(PharmaceuticalPrescriptionState state)
+        public PharmaceuticalPrescription Translate(PharmaceuticalPrescriptionState state,
+                                                    IDictionary<string, object> options = null)
         {
             Condition.Requires(state, nameof(state)).IsNotNull();
             return new PharmaceuticalPrescription

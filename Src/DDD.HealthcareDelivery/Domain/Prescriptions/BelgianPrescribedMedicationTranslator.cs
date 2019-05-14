@@ -1,9 +1,9 @@
 ﻿using System;
 using Conditions;
+using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
-    using Core;
     using Mapping;
 
     internal class BelgianPrescribedMedicationTranslator : IObjectTranslator<PrescribedMedicationState, PrescribedMedication>
@@ -11,7 +11,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Methods
 
-        public PrescribedMedication Translate(PrescribedMedicationState state)
+        public PrescribedMedication Translate(PrescribedMedicationState state,
+                                              IDictionary<string, object> options = null)
         {
             Condition.Requires(state, nameof(state)).IsNotNull();
             switch (state.MedicationType.ToEnum<PrescribedMedicationType>())

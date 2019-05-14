@@ -1,4 +1,5 @@
 ﻿using Conditions;
+using System.Collections.Generic;
 
 namespace DDD.Core.Domain
 {
@@ -25,7 +26,7 @@ namespace DDD.Core.Domain
 
         #region Methods
 
-        public EventState Translate(IEvent @event)
+        public EventState Translate(IEvent @event, IDictionary<string, object> options = null)
         {
             Condition.Requires(@event, nameof(@event)).IsNotNull();
             return new EventState()

@@ -1,4 +1,5 @@
 ﻿using Conditions;
+using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Patients
 {
@@ -9,7 +10,8 @@ namespace DDD.HealthcareDelivery.Domain.Patients
     {
         #region Methods
 
-        public Patient Translate(PatientState state)
+        public Patient Translate(PatientState state,
+                                 IDictionary<string, object> options = null)
         {
             Condition.Requires(state, nameof(state)).IsNotNull();
             return new Patient
