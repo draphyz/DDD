@@ -51,6 +51,7 @@
     <Compile Include="Domain\Alpha2CountryCode.cs" />
     <Compile Include="Domain\ArbitraryIdentifier.cs" />
     <Compile Include="Domain\BinaryContent.cs" />
+    <Compile Include="Domain\Enumeration.cs" />
     <Compile Include="Domain\IdentificationCode.cs" />
     <Compile Include="Domain\IdentificationNumber.cs" />
     <Compile Include="Domain\LanguageCode.cs" />
@@ -63,7 +64,6 @@
     <Compile Include="Domain\BelgianSocialSecurityNumber.cs" />
     <Compile Include="Domain\ContactInformation.cs" />
     <Compile Include="Domain\EmailAddress.cs" />
-    <Compile Include="Domain\Enumeration.cs" />
     <Compile Include="Domain\FullName.cs" />
     <Compile Include="Domain\PostalAddressState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -49,7 +49,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 this.facilityTranslator.Translate(state.HealthFacility),
                 state.PrescribedMedications.Select(m => this.medicationTranslator.Translate(m)),
                 new Alpha2LanguageCode(state.LanguageCode),
-                Enumeration.FromCode<PrescriptionStatus>(state.Status),
+                Enumeration.ParseCode<PrescriptionStatus>(state.Status),
                 state.CreatedOn,
                 state.DelivrableAt,
                 state.EntityState

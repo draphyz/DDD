@@ -90,7 +90,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             (
                 command.PatientIdentifier,
                 new FullName(command.PatientLastName, command.PatientFirstName),
-                Enumeration.FromValue<BelgianSex>((int)command.PatientSex),
+                Enumeration.ParseValue<BelgianSex>((int)command.PatientSex),
                 BelgianSocialSecurityNumber.CreateIfNotEmpty(command.PatientSocialSecurityNumber),
                 null,
                 command.PatientBirthdate

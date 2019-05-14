@@ -18,7 +18,7 @@ namespace DDD.HealthcareDelivery.Domain.Patients
             (
                 state.Identifier,
                 FullName.FromState(state.FullName),
-                Enumeration.FromCode<BelgianSex>(state.Sex),
+                Enumeration.ParseCode<BelgianSex>(state.Sex),
                 BelgianSocialSecurityNumber.CreateIfNotEmpty(state.SocialSecurityNumber),
                 ContactInformation.FromState(state.ContactInformation),
                 state.Birthdate

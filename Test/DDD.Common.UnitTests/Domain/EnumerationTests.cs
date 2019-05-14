@@ -8,6 +8,7 @@ namespace DDD.Common.Domain
     [Trait("Category", "Unit")]
     public class EnumerationTests
     {
+
         #region Methods
 
         public static IEnumerable<object[]> CodesAndRespectiveEnumerations()
@@ -124,20 +125,20 @@ namespace DDD.Common.Domain
         [InlineData("Fake1", true)]
         [InlineData("Fake1", false)]
         [InlineData("fk1", false)]
-        public void FromCode_WhenInvalidCode_ThrowsArgumentOutOfRangeException(string code, bool ignoreCase)
+        public void ParseCode_WhenInvalidCode_ThrowsArgumentOutOfRangeException(string code, bool ignoreCase)
         {
             // Act
-            Action fromCode = () => Enumeration.FromCode<FakeEnumeration>(code, ignoreCase);
+            Action fromCode = () => Enumeration.ParseCode<FakeEnumeration>(code, ignoreCase);
             // Assert
             fromCode.Should().ThrowExactly<ArgumentOutOfRangeException>();
         }
 
         [Theory]
         [MemberData(nameof(CodesAndRespectiveEnumerations))]
-        public void FromCode_WhenValidCode_ReturnsExpectedEnumeration(string code, bool ignoreCase, FakeEnumeration expected)
+        public void ParseCode_WhenValidCode_ReturnsExpectedEnumeration(string code, bool ignoreCase, FakeEnumeration expected)
         {
             // Act
-            var result = Enumeration.FromCode<FakeEnumeration>(code, ignoreCase);
+            var result = Enumeration.ParseCode<FakeEnumeration>(code, ignoreCase);
             // Assert
             result.Should().BeSameAs(expected);
         }
@@ -148,20 +149,20 @@ namespace DDD.Common.Domain
         [InlineData("fk1", true)]
         [InlineData("fk1", false)]
         [InlineData("FAKE1", false)]
-        public void FromName_WhenInvalidName_ThrowsArgumentOutOfRangeException(string name, bool ignoreCase)
+        public void ParseName_WhenInvalidName_ThrowsArgumentOutOfRangeException(string name, bool ignoreCase)
         {
             // Act
-            Action fromName = () => Enumeration.FromName<FakeEnumeration>(name, ignoreCase);
+            Action fromName = () => Enumeration.ParseName<FakeEnumeration>(name, ignoreCase);
             // Assert
             fromName.Should().ThrowExactly<ArgumentOutOfRangeException>();
         }
 
         [Theory]
         [MemberData(nameof(NamesAndRespectiveEnumerations))]
-        public void FromName_WhenValidName_ReturnsExpectedEnumeration(string name, bool ignoreCase, FakeEnumeration expected)
+        public void ParseName_WhenValidName_ReturnsExpectedEnumeration(string name, bool ignoreCase, FakeEnumeration expected)
         {
             // Act
-            var result = Enumeration.FromName<FakeEnumeration>(name, ignoreCase);
+            var result = Enumeration.ParseName<FakeEnumeration>(name, ignoreCase);
             // Assert
             result.Should().BeSameAs(expected);
         }
@@ -169,24 +170,130 @@ namespace DDD.Common.Domain
         [Theory]
         [InlineData(0)]
         [InlineData(4)]
-        public void FromValue_WhenInvalidValue_ThrowsArgumentOutOfRangeException(int value)
+        public void ParseValue_WhenInvalidValue_ThrowsArgumentOutOfRangeException(int value)
         {
             // Act
-            Action fromValue = () => Enumeration.FromValue<FakeEnumeration>(value);
+            Action fromValue = () => Enumeration.ParseValue<FakeEnumeration>(value);
             // Assert
             fromValue.Should().ThrowExactly<ArgumentOutOfRangeException>();
         }
 
         [Theory]
         [MemberData(nameof(ValuesAndRespectiveEnumerations))]
-        public void FromValue_WhenValidValue_ReturnsExpectedEnumeration(int value, FakeEnumeration expected)
+        public void ParseValue_WhenValidValue_ReturnsExpectedEnumeration(int value, FakeEnumeration expected)
         {
             // Act
-            var result = Enumeration.FromValue<FakeEnumeration>(value);
+            var result = Enumeration.ParseValue<FakeEnumeration>(value);
             // Assert
             result.Should().BeSameAs(expected);
         }
 
+        [Theory]
+        [InlineData("Dummy", true)]
+        [InlineData("Dummy", false)]
+        [InlineData("Fake1", true)]
+        [InlineData("Fake1", false)]
+        [InlineData("fk1", false)]
+        public void TryParseCode_WhenInvalidCode_ReturnsFalse(string code, bool ignoreCase)
+        {
+            // Act
+            var success = Enumeration.TryParseCode<FakeEnumeration>(code, ignoreCase, out var result);
+            // Assert
+            success.Should().BeFalse();
+        }
+
+        [Theory]
+        [MemberData(nameof(CodesAndRespectiveEnumerations))]
+        public void TryParseCode_WhenValidCode_HasExpectedResult(string code, bool ignoreCase, FakeEnumeration expected)
+        {
+            // Act
+            Enumeration.TryParseCode<FakeEnumeration>(code, ignoreCase, out var result);
+            // Assert
+            result.Should().BeSameAs(expected);
+        }
+
+        [Theory]
+        [InlineData("FK1", false)]
+        [InlineData("FK2", false)]
+        [InlineData("fk1", true)]
+        [InlineData("fK2", true)]
+        public void TryParseCode_WhenValidCode_ReturnsTrue(string code, bool ignoreCase)
+        {
+            // Act
+            var success = Enumeration.TryParseCode<FakeEnumeration>(code, ignoreCase, out var result);
+            // Assert
+            success.Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData("Dummy", true)]
+        [InlineData("Dummy", false)]
+        [InlineData("fk1", true)]
+        [InlineData("fk1", false)]
+        [InlineData("FAKE1", false)]
+        public void TryParseName_WhenInvalidName_ReturnsFalse(string name, bool ignoreCase)
+        {
+            // Act
+            var success = Enumeration.TryParseName<FakeEnumeration>(name, ignoreCase, out var result);
+            // Assert
+            success.Should().BeFalse();
+        }
+
+        [Theory]
+        [MemberData(nameof(NamesAndRespectiveEnumerations))]
+        public void TryParseName_WhenValidName_HasExpectedEnumeration(string name, bool ignoreCase, FakeEnumeration expected)
+        {
+            // Act
+            Enumeration.TryParseName<FakeEnumeration>(name, ignoreCase, out var result);
+            // Assert
+            result.Should().BeSameAs(expected);
+        }
+
+        [Theory]
+        [InlineData("Fake1", false)]
+        [InlineData("FAKE1", true)]
+        [InlineData("faKe2", true)]
+        public void TryParseName_WhenValidName_ReturnsTrue(string name, bool ignoreCase)
+        {
+            // Act
+            var success = Enumeration.TryParseName<FakeEnumeration>(name, ignoreCase, out var result);
+            // Assert
+            success.Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(4)]
+        public void TryParseValue_WhenInvalidValue_ReturnsFalse(int value)
+        {
+            // Act
+            var success = Enumeration.TryParseValue<FakeEnumeration>(value, out var result);
+            // Assert
+            success.Should().BeFalse();
+        }
+
+        [Theory]
+        [MemberData(nameof(ValuesAndRespectiveEnumerations))]
+        public void TryParseValue_WhenValidValue_HasExpectedEnumeration(int value, FakeEnumeration expected)
+        {
+            // Act
+            Enumeration.TryParseValue<FakeEnumeration>(value, out var result);
+            // Assert
+            result.Should().BeSameAs(expected);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        public void TryParseValue_WhenValidValue_ReturnsTrue(int value)
+        {
+            // Act
+            var success = Enumeration.TryParseValue<FakeEnumeration>(value, out var result);
+            // Assert
+            success.Should().BeTrue();
+        }
+
         #endregion Methods
+
     }
 }
