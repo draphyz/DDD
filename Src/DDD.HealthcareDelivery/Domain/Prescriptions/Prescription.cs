@@ -66,7 +66,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public HealthcarePractitioner Prescriber { get; }
 
-        public PrescriptionStatus Status { get; set; }
+        public PrescriptionStatus Status { get; private set; }
 
         #endregion Properties
 
