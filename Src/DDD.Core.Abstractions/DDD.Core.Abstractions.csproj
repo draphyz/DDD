@@ -56,6 +56,8 @@
     <Compile Include="Mapping\IMappingProcessor.cs" />
     <Compile Include="Mapping\IMappingProcessorExtensions.cs" />
     <Compile Include="Mapping\IObjectMapper.cs" />
+    <Compile Include="Mapping\IObjectMapperExtensions.cs" />
+    <Compile Include="Mapping\IObjectTranslatorExtensions.cs" />
     <Compile Include="Mapping\MappingProcessor.cs" />
     <Compile Include="Collections\IEnumerableExtensions.cs" />
     <Compile Include="Collections\KeyEqualityComparer.cs" />
