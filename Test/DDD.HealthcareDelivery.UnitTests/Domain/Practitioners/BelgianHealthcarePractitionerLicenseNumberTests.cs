@@ -5,7 +5,6 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
 {
     using static BelgianHealthcarePractitionerLicenseNumber;
 
-    [Trait("Category", "Unit")]
     public class BelgianHealthcarePractitionerLicenseNumberTests
     {
 

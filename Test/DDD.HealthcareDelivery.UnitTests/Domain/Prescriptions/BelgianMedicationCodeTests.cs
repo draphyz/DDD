@@ -3,7 +3,6 @@ using Xunit;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
-    [Trait("Category", "Unit")]
     public class BelgianMedicationCodeTests
     {
 

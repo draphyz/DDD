@@ -5,7 +5,6 @@ using Xunit;
 
 namespace DDD.Common.Domain
 {
-    [Trait("Category", "Unit")]
     public class EnumerationTests
     {
 

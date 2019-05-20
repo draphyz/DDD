@@ -3,7 +3,6 @@ using Xunit;
 
 namespace DDD.Core.Infrastructure.Data
 {
-    [Trait("Category", "Unit")]
     public class Sql2012ExpressionsTests
     {
         #region Methods

@@ -3,7 +3,6 @@ using Xunit;
 
 namespace DDD.Common.Domain
 {
-    [Trait("Category", "Unit")]
     public class FullNameTests
     {
         #region Methods

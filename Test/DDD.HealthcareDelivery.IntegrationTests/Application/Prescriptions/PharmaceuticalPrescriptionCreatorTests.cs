@@ -15,7 +15,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Domain.Prescriptions;
     using Infrastructure;
 
-    [Trait("Category", "Integration")]
     public abstract class PharmaceuticalPrescriptionCreatorTests<TFixture>
         where TFixture : IDbFixture<IHealthcareConnectionFactory>
     {

@@ -5,7 +5,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
     using Core.Infrastructure.Testing;
 
-    [Trait("Category", "Unit")]
     public abstract class PrescriptionTests<TState> where TState : PrescriptionState, new()
     {
 

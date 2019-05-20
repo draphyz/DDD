@@ -5,7 +5,6 @@ using FluentAssertions;
 
 namespace DDD.Core.Domain
 {
-    [Trait("Category", "Unit")]
     public class ComparableValueObjectTests
     {
 

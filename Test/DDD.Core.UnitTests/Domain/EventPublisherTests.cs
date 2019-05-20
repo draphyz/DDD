@@ -6,7 +6,6 @@ namespace DDD.Core.Domain
 {
     using Collections;
 
-    [Trait("Category", "Unit")]
     public class EventPublisherTests
     {
         #region Methods

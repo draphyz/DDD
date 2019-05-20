@@ -4,7 +4,6 @@ using Xunit;
 
 namespace DDD.Mapping
 {
-    [Trait("Category", "Unit")]
     public class MappingProcessorTests
     {
         #region Fields

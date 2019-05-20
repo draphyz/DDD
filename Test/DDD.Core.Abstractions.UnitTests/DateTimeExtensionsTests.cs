@@ -6,8 +6,6 @@ using Xunit;
 
 namespace DDD
 {
-
-    [Trait("Category", "Unit")]
     public class DateTimeExtensionsTests
     {
 

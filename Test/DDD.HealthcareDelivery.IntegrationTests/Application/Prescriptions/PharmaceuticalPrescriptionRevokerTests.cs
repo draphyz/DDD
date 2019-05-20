@@ -11,7 +11,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Core.Infrastructure.Testing;
     using Infrastructure;
 
-    [Trait("Category", "Integration")]
     public abstract class PharmaceuticalPrescriptionRevokerTests<TFixture>
         where TFixture : IDbFixture<IHealthcareConnectionFactory>
     {

@@ -8,7 +8,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Application.Prescriptions;
 
-    [Trait("Category", "Unit")]
     public class BelgianCreatePharmaceuticalPrescriptionValidatorTests
     {
 

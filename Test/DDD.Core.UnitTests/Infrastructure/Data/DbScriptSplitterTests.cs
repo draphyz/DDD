@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace DDD.Core.Infrastructure.Data
 {
-    [Trait("Category", "Unit")]
     public class DbScriptSplitterTests
     {
 

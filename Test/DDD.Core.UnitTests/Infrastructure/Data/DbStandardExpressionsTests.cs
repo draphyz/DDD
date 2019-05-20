@@ -1,10 +1,8 @@
 ﻿using FluentAssertions;
-using System.Collections.Generic;
 using Xunit;
 
 namespace DDD.Core.Infrastructure.Data
 {
-    [Trait("Category", "Unit")]
     public class DbStandardExpressionsTests
     {
 

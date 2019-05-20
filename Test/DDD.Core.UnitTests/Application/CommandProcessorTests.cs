@@ -4,7 +4,6 @@ using Xunit;
 
 namespace DDD.Core.Application
 {
-    [Trait("Category", "Unit")]
     public class CommandProcessorTests
     {
         #region Fields
