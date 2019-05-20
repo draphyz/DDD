@@ -188,6 +188,9 @@ namespace DDD.Common.Domain
         }
 
         [Theory]
+        [InlineData(null, false)]
+        [InlineData("", false)]
+        [InlineData("   ", false)]
         [InlineData("Dummy", true)]
         [InlineData("Dummy", false)]
         [InlineData("Fake1", true)]
@@ -225,6 +228,9 @@ namespace DDD.Common.Domain
         }
 
         [Theory]
+        [InlineData(null, false)]
+        [InlineData("", false)]
+        [InlineData("   ", false)]
         [InlineData("Dummy", true)]
         [InlineData("Dummy", false)]
         [InlineData("fk1", true)]

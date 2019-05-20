@@ -76,19 +76,27 @@ namespace DDD.Common.Domain
 
         public static bool TryParseCode<TEnum>(string code, bool ignoreCase, out TEnum result) where TEnum : Enumeration
         {
-            Condition.Requires(code, nameof(code)).IsNotNullOrWhiteSpace();
-            return TryParse<TEnum>(c => string.Compare(c.Code, code, ignoreCase) == 0, out result);
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                result = default(TEnum);
+                return false;
+            }
+            return TryParse(c => string.Compare(c.Code, code, ignoreCase) == 0, out result);
         }
 
         public static bool TryParseName<TEnum>(string name, bool ignoreCase, out TEnum result) where TEnum : Enumeration
         {
-            Condition.Requires(name, nameof(name)).IsNotNullOrWhiteSpace();
-            return TryParse<TEnum>(c => string.Compare(c.Name, name, ignoreCase) == 0, out result);
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                result = default(TEnum);
+                return false;
+            }
+            return TryParse(c => string.Compare(c.Name, name, ignoreCase) == 0, out result);
         }
 
         public static bool TryParseValue<TEnum>(int value, out TEnum result) where TEnum : Enumeration
         {
-            return TryParse<TEnum>(c => c.Value == value, out result);
+            return TryParse(c => c.Value == value, out result);
         }
 
         public override IEnumerable<IComparable> ComparableComponents()
