@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DDD.Core.Domain
+﻿namespace DDD.Core.Domain
 {
     public interface IRepository<TDomainEntity>
         where TDomainEntity : DomainEntity
@@ -9,7 +7,7 @@ namespace DDD.Core.Domain
 
         TDomainEntity Find(params ComparableValueObject[] identityComponents);
 
-        void Save(IEnumerable<TDomainEntity> aggregates);
+        void Save(TDomainEntity aggregate);
 
         #endregion Methods
     }

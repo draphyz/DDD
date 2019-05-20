@@ -64,16 +64,18 @@ namespace DDD.Core.Infrastructure.Data
             return this.entityTranslator.Translate(stateEntity);
         }
 
-        public async Task SaveAsync(IEnumerable<TDomainEntity> aggregates)
+        public async Task SaveAsync(TDomainEntity aggregate)
         {
-            Condition.Requires(aggregates, nameof(aggregates))
-                     .IsNotNull()
-                     .IsNotEmpty()
-                     .DoesNotContain(null);
+            Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
             await new SynchronizationContextRemover();
-            var stateEntities = aggregates.Select(a => a.ToState());
-            var events = ToEventStates(aggregates);
-            await this.SaveAsync(stateEntities, events);
+            var stateEntity = aggregate.ToState();
+            var events = ToEventStates(aggregate);
+            using (var context = await this.CreateContextAsync())
+            {
+                context.Set<TStateEntity>().Add(stateEntity);
+                context.Set<EventState>().AddRange(events);
+                await SaveChangesAsync(context);
+            }
         }
 
         protected virtual async Task<TStateEntity> FindAsync(IEnumerable<object> keyValues)
@@ -92,16 +94,6 @@ namespace DDD.Core.Infrastructure.Data
         }
 
         protected abstract IEnumerable<Expression<Func<TStateEntity, object>>> RelatedEntitiesPaths();
-
-        protected virtual async Task SaveAsync(IEnumerable<TStateEntity> aggregates, IEnumerable<EventState> events)
-        {
-            using (var context = await this.CreateContextAsync())
-            {
-                context.Set<TStateEntity>().AddRange(aggregates);
-                context.Set<EventState>().AddRange(events);
-                await SaveChangesAsync(context);
-            }
-        }
 
         private static Expression<Func<TStateEntity, bool>> BuildFindExpression(IEnumerable<string> keyNames,
                                                                                 IEnumerable<object> keyValues)
@@ -149,18 +141,19 @@ namespace DDD.Core.Infrastructure.Data
                 throw new RepositoryException(ex, typeof(TDomainEntity));
             }
         }
-        private IEnumerable<EventState> ToEventStates(IEnumerable<TDomainEntity> aggregates)
+
+        private IEnumerable<EventState> ToEventStates(TDomainEntity aggregate)
         {
             var commitId = Guid.NewGuid();
             var subject = Thread.CurrentPrincipal?.Identity?.Name;
-            return aggregates.SelectMany(a => a.AllEvents().Select(e =>
+            return aggregate.AllEvents().Select(e =>
             {
                 var evt = this.eventTranslator.Translate(e);
-                evt.StreamId = a.IdentityAsString();
+                evt.StreamId = aggregate.IdentityAsString();
                 evt.CommitId = commitId;
                 evt.Subject = subject;
                 return evt;
-            }));
+            });
         }
 
         #endregion Methods

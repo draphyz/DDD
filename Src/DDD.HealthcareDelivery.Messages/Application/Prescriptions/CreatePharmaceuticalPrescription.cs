@@ -3,18 +3,22 @@ using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
+    using Common.Application;
+    using Core.Application;
     using Domain.Facilities;
     using Domain.Practitioners;
-    using Core.Application;
-    using Common.Application;
 
     /// <summary>
-    /// Encapsulates all information needed to create a list of pharmaceutical prescriptions associated with one prescriber and one patient.
+    /// Encapsulates all information needed to create a pharmaceutical prescription.
     /// </summary>
-    public class CreatePharmaceuticalPrescriptions : ICommand
+    public class CreatePharmaceuticalPrescription : ICommand
     {
 
         #region Properties
+
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
+
+        public DateTime? DelivrableAt { get; set; }
 
         public int FacilityIdentifier { get; set; }
 
@@ -25,6 +29,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         public HealthFacilityType FacilityType { get; set; }
 
         public string LanguageCode { get; set; }
+
+        public ICollection<PrescribedMedicationDescriptor> Medications { get; set; }
+            = new List<PrescribedMedicationDescriptor>();
 
         public DateTime? PatientBirthdate { get; set; }
 
@@ -75,8 +82,8 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         public HealthcarePractitionerType PrescriberType { get; set; }
 
         public string PrescriberWebSite { get; set; }
-        public ICollection<PharmaceuticalPrescriptionDescriptor> Prescriptions { get; set; }
-            = new List<PharmaceuticalPrescriptionDescriptor>();
+
+        public int PrescriptionIdentifier { get; set; }
 
         #endregion Properties
 
@@ -84,7 +91,8 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public override string ToString()
         {
-            return $"{this.GetType().Name} [prescriberIdentifier={this.PrescriberIdentifier}, patientIdentifier={this.PatientIdentifier}, facilityIdentifier={this.FacilityIdentifier}]";
+            var format = $"{0} [prescriptionIdentifier={1}, prescriberIdentifier={2}, patientIdentifier={3}, facilityIdentifier={4}]";
+            return string.Format(format, this.GetType().Name, this.PrescriptionIdentifier, this.PrescriberIdentifier, this.PatientIdentifier, this.FacilityIdentifier);
         }
 
         #endregion Methods

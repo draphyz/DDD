@@ -73,8 +73,6 @@
     <Compile Include="Domain\EventPublisher.cs" />
     <Compile Include="Domain\EventTranslator.cs" />
     <Compile Include="Domain\IAsyncEventPublisher.cs" />
-    <Compile Include="Domain\IRepositoryExtensions.cs" />
-    <Compile Include="Domain\IAsyncRepositoryExtensions.cs" />
     <Compile Include="Domain\IEventHandler.cs" />
     <Compile Include="Domain\IEventHandler`1.cs" />
     <Compile Include="Domain\IEventPublisher.cs" />

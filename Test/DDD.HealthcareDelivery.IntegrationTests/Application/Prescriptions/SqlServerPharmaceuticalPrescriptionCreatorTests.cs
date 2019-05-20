@@ -10,13 +10,13 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Infrastructure;
 
     [Collection("SqlServer")]
-    public class SqlServerPharmaceuticalPrescriptionsCreatorTests
-        : PharmaceuticalPrescriptionsCreatorTests<SqlServerFixture>
+    public class SqlServerPharmaceuticalPrescriptionCreatorTests
+        : PharmaceuticalPrescriptionCreatorTests<SqlServerFixture>
     {
 
         #region Constructors
 
-        public SqlServerPharmaceuticalPrescriptionsCreatorTests(SqlServerFixture fixture) : base(fixture)
+        public SqlServerPharmaceuticalPrescriptionCreatorTests(SqlServerFixture fixture) : base(fixture)
         {
         }
 

@@ -10,13 +10,13 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Infrastructure;
 
     [Collection("Oracle")]
-    public class OraclePharmaceuticalPrescriptionsCreatorTests
-        : PharmaceuticalPrescriptionsCreatorTests<OracleFixture>
+    public class OraclePharmaceuticalPrescriptionCreatorTests
+        : PharmaceuticalPrescriptionCreatorTests<OracleFixture>
     {
 
         #region Constructors
 
-        public OraclePharmaceuticalPrescriptionsCreatorTests(OracleFixture fixture) : base(fixture)
+        public OraclePharmaceuticalPrescriptionCreatorTests(OracleFixture fixture) : base(fixture)
         {
         }
 

@@ -5,12 +5,12 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
     using Application.Prescriptions;
     using Core.Infrastructure.Validation;
 
-    public class BelgianCreatePharmaceuticalPrescriptionsValidator : AbstractValidator<CreatePharmaceuticalPrescriptions>
+    public class BelgianCreatePharmaceuticalPrescriptionValidator : AbstractValidator<CreatePharmaceuticalPrescription>
     {
 
         #region Constructors
 
-        public BelgianCreatePharmaceuticalPrescriptionsValidator()
+        public BelgianCreatePharmaceuticalPrescriptionValidator()
         {
             RuleFor(c => c.LanguageCode).NotEmpty().WithErrorCode("LanguageCodeEmpty")
                                         .Length(2).WithErrorCode("LanguageCodeInvalid")
@@ -32,9 +32,11 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             RuleFor(c => c.FacilityName).NotEmpty().WithErrorCode("FacilityNameEmpty");
             RuleFor(c => c.FacilityLicenseNumber).Length(8).WithErrorCode("FacilityLicenseNumberInvalid")
                                                        .Numeric().WithErrorCode("FacilityLicenseNumberInvalid");
-            RuleFor(c => c.Prescriptions).NotEmpty().WithErrorCode("PrescriptionsEmpty");
-            RuleForEach(c => c.Prescriptions).NotNull().WithErrorCode("PrescriptionNull")
-                                             .SetValidator(c => new BelgianPharmaceuticalPrescriptionDescriptorValidator());
+            RuleFor(p => p.PrescriptionIdentifier).GreaterThan(0).WithErrorCode("PrescriptionIdentifierInvalid");
+            RuleFor(p => p.Medications).NotEmpty().WithErrorCode("MedicationsEmpty")
+                                       .MaximumCount(10).WithErrorCode("MedicationsCountInvalid");
+            RuleForEach(p => p.Medications).NotNull().WithErrorCode("MedicationNull")
+                                           .SetValidator(new BelgianPrescribedMedicationDescriptorValidator());
         }
 
         #endregion Constructors

@@ -9,7 +9,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
     using Application.Prescriptions;
 
     [Trait("Category", "Unit")]
-    public class BelgianCreatePharmaceuticalPrescriptionsValidatorTests
+    public class BelgianCreatePharmaceuticalPrescriptionValidatorTests
     {
 
         #region Methods
@@ -26,21 +26,9 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             };
         }
 
-        public static IEnumerable<object[]> CommandsWithPrescriptionsEmpty()
+        public static BelgianCreatePharmaceuticalPrescriptionValidator CreateValidator()
         {
-            yield return new object[]
-            {
-                CommandWithPrescriptions(null)
-            };
-            yield return new object[]
-            {
-                CommandWithPrescriptions(new PharmaceuticalPrescriptionDescriptor[] { })
-            };
-        }
-
-        public static BelgianCreatePharmaceuticalPrescriptionsValidator CreateValidator()
-        {
-            return new BelgianCreatePharmaceuticalPrescriptionsValidator();
+            return new BelgianCreatePharmaceuticalPrescriptionValidator();
         }
 
         [Theory]
@@ -86,7 +74,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { FacilityIdentifier = facilityIdentifier };
+            var command = new CreatePharmaceuticalPrescription { FacilityIdentifier = facilityIdentifier };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -101,7 +89,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { FacilityIdentifier = facilityIdentifier };
+            var command = new CreatePharmaceuticalPrescription { FacilityIdentifier = facilityIdentifier };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -116,7 +104,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { FacilityLicenseNumber = facilityLicenseNumber };
+            var command = new CreatePharmaceuticalPrescription { FacilityLicenseNumber = facilityLicenseNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -130,7 +118,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { FacilityLicenseNumber = facilityLicenseNumber };
+            var command = new CreatePharmaceuticalPrescription { FacilityLicenseNumber = facilityLicenseNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -145,7 +133,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { FacilityName = facilityName };
+            var command = new CreatePharmaceuticalPrescription { FacilityName = facilityName };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -159,7 +147,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { FacilityName = facilityName };
+            var command = new CreatePharmaceuticalPrescription { FacilityName = facilityName };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -174,7 +162,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { LanguageCode = languageCode };
+            var command = new CreatePharmaceuticalPrescription { LanguageCode = languageCode };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -189,7 +177,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { LanguageCode = languageCode };
+            var command = new CreatePharmaceuticalPrescription { LanguageCode = languageCode };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -201,7 +189,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { LanguageCode = "BE" };
+            var command = new CreatePharmaceuticalPrescription { LanguageCode = "BE" };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -216,7 +204,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { LanguageCode = languageCode };
+            var command = new CreatePharmaceuticalPrescription { LanguageCode = languageCode };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -295,7 +283,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         [Theory]
         [MemberData(nameof(CommandsWithMedicationsEmpty))]
-        public void Validate_WhenMedicationsEmpty_ReturnsExpectedFailure(CreatePharmaceuticalPrescriptions command)
+        public void Validate_WhenMedicationsEmpty_ReturnsExpectedFailure(CreatePharmaceuticalPrescription command)
         {
             // Arrange
             var validator = CreateValidator();
@@ -342,7 +330,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PatientFirstName = patientFirstName };
+            var command = new CreatePharmaceuticalPrescription { PatientFirstName = patientFirstName };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -356,7 +344,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PatientFirstName = patientFirstName };
+            var command = new CreatePharmaceuticalPrescription { PatientFirstName = patientFirstName };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -371,7 +359,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PatientIdentifier = patientIdentifier };
+            var command = new CreatePharmaceuticalPrescription { PatientIdentifier = patientIdentifier };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -386,7 +374,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PatientIdentifier = patientIdentifier };
+            var command = new CreatePharmaceuticalPrescription { PatientIdentifier = patientIdentifier };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -401,7 +389,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PatientLastName = patientLastName };
+            var command = new CreatePharmaceuticalPrescription { PatientLastName = patientLastName };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -415,7 +403,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PatientLastName = patientLastName };
+            var command = new CreatePharmaceuticalPrescription { PatientLastName = patientLastName };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -430,7 +418,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PatientSocialSecurityNumber = patientSocialSecurityNumber };
+            var command = new CreatePharmaceuticalPrescription { PatientSocialSecurityNumber = patientSocialSecurityNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -444,7 +432,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PatientSocialSecurityNumber = patientSocialSecurityNumber };
+            var command = new CreatePharmaceuticalPrescription { PatientSocialSecurityNumber = patientSocialSecurityNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -459,7 +447,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberFirstName = prescriberFirstName };
+            var command = new CreatePharmaceuticalPrescription { PrescriberFirstName = prescriberFirstName };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -473,7 +461,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberFirstName = prescriberFirstName };
+            var command = new CreatePharmaceuticalPrescription { PrescriberFirstName = prescriberFirstName };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -488,7 +476,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberIdentifier = prescriberIdentifier };
+            var command = new CreatePharmaceuticalPrescription { PrescriberIdentifier = prescriberIdentifier };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -503,7 +491,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberIdentifier = prescriberIdentifier };
+            var command = new CreatePharmaceuticalPrescription { PrescriberIdentifier = prescriberIdentifier };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -518,7 +506,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberLastName = prescriberLastName };
+            var command = new CreatePharmaceuticalPrescription { PrescriberLastName = prescriberLastName };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -532,7 +520,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberLastName = prescriberLastName };
+            var command = new CreatePharmaceuticalPrescription { PrescriberLastName = prescriberLastName };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -547,7 +535,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberLicenseNumber = prescriberLicenseNumber };
+            var command = new CreatePharmaceuticalPrescription { PrescriberLicenseNumber = prescriberLicenseNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -562,7 +550,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberLicenseNumber = prescriberLicenseNumber };
+            var command = new CreatePharmaceuticalPrescription { PrescriberLicenseNumber = prescriberLicenseNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -576,7 +564,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberLicenseNumber = prescriberLicenseNumber };
+            var command = new CreatePharmaceuticalPrescription { PrescriberLicenseNumber = prescriberLicenseNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -590,7 +578,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberLicenseNumber = prescriberLicenseNumber };
+            var command = new CreatePharmaceuticalPrescription { PrescriberLicenseNumber = prescriberLicenseNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -605,7 +593,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberSocialSecurityNumber = prescriberSocialSecurityNumber };
+            var command = new CreatePharmaceuticalPrescription { PrescriberSocialSecurityNumber = prescriberSocialSecurityNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -619,7 +607,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescriptions { PrescriberSocialSecurityNumber = prescriberSocialSecurityNumber };
+            var command = new CreatePharmaceuticalPrescription { PrescriberSocialSecurityNumber = prescriberSocialSecurityNumber };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -634,10 +622,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = CommandWithPrescriptions
-            (
-                new PharmaceuticalPrescriptionDescriptor { PrescriptionIdentifier = prescriptionIdentifier }
-            );
+            var command = new CreatePharmaceuticalPrescription { PrescriptionIdentifier = prescriptionIdentifier };
             // Act
             var results = validator.Validate(command);
             // Assert
@@ -652,96 +637,24 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         {
             // Arrange
             var validator = CreateValidator();
-            var command = CommandWithPrescriptions
-            (
-                new PharmaceuticalPrescriptionDescriptor { PrescriptionIdentifier = prescriptionIdentifier }
-            );
+            var command = new CreatePharmaceuticalPrescription { PrescriptionIdentifier = prescriptionIdentifier };
             // Act
             var results = validator.Validate(command);
             // Assert
             results.Errors.Should().NotContain(f => f.ErrorCode == "PrescriptionIdentifierInvalid");
         }
 
-        [Fact]
-        public void Validate_WhenPrescriptionNotNull_ReturnsNoSpecificFailure()
+        private static CreatePharmaceuticalPrescription CommandWithMedicationCount(int medicationCount)
         {
-            // Arrange
-            var validator = CreateValidator();
-            var command = CommandWithPrescriptionCount(2);
-            // Act
-            var results = validator.Validate(command);
-            // Assert
-            results.Errors.Should().NotContain(f => f.ErrorCode == "PrescriptionNull");
-        }
-
-        [Fact]
-        public void Validate_WhenPrescriptionNull_ReturnsExpectedFailure()
-        {
-            // Arrange
-            var validator = CreateValidator();
-            var command = CommandWithPrescriptions((PharmaceuticalPrescriptionDescriptor)null);
-            // Act
-            var results = validator.Validate(command);
-            // Assert
-            results.Errors.Should().ContainSingle(f => f.ErrorCode == "PrescriptionNull" && f.Severity == Severity.Error);
-        }
-
-        [Theory]
-        [MemberData(nameof(CommandsWithPrescriptionsEmpty))]
-        public void Validate_WhenPrescriptionsEmpty_ReturnsExpectedFailure(CreatePharmaceuticalPrescriptions command)
-        {
-            // Arrange
-            var validator = CreateValidator();
-            // Act
-            var results = validator.Validate(command);
-            // Assert
-            results.Errors.Should().ContainSingle(f => f.ErrorCode == "PrescriptionsEmpty" && f.Severity == Severity.Error);
-        }
-
-        [Theory]
-        [InlineData(1)]
-        [InlineData(5)]
-        public void Validate_WhenPrescriptionsNotEmpty_ReturnsNoSpecificFailure(int prescriptionCount)
-        {
-            // Arrange
-            var validator = CreateValidator();
-            var command = CommandWithPrescriptionCount(prescriptionCount);
-            // Act
-            var results = validator.Validate(command);
-            // Assert
-            results.Errors.Should().NotContain(f => f.ErrorCode == "PrescriptionsEmpty");
-        }
-        private static CreatePharmaceuticalPrescriptions CommandWithMedicationCount(int medicationCount)
-        {
-            var command = CommandWithPrescriptionCount(1);
-            var prescription = command.Prescriptions.First();
+            var command = new CreatePharmaceuticalPrescription();
             for (var i = 0; i < medicationCount; i++)
-                prescription.Medications.Add(new PrescribedMedicationDescriptor());
+                command.Medications.Add(new PrescribedMedicationDescriptor());
             return command;
         }
 
-        private static CreatePharmaceuticalPrescriptions CommandWithMedications(params PrescribedMedicationDescriptor[] medications)
+        private static CreatePharmaceuticalPrescription CommandWithMedications(params PrescribedMedicationDescriptor[] medications)
         {
-            var command = CommandWithPrescriptionCount(1);
-            var prescription = command.Prescriptions.First();
-            prescription.Medications = medications;
-            return command;
-        }
-
-        private static CreatePharmaceuticalPrescriptions CommandWithPrescriptionCount(int prescriptionCount)
-        {
-            var command = new CreatePharmaceuticalPrescriptions();
-            for (var i = 0; i < prescriptionCount; i++)
-                command.Prescriptions.Add(new PharmaceuticalPrescriptionDescriptor());
-            return command;
-        }
-
-        private static CreatePharmaceuticalPrescriptions CommandWithPrescriptions(params PharmaceuticalPrescriptionDescriptor[] prescriptions)
-        {
-            return new CreatePharmaceuticalPrescriptions
-            {
-                Prescriptions = prescriptions
-            };
+            return new CreatePharmaceuticalPrescription { Medications = medications };
         }
 
         #endregion Methods

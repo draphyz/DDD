@@ -121,8 +121,8 @@
   <data name="CreateDatabase" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>scripts\sqlserver\createdatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
   </data>
-  <data name="CreatePharmaceuticalPrescriptions" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>scripts\sqlserver\createpharmaceuticalprescriptions.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="CreatePharmaceuticalPrescription" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>scripts\sqlserver\createpharmaceuticalprescription.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="FindPharmaceuticalPrescriptionsByPatient" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>scripts\sqlserver\findpharmaceuticalprescriptionsbypatient.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>

@@ -78,7 +78,7 @@
     <Compile Include="Domain\Prescriptions\BelgianMedicationCodeTests.cs" />
     <Compile Include="Domain\Prescriptions\PharmaceuticalPrescriptionTests.cs" />
     <Compile Include="Domain\Prescriptions\PrescriptionTests.cs" />
-    <Compile Include="Infrastructure\Prescriptions\BelgianCreatePharmaceuticalPrescriptionsValidatorTests.cs" />
+    <Compile Include="Infrastructure\Prescriptions\BelgianCreatePharmaceuticalPrescriptionValidatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

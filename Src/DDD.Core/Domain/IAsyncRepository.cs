@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace DDD.Core.Domain
 {
@@ -10,7 +9,7 @@ namespace DDD.Core.Domain
 
         Task<TDomainEntity> FindAsync(params ComparableValueObject[] identityComponents);
 
-        Task SaveAsync(IEnumerable<TDomainEntity> aggregates);
+        Task SaveAsync(TDomainEntity aggregate);
 
         #endregion Methods
     }

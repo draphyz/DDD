@@ -89,9 +89,9 @@ namespace DDD.HealthcareDelivery {
         ///EXEC spClearDatabase
         ///GO.
         /// </summary>
-        internal static string CreatePharmaceuticalPrescriptions {
+        internal static string CreatePharmaceuticalPrescription {
             get {
-                return ResourceManager.GetString("CreatePharmaceuticalPrescriptions", resourceCulture);
+                return ResourceManager.GetString("CreatePharmaceuticalPrescription", resourceCulture);
             }
         }
         

@@ -84,7 +84,7 @@
     </Compile>
     <Compile Include="Application\Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
     <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionRevoker.cs" />
-    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionsCreator.cs" />
+    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionCreator.cs" />
     <Compile Include="Domain\Patients\BelgianPatientTranslator.cs" />
     <Compile Include="Domain\Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
     <Compile Include="Domain\Prescriptions\PrescribedPharmaceuticalCompounding.cs" />
@@ -120,8 +120,7 @@
     <Compile Include="Infrastructure\IHealthcareConnectionFactory.cs" />
     <Compile Include="Infrastructure\OracleHealthcareContext.cs" />
     <Compile Include="Infrastructure\OracleHealthcareContextFactory.cs" />
-    <Compile Include="Infrastructure\Prescriptions\BelgianCreatePharmaceuticalPrescriptionsValidator.cs" />
-    <Compile Include="Infrastructure\Prescriptions\BelgianPharmaceuticalPrescriptionDescriptorValidator.cs" />
+    <Compile Include="Infrastructure\Prescriptions\BelgianCreatePharmaceuticalPrescriptionValidator.cs" />
     <Compile Include="Infrastructure\Prescriptions\BelgianPrescribedMedicationDescriptorValidator.cs" />
     <Compile Include="Infrastructure\Prescriptions\OraclePrescriptionStateConfiguration.cs" />
     <Compile Include="Infrastructure\Prescriptions\PharmaceuticalPrescriptionRepository.cs" />

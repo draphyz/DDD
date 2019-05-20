@@ -80,11 +80,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\Prescriptions\OraclePharmaceuticalPrescriptionRevokerTests.cs" />
-    <Compile Include="Application\Prescriptions\OraclePharmaceuticalPrescriptionsCreatorTests.cs" />
+    <Compile Include="Application\Prescriptions\OraclePharmaceuticalPrescriptionCreatorTests.cs" />
     <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionRevokerTests.cs" />
-    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionsCreatorTests.cs" />
+    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionCreatorTests.cs" />
     <Compile Include="Application\Prescriptions\SqlServerPharmaceuticalPrescriptionRevokerTests.cs" />
-    <Compile Include="Application\Prescriptions\SqlServerPharmaceuticalPrescriptionsCreatorTests.cs" />
+    <Compile Include="Application\Prescriptions\SqlServerPharmaceuticalPrescriptionCreatorTests.cs" />
     <Compile Include="OracleCollection.cs" />
     <Compile Include="OracleConnectionFactory.cs" />
     <Compile Include="OracleFixture.cs" />
@@ -170,12 +170,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\Oracle\CreatePharmaceuticalPrescriptions.sql" />
+    <Content Include="Scripts\Oracle\CreatePharmaceuticalPrescription.sql" />
     <Content Include="Scripts\Oracle\CreateSchema.sql" />
     <Content Include="Scripts\Oracle\FillSchema.sql" />
     <Content Include="Scripts\Oracle\RevokePharmaceuticalPrescription.sql" />
     <Content Include="Scripts\SqlServer\CreateDatabase.sql" />
-    <Content Include="Scripts\SqlServer\CreatePharmaceuticalPrescriptions.sql" />
+    <Content Include="Scripts\SqlServer\CreatePharmaceuticalPrescription.sql" />
     <Content Include="Scripts\SqlServer\RevokePharmaceuticalPrescription.sql" />
     <Content Include="Scripts\Oracle\FindPharmaceuticalPrescriptionsByPatient.sql" />
     <Content Include="Scripts\Oracle\FindPrescribedMedicationsByPrescription.sql" />

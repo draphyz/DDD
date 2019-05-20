@@ -1,53 +1,38 @@
-﻿using System;
+﻿using Conditions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Conditions;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
-    using Mapping;
-    using Domain.Prescriptions;
+    using Common.Domain;
     using Domain.Facilities;
     using Domain.Patients;
     using Domain.Practitioners;
-    using Common.Domain;
+    using Domain.Prescriptions;
+    using Mapping;
 
     public class BelgianPharmaceuticalPrescriptionTranslator
-        : IObjectTranslator<CreatePharmaceuticalPrescriptions, IEnumerable<PharmaceuticalPrescription>>
+        : IObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription>
     {
 
         #region Methods
 
-        public IEnumerable<PharmaceuticalPrescription> Translate(CreatePharmaceuticalPrescriptions command,
+        public PharmaceuticalPrescription Translate(CreatePharmaceuticalPrescription command,
                                                                  IDictionary<string, object> options = null)
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
-            var prescriber = ToPrescriber(command);
-            var patient = ToPatient(command);
-            var facility = ToHealthFacility(command);
-            var languageCode = new Alpha2LanguageCode(command.LanguageCode);
-            foreach (var prescription in command.Prescriptions)
-                yield return PharmaceuticalPrescription.Create
+            return PharmaceuticalPrescription.Create
                 (
-                    new PrescriptionIdentifier(prescription.PrescriptionIdentifier),
-                    prescriber,
-                    patient,
-                    facility,
-                    prescription.Medications.Select(m => ToPrescribedMedication(m)),
-                    prescription.CreatedOn,
-                    languageCode,
-                    prescription.DelivrableAt
+                    new PrescriptionIdentifier(command.PrescriptionIdentifier),
+                    ToPrescriber(command),
+                    ToPatient(command),
+                    ToHealthFacility(command),
+                    command.Medications.Select(m => ToPrescribedMedication(m)),
+                    command.CreatedOn,
+                    new Alpha2LanguageCode(command.LanguageCode),
+                    command.DelivrableAt
                 );
-        }
-
-        private static MedicalOffice ToMedicalOffice(CreatePharmaceuticalPrescriptions command)
-        {
-            return new MedicalOffice
-            (
-                command.FacilityIdentifier,
-                command.FacilityName,
-                BelgianHealthFacilityLicenseNumber.CreateIfNotEmpty(command.FacilityLicenseNumber)
-            );
         }
 
         private static PrescribedPharmaceuticalCompounding ToCompounding(PrescribedMedicationDescriptor medication)
@@ -61,7 +46,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             );
         }
 
-        private static HealthFacility ToHealthFacility(CreatePharmaceuticalPrescriptions command)
+        private static HealthFacility ToHealthFacility(CreatePharmaceuticalPrescription command)
         {
             switch (command.FacilityType)
             {
@@ -74,7 +59,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             }
         }
 
-        private static Hospital ToHospital(CreatePharmaceuticalPrescriptions command)
+        private static Hospital ToHospital(CreatePharmaceuticalPrescription command)
         {
             return new Hospital
             (
@@ -84,7 +69,16 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             );
         }
 
-        private static Patient ToPatient(CreatePharmaceuticalPrescriptions command)
+        private static MedicalOffice ToMedicalOffice(CreatePharmaceuticalPrescription command)
+        {
+            return new MedicalOffice
+            (
+                command.FacilityIdentifier,
+                command.FacilityName,
+                BelgianHealthFacilityLicenseNumber.CreateIfNotEmpty(command.FacilityLicenseNumber)
+            );
+        }
+        private static Patient ToPatient(CreatePharmaceuticalPrescription command)
         {
             return new Patient
             (
@@ -97,7 +91,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             );
         }
 
-        private static Physician ToPhysician(CreatePharmaceuticalPrescriptions command)
+        private static Physician ToPhysician(CreatePharmaceuticalPrescription command)
         {
             return new Physician
             (
@@ -126,19 +120,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             }
         }
 
-        private static PrescribedPharmaceuticalProduct ToProduct(PrescribedMedicationDescriptor medication)
-        {
-            return new PrescribedPharmaceuticalProduct
-            (
-                medication.NameOrDescription,
-                medication.Posology,
-                medication.Quantity,
-                medication.Duration,
-                BelgianMedicationCode.CreateIfNotEmpty(medication.Code)
-            );
-        }
-
-        private static HealthcarePractitioner ToPrescriber(CreatePharmaceuticalPrescriptions command)
+        private static HealthcarePractitioner ToPrescriber(CreatePharmaceuticalPrescription command)
         {
             switch (command.PrescriberType)
             {
@@ -149,7 +131,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             }
         }
 
-        private static ContactInformation ToPrescriberContactInformation(CreatePharmaceuticalPrescriptions command)
+        private static ContactInformation ToPrescriberContactInformation(CreatePharmaceuticalPrescription command)
         {
             return new ContactInformation
             (ToPrescriberPostalAddress(command),
@@ -162,7 +144,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             );
         }
 
-        private static PostalAddress ToPrescriberPostalAddress(CreatePharmaceuticalPrescriptions command)
+        private static PostalAddress ToPrescriberPostalAddress(CreatePharmaceuticalPrescription command)
         {
             return PostalAddress.CreateIfNotEmpty
             (
@@ -175,6 +157,17 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             );
         }
 
+        private static PrescribedPharmaceuticalProduct ToProduct(PrescribedMedicationDescriptor medication)
+        {
+            return new PrescribedPharmaceuticalProduct
+            (
+                medication.NameOrDescription,
+                medication.Posology,
+                medication.Quantity,
+                medication.Duration,
+                BelgianMedicationCode.CreateIfNotEmpty(medication.Code)
+            );
+        }
         private static PrescribedPharmaceuticalSubstance ToSubstance(PrescribedMedicationDescriptor medication)
         {
             return new PrescribedPharmaceuticalSubstance

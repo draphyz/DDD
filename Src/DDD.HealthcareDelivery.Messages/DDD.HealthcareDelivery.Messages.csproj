@@ -42,11 +42,10 @@
     <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Application\Prescriptions\CreatePharmaceuticalPrescriptions.cs" />
+    <Compile Include="Application\Prescriptions\CreatePharmaceuticalPrescription.cs" />
     <Compile Include="Application\Prescriptions\FindPharmaceuticalPrescriptionsByPatient.cs" />
     <Compile Include="Application\Prescriptions\FindPrescribedMedicationsByPrescription.cs" />
     <Compile Include="Application\Prescriptions\GeneratePrescriptionIdentifier.cs" />
-    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionDescriptor.cs" />
     <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionSummary.cs" />
     <Compile Include="Application\Prescriptions\PrescribedMedicationDescriptor.cs" />
     <Compile Include="Application\Prescriptions\PrescribedMedicationDetails.cs" />
