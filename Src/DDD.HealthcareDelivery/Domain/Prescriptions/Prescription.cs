@@ -72,10 +72,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Methods
 
-        public override IEnumerable<ComparableValueObject> IdentityComponents()
-        {
-            yield return this.Identifier;
-        }
+        public override ComparableValueObject Identity() => this.Identifier;
 
         public void Revoke(string reason)
         {

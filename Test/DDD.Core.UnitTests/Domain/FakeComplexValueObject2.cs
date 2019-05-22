@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace DDD.Core.Domain
 {
-    public class FakeComplexValueObject : ComparableValueObject
+    public class FakeComplexValueObject2 : ComparableValueObject
     {
         #region Constructors
 
-        public FakeComplexValueObject(string component1, int component2, FakeSimpleValueObject component3)
+        public FakeComplexValueObject2(string component1, int component2, FakeComplexValueObject1 component3)
         {
             this.Component1 = component1;
             this.Component2 = component2;
@@ -19,8 +19,10 @@ namespace DDD.Core.Domain
         #region Properties
 
         public string Component1 { get; }
+
         public int Component2 { get; }
-        public FakeSimpleValueObject Component3 { get; }
+
+        public FakeComplexValueObject1 Component3 { get; }
 
         #endregion Properties
 
@@ -40,7 +42,7 @@ namespace DDD.Core.Domain
 
         public override string ToString()
         {
-            return $"ComplexMockValueObject [component1={this.Component1}, component2={this.Component2}, component3={this.Component3}]";
+            return $"{this.GetType().Name} [component1={this.Component1}, component2={this.Component2}, component3={this.Component3}]";
         }
 
         #endregion Methods

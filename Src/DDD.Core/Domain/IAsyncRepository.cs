@@ -7,7 +7,7 @@ namespace DDD.Core.Domain
     {
         #region Methods
 
-        Task<TDomainEntity> FindAsync(params ComparableValueObject[] identityComponents);
+        Task<TDomainEntity> FindAsync(ComparableValueObject identity);
 
         Task SaveAsync(TDomainEntity aggregate);
 

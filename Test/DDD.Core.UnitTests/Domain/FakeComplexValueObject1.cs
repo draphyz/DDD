@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace DDD.Core.Domain
 {
-    public class FakeSimpleValueObject : ComparableValueObject
+    public class FakeComplexValueObject1 : ComparableValueObject
     {
+
         #region Constructors
 
-        public FakeSimpleValueObject(string component1, int component2)
+        public FakeComplexValueObject1(string component1, int component2)
         {
             this.Component1 = component1;
             this.Component2 = component2;
@@ -38,9 +39,10 @@ namespace DDD.Core.Domain
 
         public override string ToString()
         {
-            return $"SimpleMockValueObject [component1={this.Component1}, component2={this.Component2}]";
+            return $"{this.GetType().Name} [component1={this.Component1}, component2={this.Component2}]";
         }
 
         #endregion Methods
+
     }
 }

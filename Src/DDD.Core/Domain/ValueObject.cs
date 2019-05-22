@@ -39,6 +39,21 @@ namespace DDD.Core.Domain
 
         public virtual IEnumerable<object> HashCodeComponents() => this.EqualityComponents();
 
+        public IEnumerable<object> PrimitiveEqualityComponents()
+        {
+            foreach(var component in this.EqualityComponents())
+            {
+                var valueObject = component as ValueObject;
+                if (valueObject == null)
+                    yield return component;
+                else
+                {
+                    foreach (var primitiveComponent in valueObject.PrimitiveEqualityComponents())
+                        yield return primitiveComponent;
+                }
+            }
+        }
+
         #endregion Methods
 
     }

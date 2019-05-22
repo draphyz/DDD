@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using FluentAssertions;
+using System.Collections.Generic;
 using Xunit;
-using FluentAssertions;
 
 namespace DDD.Core.Domain
 {
@@ -9,70 +9,99 @@ namespace DDD.Core.Domain
 
         #region Methods
 
-        public static IEnumerable<object[]> EntitiesWithDifferentIdentityComponents()
+        public static IEnumerable<object[]> EntitiesAndIdentityAsString()
         {
-            yield return new object[] 
+            yield return new object[]
             {
-                new FakeSimpleEntity(new FakeIntIdentityComponent(1)),
-                new FakeSimpleEntity(new FakeIntIdentityComponent(2))
+                new FakeEntity1(new FakeSimpleValueObject1(1)),
+                "1"
             };
-            yield return new object[] 
+            yield return new object[]
             {
-                new FakeComplexEntity(new FakeStringIdentityComponent("abcd"), new FakeIntIdentityComponent(1)),
-                new FakeComplexEntity(new FakeStringIdentityComponent("efjh"), new FakeIntIdentityComponent(1))
+                new FakeEntity2(new FakeComplexValueObject1("abcd", 1)),
+                "abcd/1"
             };
-            yield return new object[] 
+            yield return new object[]
             {
-                new FakeComplexEntity(new FakeStringIdentityComponent("abcd"), new FakeIntIdentityComponent(1)),
-                new FakeComplexEntity(new FakeStringIdentityComponent("abcd"), new FakeIntIdentityComponent(2))
+                new FakeEntity4(new FakeComplexValueObject2("abcd", 1, new FakeComplexValueObject1("efgh", 2))),
+                "abcd/1/efgh/2"
             };
-            yield return new object[] 
+        }
+
+        public static IEnumerable<object[]> EntitiesWithDifferentIdentities()
+        {
+            yield return new object[]
             {
-                new FakeComplexEntity(new FakeStringIdentityComponent("abcd"), new FakeIntIdentityComponent(1)),
-                new FakeComplexEntity(new FakeStringIdentityComponent("ABCD"), new FakeIntIdentityComponent(1))
+                new FakeEntity1(new FakeSimpleValueObject1(1)),
+                new FakeEntity1(new FakeSimpleValueObject1(2))
+            };
+            yield return new object[]
+            {
+                new FakeEntity2(new FakeComplexValueObject1("abcd", 1)),
+                new FakeEntity2(new FakeComplexValueObject1("efjh", 1))
+            };
+            yield return new object[]
+            {
+                new FakeEntity2(new FakeComplexValueObject1("abcd", 1)),
+                new FakeEntity2(new FakeComplexValueObject1("abcd", 2))
+            };
+            yield return new object[]
+            {
+                new FakeEntity2(new FakeComplexValueObject1("abcd", 1)),
+                new FakeEntity2(new FakeComplexValueObject1("ABCD", 1))
             };
         }
 
         public static IEnumerable<object[]> EntitiesWithDifferentTypes()
         {
-            yield return new object[] 
+            yield return new object[]
             {
-                new FakeSimpleEntity(new FakeIntIdentityComponent(1)),
-                new FakeComplexEntity(new FakeStringIdentityComponent("abcd"), new FakeIntIdentityComponent(1))
+                new FakeEntity1(new FakeSimpleValueObject1(1)),
+                new FakeEntity3(new FakeSimpleValueObject1(1))
+            };
+            yield return new object[]
+            {
+                new FakeEntity1(new FakeSimpleValueObject1(1)),
+                new FakeEntity2(new FakeComplexValueObject1("abcd", 1))
             };
         }
 
-        public static IEnumerable<object[]> EntitiesWithSameIdentityComponents()
+        public static IEnumerable<object[]> EntitiesWithSameIdentity()
         {
-            yield return new object[] 
+            yield return new object[]
             {
-                new FakeSimpleEntity(new FakeIntIdentityComponent(1)),
-                new FakeSimpleEntity(new FakeIntIdentityComponent(1))
+                new FakeEntity1(new FakeSimpleValueObject1(1)),
+                new FakeEntity1(new FakeSimpleValueObject1(1))
             };
-            yield return new object[] 
+            yield return new object[]
             {
-                new FakeComplexEntity(new FakeStringIdentityComponent("abcd"), new FakeIntIdentityComponent(1)),
-                new FakeComplexEntity(new FakeStringIdentityComponent("abcd"), new FakeIntIdentityComponent(1))
+                new FakeEntity2(new FakeComplexValueObject1("abcd", 1)),
+                new FakeEntity2(new FakeComplexValueObject1("abcd", 1))
             };
         }
 
         public static IEnumerable<object[]> ObjectsWithDifferentTypes()
         {
-            yield return new object[] 
+            yield return new object[]
             {
-                new FakeSimpleEntity(new FakeIntIdentityComponent(1)),
+                new FakeEntity1(new FakeSimpleValueObject1(1)),
                 new object()
             };
-            yield return new object[] 
+            yield return new object[]
             {
-                new FakeSimpleEntity(new FakeIntIdentityComponent(1)),
-                new FakeComplexEntity(new FakeStringIdentityComponent("abcd"), new FakeIntIdentityComponent(1))
+                new FakeEntity1(new FakeSimpleValueObject1(1)),
+                new FakeEntity2(new FakeComplexValueObject1("abcd", 1))
+            };
+            yield return new object[]
+            {
+                new FakeEntity1(new FakeSimpleValueObject1(1)),
+                new FakeEntity3(new FakeSimpleValueObject1(1))
             };
         }
 
         [Theory]
-        [MemberData(nameof(EntitiesWithDifferentIdentityComponents))]
-        public void Equals_ToEntityWithDifferentIdentityComponents_ReturnsFalse(DomainEntity a, DomainEntity b)
+        [MemberData(nameof(EntitiesWithDifferentIdentities))]
+        public void Equals_ToEntityWithDifferentIdentities_ReturnsFalse(DomainEntity a, DomainEntity b)
         {
             // Act
             var result = a.Equals(b);
@@ -103,8 +132,8 @@ namespace DDD.Core.Domain
         }
 
         [Theory]
-        [MemberData(nameof(EntitiesWithSameIdentityComponents))]
-        public void Equals_ToEntityWithSameIdentityComponents_ReturnsTrue(DomainEntity a, DomainEntity b)
+        [MemberData(nameof(EntitiesWithSameIdentity))]
+        public void Equals_ToEntityWithSameIdentity_ReturnsTrue(DomainEntity a, DomainEntity b)
         {
             // Act
             var result = a.Equals(b);
@@ -125,8 +154,8 @@ namespace DDD.Core.Domain
         }
 
         [Theory]
-        [MemberData(nameof(EntitiesWithDifferentIdentityComponents))]
-        public void Equals_ToObjectWithDifferentIdentityComponents_ReturnsFalse(object a, object b)
+        [MemberData(nameof(EntitiesWithDifferentIdentities))]
+        public void Equals_ToObjectWithDifferentIdentities_ReturnsFalse(object a, object b)
         {
             // Act
             var result = a.Equals(b);
@@ -157,8 +186,8 @@ namespace DDD.Core.Domain
         }
 
         [Theory]
-        [MemberData(nameof(EntitiesWithSameIdentityComponents))]
-        public void Equals_ToObjectWithSameIdentityComponents_ReturnsTrue(object a, object b)
+        [MemberData(nameof(EntitiesWithSameIdentity))]
+        public void Equals_ToObjectWithSameIdentity_ReturnsTrue(object a, object b)
         {
             // Act
             var result = a.Equals(b);
@@ -203,8 +232,8 @@ namespace DDD.Core.Domain
         }
 
         [Theory]
-        [MemberData(nameof(EntitiesWithDifferentIdentityComponents))]
-        public void EqualToOperator_OperandsWithDifferentIdentityComponents_ReturnsFalse(DomainEntity a, DomainEntity b)
+        [MemberData(nameof(EntitiesWithDifferentIdentities))]
+        public void EqualToOperator_OperandsWithDifferentIdentities_ReturnsFalse(DomainEntity a, DomainEntity b)
         {
             // Act
             var result = a == b;
@@ -223,8 +252,8 @@ namespace DDD.Core.Domain
         }
 
         [Theory]
-        [MemberData(nameof(EntitiesWithSameIdentityComponents))]
-        public void EqualToOperator_OperandsWithSameIdentityComponents_ReturnsTrue(DomainEntity a, DomainEntity b)
+        [MemberData(nameof(EntitiesWithSameIdentity))]
+        public void EqualToOperator_OperandsWithSameIdentity_ReturnsTrue(DomainEntity a, DomainEntity b)
         {
             // Act
             var result = a == b;
@@ -245,8 +274,8 @@ namespace DDD.Core.Domain
         }
 
         [Theory]
-        [MemberData(nameof(EntitiesWithDifferentIdentityComponents))]
-        public void GetHashCode_EntitiesWithDifferentIdentityComponents_ReturnsDifferentValues(DomainEntity a, DomainEntity b)
+        [MemberData(nameof(EntitiesWithDifferentIdentities))]
+        public void GetHashCode_EntitiesWithDifferentIdentities_ReturnsDifferentValues(DomainEntity a, DomainEntity b)
         {
             // Act
             var hashCodeOfA = a.GetHashCode();
@@ -256,8 +285,8 @@ namespace DDD.Core.Domain
         }
 
         [Theory]
-        [MemberData(nameof(EntitiesWithSameIdentityComponents))]
-        public void GetHashCode_EntitiesWithSameIdentityComponents_ReturnsSameValue(DomainEntity a, DomainEntity b)
+        [MemberData(nameof(EntitiesWithSameIdentity))]
+        public void GetHashCode_EntitiesWithSameIdentity_ReturnsSameValue(DomainEntity a, DomainEntity b)
         {
             // Act
             var hashCodeOfA = a.GetHashCode();
@@ -266,15 +295,14 @@ namespace DDD.Core.Domain
             hashCodeOfA.Should().Be(hashCodeOfB, "because objects are semantically equal.");
         }
 
-        [Fact]
-        public void IdentityAsString_ReturnsExpectedFormat()
+        [Theory]
+        [MemberData(nameof(EntitiesAndIdentityAsString))]
+        public void IdentityAsString_ReturnsExpectedValue(DomainEntity entity, string expectedIdentity)
         {
-            // Arrange
-            var entity = NewEntity();
             // Act
             var identityAsString = entity.IdentityAsString();
             // Assert
-            identityAsString.Should().Be("abcd/1");
+            identityAsString.Should().Be(expectedIdentity);
         }
 
         [Fact]
@@ -302,8 +330,8 @@ namespace DDD.Core.Domain
         }
 
         [Theory]
-        [MemberData(nameof(EntitiesWithDifferentIdentityComponents))]
-        public void NotEqualToOperator_OperandsWithDifferentIdentityComponents_ReturnsTrue(DomainEntity a, DomainEntity b)
+        [MemberData(nameof(EntitiesWithDifferentIdentities))]
+        public void NotEqualToOperator_OperandsWithDifferentIdentities_ReturnsTrue(DomainEntity a, DomainEntity b)
         {
             // Act
             var result = a != b;
@@ -322,8 +350,8 @@ namespace DDD.Core.Domain
         }
 
         [Theory]
-        [MemberData(nameof(EntitiesWithSameIdentityComponents))]
-        public void NotEqualToOperator_OperandsWithSameIdentityComponents_ReturnsFalse(DomainEntity a, DomainEntity b)
+        [MemberData(nameof(EntitiesWithSameIdentity))]
+        public void NotEqualToOperator_OperandsWithSameIdentity_ReturnsFalse(DomainEntity a, DomainEntity b)
         {
             // Act
             var result = a != b;
@@ -343,8 +371,9 @@ namespace DDD.Core.Domain
             result.Should().BeFalse("because operands refer to the same instance");
         }
 
-        private static DomainEntity NewEntity() => new FakeComplexEntity(new FakeStringIdentityComponent("abcd"), new FakeIntIdentityComponent(1));
+        private static DomainEntity NewEntity() => new FakeEntity2(new FakeComplexValueObject1("abcd", 1));
 
         #endregion Methods
+
     }
 }

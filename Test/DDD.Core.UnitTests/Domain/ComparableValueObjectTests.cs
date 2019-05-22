@@ -14,23 +14,23 @@ namespace DDD.Core.Domain
         {
             yield return new object[] 
             {
-                new FakeSimpleValueObject("abcd", 1),
-                new FakeSimpleValueObject("bcde", 1)
+                new FakeComplexValueObject1("abcd", 1),
+                new FakeComplexValueObject1("bcde", 1)
             };
             yield return new object[] 
             {
-                new FakeSimpleValueObject("abcd", 1),
-                new FakeSimpleValueObject("abcd", 2)
+                new FakeComplexValueObject1("abcd", 1),
+                new FakeComplexValueObject1("abcd", 2)
             };
             yield return new object[] 
             {
-                new FakeSimpleValueObject("abcd", 2),
-                new FakeSimpleValueObject("bcde", 1)
+                new FakeComplexValueObject1("abcd", 2),
+                new FakeComplexValueObject1("bcde", 1)
             };
             yield return new object[] 
             {
-                new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("abcd", 1)),
-                new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("bcde", 1))
+                new FakeComplexValueObject2("abcd", 1, new FakeComplexValueObject1("abcd", 1)),
+                new FakeComplexValueObject2("abcd", 1, new FakeComplexValueObject1("bcde", 1))
             };
         }
 
@@ -38,13 +38,13 @@ namespace DDD.Core.Domain
         {
             yield return new object[] 
             {
-                new FakeSimpleValueObject("abcd", 1),
-                new FakeSimpleValueObject("abcd", 1)
+                new FakeComplexValueObject1("abcd", 1),
+                new FakeComplexValueObject1("abcd", 1)
             };
             yield return new object[] 
             {
-                new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("abcd", 1)),
-                new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("abcd", 1))
+                new FakeComplexValueObject2("abcd", 1, new FakeComplexValueObject1("abcd", 1)),
+                new FakeComplexValueObject2("abcd", 1, new FakeComplexValueObject1("abcd", 1))
             };
         }
 
@@ -52,23 +52,23 @@ namespace DDD.Core.Domain
         {
             yield return new object[] 
             {
-                new FakeSimpleValueObject("bcde", 1),
-                new FakeSimpleValueObject("abcd", 1)
+                new FakeComplexValueObject1("bcde", 1),
+                new FakeComplexValueObject1("abcd", 1)
             };
             yield return new object[] 
             {
-                new FakeSimpleValueObject("abcd", 2),
-                new FakeSimpleValueObject("abcd", 1)
+                new FakeComplexValueObject1("abcd", 2),
+                new FakeComplexValueObject1("abcd", 1)
             };
             yield return new object[] 
             {
-                new FakeSimpleValueObject("bcde", 1),
-                new FakeSimpleValueObject("abcd", 2)
+                new FakeComplexValueObject1("bcde", 1),
+                new FakeComplexValueObject1("abcd", 2)
             };
             yield return new object[] 
             {
-                new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("bcde", 1)),
-                new FakeComplexValueObject("abcd", 1, new FakeSimpleValueObject("abcd", 1))
+                new FakeComplexValueObject2("abcd", 1, new FakeComplexValueObject1("bcde", 1)),
+                new FakeComplexValueObject2("abcd", 1, new FakeComplexValueObject1("abcd", 1))
             };
         }
 
@@ -491,7 +491,7 @@ namespace DDD.Core.Domain
             result.Should().BeFalse("because the second operand has smaller comparable components than the first one.");
         }
 
-        private static ComparableValueObject NewComparableValueObject() => new FakeSimpleValueObject("abcd", 1);
+        private static ComparableValueObject NewComparableValueObject() => new FakeComplexValueObject1("abcd", 1);
 
         #endregion Methods
     }

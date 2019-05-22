@@ -61,19 +61,19 @@ namespace DDD.Core.Domain
             if (ReferenceEquals(this, other)) return true;
             if (ReferenceEquals(other, null)) return false;
             if (this.GetType() != other.GetType()) return false;
-            return this.IdentityComponents().SequenceEqual(other.IdentityComponents());
+            return this.Identity().Equals(other.Identity());
         }
 
         public override bool Equals(object other) => this.Equals(other as DomainEntity);
 
-        public override int GetHashCode() => this.IdentityComponents().CombineHashCodes();
+        public override int GetHashCode() => this.Identity().GetHashCode();
 
         public virtual string IdentityAsString()
         {
-            return string.Join("/", this.IdentityComponents().Select(c => c.EqualityComponents().Single()));
+            return string.Join("/", this.Identity().PrimitiveEqualityComponents());
         }
 
-        public abstract IEnumerable<ComparableValueObject> IdentityComponents();
+        public abstract ComparableValueObject Identity();
 
         protected void AddEvent(IDomainEvent @event)
         {

@@ -51,14 +51,12 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public async Task<TDomainEntity> FindAsync(params ComparableValueObject[] identityComponents)
+        public async Task<TDomainEntity> FindAsync(ComparableValueObject identity)
         {
-            Condition.Requires(identityComponents, nameof(identityComponents))
-                     .IsNotNull()
-                     .IsNotEmpty()
-                     .DoesNotContain(null);
+            Condition.Requires(identity, nameof(identity))
+                     .IsNotNull();
             await new SynchronizationContextRemover();
-            var keyValues = identityComponents.Select(c => c.EqualityComponents().First());
+            var keyValues = identity.PrimitiveEqualityComponents();
             var stateEntity = await this.FindAsync(keyValues);
             if (stateEntity == null) return null;
             return this.entityTranslator.Translate(stateEntity);

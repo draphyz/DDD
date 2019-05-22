@@ -65,10 +65,10 @@ namespace DDD.Core.Infrastructure.Data
 
         [Theory]
         [MemberData(nameof(ScriptsAndExpectedResults))]
-        public static void Split_WhenScriptNotEmpty_ReturnsExcpectedResults(string script,
-                                                                            string batchSeparator,
-                                                                            bool removeComments, 
-                                                                            IEnumerable<string> expectedBatches)
+        public static void Split_WhenScriptNotEmpty_ReturnsExpectedResults(string script,
+                                                                           string batchSeparator,
+                                                                           bool removeComments, 
+                                                                           IEnumerable<string> expectedBatches)
         {
             // Assert
             var splitter = new DbScriptSplitter();

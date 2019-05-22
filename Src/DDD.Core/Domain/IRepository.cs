@@ -5,7 +5,7 @@
     {
         #region Methods
 
-        TDomainEntity Find(params ComparableValueObject[] identityComponents);
+        TDomainEntity Find(ComparableValueObject identity);
 
         void Save(TDomainEntity aggregate);
 

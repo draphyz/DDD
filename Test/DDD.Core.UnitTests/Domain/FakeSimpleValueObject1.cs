@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace DDD.Core.Domain
 {
-    public class FakeStringIdentityComponent : ComparableValueObject
+    public class FakeSimpleValueObject1 : ComparableValueObject
     {
         #region Constructors
 
-        public FakeStringIdentityComponent(string value)
+        public FakeSimpleValueObject1(int component)
         {
-            this.Value = value;
+            this.Component = component;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public string Value { get; }
+        public int Component { get; }
 
         #endregion Properties
 
@@ -24,15 +24,15 @@ namespace DDD.Core.Domain
 
         public override IEnumerable<IComparable> ComparableComponents()
         {
-            yield return this.Value;
+            yield return this.Component;
         }
 
         public override IEnumerable<object> EqualityComponents()
         {
-            yield return this.Value;
+            yield return this.Component;
         }
 
-        public override string ToString() => $"FakeStringIdentityComponent [value={this.Value}]";
+        public override string ToString() => $"{this.GetType().Name} [component={this.Component}]";
 
         #endregion Methods
     }
