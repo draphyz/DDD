@@ -1,22 +1,33 @@
-﻿using System.Transactions;
+﻿using Conditions;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
-    using Domain.Prescriptions;
     using Core.Application;
     using Core.Domain;
+    using Domain.Prescriptions;
 
-    public class PharmaceuticalPrescriptionRevoker 
-        : AsyncRepositoryCommandHandler<RevokePharmaceuticalPrescription, PharmaceuticalPrescription>
+    public class PharmaceuticalPrescriptionRevoker
+        : AsyncDomainCommandHandler<RevokePharmaceuticalPrescription>
     {
+
+        #region Fields
+
+        private readonly IEventPublisher publisher;
+        private readonly IAsyncRepository<PharmaceuticalPrescription> repository;
+
+        #endregion Fields
 
         #region Constructors
 
         public PharmaceuticalPrescriptionRevoker(IAsyncRepository<PharmaceuticalPrescription> repository,
                                                  IEventPublisher publisher)
-            :base(repository, publisher)
         {
+            Condition.Requires(repository, nameof(repository)).IsNotNull();
+            Condition.Requires(publisher, nameof(publisher)).IsNotNull();
+            this.repository = repository;
+            this.publisher = publisher;
         }
 
         #endregion Constructors
@@ -25,12 +36,12 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         protected override async Task ExecuteAsync(RevokePharmaceuticalPrescription command)
         {
-            var prescription = await this.Repository.FindAsync(new PrescriptionIdentifier(command.PrescriptionIdentifier));
+            var prescription = await this.repository.FindAsync(new PrescriptionIdentifier(command.PrescriptionIdentifier));
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 prescription.Revoke(command.RevocationReason);
-                await this.Repository.SaveAsync(prescription);
-                this.Publisher.PublishAll(prescription.AllEvents());
+                await this.repository.SaveAsync(prescription);
+                this.publisher.PublishAll(prescription.AllEvents());
                 scope.Complete();
             }
         }

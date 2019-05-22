@@ -50,7 +50,7 @@
     <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Application\AsyncRepositoryCommandHandler.cs" />
+    <Compile Include="Application\AsyncDomainCommandHandler.cs" />
     <Compile Include="Application\CommandException.cs" />
     <Compile Include="Application\CommandProcessor.cs" />
     <Compile Include="Application\IAsyncCommandHandler.cs" />
@@ -65,9 +65,10 @@
     <Compile Include="Application\IQueryValidator.cs" />
     <Compile Include="Application\QueryException.cs" />
     <Compile Include="Application\QueryProcessor.cs" />
-    <Compile Include="Application\RepositoryCommandHandler.cs" />
+    <Compile Include="Application\DomainCommandHandler.cs" />
     <Compile Include="Domain\ComparableValueObject.cs" />
     <Compile Include="Domain\DomainEntity.cs" />
+    <Compile Include="Domain\DomainServiceException.cs" />
     <Compile Include="Domain\EntityState.cs" />
     <Compile Include="Domain\EventHandler.cs" />
     <Compile Include="Domain\EventPublisher.cs" />
