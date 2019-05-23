@@ -9,24 +9,13 @@
         #region Constructors
 
         public Hospital(int identifier,
-                        string name, 
-                        HealthFacilityLicenseNumber licenseNumber = null) 
+                        string name,
+                        HealthFacilityLicenseNumber licenseNumber = null)
             : base(identifier, name, licenseNumber)
         {
         }
 
         #endregion Constructors
-
-        #region Methods
-
-        public override HealthFacilityState ToState()
-        {
-            var state = base.ToState();
-            state.FacilityType = HealthFacilityType.Hospital.ToString();
-            return state;
-        }
-
-        #endregion Methods
 
     }
 }

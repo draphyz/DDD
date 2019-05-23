@@ -85,24 +85,16 @@
     <Compile Include="Application\Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
     <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionRevoker.cs" />
     <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionCreator.cs" />
-    <Compile Include="Domain\Patients\BelgianPatientTranslator.cs" />
-    <Compile Include="Domain\Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
     <Compile Include="Domain\Prescriptions\PrescribedPharmaceuticalCompounding.cs" />
     <Compile Include="Domain\Prescriptions\PrescribedPharmaceuticalProduct.cs" />
     <Compile Include="Domain\Prescriptions\PrescribedPharmaceuticalSubstance.cs" />
-    <Compile Include="Domain\Practitioners\BelgianHealthcarePractitionerTranslator.cs" />
-    <Compile Include="Domain\Facilities\BelgianHealthFacilityTranslator.cs" />
     <Compile Include="Domain\Facilities\BelgianHealthFacilityLicenseNumber.cs" />
-    <Compile Include="Domain\Prescriptions\BelgianPrescribedMedicationTranslator.cs" />
     <Compile Include="Domain\Facilities\MedicalOffice.cs" />
-    <Compile Include="Domain\Practitioners\HealthcarePractitionerState.cs" />
     <Compile Include="Domain\Facilities\HealthFacility.cs" />
-    <Compile Include="Domain\Facilities\HealthFacilityState.cs" />
     <Compile Include="Domain\Facilities\Hospital.cs" />
     <Compile Include="Domain\Prescriptions\PharmaceuticalPrescription.cs" />
     <Compile Include="Domain\Practitioners\Physician.cs" />
     <Compile Include="Domain\Prescriptions\PrescriptionIdentifier.cs" />
-    <Compile Include="Domain\Patients\PatientState.cs" />
     <Compile Include="Domain\Facilities\HealthFacilityLicenseNumber.cs" />
     <Compile Include="Domain\Practitioners\HealthcarePractitioner.cs" />
     <Compile Include="Domain\Prescriptions\PrescribedMedication.cs" />
@@ -112,32 +104,18 @@
     <Compile Include="Domain\Prescriptions\Prescription.cs" />
     <Compile Include="Domain\Prescriptions\MedicationCode.cs" />
     <Compile Include="Domain\Practitioners\HealthcarePractitionerLicenseNumber.cs" />
-    <Compile Include="Domain\Prescriptions\PrescribedMedicationState.cs" />
-    <Compile Include="Domain\Prescriptions\PharmaceuticalPrescriptionState.cs" />
-    <Compile Include="Domain\Prescriptions\PrescriptionState.cs" />
     <Compile Include="Domain\Prescriptions\PrescriptionStatus.cs" />
-    <Compile Include="Infrastructure\HealthcareContext.cs" />
     <Compile Include="Infrastructure\IHealthcareConnectionFactory.cs" />
-    <Compile Include="Infrastructure\OracleHealthcareContext.cs" />
-    <Compile Include="Infrastructure\OracleHealthcareContextFactory.cs" />
     <Compile Include="Infrastructure\Prescriptions\BelgianCreatePharmaceuticalPrescriptionValidator.cs" />
     <Compile Include="Infrastructure\Prescriptions\BelgianPrescribedMedicationDescriptorValidator.cs" />
-    <Compile Include="Infrastructure\Prescriptions\OraclePrescriptionStateConfiguration.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PharmaceuticalPrescriptionRepository.cs" />
     <Compile Include="Infrastructure\Prescriptions\PharmaceuticalPrescriptionsByPatientFinder.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PharmaceuticalPrescriptionStateConfiguration.cs" />
     <Compile Include="Infrastructure\Prescriptions\PrescribedMedicationsByPrescriptionFinder.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PrescribedMedicationStateConfiguration.cs" />
     <Compile Include="Infrastructure\Prescriptions\PrescriptionIdentifierGenerator.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PrescriptionStateConfiguration.cs" />
-    <Compile Include="Infrastructure\Prescriptions\SqlServerPrescriptionStateConfiguration.cs" />
     <Compile Include="Infrastructure\SqlScripts.Designer.cs">
       <DependentUpon>SqlScripts.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Infrastructure\SqlServerHealthcareContext.cs" />
-    <Compile Include="Infrastructure\SqlServerHealthcareContextFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -156,10 +134,6 @@
     <ProjectReference Include="..\DDD.Core.Dapper\DDD.Core.Dapper.csproj">
       <Project>{701da58b-ae36-429f-8621-64109b8d29d7}</Project>
       <Name>DDD.Core.Dapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Core.EF\DDD.Core.EF.csproj">
-      <Project>{6d227aa7-ff90-48ca-b13d-ed23c1fffba5}</Project>
-      <Name>DDD.Core.EF</Name>
     </ProjectReference>
     <ProjectReference Include="..\DDD.Core.FluentValidation\DDD.Core.FluentValidation.csproj">
       <Project>{5e3745fc-ca80-4d0f-8a25-20ee0f9cf163}</Project>

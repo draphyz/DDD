@@ -1,7 +1,5 @@
 ﻿namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
-    using Core.Domain;
-
     /// <summary>
     /// Represents a pharmaceutical compounding.
     /// </summary>
@@ -14,24 +12,12 @@
                                                    string posology = null,
                                                    string quantity = null,
                                                    string duration = null,
-                                                   int identifier = 0,
-                                                   EntityState entityState = EntityState.Added)
-            : base(nameOrDescription, posology, quantity, duration, null, identifier, entityState)
+                                                   int identifier = 0)
+            : base(nameOrDescription, posology, quantity, duration, null, identifier)
         {
         }
 
         #endregion Constructors
-
-        #region Methods
-
-        public override PrescribedMedicationState ToState()
-        {
-            var state = base.ToState();
-            state.MedicationType = PrescribedMedicationType.Compounding.ToString();
-            return state;
-        }
-
-        #endregion Methods
 
     }
 }

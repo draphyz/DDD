@@ -1,21 +1,19 @@
-﻿using System;
+﻿using Conditions;
+using System;
 using System.Collections.Generic;
-using Conditions;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
-    using Core.Domain;
     using Common.Domain;
-    using Patients;
+    using Core.Domain;
     using Facilities;
+    using Patients;
     using Practitioners;
 
     /// <summary>
     /// Represents a health-care program implemented by a qualified healthcare practitioner (physician, dentist, ...) in the form of instructions that govern the plan of care for an individual patient.
     /// </summary>
-    public abstract class Prescription<TState>
-        : DomainEntity, IStateObjectConvertible<TState>
-        where TState : PrescriptionState, new()
+    public abstract class Prescription : DomainEntity
     {
 
         #region Constructors
@@ -28,9 +26,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                PrescriptionStatus status,
                                DateTime createdOn,
                                DateTime? delivrableAt = null,
-                               EntityState entityState = EntityState.Added,
                                IEnumerable<IDomainEvent> events = null)
-            : base(entityState, events)
+            : base(events)
         {
             Condition.Requires(identifier, nameof(identifier)).IsNotNull();
             Condition.Requires(prescriber, nameof(prescriber)).IsNotNull();
@@ -80,24 +77,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             if (this.IsRevocable())
             {
                 this.Status = PrescriptionStatus.Revoked;
-                this.MarkAsModified();
                 this.AddPrescriptionRevokedEvent(reason);
             }
-        }
-        public virtual TState ToState()
-        {
-            return new TState
-            {
-                Identifier = this.Identifier.Identifier,
-                Prescriber = this.Prescriber.ToState(),
-                Patient = this.Patient.ToState(),
-                HealthFacility = this.HealthFacility.ToState(),
-                Status = this.Status.Code,
-                CreatedOn = this.CreatedOn,
-                DelivrableAt = this.DelivrableAt,
-                LanguageCode = this.LanguageCode.Code,
-                EntityState = this.EntityState,
-            };
         }
 
         protected abstract void AddPrescriptionRevokedEvent(string reason);

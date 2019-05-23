@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
@@ -16,7 +15,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     /// <summary>
     /// Represents a pharmaceutical prescription.
     /// </summary>
-    public class PharmaceuticalPrescription : Prescription<PharmaceuticalPrescriptionState>
+    public class PharmaceuticalPrescription : Prescription
     {
 
         #region Fields
@@ -36,9 +35,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                           PrescriptionStatus status,
                                           DateTime createdOn,
                                           DateTime? delivrableAt = null,
-                                          EntityState entityState = EntityState.Added,
                                           IEnumerable<IDomainEvent> events = null)
-            : base(identifier, prescriber, patient, healthFacility, languageCode, status, createdOn, delivrableAt, entityState, events)
+            : base(identifier, prescriber, patient, healthFacility, languageCode, status, createdOn, delivrableAt, events)
         {
             Condition.Requires(prescribedMedications, nameof(prescribedMedications))
                      .IsNotNull()
@@ -89,24 +87,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public IEnumerable<PrescribedMedication> PrescribedMedications() => this.prescribedMedications.ToImmutableHashSet();
 
-        public override PharmaceuticalPrescriptionState ToState()
-        {
-            var state = base.ToState();
-            state.PrescribedMedications.AddRange(this.prescribedMedications.Select(m => ToPrescribedMedicationState(m, this.Identifier.Identifier)));
-            return state;
-        }
-
         protected override void AddPrescriptionRevokedEvent(string reason)
         {
             this.AddEvent(new PharmaceuticalPrescriptionRevoked(this.Identifier.Identifier, reason));
-        }
-
-        private static PrescribedMedicationState ToPrescribedMedicationState(PrescribedMedication medication,
-                                                                             int prescriptionIdentifier)
-        {
-            var state = medication.ToState();
-            state.PrescriptionIdentifier = prescriptionIdentifier;
-            return state;
         }
 
         #endregion Methods

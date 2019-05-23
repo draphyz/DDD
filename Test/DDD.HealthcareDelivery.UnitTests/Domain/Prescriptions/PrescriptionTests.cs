@@ -5,13 +5,13 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
     using Core.Infrastructure.Testing;
 
-    public abstract class PrescriptionTests<TState> where TState : PrescriptionState, new()
+    public abstract class PrescriptionTests
     {
 
         #region Properties
 
-        public static TheoryData<Prescription<TState>> NotRevocablePrescriptions { get; } = new TheoryData<Prescription<TState>>();
-        public static TheoryData<Prescription<TState>> RevocablePrescriptions { get; } = new TheoryData<Prescription<TState>>();
+        public static TheoryData<Prescription> NotRevocablePrescriptions { get; } = new TheoryData<Prescription>();
+        public static TheoryData<Prescription> RevocablePrescriptions { get; } = new TheoryData<Prescription>();
 
         #endregion Properties
 
@@ -19,7 +19,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         [Theory]
         [CustomMemberData(nameof(NotRevocablePrescriptions))]
-        public void Revoke_NotRevocablePrescription_DoesNotAddEvent(Prescription<PharmaceuticalPrescriptionState> prescription)
+        public void Revoke_NotRevocablePrescription_DoesNotAddEvent(Prescription prescription)
         {
             // Act
             prescription.Revoke("Erreur");
@@ -29,7 +29,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         [Theory]
         [CustomMemberData(nameof(NotRevocablePrescriptions))]
-        public void Revoke_NotRevocablePrescription_DoesNotChangeStatus(Prescription<TState> prescription)
+        public void Revoke_NotRevocablePrescription_DoesNotChangeStatus(Prescription prescription)
         {
             // Arrange
             var initialStatus = prescription.Status;
@@ -41,11 +41,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         [Theory]
         [CustomMemberData(nameof(RevocablePrescriptions))]
-        public abstract void Revoke_RevocablePrescription_AddsPrescriptionRevokedEvent(Prescription<TState> prescription);
+        public abstract void Revoke_RevocablePrescription_AddsPrescriptionRevokedEvent(Prescription prescription);
 
         [Theory]
         [CustomMemberData(nameof(RevocablePrescriptions))]
-        public void Revoke_RevocablePrescription_MarksPrescriptionAsRevoked(Prescription<TState> prescription)
+        public void Revoke_RevocablePrescription_MarksPrescriptionAsRevoked(Prescription prescription)
         {
             // Act
             prescription.Revoke("Erreur");

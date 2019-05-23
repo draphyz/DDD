@@ -9,7 +9,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     using Practitioners;
     using Facilities;
 
-    public class PharmaceuticalPrescriptionTests : PrescriptionTests<PharmaceuticalPrescriptionState>
+    public class PharmaceuticalPrescriptionTests : PrescriptionTests
     {
 
         #region Constructors
@@ -98,7 +98,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             prescription.Status.Should().Be(PrescriptionStatus.Created);
         }
 
-        public override void Revoke_RevocablePrescription_AddsPrescriptionRevokedEvent(Prescription<PharmaceuticalPrescriptionState> prescription)
+        public override void Revoke_RevocablePrescription_AddsPrescriptionRevokedEvent(Prescription prescription)
         {
             // Act
             prescription.Revoke("Erreur");

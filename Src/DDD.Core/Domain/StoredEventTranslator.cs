@@ -6,7 +6,7 @@ namespace DDD.Core.Domain
     using Mapping;
     using Serialization;
 
-    public class EventTranslator : IObjectTranslator<IEvent, EventState>
+    public class StoredEventTranslator : IObjectTranslator<IEvent, StoredEvent>
     {
         #region Fields
 
@@ -16,7 +16,7 @@ namespace DDD.Core.Domain
 
         #region Constructors
 
-        public EventTranslator(ITextSerializer eventSerializer)
+        public StoredEventTranslator(ITextSerializer eventSerializer)
         {
             Condition.Requires(eventSerializer, nameof(eventSerializer)).IsNotNull();
             this.eventSerializer = eventSerializer;
@@ -26,10 +26,10 @@ namespace DDD.Core.Domain
 
         #region Methods
 
-        public EventState Translate(IEvent @event, IDictionary<string, object> options = null)
+        public StoredEvent Translate(IEvent @event, IDictionary<string, object> options = null)
         {
             Condition.Requires(@event, nameof(@event)).IsNotNull();
-            return new EventState()
+            return new StoredEvent()
             {
                 OccurredOn = @event.OccurredOn,
                 EventType = @event.GetType().Name,

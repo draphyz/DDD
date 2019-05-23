@@ -79,12 +79,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\Prescriptions\OraclePharmaceuticalPrescriptionRevokerTests.cs" />
-    <Compile Include="Application\Prescriptions\OraclePharmaceuticalPrescriptionCreatorTests.cs" />
-    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionRevokerTests.cs" />
-    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionCreatorTests.cs" />
-    <Compile Include="Application\Prescriptions\SqlServerPharmaceuticalPrescriptionRevokerTests.cs" />
-    <Compile Include="Application\Prescriptions\SqlServerPharmaceuticalPrescriptionCreatorTests.cs" />
     <Compile Include="OracleCollection.cs" />
     <Compile Include="OracleConnectionFactory.cs" />
     <Compile Include="OracleFixture.cs" />
@@ -121,10 +115,6 @@
     <ProjectReference Include="..\..\Src\DDD.Common\DDD.Common.csproj">
       <Project>{0B70B4FD-F5A0-4A6C-A3FD-90031E08C1C2}</Project>
       <Name>DDD.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\DDD.Core.EF\DDD.Core.EF.csproj">
-      <Project>{6d227aa7-ff90-48ca-b13d-ed23c1fffba5}</Project>
-      <Name>DDD.Core.EF</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Src\DDD.Core.Messages\DDD.Core.Messages.csproj">
       <Project>{2438B31A-3A39-4878-81FA-BE5AE715EAE5}</Project>
@@ -185,7 +175,9 @@
   <ItemGroup>
     <Analyzer Include="L:\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Application\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

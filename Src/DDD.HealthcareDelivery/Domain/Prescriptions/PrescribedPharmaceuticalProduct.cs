@@ -1,9 +1,5 @@
-﻿using Conditions;
-
-namespace DDD.HealthcareDelivery.Domain.Prescriptions
+﻿namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
-    using Core.Domain;
-
     /// <summary>
     /// Represents a commercial pharmaceutical product with a brand name.
     /// </summary>
@@ -12,29 +8,17 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Constructors
 
-        public PrescribedPharmaceuticalProduct(string nameOrDescription, 
-                                               string posology =null, 
-                                               string quantity = null, 
+        public PrescribedPharmaceuticalProduct(string nameOrDescription,
+                                               string posology = null,
+                                               string quantity = null,
                                                string duration = null,
                                                MedicationCode code = null,
-                                               int identifier = 0,
-                                               EntityState entityState = EntityState.Added)
-            : base(nameOrDescription, posology, quantity, duration, code, identifier, entityState)
+                                               int identifier = 0)
+            : base(nameOrDescription, posology, quantity, duration, code, identifier)
         {
         }
 
         #endregion Constructors
-
-        #region Methods
-
-        public override PrescribedMedicationState ToState()
-        {
-            var state = base.ToState();
-            state.MedicationType = PrescribedMedicationType.Product.ToString();
-            return state;
-        }
-
-        #endregion Methods
 
     }
 }

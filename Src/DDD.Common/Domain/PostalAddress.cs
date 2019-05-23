@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using Conditions;
+﻿using Conditions;
+using System.Collections.Generic;
 
 namespace DDD.Common.Domain
 {
     using Core.Domain;
 
-    public class PostalAddress : ValueObject, IStateObjectConvertible<PostalAddressState>
+    public class PostalAddress : ValueObject
     {
 
         #region Constructors
@@ -50,20 +50,6 @@ namespace DDD.Common.Domain
 
         #region Methods
 
-        public static PostalAddress FromState(PostalAddressState state)
-        {
-            if (state == null) return null;
-            return CreateIfNotEmpty
-            (
-                state.Street,
-                state.City,
-                state.PostalCode,
-                Alpha2CountryCode.CreateIfNotEmpty(state.CountryCode),
-                state.HouseNumber,
-                state.BoxNumber
-            );
-        }
-
         public static PostalAddress CreateIfNotEmpty(string street,
                                                      string city,
                                                      string postalCode = null,
@@ -92,18 +78,6 @@ namespace DDD.Common.Domain
             yield return this.CountryCode;
             yield return this.HouseNumber;
             yield return this.BoxNumber;
-        }
-        public PostalAddressState ToState()
-        {
-            return new PostalAddressState
-            {
-                Street = this.Street,
-                HouseNumber = this.HouseNumber,
-                BoxNumber = this.BoxNumber,
-                PostalCode = this.PostalCode,
-                City = this.City,
-                CountryCode = this.CountryCode?.Code
-            };
         }
 
         public override string ToString()

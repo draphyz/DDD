@@ -1,19 +1,15 @@
-﻿using System.Collections.Generic;
-using Conditions;
-using System;
+﻿using Conditions;
+using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
-    using Core;
     using Core.Domain;
 
-    public abstract class PrescribedMedication
-        : ValueObject, IStateObjectConvertible<PrescribedMedicationState>
+    public abstract class PrescribedMedication : ValueObject
     {
 
         #region Fields
 
-        private readonly EntityState entityState;
         private readonly int identifier;
 
         #endregion Fields
@@ -25,8 +21,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                        string quantity = null,
                                        string duration = null,
                                        MedicationCode code = null,
-                                       int identifier = 0,
-                                       EntityState entityState = EntityState.Added)
+                                       int identifier = 0)
         {
             Condition.Requires(nameOrDescription, nameof(nameOrDescription)).IsNotNullOrWhiteSpace();
             Condition.Requires(identifier, nameof(identifier)).IsGreaterOrEqual(0);
@@ -38,7 +33,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 this.Duration = duration;
             this.Code = code;
             this.identifier = identifier;
-            this.entityState = entityState;
         }
 
         #endregion Constructors
@@ -66,20 +60,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             yield return this.Quantity;
             yield return this.Duration;
             yield return this.Code;
-        }
-
-        public virtual PrescribedMedicationState ToState()
-        {
-            return new PrescribedMedicationState
-            {
-                EntityState = this.entityState,
-                Identifier = this.identifier,
-                NameOrDescription = this.NameOrDescription,
-                Posology = this.Posology,
-                Quantity = this.Quantity,
-                Duration = this.Duration,
-                Code = this.Code?.Code
-            };
         }
 
         public override string ToString()

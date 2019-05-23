@@ -29,7 +29,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             return new PharmaceuticalPrescriptionRepository
             (
                 new Domain.Prescriptions.BelgianPharmaceuticalPrescriptionTranslator(),
-                new EventTranslator(DataContractSerializerWrapper.Create(new UTF8Encoding(false))),
+                new StoredEventTranslator(DataContractSerializerWrapper.Create(new UTF8Encoding(false))),
                 new OracleHealthcareContextFactory(this.Fixture.ConnectionFactory)
             );
         }

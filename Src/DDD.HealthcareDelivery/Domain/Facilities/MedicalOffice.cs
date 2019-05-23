@@ -17,16 +17,5 @@
 
         #endregion Constructors
 
-        #region Methods
-
-        public override HealthFacilityState ToState()
-        {
-            var state = base.ToState();
-            state.FacilityType = HealthFacilityType.MedicalOffice.ToString();
-            return state;
-        }
-
-        #endregion Methods
-
     }
 }

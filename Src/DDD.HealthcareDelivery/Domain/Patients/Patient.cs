@@ -7,7 +7,7 @@ namespace DDD.HealthcareDelivery.Domain.Patients
     using Common.Domain;
     using Core.Domain;
 
-    public class Patient : ValueObject, IStateObjectConvertible<PatientState>
+    public class Patient : ValueObject
     {
 
         #region Constructors
@@ -58,21 +58,6 @@ namespace DDD.HealthcareDelivery.Domain.Patients
             yield return this.SocialSecurityNumber;
             yield return this.ContactInformation;
             yield return this.Birthdate;
-        }
-
-        public PatientState ToState()
-        {
-            return new PatientState
-            {
-                Identifier = this.Identifier,
-                FullName = this.FullName.ToState(),
-                Sex = this.Sex.Code,
-                SocialSecurityNumber = this.SocialSecurityNumber?.Number,
-                ContactInformation = this.ContactInformation == null ?
-                                     new ContactInformationState() // EF6 complex types cannot be null
-                                     : this.ContactInformation.ToState(),
-                Birthdate = this.Birthdate,
-            };
         }
 
         public override string ToString()

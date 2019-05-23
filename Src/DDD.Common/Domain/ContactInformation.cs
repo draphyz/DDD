@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DDD.Common.Domain
 {
     using Core.Domain;
 
-    public class ContactInformation : ValueObject, IStateObjectConvertible<ContactInformationState>
+    public class ContactInformation : ValueObject
     {
 
         #region Constructors
@@ -15,7 +15,7 @@ namespace DDD.Common.Domain
                                   string secondaryTelephoneNumber,
                                   string faxNumber,
                                   EmailAddress primaryEmailAddress,
-                                  EmailAddress secondaryEmailAddress, 
+                                  EmailAddress secondaryEmailAddress,
                                   Uri webSite)
         {
             this.PostalAddress = postalAddress;
@@ -52,21 +52,6 @@ namespace DDD.Common.Domain
 
         #region Methods
 
-        public static ContactInformation FromState(ContactInformationState state)
-        {
-            if (state == null) return null;
-            return new ContactInformation
-            (
-                PostalAddress.FromState(state.PostalAddress),
-                state.PrimaryTelephoneNumber,
-                state.SecondaryTelephoneNumber,
-                state.FaxNumber,
-                EmailAddress.CreateIfNotEmpty(state.PrimaryEmailAddress),
-                EmailAddress.CreateIfNotEmpty(state.SecondaryEmailAddress),
-                string.IsNullOrWhiteSpace(state.WebSite) ? null : new Uri(state.WebSite)
-            );
-        }
-
         public override IEnumerable<object> EqualityComponents()
         {
             yield return this.PostalAddress;
@@ -78,22 +63,6 @@ namespace DDD.Common.Domain
             yield return this.WebSite;
         }
 
-        public ContactInformationState ToState()
-        {
-            return new ContactInformationState
-            {
-                PostalAddress = this.PostalAddress == null ? 
-                                new PostalAddressState() 
-                                : this.PostalAddress.ToState(), // EF6 complex types cannot be null
-                PrimaryTelephoneNumber = this.PrimaryTelephoneNumber,
-                SecondaryTelephoneNumber = this.SecondaryTelephoneNumber,
-                FaxNumber = this.FaxNumber,
-                PrimaryEmailAddress = this.PrimaryEmailAddress?.Address,
-                SecondaryEmailAddress = this.SecondaryEmailAddress?.Address,
-                WebSite = this.WebSite?.AbsoluteUri
-            };
-        }
-
         public override string ToString()
         {
             var format = "{0} [postalAddress={1}, primaryTelephoneNumber={2}, secondaryTelephoneNumber={3}, faxNumber={4}, primaryEmailAddress={5}, secondaryEmailAddress={6}, webSite={7}]";
@@ -101,5 +70,6 @@ namespace DDD.Common.Domain
         }
 
         #endregion Methods
+
     }
 }

@@ -10,7 +10,7 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
     /// Represents a person that provides healthcare services.
     /// </summary>
     public abstract class HealthcarePractitioner 
-        : ValueObject, IStateObjectConvertible<HealthcarePractitionerState>
+        : ValueObject
     {
 
         #region Constructors
@@ -67,22 +67,6 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
             yield return this.ContactInformation;
             yield return this.Speciality;
             yield return this.DisplayName;
-        }
-
-        public virtual HealthcarePractitionerState ToState()
-        {
-            return new HealthcarePractitionerState
-            {
-                Identifier = this.Identifier,
-                FullName = this.FullName.ToState(),
-                LicenseNumber = this.LicenseNumber.Number, 
-                SocialSecurityNumber = this.SocialSecurityNumber?.Number,
-                ContactInformation = this.ContactInformation == null ? 
-                                     new ContactInformationState() // EF6 complex types cannot be null
-                                     : this.ContactInformation.ToState(), 
-                Speciality = this.Speciality,
-                DisplayName = this.DisplayName
-            };
         }
 
         public override string ToString()

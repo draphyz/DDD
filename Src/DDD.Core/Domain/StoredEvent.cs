@@ -2,7 +2,7 @@
 
 namespace DDD.Core.Domain
 {
-    public class EventState
+    public class StoredEvent
     {
 
         #region Properties

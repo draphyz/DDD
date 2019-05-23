@@ -6,7 +6,7 @@ namespace DDD.Common.Domain
 {
     using Core.Domain;
 
-    public class FullName : ComparableValueObject, IStateObjectConvertible<FullNameState>
+    public class FullName : ComparableValueObject
     {
 
         #region Constructors
@@ -19,7 +19,7 @@ namespace DDD.Common.Domain
             this.FirstName = firstName.ToTitleCase();
         }
 
-        #endregion Constructors 
+        #endregion Constructors
 
         #region Properties
 
@@ -30,16 +30,6 @@ namespace DDD.Common.Domain
         #endregion Properties
 
         #region Methods
-
-        public static FullName FromState(FullNameState state)
-        {
-            if (state == null) return null;
-            return new FullName
-            (
-                state.LastName,
-                state.FirstName
-            );
-        }
 
         public string AsFormattedName() => $"{this.LastName.ToUpper()} {this.FirstName}";
 
@@ -53,15 +43,6 @@ namespace DDD.Common.Domain
         {
             yield return this.LastName;
             yield return this.FirstName;
-        }
-
-        public FullNameState ToState()
-        {
-            return new FullNameState
-            {
-                LastName = this.LastName,
-                FirstName = this.FirstName
-            };
         }
 
         public override string ToString()
@@ -82,5 +63,6 @@ namespace DDD.Common.Domain
         }
 
         #endregion Methods
+
     }
 }

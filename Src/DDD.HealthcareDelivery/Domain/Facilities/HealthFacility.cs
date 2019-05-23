@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Conditions;
+﻿using Conditions;
+using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Facilities
 {
@@ -8,13 +8,13 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
     /// <summary>
     /// Represents any location where healthcare is provided.
     /// </summary>
-    public abstract class HealthFacility : ValueObject, IStateObjectConvertible<HealthFacilityState>
+    public abstract class HealthFacility : ValueObject
     {
 
         #region Constructors
 
-        protected HealthFacility(int identifier, 
-                                 string name, 
+        protected HealthFacility(int identifier,
+                                 string name,
                                  HealthFacilityLicenseNumber licenseNumber = null)
         {
             Condition.Requires(identifier, nameof(identifier)).IsGreaterThan(0);
@@ -43,16 +43,6 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
             yield return this.Identifier;
             yield return this.Name;
             yield return this.LicenseNumber;
-        }
-
-        public virtual HealthFacilityState ToState()
-        {
-            return new HealthFacilityState
-            {
-                Identifier = this.Identifier,
-                Name = this.Name,
-                LicenseNumber = this.LicenseNumber?.Number
-            };
         }
 
         public override string ToString()
