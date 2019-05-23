@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.NServiceBus", "Src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.NHibernate", "Src\DDD.Core.NHibernate\DDD.Core.NHibernate.csproj", "{D4FC7E1B-CAE8-40F9-9FAF-0029D91CC6C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Common.NHibernate", "Src\DDD.Common.NHibernate\DDD.Common.NHibernate.csproj", "{7466B831-1642-4B2B-9EA3-1C9299596C2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,10 @@ Global
 		{D4FC7E1B-CAE8-40F9-9FAF-0029D91CC6C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4FC7E1B-CAE8-40F9-9FAF-0029D91CC6C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4FC7E1B-CAE8-40F9-9FAF-0029D91CC6C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7466B831-1642-4B2B-9EA3-1C9299596C2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7466B831-1642-4B2B-9EA3-1C9299596C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7466B831-1642-4B2B-9EA3-1C9299596C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7466B831-1642-4B2B-9EA3-1C9299596C2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -156,6 +162,7 @@ Global
 		{40A849C5-C8D7-4F76-856A-138AED73A6C3} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
 		{436D869F-7566-4436-90A8-B655145C5BCA} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
 		{D4FC7E1B-CAE8-40F9-9FAF-0029D91CC6C4} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
+		{7466B831-1642-4B2B-9EA3-1C9299596C2A} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {983C3AB4-301E-47A3-93FF-2E4BD8F2090F}
