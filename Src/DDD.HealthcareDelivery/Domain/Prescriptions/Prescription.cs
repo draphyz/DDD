@@ -88,14 +88,14 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         {
             return new TState
             {
-                Identifier = this.Identifier.Identifier,
+                Identifier = this.Identifier.Value,
                 Prescriber = this.Prescriber.ToState(),
                 Patient = this.Patient.ToState(),
                 HealthFacility = this.HealthFacility.ToState(),
                 Status = this.Status.Code,
                 CreatedOn = this.CreatedOn,
                 DelivrableAt = this.DelivrableAt,
-                LanguageCode = this.LanguageCode.Code,
+                LanguageCode = this.LanguageCode.Value,
                 EntityState = this.EntityState,
             };
         }

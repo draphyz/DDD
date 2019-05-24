@@ -9,9 +9,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Constructors
 
-        public PrescriptionIdentifier(int identifier) : base(identifier)
+        public PrescriptionIdentifier(int value) : base(value)
         {
-            Condition.Requires(identifier, nameof(identifier)).IsGreaterThan(0);
+            Condition.Requires(value, nameof(value)).IsGreaterThan(0);
         }
 
         #endregion Constructors

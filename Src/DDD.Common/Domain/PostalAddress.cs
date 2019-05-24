@@ -102,7 +102,7 @@ namespace DDD.Common.Domain
                 BoxNumber = this.BoxNumber,
                 PostalCode = this.PostalCode,
                 City = this.City,
-                CountryCode = this.CountryCode?.Code
+                CountryCode = this.CountryCode?.Value
             };
         }
 

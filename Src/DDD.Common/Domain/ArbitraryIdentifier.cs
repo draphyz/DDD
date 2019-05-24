@@ -14,16 +14,16 @@ namespace DDD.Common.Domain
 
         #region Constructors
 
-        protected ArbitraryIdentifier(TId identifier)
+        protected ArbitraryIdentifier(TId value)
         {
-            this.Identifier = identifier;
+            this.Value = value;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public TId Identifier { get; }
+        public TId Value { get; }
 
         #endregion Properties
 
@@ -31,15 +31,15 @@ namespace DDD.Common.Domain
 
         public override IEnumerable<IComparable> ComparableComponents()
         {
-            yield return this.Identifier;
+            yield return this.Value;
         }
 
         public override IEnumerable<object> EqualityComponents()
         {
-            yield return this.Identifier;
+            yield return this.Value;
         }
 
-        public override string ToString() => $"{this.GetType().Name} [identifier={this.Identifier}]";
+        public override string ToString() => $"{this.GetType().Name} [value={this.Value}]";
 
         #endregion Methods
 

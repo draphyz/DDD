@@ -5,7 +5,7 @@
 
         #region Constructors
 
-        protected CountryCode(string code) : base(code)
+        protected CountryCode(string value) : base(value)
         {
         }
 

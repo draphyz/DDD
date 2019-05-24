@@ -14,17 +14,17 @@ namespace DDD.Common.Domain
 
         #region Constructors
 
-        protected IdentificationCode(string code)
+        protected IdentificationCode(string value)
         {
-            Condition.Requires(code, nameof(code)).IsNotNullOrWhiteSpace();
-            this.Code = code.ToUpper();
+            Condition.Requires(value, nameof(value)).IsNotNullOrWhiteSpace();
+            this.Value = value.ToUpper();
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public string Code { get; }
+        public string Value { get; }
 
         #endregion Properties
 
@@ -32,15 +32,15 @@ namespace DDD.Common.Domain
 
         public override IEnumerable<IComparable> ComparableComponents()
         {
-            yield return this.Code;
+            yield return this.Value;
         }
 
         public override IEnumerable<object> EqualityComponents()
         {
-            yield return this.Code;
+            yield return this.Value;
         }
 
-        public override string ToString() => $"{this.GetType().Name} [code={this.Code}]";
+        public override string ToString() => $"{this.GetType().Name} [value={this.Value}]";
 
         #endregion Methods
 

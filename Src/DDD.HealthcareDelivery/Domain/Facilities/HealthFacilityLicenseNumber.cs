@@ -7,7 +7,7 @@
 
         #region Constructors
 
-        protected HealthFacilityLicenseNumber(string number) : base(number)
+        protected HealthFacilityLicenseNumber(string value) : base(value)
         {
         }
 

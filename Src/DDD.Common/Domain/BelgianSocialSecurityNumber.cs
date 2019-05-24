@@ -11,9 +11,9 @@ namespace DDD.Common.Domain
 
         #region Constructors
 
-        public BelgianSocialSecurityNumber(string number) : base(number)
+        public BelgianSocialSecurityNumber(string value) : base(value)
         {
-            Condition.Requires(Number, nameof(number))
+            Condition.Requires(Value, nameof(value))
                      .HasLength(11)
                      .Evaluate(c => c.IsNumeric());
         }
@@ -35,24 +35,24 @@ namespace DDD.Common.Domain
         /// <summary>
         /// Computes the check digit based on the 9 first digits.
         /// </summary>
-        public static int ComputeCheckDigit(string number, bool bornBefore2000 = true)
+        public static int ComputeCheckDigit(string value, bool bornBefore2000 = true)
         {
-            Condition.Requires(number, nameof(number)).IsLongerOrEqual(9);
+            Condition.Requires(value, nameof(value)).IsLongerOrEqual(9);
             long identifier;
             if (bornBefore2000)
-                identifier = long.Parse(number.Substring(0, 9));
+                identifier = long.Parse(value.Substring(0, 9));
             else
-                identifier = long.Parse($"2{number.Substring(0, 9)}");
+                identifier = long.Parse($"2{value.Substring(0, 9)}");
             var modulus = 97;
             var remainder = modulus - (identifier % modulus);
             if (remainder == 0) return modulus;
             return (int)remainder;
         }
 
-        public static BelgianSocialSecurityNumber CreateIfNotEmpty(string number)
+        public static BelgianSocialSecurityNumber CreateIfNotEmpty(string value)
         {
-            if (string.IsNullOrWhiteSpace(number)) return null;
-            return new BelgianSocialSecurityNumber(number);
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            return new BelgianSocialSecurityNumber(value);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace DDD.Common.Domain
         public int? BirthDay()
         {
             if (this.BirthMonth() == null) return null;
-            return int.Parse(this.Number.Substring(4, 2));
+            return int.Parse(this.Value.Substring(4, 2));
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace DDD.Common.Domain
         /// </summary>
         public int? BirthYear()
         {
-            var year = this.Number.Substring(0, 2);
+            var year = this.Value.Substring(0, 2);
             if (year == "00") return null;
             if (this.BornBefore2000())
                 return int.Parse($"19{year}");
@@ -105,9 +105,9 @@ namespace DDD.Common.Domain
         public bool BornBefore2000()
         {
             var checkDigit = this.CheckDigit();
-            var computedCheckDigit = ComputeCheckDigit(this.Number, bornBefore2000: true);
+            var computedCheckDigit = ComputeCheckDigit(this.Value, bornBefore2000: true);
             if (computedCheckDigit == checkDigit) return true;
-            computedCheckDigit = ComputeCheckDigit(this.Number, bornBefore2000: false);
+            computedCheckDigit = ComputeCheckDigit(this.Value, bornBefore2000: false);
             if (computedCheckDigit == checkDigit) return false;
             throw new InvalidOperationException("The check digit of the number is invalid.");
         }
@@ -115,7 +115,7 @@ namespace DDD.Common.Domain
         /// <summary>
         /// Returns the check digit based on the 9 first digits.
         /// </summary>
-        public int CheckDigit() => int.Parse(this.Number.Substring(9, 2));
+        public int CheckDigit() => int.Parse(this.Value.Substring(9, 2));
 
         /// <summary>
         /// Determines whether the birthdate is only partially known.
@@ -140,7 +140,7 @@ namespace DDD.Common.Domain
         /// <summary>
         /// Returns the unique identifier of the person.
         /// </summary>
-        public int PersonUniqueIdentifier() => int.Parse(this.Number.Substring(0, 9));
+        public int PersonUniqueIdentifier() => int.Parse(this.Value.Substring(0, 9));
 
         /// <summary>
         /// Returns a sequence number used for distinguishing people with identical birthdates.
@@ -150,8 +150,8 @@ namespace DDD.Common.Domain
         /// </remarks>
         public int SequenceNumber()
         {
-            if (this.HasPartialBirthdate()) return int.Parse(this.Number.Substring(5, 4));
-            return int.Parse(this.Number.Substring(6, 3));
+            if (this.HasPartialBirthdate()) return int.Parse(this.Value.Substring(5, 4));
+            return int.Parse(this.Value.Substring(6, 3));
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace DDD.Common.Domain
         /// </summary>
         public Sex SexAtBirth() => this.SequenceNumber() % 2 == 0 ? Sex.Female : Sex.Male;
 
-        private int MonthNumber() => int.Parse(this.Number.Substring(2, 2));
+        private int MonthNumber() => int.Parse(this.Value.Substring(2, 2));
 
         #endregion Methods
 

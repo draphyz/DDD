@@ -51,7 +51,7 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
             {
                 Identifier = this.Identifier,
                 Name = this.Name,
-                LicenseNumber = this.LicenseNumber?.Number
+                LicenseNumber = this.LicenseNumber?.Value
             };
         }
 

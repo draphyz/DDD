@@ -10,9 +10,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Constructors
 
-        public BelgianMedicationCode(string code) : base(code)
+        public BelgianMedicationCode(string value) : base(value)
         {
-            Condition.Requires(code, nameof(code))
+            Condition.Requires(value, nameof(value))
                      .HasLength(7)
                      .Evaluate(c => c.IsNumeric());
         }
@@ -24,12 +24,12 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         /// <summary>
         /// Computes the check digit based on the 6 first digits.
         /// </summary>
-        public static int ComputeCheckDigit(string code)
+        public static int ComputeCheckDigit(string value)
         {
-            Condition.Requires(code, nameof(code))
+            Condition.Requires(value, nameof(value))
                      .IsLongerOrEqual(6)
                      .Evaluate(c => c.IsNumeric());
-            var identifier = code.Substring(0, 6);
+            var identifier = value.Substring(0, 6);
             var sum = 0;
             var alternate = true;
             for (int i = identifier.Length - 1; i >= 0; i--)
@@ -51,21 +51,21 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             return 10 - remainder;
         }
 
-        public static BelgianMedicationCode CreateIfNotEmpty(string code)
+        public static BelgianMedicationCode CreateIfNotEmpty(string value)
         {
-            if (string.IsNullOrWhiteSpace(code)) return null;
-            return new BelgianMedicationCode(code);
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            return new BelgianMedicationCode(value);
         }
 
         /// <summary>
         /// Returns the check digit based on the 6 first digits.
         /// </summary>
-        public int CheckDigit() => int.Parse(this.Code[6].ToString());
+        public int CheckDigit() => int.Parse(this.Value[6].ToString());
 
         /// <summary>
         /// Returns the unique identifier of the medication.
         /// </summary>
-        public int MedicationUniqueIdentifier() => int.Parse(this.Code.Substring(0, 6));
+        public int MedicationUniqueIdentifier() => int.Parse(this.Value.Substring(0, 6));
 
         #endregion Methods
 

@@ -13,33 +13,31 @@ namespace DDD.Common.Domain
 
         #region Fields
 
-        private static readonly BinaryContent emptyContent = new BinaryContent(new byte[0]);
+        public static readonly BinaryContent Empty = new BinaryContent(new byte[0]);
 
         #endregion Fields
 
         #region Constructors
 
-        public BinaryContent(byte[] content)
+        public BinaryContent(byte[] data)
         {
-            Condition.Requires(content, nameof(content)).IsNotNull();
-            this.Content = content;
+            Condition.Requires(data, nameof(data)).IsNotNull();
+            this.Data = data;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public byte[] Content { get; }
+        public byte[] Data { get; }
 
         #endregion Properties
 
         #region Methods
 
-        public static BinaryContent Empty() => emptyContent;
-
         public override IEnumerable<object> EqualityComponents()
         {
-            foreach (var component in this.Content)
+            foreach (var component in this.Data)
                 yield return component;
         }
 
@@ -48,10 +46,12 @@ namespace DDD.Common.Domain
         /// </remarks>
         public override IEnumerable<object> HashCodeComponents()
         {
-            var startIndex = this.Content.Length > 8 ? this.Content.Length - 8 : 0;
-            for (int i = startIndex; i < this.Content.Length; i++)
-                yield return this.Content[i];
+            var startIndex = this.Data.Length > 8 ? this.Data.Length - 8 : 0;
+            for (int i = startIndex; i < this.Data.Length; i++)
+                yield return this.Data[i];
         }
+
+        public override string ToString() => $"{this.GetType().Name} [data={this.Data}]";
 
         #endregion Methods
 

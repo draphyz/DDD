@@ -10,9 +10,9 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
 
         #region Constructors
 
-        public BelgianHealthFacilityLicenseNumber(string number) : base(number)
+        public BelgianHealthFacilityLicenseNumber(string value) : base(value)
         {
-            Condition.Requires(number, nameof(number))
+            Condition.Requires(value, nameof(value))
                      .Evaluate(n => n.IsNumeric() && (n.Length == 11 || n.Length == 8));
         }
 
@@ -23,30 +23,30 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
         /// <summary>
         /// Computes the check digit based on the 6 first digits.
         /// </summary>
-        public static int ComputeCheckDigit(string number)
+        public static int ComputeCheckDigit(string value)
         {
-            Condition.Requires(number, nameof(number)).IsLongerOrEqual(6);
-            var identifier = int.Parse(number.Substring(0, 6));
+            Condition.Requires(value, nameof(value)).IsLongerOrEqual(6);
+            var identifier = int.Parse(value.Substring(0, 6));
             var modulus = 97;
             return modulus - (identifier % modulus);
         }
 
-        public static BelgianHealthFacilityLicenseNumber CreateIfNotEmpty(string number)
+        public static BelgianHealthFacilityLicenseNumber CreateIfNotEmpty(string value)
         {
-            if (string.IsNullOrWhiteSpace(number)) return null;
-            return new BelgianHealthFacilityLicenseNumber(number);
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            return new BelgianHealthFacilityLicenseNumber(value);
         }
 
         /// <summary>
         /// Returns the check digit based on the 6 first digits.
         /// </summary>
-        public int CheckDigit() => int.Parse(this.Number.Substring(6, 2));
+        public int CheckDigit() => int.Parse(this.Value.Substring(6, 2));
 
 
         /// <summary>
         /// Returns the unique identifier of the health facility.
         /// </summary>
-        public int FacilityUniqueIdentifier() => int.Parse(this.Number.Substring(0, 6));
+        public int FacilityUniqueIdentifier() => int.Parse(this.Value.Substring(0, 6));
 
         #endregion Methods
     }

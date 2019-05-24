@@ -75,8 +75,8 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
             {
                 Identifier = this.Identifier,
                 FullName = this.FullName.ToState(),
-                LicenseNumber = this.LicenseNumber.Number, 
-                SocialSecurityNumber = this.SocialSecurityNumber?.Number,
+                LicenseNumber = this.LicenseNumber.Value, 
+                SocialSecurityNumber = this.SocialSecurityNumber?.Value,
                 ContactInformation = this.ContactInformation == null ? 
                                      new ContactInformationState() // EF6 complex types cannot be null
                                      : this.ContactInformation.ToState(), 

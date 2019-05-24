@@ -78,7 +78,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 Posology = this.Posology,
                 Quantity = this.Quantity,
                 Duration = this.Duration,
-                Code = this.Code?.Code
+                Code = this.Code?.Value
             };
         }
 
