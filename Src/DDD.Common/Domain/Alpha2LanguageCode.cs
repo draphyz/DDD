@@ -10,9 +10,9 @@ namespace DDD.Common.Domain
 
         #region Constructors
 
-        public Alpha2LanguageCode(string code) : base(code)
+        public Alpha2LanguageCode(string value) : base(value)
         {
-            Condition.Requires(code, nameof(code))
+            Condition.Requires(value, nameof(value))
                      .HasLength(2)
                      .Evaluate(c => c.IsAlphabetic());
         }

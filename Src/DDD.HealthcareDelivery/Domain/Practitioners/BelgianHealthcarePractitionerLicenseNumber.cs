@@ -10,9 +10,9 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
 
         #region Constructors
 
-        public BelgianHealthcarePractitionerLicenseNumber(string number) : base(number)
+        public BelgianHealthcarePractitionerLicenseNumber(string value) : base(value)
         {
-            Condition.Requires(number, nameof(number))
+            Condition.Requires(value, nameof(value))
                      .HasLength(11)
                      .Evaluate(n => n.IsNumeric());
         }
@@ -60,10 +60,10 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
         /// <summary>
         /// Computes the check digit based on the 6 first digits.
         /// </summary>
-        public static int ComputeCheckDigit(string number, Modulus modulus = Modulus.Mod97)
+        public static int ComputeCheckDigit(string value, Modulus modulus = Modulus.Mod97)
         {
-            Condition.Requires(number, nameof(number)).IsLongerOrEqual(6);
-            var identifier = int.Parse(number.Substring(0, 6)); // old unique practitioner identifier
+            Condition.Requires(value, nameof(value)).IsLongerOrEqual(6);
+            var identifier = int.Parse(value.Substring(0, 6)); // old unique practitioner identifier
             var imodulus = (int)modulus;
             return imodulus - (identifier % imodulus);
         }
@@ -71,32 +71,32 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
         /// <summary>
         /// Returns the check digit based on the 6 first digits.
         /// </summary>
-        public int CheckDigit() => int.Parse(this.Number.Substring(6, 2));
+        public int CheckDigit() => int.Parse(this.Value.Substring(6, 2));
 
         /// <summary>
         /// Returns the registration number attributed to the healthcare practitioner by the Provincial Medical Commission.
         /// </summary>
-        public int PractitionerIdentifier() => int.Parse(this.Number.Substring(2, 4));
+        public int PractitionerIdentifier() => int.Parse(this.Value.Substring(2, 4));
 
         /// <summary>
         /// Returns the unique identifier of the healthcare practitioner.
         /// </summary>
-        public int PractitionerUniqueIdentifier() => int.Parse(this.Number.Substring(0, 8));
+        public int PractitionerUniqueIdentifier() => int.Parse(this.Value.Substring(0, 8));
 
         /// <summary>
         /// Returns the profession of the healthcare practitioner.
         /// </summary>
-        public HealthProfession Profession() => (HealthProfession)int.Parse(this.Number[0].ToString());
+        public HealthProfession Profession() => (HealthProfession)int.Parse(this.Value[0].ToString());
 
         /// <summary>
         /// Returns the province of the healthcare practitioner at the registration time.
         /// </summary>
-        public BelgianProvince Province() => (BelgianProvince)int.Parse(this.Number[1].ToString());
+        public BelgianProvince Province() => (BelgianProvince)int.Parse(this.Value[1].ToString());
 
         /// <summary>
         /// Returns the professional qualification code of the healthcare practitioner.
         /// </summary>
-        public string QualificationCode() => this.Number.Substring(8, 3);
+        public string QualificationCode() => this.Value.Substring(8, 3);
 
         #endregion Methods
 

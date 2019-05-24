@@ -10,9 +10,9 @@ namespace DDD.Common.Domain
 
         #region Constructors
 
-        public Alpha2CountryCode(string code) : base(code)
+        public Alpha2CountryCode(string value) : base(value)
         {
-            Condition.Requires(code, nameof(code))
+            Condition.Requires(value, nameof(value))
                      .HasLength(2)
                      .Evaluate(c => c.IsAlphabetic());
         }
@@ -21,10 +21,10 @@ namespace DDD.Common.Domain
 
         #region Methods
 
-        public static Alpha2CountryCode CreateIfNotEmpty(string code)
+        public static Alpha2CountryCode CreateIfNotEmpty(string value)
         {
-            if (string.IsNullOrWhiteSpace(code)) return null;
-            return new Alpha2CountryCode(code);
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            return new Alpha2CountryCode(value);
         }
 
         #endregion Methods

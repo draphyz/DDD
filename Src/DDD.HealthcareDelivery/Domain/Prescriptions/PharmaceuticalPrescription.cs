@@ -70,7 +70,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 createdOn,
                 delivrableAt
             );
-            prescription.AddEvent(new PharmaceuticalPrescriptionCreated(identifier.Identifier, createdOn));
+            prescription.AddEvent(new PharmaceuticalPrescriptionCreated(identifier.Value, createdOn));
             return prescription;
         }
 
@@ -89,7 +89,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         protected override void AddPrescriptionRevokedEvent(string reason)
         {
-            this.AddEvent(new PharmaceuticalPrescriptionRevoked(this.Identifier.Identifier, reason));
+            this.AddEvent(new PharmaceuticalPrescriptionRevoked(this.Identifier.Value, reason));
         }
 
         #endregion Methods

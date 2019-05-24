@@ -4,7 +4,7 @@
     {
         #region Constructors
 
-        protected SocialSecurityNumber(string number) : base(number)
+        protected SocialSecurityNumber(string value) : base(value)
         {
         }
 
