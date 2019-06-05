@@ -26,6 +26,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         {
         }
 
+        /// <remarks>For serialization</remarks>
+        private PharmaceuticalPrescriptionRevoked() { }
+
         #endregion Constructors
 
         #region Properties

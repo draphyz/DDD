@@ -19,6 +19,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             this.OccurredOn = occuredOn;
         }
 
+        /// <remarks>For serialization</remarks>
+        private PharmaceuticalPrescriptionCreated() { }
+
         #endregion Constructors
 
         #region Properties
