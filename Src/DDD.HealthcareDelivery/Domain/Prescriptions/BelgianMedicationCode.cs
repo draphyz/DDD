@@ -17,6 +17,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                      .Evaluate(c => c.IsNumeric());
         }
 
+        protected BelgianMedicationCode() { }
+
         #endregion Constructors
 
         #region Methods

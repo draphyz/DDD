@@ -15,7 +15,8 @@
         {
         }
 
-        #endregion Constructors
+        protected Hospital() { }
 
+        #endregion Constructors
     }
 }

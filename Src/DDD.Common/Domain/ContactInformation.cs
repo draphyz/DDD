@@ -30,23 +30,25 @@ namespace DDD.Common.Domain
             this.WebSite = webSite;
         }
 
+        protected ContactInformation() { }
+
         #endregion Constructors
 
         #region Properties
 
-        public string FaxNumber { get; }
+        public string FaxNumber { get; private set; }
 
-        public PostalAddress PostalAddress { get; }
+        public PostalAddress PostalAddress { get; private set; }
 
-        public EmailAddress PrimaryEmailAddress { get; }
+        public EmailAddress PrimaryEmailAddress { get; private set; }
 
-        public string PrimaryTelephoneNumber { get; }
+        public string PrimaryTelephoneNumber { get; private set; }
 
-        public EmailAddress SecondaryEmailAddress { get; }
+        public EmailAddress SecondaryEmailAddress { get; private set; }
 
-        public string SecondaryTelephoneNumber { get; }
+        public string SecondaryTelephoneNumber { get; private set; }
 
-        public Uri WebSite { get; }
+        public Uri WebSite { get; private set; }
 
         #endregion Properties
 

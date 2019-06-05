@@ -30,21 +30,23 @@ namespace DDD.Common.Domain
                 this.BoxNumber = boxNumber.ToUpper();
         }
 
+        protected PostalAddress() { }
+
         #endregion Constructors
 
         #region Properties
 
-        public string BoxNumber { get; }
+        public string BoxNumber { get; private set; }
 
-        public string City { get; }
+        public string City { get; private set; }
 
-        public Alpha2CountryCode CountryCode { get; }
+        public Alpha2CountryCode CountryCode { get; private set; }
 
-        public string HouseNumber { get; }
+        public string HouseNumber { get; private set; }
 
-        public string PostalCode { get; }
+        public string PostalCode { get; private set; }
 
-        public string Street { get; }
+        public string Street { get; private set; }
 
         #endregion Properties
 

@@ -45,6 +45,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             this.prescribedMedications.AddRange(prescribedMedications);
         }
 
+        protected PharmaceuticalPrescription() { }
+
         #endregion Constructors
 
         #region Methods

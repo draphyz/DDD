@@ -16,6 +16,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Constructors
 
+        protected PrescribedMedication() { }
+
         protected PrescribedMedication(string nameOrDescription,
                                        string posology = null,
                                        string quantity = null,
@@ -39,15 +41,15 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Properties
 
-        public MedicationCode Code { get; }
+        public MedicationCode Code { get; private set; }
 
-        public string Duration { get; }
+        public string Duration { get; private set; }
 
-        public string NameOrDescription { get; }
+        public string NameOrDescription { get; private set; }
 
-        public string Posology { get; }
+        public string Posology { get; private set; }
 
-        public string Quantity { get; }
+        public string Quantity { get; private set; }
 
         #endregion Properties
 

@@ -18,6 +18,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Constructors
 
+        protected Prescription() { }
+
         protected Prescription(PrescriptionIdentifier identifier,
                                HealthcarePractitioner prescriber,
                                Patient patient,
@@ -49,19 +51,19 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Properties
 
-        public DateTime CreatedOn { get; }
+        public DateTime CreatedOn { get; private set; }
 
-        public DateTime? DelivrableAt { get; }
+        public DateTime? DelivrableAt { get; private set; }
 
-        public HealthFacility HealthFacility { get; }
+        public HealthFacility HealthFacility { get; private set; }
 
-        public PrescriptionIdentifier Identifier { get; }
+        public PrescriptionIdentifier Identifier { get; private set; }
 
-        public Alpha2LanguageCode LanguageCode { get; }
+        public Alpha2LanguageCode LanguageCode { get; private set; }
 
-        public Patient Patient { get; }
+        public Patient Patient { get; private set; }
 
-        public HealthcarePractitioner Prescriber { get; }
+        public HealthcarePractitioner Prescriber { get; private set; }
 
         public PrescriptionStatus Status { get; private set; }
 

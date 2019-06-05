@@ -19,13 +19,15 @@ namespace DDD.Common.Domain
             this.FirstName = firstName.ToTitleCase();
         }
 
+        protected FullName() { }
+
         #endregion Constructors
 
         #region Properties
 
-        public string FirstName { get; }
+        public string FirstName { get; private set; }
 
-        public string LastName { get; }
+        public string LastName { get; private set; }
 
         #endregion Properties
 

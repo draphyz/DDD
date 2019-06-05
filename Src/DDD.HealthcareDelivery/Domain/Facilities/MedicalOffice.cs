@@ -8,14 +8,15 @@
 
         #region Constructors
 
-        public MedicalOffice(int identifier, 
-                             string name, 
-                             HealthFacilityLicenseNumber licenseNumber = null) 
+        public MedicalOffice(int identifier,
+                             string name,
+                             HealthFacilityLicenseNumber licenseNumber = null)
             : base(identifier, name, licenseNumber)
         {
         }
 
-        #endregion Constructors
+        protected MedicalOffice() { }
 
+        #endregion Constructors
     }
 }

@@ -30,21 +30,23 @@ namespace DDD.HealthcareDelivery.Domain.Patients
             this.Birthdate = birthdate;
         }
 
+        protected Patient() { }
+
         #endregion Constructors
 
         #region Properties
 
-        public DateTime? Birthdate { get; }
+        public DateTime? Birthdate { get; private set; }
 
-        public ContactInformation ContactInformation { get; }
+        public ContactInformation ContactInformation { get; private set; }
 
-        public FullName FullName { get; }
+        public FullName FullName { get; private set; }
 
-        public int Identifier { get; }
+        public int Identifier { get; private set; }
 
-        public Sex Sex { get; }
+        public Sex Sex { get; private set; }
 
-        public SocialSecurityNumber SocialSecurityNumber { get; }
+        public SocialSecurityNumber SocialSecurityNumber { get; private set; }
 
         #endregion Properties
 

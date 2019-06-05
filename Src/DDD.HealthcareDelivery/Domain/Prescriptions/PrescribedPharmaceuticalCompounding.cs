@@ -8,6 +8,8 @@
 
         #region Constructors
 
+        protected PrescribedPharmaceuticalCompounding() { }
+
         public PrescribedPharmaceuticalCompounding(string nameOrDescription,
                                                    string posology = null,
                                                    string quantity = null,

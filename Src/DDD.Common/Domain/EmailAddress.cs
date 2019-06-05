@@ -1,8 +1,8 @@
 ﻿using Conditions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System;
 
 namespace DDD.Common.Domain
 {
@@ -21,11 +21,13 @@ namespace DDD.Common.Domain
             this.Address = address;
         }
 
+        protected EmailAddress() { }
+
         #endregion Constructors
 
         #region Properties
 
-        public string Address { get; }
+        public string Address { get; private set; }
 
         #endregion Properties
 

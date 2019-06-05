@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Conditions;
+﻿using Conditions;
+using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Practitioners
 {
@@ -9,11 +9,13 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
     /// <summary>
     /// Represents a person that provides healthcare services.
     /// </summary>
-    public abstract class HealthcarePractitioner 
+    public abstract class HealthcarePractitioner
         : ValueObject
     {
 
         #region Constructors
+
+        protected HealthcarePractitioner() { }
 
         protected HealthcarePractitioner(int identifier,
                                          FullName fullName,
@@ -40,19 +42,19 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
 
         #region Properties
 
-        public ContactInformation ContactInformation { get; }
+        public ContactInformation ContactInformation { get; private set; }
 
-        public FullName FullName { get; }
+        public string DisplayName { get; private set; }
 
-        public string DisplayName { get; }
+        public FullName FullName { get; private set; }
 
-        public int Identifier { get; }
+        public int Identifier { get; private set; }
 
-        public HealthcarePractitionerLicenseNumber LicenseNumber { get; }
+        public HealthcarePractitionerLicenseNumber LicenseNumber { get; private set; }
 
-        public SocialSecurityNumber SocialSecurityNumber { get; }
+        public SocialSecurityNumber SocialSecurityNumber { get; private set; }
 
-        public string Speciality { get; }
+        public string Speciality { get; private set; }
 
         #endregion Properties
 

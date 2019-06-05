@@ -10,6 +10,8 @@
 
         #region Constructors
 
+        protected HealthcarePractitionerLicenseNumber() { }
+
         protected HealthcarePractitionerLicenseNumber(string value) : base(value)
         {
         }

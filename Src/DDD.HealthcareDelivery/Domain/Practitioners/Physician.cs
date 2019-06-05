@@ -21,7 +21,8 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
         {
         }
 
-        #endregion Constructors
+        protected Physician() { }
 
+        #endregion Constructors
     }
 }

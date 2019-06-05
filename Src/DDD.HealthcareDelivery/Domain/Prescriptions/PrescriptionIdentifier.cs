@@ -14,6 +14,10 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             Condition.Requires(value, nameof(value)).IsGreaterThan(0);
         }
 
+        protected PrescriptionIdentifier()
+        {
+        }
+
         #endregion Constructors
 
     }

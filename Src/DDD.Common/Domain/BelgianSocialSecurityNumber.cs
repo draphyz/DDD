@@ -18,6 +18,8 @@ namespace DDD.Common.Domain
                      .Evaluate(c => c.IsNumeric());
         }
 
+        protected BelgianSocialSecurityNumber() { }
+
         #endregion Constructors
 
         #region Enums

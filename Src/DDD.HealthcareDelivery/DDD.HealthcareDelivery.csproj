@@ -116,17 +116,31 @@
     <Compile Include="Domain\Prescriptions\MedicationCode.cs" />
     <Compile Include="Domain\Practitioners\HealthcarePractitionerLicenseNumber.cs" />
     <Compile Include="Domain\Prescriptions\PrescriptionStatus.cs" />
+    <Compile Include="Infrastructure\BelgianSqlServerHealthcareConfiguration.cs" />
+    <Compile Include="Infrastructure\HealthcareConfiguration.cs" />
     <Compile Include="Infrastructure\IHealthcareConnectionFactory.cs" />
+    <Compile Include="Infrastructure\OracleHealthcareConfiguration.cs" />
     <Compile Include="Infrastructure\Prescriptions\BelgianCreatePharmaceuticalPrescriptionValidator.cs" />
     <Compile Include="Infrastructure\Prescriptions\BelgianPrescribedMedicationDescriptorValidator.cs" />
+    <Compile Include="Infrastructure\Prescriptions\ContactInformationType.cs" />
+    <Compile Include="Infrastructure\Prescriptions\FullNameType.cs" />
+    <Compile Include="Infrastructure\Prescriptions\HealthcarePractitionerLicenseNumberType.cs" />
+    <Compile Include="Infrastructure\Prescriptions\HealthcarePractitionerType.cs" />
+    <Compile Include="Infrastructure\Prescriptions\OraclePrescriptionMapping.cs" />
+    <Compile Include="Infrastructure\Prescriptions\PharmaceuticalPrescriptionMapping.cs" />
     <Compile Include="Infrastructure\Prescriptions\PharmaceuticalPrescriptionsByPatientFinder.cs" />
+    <Compile Include="Infrastructure\Prescriptions\PostalAddressType.cs" />
     <Compile Include="Infrastructure\Prescriptions\PrescribedMedicationsByPrescriptionFinder.cs" />
     <Compile Include="Infrastructure\Prescriptions\PrescriptionIdentifierGenerator.cs" />
+    <Compile Include="Infrastructure\Prescriptions\PrescriptionMapping.cs" />
+    <Compile Include="Infrastructure\Prescriptions\BelgianSqlServerPrescriptionMapping.cs" />
+    <Compile Include="Infrastructure\Prescriptions\SqlServerPrescriptionMapping.cs" />
     <Compile Include="Infrastructure\SqlScripts.Designer.cs">
       <DependentUpon>SqlScripts.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Infrastructure\SqlServerHealthcareConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +153,10 @@
     <ProjectReference Include="..\DDD.Common.Messages\DDD.Common.Messages.csproj">
       <Project>{40A849C5-C8D7-4F76-856A-138AED73A6C3}</Project>
       <Name>DDD.Common.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Common.NHibernate\DDD.Common.NHibernate.csproj">
+      <Project>{7466b831-1642-4b2b-9ea3-1c9299596c2a}</Project>
+      <Name>DDD.Common.NHibernate</Name>
     </ProjectReference>
     <ProjectReference Include="..\DDD.Common\DDD.Common.csproj">
       <Project>{0b70b4fd-f5a0-4a6c-a3fd-90031e08c1c2}</Project>
@@ -155,6 +173,10 @@
     <ProjectReference Include="..\DDD.Core.Messages\DDD.Core.Messages.csproj">
       <Project>{2438B31A-3A39-4878-81FA-BE5AE715EAE5}</Project>
       <Name>DDD.Core.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core.NHibernate\DDD.Core.NHibernate.csproj">
+      <Project>{d4fc7e1b-cae8-40f9-9faf-0029d91cc6c4}</Project>
+      <Name>DDD.Core.NHibernate</Name>
     </ProjectReference>
     <ProjectReference Include="..\DDD.Core\DDD.Core.csproj">
       <Project>{c6c3e419-b9aa-44ad-9dbf-789294687ae6}</Project>

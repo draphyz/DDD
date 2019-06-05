@@ -14,6 +14,8 @@ namespace DDD.Common.Domain
 
         #region Constructors
 
+        protected IdentificationNumber() { }
+
         protected IdentificationNumber(string value)
         {
             Condition.Requires(value, nameof(value)).IsNotNullOrWhiteSpace();
@@ -24,7 +26,7 @@ namespace DDD.Common.Domain
 
         #region Properties
 
-        public string Value { get; }
+        public string Value { get; private set; }
 
         #endregion Properties
 

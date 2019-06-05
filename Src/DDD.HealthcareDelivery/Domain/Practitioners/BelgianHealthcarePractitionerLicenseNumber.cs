@@ -17,6 +17,8 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
                      .Evaluate(n => n.IsNumeric());
         }
 
+        protected BelgianHealthcarePractitionerLicenseNumber() { }
+
         #endregion Constructors
 
         #region Enums

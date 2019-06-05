@@ -17,6 +17,8 @@ namespace DDD.Common.Domain
                      .Evaluate(c => c.IsAlphabetic());
         }
 
+        protected Alpha2LanguageCode() { }
+
         #endregion Constructors
 
     }

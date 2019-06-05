@@ -10,6 +10,8 @@
 
         #region Constructors
 
+        protected MedicationCode() { }
+
         protected MedicationCode(string value) : base(value)
         {
         }

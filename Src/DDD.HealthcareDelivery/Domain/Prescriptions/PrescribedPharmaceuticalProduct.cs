@@ -18,7 +18,8 @@
         {
         }
 
-        #endregion Constructors
+        protected PrescribedPharmaceuticalProduct() { }
 
+        #endregion Constructors
     }
 }

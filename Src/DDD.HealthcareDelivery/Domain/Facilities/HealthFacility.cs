@@ -13,6 +13,8 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
 
         #region Constructors
 
+        protected HealthFacility() { }
+
         protected HealthFacility(int identifier,
                                  string name,
                                  HealthFacilityLicenseNumber licenseNumber = null)
@@ -28,11 +30,11 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
 
         #region Properties
 
-        public int Identifier { get; }
+        public int Identifier { get; private set; }
 
-        public HealthFacilityLicenseNumber LicenseNumber { get; }
+        public HealthFacilityLicenseNumber LicenseNumber { get; private set; }
 
-        public string Name { get; }
+        public string Name { get; private set; }
 
         #endregion Properties
 

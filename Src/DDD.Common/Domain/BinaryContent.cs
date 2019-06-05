@@ -25,11 +25,13 @@ namespace DDD.Common.Domain
             this.Data = data;
         }
 
+        protected BinaryContent() { }
+
         #endregion Constructors
 
         #region Properties
 
-        public byte[] Data { get; }
+        public byte[] Data { get; private set; }
 
         #endregion Properties
 

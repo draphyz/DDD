@@ -16,6 +16,8 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
                      .Evaluate(n => n.IsNumeric() && (n.Length == 11 || n.Length == 8));
         }
 
+        protected BelgianHealthFacilityLicenseNumber() { }
+
         #endregion Constructors
 
         #region Methods
@@ -49,5 +51,6 @@ namespace DDD.HealthcareDelivery.Domain.Facilities
         public int FacilityUniqueIdentifier() => int.Parse(this.Value.Substring(0, 6));
 
         #endregion Methods
+
     }
 }

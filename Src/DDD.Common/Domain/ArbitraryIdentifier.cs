@@ -14,6 +14,8 @@ namespace DDD.Common.Domain
 
         #region Constructors
 
+        protected ArbitraryIdentifier() { }
+
         protected ArbitraryIdentifier(TId value)
         {
             this.Value = value;
@@ -23,7 +25,7 @@ namespace DDD.Common.Domain
 
         #region Properties
 
-        public TId Value { get; }
+        public TId Value { get; private set; }
 
         #endregion Properties
 

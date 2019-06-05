@@ -201,7 +201,8 @@ namespace DDD.Core.Infrastructure.Data
             var mappedClass = this.returnedClass;
             if (this.HasSubComponents())
             {
-                var discriminatorValue = dr[this.DiscriminatorName()];
+                var discriminatorColumn = names.First(n => n.StartsWith(this.DiscriminatorName(), StringComparison.OrdinalIgnoreCase));
+                var discriminatorValue = dr[discriminatorColumn];
                 mappedClass = this.GetMappedClass(discriminatorValue);
             }
             var result = this.Instantiate(mappedClass);
