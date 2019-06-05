@@ -28,9 +28,11 @@ namespace DDD.Core.Infrastructure.Validation
             Condition.Requires(failure, nameof(failure)).IsNotNull();
             return new DDD.Validation.ValidationFailure
             (
-                $"{failure.ErrorMessage} (property: {failure.PropertyName}, value: {failure.AttemptedValue})",
+                failure.ErrorMessage,
                 failure.ErrorCode,
-                failure.Severity.ToString().ToEnum<DDD.Validation.FailureLevel>()
+                failure.Severity.ToString().ToEnum<DDD.Validation.FailureLevel>(),
+                failure.PropertyName,
+                failure.AttemptedValue
             );
         }
 

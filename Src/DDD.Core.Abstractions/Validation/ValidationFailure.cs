@@ -10,15 +10,23 @@ namespace DDD.Validation
 
         #region Constructors
 
-        public ValidationFailure(string message, string code, FailureLevel level = FailureLevel.Warning)
+        public ValidationFailure(string message,
+                                 string code,
+                                 FailureLevel level = FailureLevel.Warning,
+                                 string propertyName = null,
+                                 object propertyValue = null)
         {
             Condition.Requires(message, nameof(message)).IsNotNullOrWhiteSpace();
             Condition.Requires(code, nameof(code)).IsNotNullOrWhiteSpace();
             this.Message = message;
             this.Code = code;
             this.Level = level;
+            if (!string.IsNullOrWhiteSpace(propertyName))
+                this.PropertyName = propertyName;
+            this.PropertyValue = propertyValue;
         }
 
+        /// <remarks>For serialization</remarks>
         private ValidationFailure()
         {
         }
@@ -32,6 +40,10 @@ namespace DDD.Validation
         public FailureLevel Level { get; private set; }
 
         public string Message { get; private set; }
+
+        public string PropertyName { get; private set; }
+
+        public object PropertyValue { get; private set; }
 
         #endregion Properties
 

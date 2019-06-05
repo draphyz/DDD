@@ -18,6 +18,7 @@ namespace DDD.Validation
             this.Failures = failures;
         }
 
+        /// <remarks>For serialization</remarks>
         private ValidationResult()
         {
         }
