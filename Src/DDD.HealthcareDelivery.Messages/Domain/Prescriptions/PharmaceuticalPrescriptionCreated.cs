@@ -19,17 +19,19 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             this.OccurredOn = occuredOn;
         }
 
+        /// <remarks>For serialization</remarks>
+        private PharmaceuticalPrescriptionCreated() { }
+
         #endregion Constructors
 
         #region Properties
 
-        [DataMember(Name = "PrescriptionId")]
-        public int PrescriptionIdentifier { get; private set; }
-
         [DataMember(Name = "OccurredOn")]
         public DateTime OccurredOn { get; private set; }
 
-        #endregion Properties
+        [DataMember(Name = "PrescriptionId")]
+        public int PrescriptionIdentifier { get; private set; }
 
+        #endregion Properties
     }
 }

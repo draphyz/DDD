@@ -21,20 +21,23 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             this.OccurredOn = occuredOn;
         }
 
-        public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, string reason = null) 
+        public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, string reason = null)
             : this(prescriptionIdentifier, DateTime.Now, reason)
         {
         }
+
+        /// <remarks>For serialization</remarks>
+        private PharmaceuticalPrescriptionRevoked() { }
 
         #endregion Constructors
 
         #region Properties
 
-        [DataMember(Name = "PrescriptionId")]
-        public int PrescriptionIdentifier { get; private set; }
-
         [DataMember(Name = "OccurredOn")]
         public DateTime OccurredOn { get; private set; }
+
+        [DataMember(Name = "PrescriptionId")]
+        public int PrescriptionIdentifier { get; private set; }
 
         [DataMember(Name = "Reason")]
         public string Reason { get; private set; }
