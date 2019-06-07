@@ -5,7 +5,7 @@ namespace DDD.Core.Domain
     /// <summary>
     /// Exception thrown by repositories when a problem occurred while saving or finding domain entities.
     /// </summary>
-    public class RepositoryException : Exception
+    public class RepositoryException : DomainException
     {
 
         #region Constructors

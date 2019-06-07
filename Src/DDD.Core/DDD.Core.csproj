@@ -50,6 +50,7 @@
     <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Application\ApplicationException.cs" />
     <Compile Include="Application\AsyncDomainCommandHandler.cs" />
     <Compile Include="Application\CommandException.cs" />
     <Compile Include="Application\CommandProcessor.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Application\DomainCommandHandler.cs" />
     <Compile Include="Domain\ComparableValueObject.cs" />
     <Compile Include="Domain\DomainEntity.cs" />
+    <Compile Include="Domain\DomainException.cs" />
     <Compile Include="Domain\DomainServiceException.cs" />
     <Compile Include="Domain\EntityState.cs" />
     <Compile Include="Domain\EventHandler.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Infrastructure\Data\IDbStandardExpressions.cs" />
     <Compile Include="Infrastructure\Data\Oracle11Expressions.cs" />
     <Compile Include="Infrastructure\Data\SqlServer2012Expressions.cs" />
+    <Compile Include="Infrastructure\InfrastructureException.cs" />
     <Compile Include="Infrastructure\Serialization\DataContractSerializerWrapper.cs" />
     <Compile Include="Infrastructure\Serialization\XmlSerializerWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
