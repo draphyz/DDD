@@ -11,7 +11,7 @@ namespace DDD.Validation
 
         #region Constructors
 
-        public ValidationResult(bool isSuccessful, IEnumerable<ValidationFailure> failures)
+        public ValidationResult(bool isSuccessful, ValidationFailure[] failures)
         {
             Condition.Requires(failures, nameof(failures)).IsNotNull();
             this.IsSuccessful = isSuccessful;
@@ -27,7 +27,7 @@ namespace DDD.Validation
 
         #region Properties
 
-        public IEnumerable<ValidationFailure> Failures { get; private set; }
+        public ValidationFailure[] Failures { get; private set; }
 
         public bool IsSuccessful { get; private set; }
 
