@@ -19,7 +19,7 @@ namespace DDD.Core.Infrastructure.Validation
         {
             Condition.Requires(result, nameof(result)).IsNotNull();
             var isSuccessful = result.Errors.All(f => f.Severity == Severity.Info);
-            var failures = result.Errors.Select(f => ToFailure(f));
+            var failures = result.Errors.Select(f => ToFailure(f)).ToArray();
             return new DDD.Validation.ValidationResult(isSuccessful, failures);
         }
 
