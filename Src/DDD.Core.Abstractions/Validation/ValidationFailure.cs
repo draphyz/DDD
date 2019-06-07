@@ -47,5 +47,14 @@ namespace DDD.Validation
 
         #endregion Properties
 
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"{this.GetType().Name} [message={this.Message}, code={this.Code}, level={this.Level}, propertyName={this.PropertyName}, propertyValue={this.PropertyValue}]";
+        }
+
+        #endregion Methods
+
     }
 }
