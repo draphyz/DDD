@@ -6,7 +6,7 @@ namespace DDD.Core.Application
     /// Exception thrown when a query failed.
     /// </summary>
     [Serializable]
-    public class QueryException : Exception
+    public class QueryException : ApplicationException
     {
 
         #region Constructors

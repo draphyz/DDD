@@ -22,7 +22,7 @@ namespace DDD.Core.Application
             {
                 this.Execute(command);
             }
-            catch (Exception ex) when (ex is DomainServiceException || ex is RepositoryException)
+            catch (DomainException ex)
             {
                 throw new CommandException(ex, command);
             }

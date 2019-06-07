@@ -5,7 +5,7 @@ namespace DDD.Core.Application
     /// <summary>
     /// Exception thrown when a command failed.
     /// </summary>
-    public class CommandException : Exception
+    public class CommandException : ApplicationException
     {
 
         #region Constructors

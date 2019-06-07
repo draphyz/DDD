@@ -5,7 +5,7 @@ namespace DDD.Core.Domain
     /// <summary>
     /// Exception thrown when a problem occurred while calling a domain service.
     /// </summary>
-    public class DomainServiceException : Exception
+    public class DomainServiceException : DomainException
     {
 
         #region Constructors
