@@ -102,20 +102,18 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                     m1.Name(ToCasingConvention("PrescriberLicenseNum"));
                     m1.Length(25);
                     m1.NotNullable(true);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberPhone1"));
+                    m1.Length(20);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberPhone2"));
+                    m1.Length(20);
                 });
-                //m1 =>
-                //{
-                //    m1.Name(ToCasingConvention("PrescriberPhone1"));
-                //    m1.Length(20);
-                //    m1.NotNullable(true);
-                //},
-                //m1 =>
-                //{
-                //    m1.Name(ToCasingConvention("PrescriberPhone2"));
-                //    m1.Length(20);
-                //    m1.NotNullable(true);
-                //});
-            });
+        });
             // Patient
             this.Component(p => p.Patient, m1 =>
             {

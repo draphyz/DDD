@@ -15,6 +15,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             this.Property(p => p.FullName, NHibernateUtil.Custom(typeof(FullNameType)));
             this.Property(p => p.DisplayName, NHibernateUtil.AnsiString);
             this.Property(p => p.LicenseNumber, NHibernateUtil.Custom(typeof(HealthcarePractitionerLicenseNumberType<BelgianHealthcarePractitionerLicenseNumber>)));
+            this.Property(p => p.ContactInformation, NHibernateUtil.Custom(typeof(ContactInformationType)));
             this.Subcomponent<Physician>();
         }
 
@@ -28,12 +29,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
 
 
-        //        this.Property(p => p.Prescriber.LicenseNumber)
-        //            .HasColumnName(ToCasingConvention("PrescriberLicenseNum"))
-        //            .HasColumnOrder(12)
-        //            .IsUnicode(false)
-        //            .HasMaxLength(25)
-        //            .IsRequired();
         //        this.Property(p => p.Prescriber.SocialSecurityNumber)
         //            .HasColumnName(ToCasingConvention("PrescriberSSN"))
         //            .HasColumnOrder(13)
