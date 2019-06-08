@@ -10,14 +10,22 @@ namespace DDD.Common.Domain
 
         #region Constructors
 
-        public ContactInformation(PostalAddress postalAddress,
-                                  string primaryTelephoneNumber,
-                                  string secondaryTelephoneNumber,
-                                  string faxNumber,
-                                  EmailAddress primaryEmailAddress,
-                                  EmailAddress secondaryEmailAddress,
-                                  Uri webSite)
+        public ContactInformation(PostalAddress postalAddress = null,
+                                  string primaryTelephoneNumber = null,
+                                  string secondaryTelephoneNumber = null,
+                                  string faxNumber = null,
+                                  EmailAddress primaryEmailAddress = null,
+                                  EmailAddress secondaryEmailAddress = null,
+                                  Uri webSite = null)
         {
+            if (IsEmpty(postalAddress,
+                        primaryTelephoneNumber,
+                        SecondaryTelephoneNumber,
+                        faxNumber,
+                        primaryEmailAddress,
+                        secondaryEmailAddress,
+                        webSite))
+                throw new ArgumentException("You must a least specify a contact information.");
             this.PostalAddress = postalAddress;
             if (!string.IsNullOrWhiteSpace(primaryTelephoneNumber))
                 this.PrimaryTelephoneNumber = primaryTelephoneNumber;
@@ -69,6 +77,24 @@ namespace DDD.Common.Domain
         {
             var format = "{0} [postalAddress={1}, primaryTelephoneNumber={2}, secondaryTelephoneNumber={3}, faxNumber={4}, primaryEmailAddress={5}, secondaryEmailAddress={6}, webSite={7}]";
             return string.Format(format, this.GetType().Name, this.PostalAddress, this.PrimaryTelephoneNumber, this.SecondaryTelephoneNumber, this.FaxNumber, this.PrimaryEmailAddress, this.SecondaryEmailAddress, this.WebSite);
+        }
+
+        private static bool IsEmpty(PostalAddress postalAddress = null,
+                                    string primaryTelephoneNumber = null,
+                                    string secondaryTelephoneNumber = null,
+                                    string faxNumber = null,
+                                    EmailAddress primaryEmailAddress = null,
+                                    EmailAddress secondaryEmailAddress = null,
+                                    Uri webSite = null)
+        {
+            if (postalAddress != null) return false;
+            if (!string.IsNullOrWhiteSpace(primaryTelephoneNumber)) return false;
+            if (!string.IsNullOrWhiteSpace(secondaryTelephoneNumber)) return false;
+            if (!string.IsNullOrWhiteSpace(faxNumber)) return false;
+            if (primaryEmailAddress != null) return false;
+            if (secondaryEmailAddress != null) return false;
+            if (webSite != null) return false;
+            return true;
         }
 
         #endregion Methods
