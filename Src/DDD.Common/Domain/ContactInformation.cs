@@ -62,6 +62,31 @@ namespace DDD.Common.Domain
 
         #region Methods
 
+        public static ContactInformation CreateIfNotEmpty(PostalAddress postalAddress = null,
+                                                          string primaryTelephoneNumber = null,
+                                                          string secondaryTelephoneNumber = null,
+                                                          string faxNumber = null,
+                                                          EmailAddress primaryEmailAddress = null,
+                                                          EmailAddress secondaryEmailAddress = null,
+                                                          Uri webSite = null)
+        {
+            if (IsEmpty(postalAddress,
+                        primaryTelephoneNumber,
+                        secondaryTelephoneNumber,
+                        faxNumber,
+                        primaryEmailAddress,
+                        secondaryEmailAddress,
+                        webSite))
+                return null;
+            return new ContactInformation(postalAddress,
+                                          primaryTelephoneNumber,
+                                          secondaryTelephoneNumber,
+                                          faxNumber,
+                                          primaryEmailAddress,
+                                          secondaryEmailAddress,
+                                          webSite);
+        }
+
         public override IEnumerable<object> EqualityComponents()
         {
             yield return this.PostalAddress;
