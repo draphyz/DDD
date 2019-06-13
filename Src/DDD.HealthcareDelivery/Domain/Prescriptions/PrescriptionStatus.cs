@@ -9,12 +9,12 @@
 
         public static readonly PrescriptionStatus
 
-            Created = new PrescriptionStatus(1, "CRT", "Created"),
-            InProcess = new PrescriptionStatus(2, "INP", "InProcess"),
-            Delivered = new PrescriptionStatus(3, "DLV", "Delivered"),
-            Revoked = new PrescriptionStatus(4, "RVK", "Revoked"),
-            Expired = new PrescriptionStatus(5, "EXP", "Expired"),
-            Archived = new PrescriptionStatus(6, "ARC", "Archived");
+            Created = new PrescriptionStatus(0, "CRT", nameof(Created)),
+            InProcess = new PrescriptionStatus(1, "INP", nameof(InProcess)),
+            Delivered = new PrescriptionStatus(2, "DLV", nameof(Delivered)),
+            Revoked = new PrescriptionStatus(3, "RVK", nameof(Revoked)),
+            Expired = new PrescriptionStatus(4, "EXP", nameof(Expired)),
+            Archived = new PrescriptionStatus(5, "ARC", nameof(Archived));
 
         #endregion Fields
 

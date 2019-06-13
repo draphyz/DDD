@@ -10,11 +10,11 @@
 
         public static readonly BelgianSex
 
-                Unknown = new BelgianSex(0, "UK", "Unknown"),
-                Female = new BelgianSex(1, "F", "Female"),
-                Male = new BelgianSex(2, "M", "Male"),
-                Undefined = new BelgianSex(3, "UD", "Undefined"),
-                Changed = new BelgianSex(4, "C", "Changed");
+                Unknown = new BelgianSex(0, "UK", nameof(Unknown)),
+                Female = new BelgianSex(1, "F", nameof(Female)),
+                Male = new BelgianSex(2, "M", nameof(Male)),
+                Undefined = new BelgianSex(3, "UD", nameof(Undefined)),
+                Changed = new BelgianSex(4, "C", nameof(Changed));
 
         #endregion Fields
 
