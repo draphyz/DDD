@@ -3,15 +3,15 @@
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Core.Infrastructure.Data;
-    using Domain.Practitioners;
+    using Domain.Facilities;
 
-    internal class HealthcarePractitionerLicenseNumberType<T> : CompositeUserType<T>
-        where T : HealthcarePractitionerLicenseNumber
+    internal class HealthFacilityLicenseNumberType<T> : CompositeUserType<T>
+        where T : HealthFacilityLicenseNumber
     {
 
         #region Constructors
 
-        public HealthcarePractitionerLicenseNumberType()
+        public HealthFacilityLicenseNumberType()
         {
             this.Mutable(false);
             this.Property(p => p.Value, NHibernateUtil.AnsiString);

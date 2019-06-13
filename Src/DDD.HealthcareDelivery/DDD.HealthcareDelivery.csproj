@@ -123,7 +123,13 @@
     <Compile Include="Infrastructure\Prescriptions\BelgianCreatePharmaceuticalPrescriptionValidator.cs" />
     <Compile Include="Infrastructure\Prescriptions\BelgianPrescribedMedicationDescriptorValidator.cs" />
     <Compile Include="Infrastructure\Prescriptions\ContactInformationType.cs" />
+    <Compile Include="Infrastructure\Prescriptions\Alpha2CountryCodeType.cs" />
+    <Compile Include="Infrastructure\Prescriptions\EmailAddressType.cs" />
     <Compile Include="Infrastructure\Prescriptions\FullNameType.cs" />
+    <Compile Include="Infrastructure\Prescriptions\HealthFacilityLicenseNumberType.cs" />
+    <Compile Include="Infrastructure\Prescriptions\HealthFacilityType.cs" />
+    <Compile Include="Infrastructure\Prescriptions\PrescribedMedicationMapping.cs" />
+    <Compile Include="Infrastructure\Prescriptions\SocialSecurityNumberType.cs" />
     <Compile Include="Infrastructure\Prescriptions\HealthcarePractitionerLicenseNumberType.cs" />
     <Compile Include="Infrastructure\Prescriptions\HealthcarePractitionerType.cs" />
     <Compile Include="Infrastructure\Prescriptions\OraclePrescriptionMapping.cs" />

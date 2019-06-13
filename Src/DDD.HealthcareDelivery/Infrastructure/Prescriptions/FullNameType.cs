@@ -5,7 +5,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
     using Common.Domain;
     using Core.Infrastructure.Data;
 
-    public class FullNameType : CompositeUserType<FullName>
+    internal class FullNameType : CompositeUserType<FullName>
     {
 
         #region Constructors

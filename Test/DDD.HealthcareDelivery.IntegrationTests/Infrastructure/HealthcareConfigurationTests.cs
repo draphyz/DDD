@@ -81,7 +81,21 @@ namespace DDD.HealthcareDelivery.Infrastructure
                 (
                     1,
                     new FullName("Duck", "Donald"),
-                    new BelgianHealthcarePractitionerLicenseNumber("19006951001")
+                    new BelgianHealthcarePractitionerLicenseNumber("19006951001"),
+                    null,
+                    new ContactInformation
+                    (
+                        new PostalAddress
+                        (
+                            "Grote Markt",
+                            "Brussel",
+                            "1000",
+                            new Alpha2CountryCode("BE"), 
+                            "7"
+                        ),
+                        primaryTelephoneNumber: "02/221.21.21"
+                    ),
+                    displayName: "Dr. Duck Donald"
                 ),
                 new Patient
                 (

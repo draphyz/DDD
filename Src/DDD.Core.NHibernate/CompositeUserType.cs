@@ -328,9 +328,9 @@ namespace DDD.Core.Infrastructure.Data
         /// <summary>
         /// Maps a subcomponent.
         /// </summary>
-        protected void Subcomponent<TSubcomponent>(Action<ISubcomponentMapper<TSubcomponent>> mapping = null) where TSubcomponent : TComponent
+        protected void Subclass<TSubclass>(Action<ISubcomponentMapper<TSubclass>> mapping = null) where TSubclass : TComponent
         {
-            var mapper = new SubcomponentMapper<TSubcomponent>(this);
+            var mapper = new SubcomponentMapper<TSubclass>(this);
             mapping?.Invoke(mapper);
         }
 

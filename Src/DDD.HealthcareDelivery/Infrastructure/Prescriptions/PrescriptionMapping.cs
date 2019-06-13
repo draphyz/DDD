@@ -3,14 +3,17 @@ using NHibernate.Mapping.ByCode.Conformist;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
-    using Core.Infrastructure.Data;
+    using Common.Domain;
+    using Common.Infrastructure.Data;
     using Domain.Prescriptions;
     using Domain.Practitioners;
-    using Common.Infrastructure.Data;
-    using Common.Domain;
+    using Domain.Facilities;
 
-    internal abstract class PrescriptionMapping<TSocialSecurityNumber, TSex> : ClassMapping<Prescription>
-        where TSocialSecurityNumber : SocialSecurityNumber 
+    internal abstract class PrescriptionMapping<TPractitionerLicenseNumber, TFacilityLicenseNumber, TSocialSecurityNumber, TSex> 
+        : ClassMapping<Prescription>
+        where TPractitionerLicenseNumber : HealthcarePractitionerLicenseNumber
+        where TFacilityLicenseNumber : HealthFacilityLicenseNumber
+        where TSocialSecurityNumber : SocialSecurityNumber
         where TSex : Sex
     {
 
@@ -60,13 +63,13 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 m2.Length(2);
                 m2.NotNullable(true);
             }));
-            
+
             this.Property(p => p.CreatedOn, m => m.Type(NHibernateUtil.DateTimeNoMs));
             this.Property(p => p.DelivrableAt, m => m.Type(NHibernateUtil.Date));
             // Prescriber
             this.Property(p => p.Prescriber, m =>
             {
-                m.Type<HealthcarePractitionerType>();
+                m.Type<HealthcarePractitionerType<TPractitionerLicenseNumber, TSocialSecurityNumber>>();
                 m.Columns
                 (m1 =>
                 {
@@ -105,6 +108,16 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 },
                 m1 =>
                 {
+                    m1.Name(ToCasingConvention("PrescriberSSN"));
+                    m1.Length(25);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberSpeciality"));
+                    m1.Length(50);
+                },
+                m1 =>
+                {
                     m1.Name(ToCasingConvention("PrescriberPhone1"));
                     m1.Length(20);
                 },
@@ -112,8 +125,55 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 {
                     m1.Name(ToCasingConvention("PrescriberPhone2"));
                     m1.Length(20);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberEmail1"));
+                    m1.Length(50);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberEmail2"));
+                    m1.Length(50);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberWebSite"));
+                    m1.Length(255);
+                    m1.SqlType("varchar(255)");
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberStreet"));
+                    m1.Length(50);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberHouseNum"));
+                    m1.Length(10);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberBoxNum"));
+                    m1.Length(10);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberPostCode"));
+                    m1.Length(10);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberCity"));
+                    m1.Length(50);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("PrescriberCountry"));
+                    m1.Length(2);
+                    m1.SqlType("char(2)");
                 });
-        });
+            });
             // Patient
             this.Component(p => p.Patient, m1 =>
             {
@@ -158,41 +218,43 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                     m2.Type(NHibernateUtil.Date);
                 });
             });
+            // Facility
+            this.Property(p => p.HealthFacility, m =>
+            {
+                m.Type<HealthFacilityType<TFacilityLicenseNumber>>();
+                m.Columns
+                (m1 =>
+                {
+                    m1.Name(ToCasingConvention("FacilityId"));
+                    m1.NotNullable(true);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("FacilityType"));
+                    m1.Length(20);
+                    m1.NotNullable(true);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("FacilityName"));
+                    m1.Length(100);
+                    m1.NotNullable(true);
+                },
+                m1 =>
+                {
+                    m1.Name(ToCasingConvention("FacilityLicenseNum"));
+                    m1.Length(25);
+                });
+            });
         }
-       
 
+        #endregion Constructors
 
-
-
-
-
-
-
-        //        this.Property(p => p.HealthFacility.Identifier)
-        //            .HasColumnName(ToCasingConvention("FacilityId"))
-        //            .HasColumnOrder(32);
-        //        this.Property(p => p.HealthFacility.FacilityType)
-        //            .HasColumnName(ToCasingConvention("FacilityType"))
-        //            .HasColumnOrder(33)
-        //            .IsUnicode(false)
-        //            .HasMaxLength(20)
-        //            .IsRequired();
-        //        this.Property(p => p.HealthFacility.Name)
-        //            .HasColumnName(ToCasingConvention("FacilityName"))
-        //            .HasColumnOrder(34)
-        //            .IsUnicode(false)
-        //            .HasMaxLength(100)
-        //            .IsRequired();
-        //        this.Property(p => p.HealthFacility.LicenseNumber)
-        //            .HasColumnName(ToCasingConvention("FacilityLicenseNum"))
-        //            .HasColumnOrder(35)
-        //            .IsUnicode(false)
-        //            .HasMaxLength(25);
-        //}
+        #region Methods
 
         protected string ToCasingConvention(string name) => this.useUpperCase ? name.ToUpperInvariant() : name;
 
-        #endregion Constructors
+        #endregion Methods
 
     }
 }

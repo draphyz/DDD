@@ -1,9 +1,13 @@
 ﻿namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Common.Domain;
+    using Domain.Practitioners;
+    using Domain.Facilities;
 
-    internal class SqlServerPrescriptionMapping<TSocialSecurityNumber, TSex> 
-        : PrescriptionMapping<TSocialSecurityNumber, TSex>
+    internal class SqlServerPrescriptionMapping<TPractitionerLicenseNumber, TFacilityLicenseNumber, TSocialSecurityNumber, TSex>
+        : PrescriptionMapping<TPractitionerLicenseNumber, TFacilityLicenseNumber, TSocialSecurityNumber, TSex>
+        where TPractitionerLicenseNumber : HealthcarePractitionerLicenseNumber
+        where TFacilityLicenseNumber : HealthFacilityLicenseNumber
         where TSocialSecurityNumber : SocialSecurityNumber
         where TSex : Sex
     {
