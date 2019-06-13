@@ -13,28 +13,28 @@ namespace DDD.Common.Domain
 
         #region Constructors
 
-        public EmailAddress(string address)
+        public EmailAddress(string value)
         {
-            Condition.Requires(address, nameof(address))
+            Condition.Requires(value, nameof(value))
                      .IsNotNullOrWhiteSpace()
                      .Evaluate(a => Regex.IsMatch(a, "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"));
-            this.Address = address;
+            this.Value = value;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public string Address { get; }
+        public string Value { get; }
 
         #endregion Properties
 
         #region Methods
 
-        public static EmailAddress CreateIfNotEmpty(string address)
+        public static EmailAddress CreateIfNotEmpty(string value)
         {
-            if (string.IsNullOrWhiteSpace(address)) return null;
-            return new EmailAddress(address);
+            if (string.IsNullOrWhiteSpace(value)) return null;
+            return new EmailAddress(value);
         }
 
         public static EmailAddress FromParts(string username, string domain)
@@ -46,19 +46,19 @@ namespace DDD.Common.Domain
 
         public override IEnumerable<IComparable> ComparableComponents()
         {
-            yield return this.Address;
+            yield return this.Value;
         }
 
         public string Domain() => this.Parts().Last();
 
         public override IEnumerable<object> EqualityComponents()
         {
-            yield return this.Address.ToLower();
+            yield return this.Value.ToLower();
         }
 
-        public IEnumerable<string> Parts() => this.Address.Split('@');
+        public IEnumerable<string> Parts() => this.Value.Split('@');
 
-        public override string ToString() => $"{this.GetType().Name} [address={this.Address}]";
+        public override string ToString() => $"{this.GetType().Name} [value={this.Value}]";
 
         public string Username() => this.Parts().First();
 

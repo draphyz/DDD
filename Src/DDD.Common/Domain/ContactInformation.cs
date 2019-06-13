@@ -119,8 +119,8 @@ namespace DDD.Common.Domain
                 PrimaryTelephoneNumber = this.PrimaryTelephoneNumber,
                 SecondaryTelephoneNumber = this.SecondaryTelephoneNumber,
                 FaxNumber = this.FaxNumber,
-                PrimaryEmailAddress = this.PrimaryEmailAddress?.Address,
-                SecondaryEmailAddress = this.SecondaryEmailAddress?.Address,
+                PrimaryEmailAddress = this.PrimaryEmailAddress?.Value,
+                SecondaryEmailAddress = this.SecondaryEmailAddress?.Value,
                 WebSite = this.WebSite?.AbsoluteUri
             };
         }

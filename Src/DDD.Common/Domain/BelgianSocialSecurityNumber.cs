@@ -13,7 +13,7 @@ namespace DDD.Common.Domain
 
         public BelgianSocialSecurityNumber(string value) : base(value)
         {
-            Condition.Requires(Value, nameof(value))
+            Condition.Requires(value, nameof(value))
                      .HasLength(11)
                      .Evaluate(c => c.IsNumeric());
         }

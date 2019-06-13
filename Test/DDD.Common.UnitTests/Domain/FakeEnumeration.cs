@@ -6,9 +6,9 @@
 
         public static FakeEnumeration
 
-            Fake1 = new FakeEnumeration(1, "FK1", "Fake1"),
-            Fake2 = new FakeEnumeration(2, "FK2", "Fake2"),
-            Fake3 = new FakeEnumeration(3, "FK3", "Fake3");
+            Fake1 = new FakeEnumeration(1, "FK1", nameof(Fake1)),
+            Fake2 = new FakeEnumeration(2, "FK2", nameof(Fake2)),
+            Fake3 = new FakeEnumeration(3, "FK3", nameof(Fake3));
 
         #endregion Fields
 
