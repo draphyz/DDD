@@ -13,7 +13,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         public EmailAddressType()
         {
             this.Mutable(false);
-            this.Property(a => a.Address, NHibernateUtil.AnsiString);
+            this.Property(a => a.Value, NHibernateUtil.AnsiString);
         }
 
         #endregion Constructors
