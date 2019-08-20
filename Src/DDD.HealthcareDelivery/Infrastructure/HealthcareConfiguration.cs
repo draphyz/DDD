@@ -20,9 +20,6 @@ namespace DDD.HealthcareDelivery.Infrastructure
             this.DataBaseIntegration(db =>
             {
                 db.ConnectionString = connectionString;
-                db.ConnectionReleaseMode = ConnectionReleaseMode.OnClose;
-                db.LogSqlInConsole = true;
-                db.LogFormattedSql = true;
             });
             this.AddMapping(modelMapper.CompileMappingForAllExplicitlyAddedEntities());
         }
