@@ -25,14 +25,14 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         #region Constructors
 
-        public PrescriptionMapping(bool useUpperCase)
+        protected PrescriptionMapping(bool useUpperCase)
         {
             this.useUpperCase = useUpperCase;
             this.Lazy(false);
             // Table
             this.Table(ToCasingConvention("Prescription"));
             // Keys
-            this.ComponentAsId(p => p.Identifier, m1 =>
+            this.ComponentAsId(p => p.Identifier, m1 => 
             m1.Property(i => i.Value, m2 =>
             {
                 m2.Column(ToCasingConvention("PrescriptionId"));
@@ -63,8 +63,11 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 m2.Length(2);
                 m2.NotNullable(true);
             }));
-
-            this.Property(p => p.CreatedOn, m => m.Type(NHibernateUtil.DateTimeNoMs));
+            this.Property(p => p.CreatedOn, m =>
+            {
+                m.Type(NHibernateUtil.Date);
+                m.NotNullable(true);
+            });
             this.Property(p => p.DelivrableAt, m => m.Type(NHibernateUtil.Date));
             // Prescriber
             this.Property(p => p.Prescriber, m =>
@@ -140,7 +143,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 {
                     m1.Name(ToCasingConvention("PrescriberWebSite"));
                     m1.Length(255);
-                    m1.SqlType("varchar(255)");
                 },
                 m1 =>
                 {
@@ -177,7 +179,11 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             // Patient
             this.Component(p => p.Patient, m1 =>
             {
-                m1.Property(p => p.Identifier, m2 => m2.Column(ToCasingConvention("PatientId")));
+                m1.Property(p => p.Identifier, m2 =>
+                {
+                    m2.Column(ToCasingConvention("PatientId"));
+                    m2.NotNullable(true);
+                });
                 m1.Component(p => p.FullName, m2 =>
                 {
                     m2.Property(n => n.FirstName, m3 =>

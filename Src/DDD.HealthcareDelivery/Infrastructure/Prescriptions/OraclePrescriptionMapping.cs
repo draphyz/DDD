@@ -13,7 +13,7 @@
     {
         #region Constructors
 
-        public OraclePrescriptionMapping(bool useUpperCase) : base(useUpperCase)
+        public OraclePrescriptionMapping() : base(true)
         {
             // Fields
             this.Discriminator(m => m.Column(m1 => m1.SqlType("varchar2(5)")));

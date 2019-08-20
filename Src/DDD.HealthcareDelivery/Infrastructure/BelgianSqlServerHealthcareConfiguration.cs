@@ -3,6 +3,10 @@
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Prescriptions;
+    using Domain.Prescriptions;
+    using Domain.Practitioners;
+    using Domain.Facilities;
+    using Common.Domain;
 
     public class BelgianSqlServerHealthcareConfiguration : SqlServerHealthcareConfiguration
     {
@@ -20,7 +24,11 @@ namespace DDD.HealthcareDelivery.Infrastructure
         protected override void InitializeModel(ModelMapper modelMapper)
         {
             base.InitializeModel(modelMapper);
-            modelMapper.AddMapping<BelgianSqlServerPrescriptionMapping>();
+            modelMapper.AddMapping<SqlServerPrescriptionMapping<BelgianHealthcarePractitionerLicenseNumber,
+                                                                BelgianHealthFacilityLicenseNumber,
+                                                                BelgianSocialSecurityNumber,
+                                                                BelgianSex>>();
+            modelMapper.AddMapping<SqlServerPrescribedMedicationMapping<BelgianMedicationCode>>();
         }
 
         #endregion Methods

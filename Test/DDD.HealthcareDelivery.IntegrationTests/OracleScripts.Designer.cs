@@ -66,9 +66,9 @@ namespace DDD.HealthcareDelivery {
         ///END;
         ////.
         /// </summary>
-        internal static string CreatePharmaceuticalPrescription {
+        internal static string ClearDatabase {
             get {
-                return ResourceManager.GetString("CreatePharmaceuticalPrescription", resourceCulture);
+                return ResourceManager.GetString("ClearDatabase", resourceCulture);
             }
         }
         

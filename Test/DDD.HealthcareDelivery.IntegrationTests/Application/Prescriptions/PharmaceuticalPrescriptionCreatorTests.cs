@@ -39,7 +39,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         protected TFixture Fixture { get; }
         protected PharmaceuticalPrescriptionCreator Handler { get; }
-        protected IAsyncRepository<PharmaceuticalPrescription> Repository { get; }
+        protected IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> Repository { get; }
 
         #endregion Properties
 
@@ -49,7 +49,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         public async Task HandleAsync_WhenCalled_CreatePharmaceuticalPrescription()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("CreatePharmaceuticalPrescription");
+            this.Fixture.ExecuteScriptFromResources("ClearDatabase");
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("d.duck"), new string[] { "User" });
             var command = CreateCommand();
             // Act
@@ -61,7 +61,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             prescription.PrescribedMedications().Should().NotBeNullOrEmpty();
         }
 
-        protected abstract IAsyncRepository<PharmaceuticalPrescription> CreateRepository();
+        protected abstract IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository();
 
         private static CreatePharmaceuticalPrescription CreateCommand()
         {

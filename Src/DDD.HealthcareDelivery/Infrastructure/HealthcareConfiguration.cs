@@ -33,7 +33,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         protected virtual void InitializeModel(ModelMapper modelMapper)
         {
-            modelMapper.AddMapping<PharmaceuticalPrescriptionMapping>();
+            modelMapper.AddMapping<PrescribedPharmaceuticalProductMapping>();
         }
 
         #endregion Methods

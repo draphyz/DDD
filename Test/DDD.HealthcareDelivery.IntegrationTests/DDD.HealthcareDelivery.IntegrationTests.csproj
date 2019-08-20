@@ -88,6 +88,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\Prescriptions\OraclePharmaceuticalPrescriptionCreatorTests.cs" />
+    <Compile Include="Application\Prescriptions\OraclePharmaceuticalPrescriptionRevokerTests.cs" />
+    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionCreatorTests.cs" />
+    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionRevokerTests.cs" />
+    <Compile Include="Application\Prescriptions\SqlServerPharmaceuticalPrescriptionCreatorTests.cs" />
+    <Compile Include="Application\Prescriptions\SqlServerPharmaceuticalPrescriptionRevokerTests.cs" />
+    <Compile Include="Infrastructure\BelgianOracleHealthcareConfigurationTests.cs" />
     <Compile Include="Infrastructure\HealthcareConfigurationTests.cs" />
     <Compile Include="Infrastructure\BelgianSqlServerHealthcareConfigurationTests.cs" />
     <Compile Include="OracleCollection.cs" />
@@ -131,6 +138,10 @@
       <Project>{2438B31A-3A39-4878-81FA-BE5AE715EAE5}</Project>
       <Name>DDD.Core.Messages</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Src\DDD.Core.NHibernate\DDD.Core.NHibernate.csproj">
+      <Project>{d4fc7e1b-cae8-40f9-9faf-0029d91cc6c4}</Project>
+      <Name>DDD.Core.NHibernate</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Src\DDD.Core\DDD.Core.csproj">
       <Project>{C6C3E419-B9AA-44AD-9DBF-789294687AE6}</Project>
       <Name>DDD.Core</Name>
@@ -171,12 +182,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\Oracle\CreatePharmaceuticalPrescription.sql" />
+    <Content Include="Scripts\Oracle\ClearDatabase.sql" />
     <Content Include="Scripts\Oracle\CreateSchema.sql" />
     <Content Include="Scripts\Oracle\FillSchema.sql" />
     <Content Include="Scripts\Oracle\RevokePharmaceuticalPrescription.sql" />
     <Content Include="Scripts\SqlServer\CreateDatabase.sql" />
-    <Content Include="Scripts\SqlServer\CreatePharmaceuticalPrescription.sql" />
+    <Content Include="Scripts\SqlServer\ClearDatabase.sql" />
     <Content Include="Scripts\SqlServer\RevokePharmaceuticalPrescription.sql" />
     <Content Include="Scripts\Oracle\FindPharmaceuticalPrescriptionsByPatient.sql" />
     <Content Include="Scripts\Oracle\FindPrescribedMedicationsByPrescription.sql" />
@@ -186,9 +197,7 @@
   <ItemGroup>
     <Analyzer Include="L:\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Application\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

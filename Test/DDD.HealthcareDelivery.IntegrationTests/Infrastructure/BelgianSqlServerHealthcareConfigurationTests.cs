@@ -1,10 +1,25 @@
-﻿namespace DDD.HealthcareDelivery.Infrastructure
+﻿using Xunit;
+
+namespace DDD.HealthcareDelivery.Infrastructure
 {
-    public class BelgianSqlServerHealthcareConfigurationTests : HealthcareConfigurationTests
+    [Collection("SqlServer")]
+    public class BelgianSqlServerHealthcareConfigurationTests : HealthcareConfigurationTests<SqlServerFixture>
     {
+        #region Constructors
+
+        public BelgianSqlServerHealthcareConfigurationTests(SqlServerFixture fixture) : base(fixture)
+        {
+        }
+
+        #endregion Constructors
+
+        #region Methods
+
         protected override HealthcareConfiguration CreateConfiguration()
         {
-            return new BelgianSqlServerHealthcareConfiguration(@"Data Source=(local)\SQLEXPRESS;Database=Test;Integrated Security=False;User ID=sa;Password=dev;Pooling=false");
+            return new BelgianSqlServerHealthcareConfiguration(SqlServerConnectionFactory.ConnectionString);
         }
+
+        #endregion Methods
     }
 }

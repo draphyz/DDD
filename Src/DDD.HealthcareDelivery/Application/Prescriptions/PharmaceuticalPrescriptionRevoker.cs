@@ -15,13 +15,13 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         #region Fields
 
         private readonly IEventPublisher publisher;
-        private readonly IAsyncRepository<PharmaceuticalPrescription> repository;
+        private readonly IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository;
 
         #endregion Fields
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionRevoker(IAsyncRepository<PharmaceuticalPrescription> repository,
+        public PharmaceuticalPrescriptionRevoker(IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository,
                                                  IEventPublisher publisher)
         {
             Condition.Requires(repository, nameof(repository)).IsNotNull();

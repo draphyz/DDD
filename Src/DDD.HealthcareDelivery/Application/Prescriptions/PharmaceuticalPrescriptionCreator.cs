@@ -16,14 +16,14 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         #region Fields
 
         private readonly IEventPublisher publisher;
-        private readonly IAsyncRepository<PharmaceuticalPrescription> repository;
+        private readonly IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository;
         private readonly IObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription> translator;
 
         #endregion Fields
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionCreator(IAsyncRepository<PharmaceuticalPrescription> repository,
+        public PharmaceuticalPrescriptionCreator(IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository,
                                                  IEventPublisher publisher,
                                                  IObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription> translator)
         {

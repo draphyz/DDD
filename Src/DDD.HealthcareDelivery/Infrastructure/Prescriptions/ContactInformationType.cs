@@ -17,7 +17,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             this.Property(c => c.SecondaryTelephoneNumber, NHibernateUtil.AnsiString);
             this.Property(c => c.PrimaryEmailAddress, NHibernateUtil.Custom(typeof(EmailAddressType)));
             this.Property(c => c.SecondaryEmailAddress, NHibernateUtil.Custom(typeof(EmailAddressType)));
-            this.Property(c => c.WebSite, NHibernateUtil.Uri);
+            this.Property(c => c.WebSite, new AnsiUriType());
             this.Property(c => c.PostalAddress, NHibernateUtil.Custom(typeof(PostalAddressType)));
         }
 

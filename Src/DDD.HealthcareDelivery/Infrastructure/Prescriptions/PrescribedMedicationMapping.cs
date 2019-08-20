@@ -1,11 +1,13 @@
-﻿using NHibernate;
-using NHibernate.Mapping.ByCode.Conformist;
+﻿using NHibernate.Mapping.ByCode.Conformist;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Domain.Prescriptions;
+    using NHibernate;
+    using NHibernate.Mapping.ByCode;
 
-    internal abstract class PrescribedMedicationMapping : ClassMapping<PrescribedMedication>
+    internal abstract class PrescribedMedicationMapping<TMedicationCode> : ClassMapping<PrescribedMedication>
+        where TMedicationCode : MedicationCode
     {
 
         #region Fields
@@ -23,41 +25,51 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             // Table
             this.Table(ToCasingConvention("PrescMedication"));
             // Keys
-            this.Id("identifier", m => m.Column(ToCasingConvention("PrescMedicationId")));
+            this.Id("identifier", m =>
+            {
+                m.Column(ToCasingConvention("PrescMedicationId"));
+                m.Generator(Generators.Sequence, m1 => m1.Params(new { sequence = ToCasingConvention("PrescMedicationId") }));
+            });
             // Fields
-
+            this.Discriminator(m =>
+            {
+                m.Column(ToCasingConvention("MedicationType"));
+                m.Length(20);
+                m.NotNullable(true);
+            });
+            this.Property(med => med.NameOrDescription, m =>
+            {
+                m.Column(ToCasingConvention("NameOrDesc"));
+                m.Type(NHibernateUtil.AnsiString);
+                m.Length(1024);
+                m.NotNullable(true);
+            });
+            this.Property(med => med.Posology, m =>
+            {
+                m.Type(NHibernateUtil.AnsiString);
+                m.Length(1024);
+            });
+            this.Property(med => med.Quantity, m =>
+            {
+                m.Type(NHibernateUtil.AnsiString);
+                m.Length(100);
+            });
+            this.Property(med => med.Duration, m =>
+            {
+                m.Type(NHibernateUtil.AnsiString);
+                m.Length(100);
+            });
+            this.Component(med => med.Code, m =>
+            {
+                m.Class<TMedicationCode>();
+                m.Property(c => c.Value, m1 =>
+                {
+                    m1.Column(ToCasingConvention("Code"));
+                    m1.Type(NHibernateUtil.AnsiString);
+                    m1.Length(20);
+                });
+            });
         }
-
-            //this.Property(m => m.PrescriptionIdentifier)
-            //    .HasColumnName(ToCasingConvention("PrescriptionId"))
-            //    .HasColumnOrder(2);
-            //this.Property(m => m.MedicationType)
-            //    .HasColumnOrder(3)
-            //    .IsUnicode(false)
-            //    .HasMaxLength(20)
-            //    .IsRequired();
-            //this.Property(m => m.NameOrDescription)
-            //    .HasColumnName(ToCasingConvention("NameOrDesc"))
-            //    .HasColumnOrder(4)
-            //    .IsUnicode(false)
-            //    .HasMaxLength(1024)
-            //    .IsRequired();
-            //this.Property(m => m.Posology)
-            //    .HasColumnOrder(5)
-            //    .IsUnicode(false)
-            //    .HasMaxLength(1024);
-            //this.Property(m => m.Quantity)
-            //    .HasColumnOrder(6)
-            //    .IsUnicode(false)
-            //    .HasMaxLength(100); ;
-            //this.Property(m => m.Duration)
-            //    .HasColumnOrder(7)
-            //    .IsUnicode(false)
-            //    .HasMaxLength(100);
-            //this.Property(m => m.Code)
-            //    .HasColumnOrder(8)
-            //    .IsUnicode(false)
-            //    .HasMaxLength(20);
 
         #endregion Constructors
 

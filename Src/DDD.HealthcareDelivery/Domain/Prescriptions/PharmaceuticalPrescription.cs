@@ -20,7 +20,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Fields
 
-        private readonly ISet<PrescribedMedication> prescribedMedications = new HashSet<PrescribedMedication>();
+        private ISet<PrescribedMedication> prescribedMedications = new HashSet<PrescribedMedication>();
 
         #endregion Fields
 

@@ -14,6 +14,9 @@ namespace DDD.Core.Infrastructure.Data
 {
     using NHibernate.Mapping.ByCode;
 
+    /// <remarks>
+    ///  This class must be unit tested.
+    /// </remarks>
     public abstract class CompositeUserType<TComponent> : ICompositeUserType
     {
 

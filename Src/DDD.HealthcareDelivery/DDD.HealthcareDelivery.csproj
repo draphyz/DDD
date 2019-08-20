@@ -116,6 +116,7 @@
     <Compile Include="Domain\Prescriptions\MedicationCode.cs" />
     <Compile Include="Domain\Practitioners\HealthcarePractitionerLicenseNumber.cs" />
     <Compile Include="Domain\Prescriptions\PrescriptionStatus.cs" />
+    <Compile Include="Infrastructure\BelgianOracleHealthcareConfiguration.cs" />
     <Compile Include="Infrastructure\BelgianSqlServerHealthcareConfiguration.cs" />
     <Compile Include="Infrastructure\HealthcareConfiguration.cs" />
     <Compile Include="Infrastructure\IHealthcareConnectionFactory.cs" />
@@ -129,6 +130,9 @@
     <Compile Include="Infrastructure\Prescriptions\HealthFacilityLicenseNumberType.cs" />
     <Compile Include="Infrastructure\Prescriptions\HealthFacilityType.cs" />
     <Compile Include="Infrastructure\Prescriptions\PrescribedMedicationMapping.cs" />
+    <Compile Include="Infrastructure\Prescriptions\PrescribedPharmaceuticalSubstanceMapping.cs" />
+    <Compile Include="Infrastructure\Prescriptions\PrescribedPharmaceuticalCompoundingMapping.cs" />
+    <Compile Include="Infrastructure\Prescriptions\PrescribedPharmaceuticalProductMapping.cs" />
     <Compile Include="Infrastructure\Prescriptions\SocialSecurityNumberType.cs" />
     <Compile Include="Infrastructure\Prescriptions\HealthcarePractitionerLicenseNumberType.cs" />
     <Compile Include="Infrastructure\Prescriptions\HealthcarePractitionerType.cs" />
@@ -139,7 +143,10 @@
     <Compile Include="Infrastructure\Prescriptions\PrescribedMedicationsByPrescriptionFinder.cs" />
     <Compile Include="Infrastructure\Prescriptions\PrescriptionIdentifierGenerator.cs" />
     <Compile Include="Infrastructure\Prescriptions\PrescriptionMapping.cs" />
-    <Compile Include="Infrastructure\Prescriptions\BelgianSqlServerPrescriptionMapping.cs" />
+    <Compile Include="Infrastructure\Prescriptions\OraclePharmaceuticalPrescriptionMapping.cs" />
+    <Compile Include="Infrastructure\Prescriptions\SqlServerPharmaceuticalPrescriptionMapping.cs" />
+    <Compile Include="Infrastructure\Prescriptions\OraclePrescribedMedicationMapping.cs" />
+    <Compile Include="Infrastructure\Prescriptions\SqlServerPrescribedMedicationMapping.cs" />
     <Compile Include="Infrastructure\Prescriptions\SqlServerPrescriptionMapping.cs" />
     <Compile Include="Infrastructure\SqlScripts.Designer.cs">
       <DependentUpon>SqlScripts.resx</DependentUpon>
@@ -147,6 +154,8 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Infrastructure\SqlServerHealthcareConfiguration.cs" />
+    <Compile Include="Infrastructure\OracleStoredEventMapping.cs" />
+    <Compile Include="Infrastructure\SqlServerStoredEventMapping.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

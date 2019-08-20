@@ -2,12 +2,13 @@
 
 namespace DDD.Core.Domain
 {
-    public interface IAsyncRepository<TDomainEntity>
+    public interface IAsyncRepository<TDomainEntity, in TIdentity>
         where TDomainEntity : DomainEntity
+        where TIdentity : ComparableValueObject
     {
         #region Methods
 
-        Task<TDomainEntity> FindAsync(ComparableValueObject identity);
+        Task<TDomainEntity> FindAsync(TIdentity identity);
 
         Task SaveAsync(TDomainEntity aggregate);
 

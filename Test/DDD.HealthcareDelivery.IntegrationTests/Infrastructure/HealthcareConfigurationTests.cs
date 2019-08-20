@@ -1,18 +1,20 @@
-﻿using NHibernate;
-using NHibernate.Tool.hbm2ddl;
+﻿using FluentAssertions;
+using NHibernate;
 using System;
 using Xunit;
-using FluentAssertions;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Common.Domain;
+    using Core.Domain;
+    using Core.Infrastructure.Testing;
     using Domain.Facilities;
     using Domain.Patients;
     using Domain.Practitioners;
     using Domain.Prescriptions;
 
-    public abstract class HealthcareConfigurationTests
+    public abstract class HealthcareConfigurationTests<TFixture> : IDisposable
+        where TFixture : IDbFixture<IHealthcareConnectionFactory>
     {
 
         #region Fields
@@ -24,8 +26,9 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Constructors
 
-        protected HealthcareConfigurationTests()
+        protected HealthcareConfigurationTests(TFixture fixture)
         {
+            this.Fixture = fixture;
             this.configuration = this.CreateConfiguration();
             var sessionfactory = this.configuration.BuildSessionFactory();
             this.session = sessionfactory.OpenSession();
@@ -33,26 +36,62 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #endregion Constructors
 
+        #region Properties
+
+        protected TFixture Fixture { get; }
+
+        #endregion Properties
+
+        //[Fact]
+        //public void HealthcareConfiguration_WhenMappingValid_CanExportSchema()
+        //{
+        //    // Arrange
+        //    var schemaExport = new SchemaExport(this.configuration);
+        //    // Act
+        //    Action action = () => schemaExport.Execute(useStdOut: true,
+        //                                               execute: true,
+        //                                               justDrop: false,
+        //                                               connection: this.session.Connection,
+        //                                               exportOutput: Console.Out);
+        //    // Assert
+        //    action.Should().NotThrow();
+        //}
+
         #region Methods
 
-        [Fact]
-        public void ExportSchema_WhenValidConfiguration_ThrowsNoException()
+        public void Dispose()
         {
-            // Arrange
-            var schemaExport = new SchemaExport(this.configuration);
-            // Act
-            schemaExport.Execute(useStdOut: true,
-                                 execute: true,
-                                 justDrop: false,
-                                 connection: this.session.Connection,
-                                 exportOutput: Console.Out);
-            // Assert
+            this.session?.Dispose();
         }
 
         [Fact]
-        public void SavePrescription()
+        public void HealthcareConfiguration_WhenMappingValid_CanSaveAndRestoreEvents()
         {
             // Arrange
+            this.Fixture.ExecuteScriptFromResources("ClearDatabase");
+            var event1 = CreateEvent();
+            // Act
+            using (var transaction = this.session.BeginTransaction())
+            {
+                this.session.Save(event1);
+                transaction.Commit();
+            }
+            this.session.Clear();
+            StoredEvent event2;
+            using (var transaction = this.session.BeginTransaction())
+            {
+                event2 = this.session.Get<StoredEvent>(event1.Id);
+                transaction.Commit();
+            }
+            // Assert
+            event2.Should().BeEquivalentTo(event1);
+        }
+
+        [Fact]
+        public void HealthcareConfiguration_WhenMappingValid_CanSaveAndRestorePrescriptions()
+        {
+            // Arrange
+            this.Fixture.ExecuteScriptFromResources("ClearDatabase");
             var prescription1 = CreatePrescription();
             // Act
             using (var transaction = this.session.BeginTransaction())
@@ -61,16 +100,30 @@ namespace DDD.HealthcareDelivery.Infrastructure
                 transaction.Commit();
             }
             this.session.Clear();
+            PharmaceuticalPrescription prescription2;
             using (var transaction = this.session.BeginTransaction())
             {
-                var prescription2 = this.session.Get<PharmaceuticalPrescription>(new PrescriptionIdentifier(1));
+                prescription2 = this.session.Get<PharmaceuticalPrescription>(prescription1.Identifier);
                 transaction.Commit();
             }
             // Assert
-
+            prescription2.Should().BeEquivalentTo(prescription1);
         }
-
         protected abstract HealthcareConfiguration CreateConfiguration();
+
+        private static StoredEvent CreateEvent()
+        {
+            return new StoredEvent
+            {
+                Id = 1,
+                Body = @"<PharmaceuticalPrescriptionCreated xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""DDD.HealthcareDelivery.Domain.Prescriptions""><PrescriptionId>1</PrescriptionId><OccurredOn>2018-01-01T10:06:00</OccurredOn></PharmaceuticalPrescriptionCreated>",
+                StreamId = "1",
+                CommitId = Guid.NewGuid(),
+                Subject = "draphyz",
+                EventType = "PharmaceuticalPrescriptionCreated",
+                OccurredOn = new DateTime(2018, 1, 1)
+            };
+        }
 
         private static PharmaceuticalPrescription CreatePrescription()
         {
@@ -90,7 +143,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
                             "Grote Markt",
                             "Brussel",
                             "1000",
-                            new Alpha2CountryCode("BE"), 
+                            new Alpha2CountryCode("BE"),
                             "7"
                         ),
                         primaryTelephoneNumber: "02/221.21.21"
@@ -101,7 +154,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
                 (
                     1,
                     new FullName("Flintstone", "Fred"),
-                    BelgianSex.Male, 
+                    BelgianSex.Male,
                     new BelgianSocialSecurityNumber("60207273601")
                 ),
                 new MedicalOffice

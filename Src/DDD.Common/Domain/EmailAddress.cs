@@ -27,7 +27,7 @@ namespace DDD.Common.Domain
 
         #region Properties
 
-        public string Value { get; }
+        public string Value { get; private set; }
 
         #endregion Properties
 

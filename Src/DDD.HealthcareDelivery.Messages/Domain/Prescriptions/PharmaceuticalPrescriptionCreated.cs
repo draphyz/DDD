@@ -26,10 +26,10 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Properties
 
-        [DataMember(Name = "OccurredOn")]
+        [DataMember(Name = "OccurredOn", Order = 2)]
         public DateTime OccurredOn { get; private set; }
 
-        [DataMember(Name = "PrescriptionId")]
+        [DataMember(Name = "PrescriptionId", Order = 1)]
         public int PrescriptionIdentifier { get; private set; }
 
         #endregion Properties

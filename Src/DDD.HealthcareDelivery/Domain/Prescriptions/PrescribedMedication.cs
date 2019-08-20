@@ -10,7 +10,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Fields
 
-        private readonly int identifier;
+        private int identifier;
 
         #endregion Fields
 

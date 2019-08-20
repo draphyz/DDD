@@ -61,6 +61,18 @@ namespace DDD.HealthcareDelivery {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to USE [Test]
+        ///GO
+        ///EXEC spClearDatabase
+        ///GO.
+        /// </summary>
+        internal static string ClearDatabase {
+            get {
+                return ResourceManager.GetString("ClearDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /****** Object:  Database [Test]    Script Date: 16/08/2017 12:09:20 ******/
         ///USE [master]
         ///GO
@@ -80,18 +92,6 @@ namespace DDD.HealthcareDelivery {
         internal static string CreateDatabase {
             get {
                 return ResourceManager.GetString("CreateDatabase", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to USE [Test]
-        ///GO
-        ///EXEC spClearDatabase
-        ///GO.
-        /// </summary>
-        internal static string CreatePharmaceuticalPrescription {
-            get {
-                return ResourceManager.GetString("CreatePharmaceuticalPrescription", resourceCulture);
             }
         }
         

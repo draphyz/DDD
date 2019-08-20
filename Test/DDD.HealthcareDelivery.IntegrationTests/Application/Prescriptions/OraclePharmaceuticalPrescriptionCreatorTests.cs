@@ -5,8 +5,8 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Core.Domain;
     using Core.Infrastructure.Serialization;
+    using Core.Infrastructure.Data;
     using Domain.Prescriptions;
-    using Infrastructure.Prescriptions;
     using Infrastructure;
 
     [Collection("Oracle")]
@@ -24,13 +24,14 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
-        protected override IAsyncRepository<PharmaceuticalPrescription> CreateRepository()
+        protected override IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
         {
-            return new PharmaceuticalPrescriptionRepository
-            (
-                new Domain.Prescriptions.BelgianPharmaceuticalPrescriptionTranslator(),
-                new StoredEventTranslator(DataContractSerializerWrapper.Create(new UTF8Encoding(false))),
-                new OracleHealthcareContextFactory(this.Fixture.ConnectionFactory)
+            var configuration = new BelgianOracleHealthcareConfiguration(OracleConnectionFactory.ConnectionString);
+            var session = configuration.BuildSessionFactory().OpenSession();
+            return new NHibernateRepository<PharmaceuticalPrescription, PrescriptionIdentifier>
+             (
+                session,
+                new StoredEventTranslator(DataContractSerializerWrapper.Create(new UTF8Encoding(false)))
             );
         }
 
