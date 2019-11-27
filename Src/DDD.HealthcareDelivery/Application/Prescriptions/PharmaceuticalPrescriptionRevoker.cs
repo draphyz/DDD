@@ -36,9 +36,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         protected override async Task ExecuteAsync(RevokePharmaceuticalPrescription command)
         {
-            var prescription = await this.repository.FindAsync(new PrescriptionIdentifier(command.PrescriptionIdentifier));
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
+                var prescription = await this.repository.FindAsync(new PrescriptionIdentifier(command.PrescriptionIdentifier));
                 prescription.Revoke(command.RevocationReason);
                 await this.repository.SaveAsync(prescription);
                 this.publisher.PublishAll(prescription.AllEvents());
