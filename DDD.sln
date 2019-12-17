@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2026
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{7080D95A-39E8-418A-BA03-99ED89D4020E}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{862B0E9C-B685-4C40-ACFB-83A193C82254}"
 	ProjectSection(SolutionItems) = preProject
 		Doc\CommandComponents.png = Doc\CommandComponents.png
+		..\..\Users\olwallem\Downloads\EntityFrameworkMapping.png = ..\..\Users\olwallem\Downloads\EntityFrameworkMapping.png
+		..\..\Users\olwallem\Downloads\NHibernateMapping.png = ..\..\Users\olwallem\Downloads\NHibernateMapping.png
 		Doc\PrescriptionLifecycle.png = Doc\PrescriptionLifecycle.png
 		Doc\QueryComponents.png = Doc\QueryComponents.png
 	EndProjectSection
