@@ -14,10 +14,17 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Domain.Practitioners;
     using Domain.Prescriptions;
     using Infrastructure;
+    using Infrastructure.Prescriptions;
 
-    public abstract class PharmaceuticalPrescriptionCreatorTests<TFixture>
+    public abstract class PharmaceuticalPrescriptionCreatorTests<TFixture> : IDisposable
         where TFixture : IDbFixture<IHealthcareConnectionFactory>
     {
+
+        #region Fields
+
+        private HealthcareContext context;
+
+        #endregion Fields
 
         #region Constructors
 
@@ -45,6 +52,11 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
+        public void Dispose()
+        {
+            this.context.Dispose();
+        }
+
         [Fact]
         public async Task HandleAsync_WhenCalled_CreatePharmaceuticalPrescription()
         {
@@ -61,7 +73,10 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             prescription.PrescribedMedications().Should().NotBeNullOrEmpty();
         }
 
-        protected abstract IAsyncRepository<PharmaceuticalPrescription> CreateRepository();
+
+        protected abstract HealthcareContext CreateContext();
+
+        protected abstract EventTranslator CreateEventTranslator();
 
         private static CreatePharmaceuticalPrescription CreateCommand()
         {
@@ -104,6 +119,17 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                     }
                 }
             };
+        }
+
+        private IAsyncRepository<PharmaceuticalPrescription> CreateRepository()
+        {
+            this.context = this.CreateContext();
+            return new PharmaceuticalPrescriptionRepository
+            (
+                this.context,
+                new Domain.Prescriptions.BelgianPharmaceuticalPrescriptionTranslator(),
+                this.CreateEventTranslator()
+            );
         }
 
         #endregion Methods

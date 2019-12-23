@@ -5,8 +5,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Core.Domain;
     using Core.Infrastructure.Serialization;
-    using Domain.Prescriptions;
-    using Infrastructure.Prescriptions;
     using Infrastructure;
 
     [Collection("Oracle")]
@@ -24,14 +22,14 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
-        protected override IAsyncRepository<PharmaceuticalPrescription> CreateRepository()
+        protected override HealthcareContext CreateContext()
         {
-            return new PharmaceuticalPrescriptionRepository
-            (
-                new OracleHealthcareContext("Oracle"),
-                new Domain.Prescriptions.BelgianPharmaceuticalPrescriptionTranslator(),
-                new EventTranslator(DataContractSerializerWrapper.Create(new UTF8Encoding(false)))
-            );
+            return new OracleHealthcareContext("Oracle");
+        }
+
+        protected override EventTranslator CreateEventTranslator()
+        {
+            return new EventTranslator(DataContractSerializerWrapper.Create(new UTF8Encoding(false)));
         }
 
         #endregion Methods
