@@ -123,9 +123,9 @@
       <Project>{0B70B4FD-F5A0-4A6C-A3FD-90031E08C1C2}</Project>
       <Name>DDD.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Src\DDD.Core.EF\DDD.Core.EF.csproj">
+    <ProjectReference Include="..\..\Src\DDD.Core.EntityFramework\DDD.Core.EntityFramework.csproj">
       <Project>{6d227aa7-ff90-48ca-b13d-ed23c1fffba5}</Project>
-      <Name>DDD.Core.EF</Name>
+      <Name>DDD.Core.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Src\DDD.Core.Messages\DDD.Core.Messages.csproj">
       <Project>{2438B31A-3A39-4878-81FA-BE5AE715EAE5}</Project>

@@ -155,9 +155,9 @@
       <Project>{701da58b-ae36-429f-8621-64109b8d29d7}</Project>
       <Name>DDD.Core.Dapper</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DDD.Core.EF\DDD.Core.EF.csproj">
+    <ProjectReference Include="..\DDD.Core.EntityFramework\DDD.Core.EntityFramework.csproj">
       <Project>{6d227aa7-ff90-48ca-b13d-ed23c1fffba5}</Project>
-      <Name>DDD.Core.EF</Name>
+      <Name>DDD.Core.EntityFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\DDD.Core.FluentValidation\DDD.Core.FluentValidation.csproj">
       <Project>{5e3745fc-ca80-4d0f-8a25-20ee0f9cf163}</Project>

@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Common", "Src\DDD.Commo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Common.UnitTests", "Test\DDD.Common.UnitTests\DDD.Common.UnitTests.csproj", "{25F6B88A-4EFA-4516-BB7A-34ED68548636}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.EF", "Src\DDD.Core.EF\DDD.Core.EF.csproj", "{6D227AA7-FF90-48CA-B13D-ED23C1FFFBA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.EntityFramework", "Src\DDD.Core.EntityFramework\DDD.Core.EntityFramework.csproj", "{6D227AA7-FF90-48CA-B13D-ED23C1FFFBA5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.HealthcareDelivery.IntegrationTests", "Test\DDD.HealthcareDelivery.IntegrationTests\DDD.HealthcareDelivery.IntegrationTests.csproj", "{B53007C7-B314-40DF-B6E7-6C6576A5611C}"
 EndProject
