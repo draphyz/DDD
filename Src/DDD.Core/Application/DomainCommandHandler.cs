@@ -3,7 +3,6 @@
 namespace DDD.Core.Application
 {
     using Domain;
-    using System;
 
     /// <summary>
     /// Base class for handling synchronously commands using a domain model.
