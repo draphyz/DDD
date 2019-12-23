@@ -10,15 +10,15 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
     using Core.Infrastructure.Data;
 
     public class PharmaceuticalPrescriptionRepository
-        : EFRepository<PharmaceuticalPrescription, PharmaceuticalPrescriptionState, HealthcareContext>
+        : EFRepository<PharmaceuticalPrescription, PharmaceuticalPrescriptionState>
     {
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionRepository(IObjectTranslator<PharmaceuticalPrescriptionState, PharmaceuticalPrescription> prescriptionTranslator,
-                                                    IObjectTranslator<IEvent, EventState> eventTranslator,
-                                                    IAsyncDbContextFactory<HealthcareContext> contextFactory)
-            : base(prescriptionTranslator, eventTranslator, contextFactory)
+        public PharmaceuticalPrescriptionRepository(HealthcareContext context,
+                                                    IObjectTranslator<PharmaceuticalPrescriptionState, PharmaceuticalPrescription> prescriptionTranslator,
+                                                    IObjectTranslator<IEvent, EventState> eventTranslator)
+            : base(context, prescriptionTranslator, eventTranslator)
         {
         }
 

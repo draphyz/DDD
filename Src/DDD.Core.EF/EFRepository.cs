@@ -1,7 +1,6 @@
 ﻿using Conditions;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
@@ -9,6 +8,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.Common;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -16,16 +17,15 @@ namespace DDD.Core.Infrastructure.Data
     using Mapping;
     using Threading;
 
-    public abstract class EFRepository<TDomainEntity, TStateEntity, TContext>
+    public abstract class EFRepository<TDomainEntity, TStateEntity>
         : IAsyncRepository<TDomainEntity>
         where TDomainEntity : DomainEntity, IStateObjectConvertible<TStateEntity>
         where TStateEntity : class, IStateEntity, new()
-        where TContext : StateEntitiesContext
     {
 
         #region Fields
 
-        private readonly IAsyncDbContextFactory<TContext> contextFactory;
+        private readonly StateEntitiesContext context;
 
         private readonly IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator;
 
@@ -35,16 +35,16 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Constructors
 
-        protected EFRepository(IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator,
-                               IObjectTranslator<IEvent, EventState> eventTranslator,
-                               IAsyncDbContextFactory<TContext> contextFactory)
+        protected EFRepository(StateEntitiesContext context,
+                               IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator,
+                               IObjectTranslator<IEvent, EventState> eventTranslator)
         {
+            Condition.Requires(context, nameof(context)).IsNotNull();
             Condition.Requires(entityTranslator, nameof(entityTranslator)).IsNotNull();
             Condition.Requires(eventTranslator, nameof(eventTranslator)).IsNotNull();
-            Condition.Requires(contextFactory, nameof(contextFactory)).IsNotNull();
+            this.context = context;
             this.entityTranslator = entityTranslator;
             this.eventTranslator = eventTranslator;
-            this.contextFactory = contextFactory;
         }
 
         #endregion Constructors
@@ -57,6 +57,7 @@ namespace DDD.Core.Infrastructure.Data
                      .IsNotNull();
             await new SynchronizationContextRemover();
             var keyValues = identity.PrimitiveEqualityComponents();
+            await this.OpenConnectionAsync();
             var stateEntity = await this.FindAsync(keyValues);
             if (stateEntity == null) return null;
             return this.entityTranslator.Translate(stateEntity);
@@ -68,27 +69,22 @@ namespace DDD.Core.Infrastructure.Data
             await new SynchronizationContextRemover();
             var stateEntity = aggregate.ToState();
             var events = ToEventStates(aggregate);
-            using (var context = await this.CreateContextAsync())
-            {
-                context.Set<TStateEntity>().Add(stateEntity);
-                context.Set<EventState>().AddRange(events);
-                await SaveChangesAsync(context);
-            }
+            await this.OpenConnectionAsync();
+            this.context.Set<TStateEntity>().Add(stateEntity);
+            this.context.Set<EventState>().AddRange(events);
+            await this.SaveChangesAsync();
         }
 
         protected virtual async Task<TStateEntity> FindAsync(IEnumerable<object> keyValues)
         {
-            using (var context = await this.CreateContextAsync())
-            {
-                var keyNames = context.GetKeyNames<TStateEntity>();
-                if (keyValues.Count() != keyNames.Count())
-                    throw new InvalidOperationException($"You must specify {keyNames.Count()} identity components.");
-                var query = context.Set<TStateEntity>().AsQueryable();
-                foreach (var path in this.RelatedEntitiesPaths())
-                    query = query.Include(path);
-                var expression = BuildFindExpression(keyNames, keyValues);
-                return await query.FirstOrDefaultAsync(expression);
-            }
+            var keyNames = this.context.GetKeyNames<TStateEntity>();
+            if (keyValues.Count() != keyNames.Count())
+                throw new InvalidOperationException($"You must specify {keyNames.Count()} identity components.");
+            var query = this.context.Set<TStateEntity>().AsNoTracking().AsQueryable();
+            foreach (var path in this.RelatedEntitiesPaths())
+                query = query.Include(path);
+            var expression = BuildFindExpression(keyNames, keyValues);
+            return await query.FirstOrDefaultAsync(expression);
         }
 
         protected abstract IEnumerable<Expression<Func<TStateEntity, object>>> RelatedEntitiesPaths();
@@ -112,29 +108,31 @@ namespace DDD.Core.Infrastructure.Data
             return Expression.Lambda<Func<TStateEntity, bool>>(find, entity);
         }
 
-        private static async Task SaveChangesAsync(TContext context)
+        /// <remarks>To avoid a promotion to an MSDTC transaction</remarks>
+        private async Task OpenConnectionAsync()
         {
             try
             {
-                await context.SaveChangesAsync();
+                if (this.context.Database.Connection.State == ConnectionState.Closed)
+                    await this.context.Database.Connection.OpenAsync();
+            }
+            catch (DbException ex)
+            {
+                throw new RepositoryException(ex, typeof(TDomainEntity));
+            }
+        }
+
+        private async Task SaveChangesAsync()
+        {
+            try
+            {
+                await this.context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)
             {
                 throw new RepositoryConcurrencyException(ex, typeof(TDomainEntity));
             }
             catch (Exception ex) when (ex is DbUpdateException || ex is DbEntityValidationException)
-            {
-                throw new RepositoryException(ex, typeof(TDomainEntity));
-            }
-        }
-
-        private async Task<TContext> CreateContextAsync()
-        {
-            try
-            {
-                return await this.contextFactory.CreateContextAsync();
-            }
-            catch (DbException ex)
             {
                 throw new RepositoryException(ex, typeof(TDomainEntity));
             }

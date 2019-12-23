@@ -28,9 +28,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         {
             return new PharmaceuticalPrescriptionRepository
             (
+                new SqlServerHealthcareContext("SqlServer"),
                 new Domain.Prescriptions.BelgianPharmaceuticalPrescriptionTranslator(),
-                new EventTranslator(DataContractSerializerWrapper.Create(Encoding.Unicode)),
-                new SqlServerHealthcareContextFactory(this.Fixture.ConnectionFactory)
+                new EventTranslator(DataContractSerializerWrapper.Create(Encoding.Unicode))
             );
         }
 

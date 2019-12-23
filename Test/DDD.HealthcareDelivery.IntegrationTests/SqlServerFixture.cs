@@ -11,7 +11,7 @@ namespace DDD.HealthcareDelivery
 
         #region Constructors
 
-        public SqlServerFixture() : base(new SqlServerConnectionFactory(), "SqlServerScripts")
+        public SqlServerFixture() : base(SqlServerConnectionFactory.Create(), "SqlServerScripts")
         {
         }
 

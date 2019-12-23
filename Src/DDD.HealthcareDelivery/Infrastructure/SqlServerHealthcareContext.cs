@@ -11,8 +11,14 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Constructors
 
-        public SqlServerHealthcareContext(DbConnection connection, bool contextOwnsConnection) 
+        public SqlServerHealthcareContext(DbConnection connection, bool contextOwnsConnection)
             : base(connection, contextOwnsConnection)
+        {
+            this.UseUpperCase = false;
+        }
+
+        public SqlServerHealthcareContext(string nameOrConnectionString)
+            : base(nameOrConnectionString)
         {
             this.UseUpperCase = false;
         }

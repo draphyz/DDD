@@ -16,10 +16,17 @@ namespace DDD.Core.Infrastructure.Data
             Database.SetInitializer<StateEntitiesContext>(null);
         }
 
-        protected StateEntitiesContext(DbConnection connection, bool contextOwnsConnection) 
+        protected StateEntitiesContext(DbConnection connection, bool contextOwnsConnection)
             : base(connection, contextOwnsConnection)
         {
             this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.AutoDetectChangesEnabled = false;
+        }
+
+        protected StateEntitiesContext(string nameOrConnectionString) : base(nameOrConnectionString)
+        {
+            this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.AutoDetectChangesEnabled = false;
         }
 
         #endregion Constructors
@@ -60,7 +67,7 @@ namespace DDD.Core.Infrastructure.Data
             {
                 return base.SaveChanges();
             }
-            catch(DbEntityValidationException ex)
+            catch (DbEntityValidationException ex)
             {
                 ex.AddErrorsInData();
                 throw;

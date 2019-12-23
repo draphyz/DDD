@@ -18,8 +18,13 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Constructors
 
-        protected HealthcareContext(DbConnection connection, bool contextOwnsConnection) 
+        protected HealthcareContext(DbConnection connection, bool contextOwnsConnection)
             : base(connection, contextOwnsConnection)
+        {
+        }
+
+        protected HealthcareContext(string nameOrConnectionString)
+            : base(nameOrConnectionString)
         {
         }
 

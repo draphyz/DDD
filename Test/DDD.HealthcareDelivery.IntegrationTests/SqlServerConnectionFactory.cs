@@ -1,14 +1,31 @@
-﻿namespace DDD.HealthcareDelivery
+﻿using System.Configuration;
+
+namespace DDD.HealthcareDelivery
 {
     using Infrastructure;
     using Core.Infrastructure.Data;
 
     public class SqlServerConnectionFactory : DbConnectionFactory, IHealthcareConnectionFactory
     {
-        public SqlServerConnectionFactory()
-            : base("System.Data.SqlClient",
-                   @"Data Source=(local)\SQLEXPRESS;Database=Test;Integrated Security=False;User ID=sa;Password=dev;Pooling=false")
+
+        #region Constructors
+
+        private SqlServerConnectionFactory(string providerName, string connectionString) 
+            : base(providerName, connectionString)
         {
         }
+
+        #endregion Constructors
+
+        #region Methods
+
+        public static SqlServerConnectionFactory Create()
+        {
+            var settings = ConfigurationManager.ConnectionStrings["SqlServer"];
+            return new SqlServerConnectionFactory(settings.ProviderName, settings.ConnectionString);
+        }
+
+        #endregion Methods
+
     }
 }

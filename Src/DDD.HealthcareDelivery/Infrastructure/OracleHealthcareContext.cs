@@ -20,6 +20,12 @@ namespace DDD.HealthcareDelivery.Infrastructure
             this.UseUpperCase = true;
         }
 
+        public OracleHealthcareContext(string nameOrConnectionString) 
+            : base(nameOrConnectionString)
+        {
+            this.UseUpperCase = true;
+        }
+
         #endregion Constructors
 
         #region Methods

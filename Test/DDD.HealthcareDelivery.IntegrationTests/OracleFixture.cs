@@ -11,7 +11,7 @@ namespace DDD.HealthcareDelivery
 
         #region Constructors
 
-        public OracleFixture() : base(new OracleConnectionFactory(), "OracleScripts")
+        public OracleFixture() : base(OracleConnectionFactory.Create(), "OracleScripts")
         {
         }
 

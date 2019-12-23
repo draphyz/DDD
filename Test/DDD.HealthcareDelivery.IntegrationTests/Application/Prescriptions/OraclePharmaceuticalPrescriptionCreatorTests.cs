@@ -1,5 +1,6 @@
 ﻿using Xunit;
 using System.Text;
+using System;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
@@ -28,9 +29,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         {
             return new PharmaceuticalPrescriptionRepository
             (
+                new OracleHealthcareContext("Oracle"),
                 new Domain.Prescriptions.BelgianPharmaceuticalPrescriptionTranslator(),
-                new EventTranslator(DataContractSerializerWrapper.Create(new UTF8Encoding(false))),
-                new OracleHealthcareContextFactory(this.Fixture.ConnectionFactory)
+                new EventTranslator(DataContractSerializerWrapper.Create(new UTF8Encoding(false)))
             );
         }
 
