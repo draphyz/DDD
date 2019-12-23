@@ -15,6 +15,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Domain.Prescriptions;
     using Infrastructure;
     using Infrastructure.Prescriptions;
+    using Mapping;
 
     public abstract class PharmaceuticalPrescriptionCreatorTests<TFixture> : IDisposable
         where TFixture : IDbFixture<IHealthcareConnectionFactory>
@@ -76,7 +77,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         protected abstract HealthcareContext CreateContext();
 
-        protected abstract EventTranslator CreateEventTranslator();
+        protected abstract IObjectTranslator<IEvent, EventState> CreateEventTranslator();
 
         private static CreatePharmaceuticalPrescription CreateCommand()
         {

@@ -6,6 +6,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Core.Domain;
     using Core.Infrastructure.Serialization;
     using Infrastructure;
+    using Mapping;
 
     [Collection("SqlServer")]
     public class SqlServerPharmaceuticalPrescriptionRevokerTests
@@ -27,7 +28,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             return new SqlServerHealthcareContext("Sqlserver");
         }
 
-        protected override EventTranslator CreateEventTranslator()
+        protected override IObjectTranslator<IEvent, EventState> CreateEventTranslator()
         {
             return new EventTranslator(DataContractSerializerWrapper.Create(Encoding.Unicode));
         }

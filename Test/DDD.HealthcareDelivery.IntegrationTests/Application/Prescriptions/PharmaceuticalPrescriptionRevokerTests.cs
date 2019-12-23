@@ -12,6 +12,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Core.Infrastructure.Testing;
     using Infrastructure;
     using Infrastructure.Prescriptions;
+    using Mapping;
 
     public abstract class PharmaceuticalPrescriptionRevokerTests<TFixture> : IDisposable
         where TFixture : IDbFixture<IHealthcareConnectionFactory>
@@ -70,7 +71,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         protected abstract HealthcareContext CreateContext();
 
-        protected abstract EventTranslator CreateEventTranslator();
+        protected abstract IObjectTranslator<IEvent, EventState> CreateEventTranslator();
 
         private static RevokePharmaceuticalPrescription CreateCommand()
         {
