@@ -8,6 +8,8 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Core.Infrastructure.Data;
     using Domain.Prescriptions;
     using Infrastructure;
+    using DDD.Mapping;
+    using NHibernate;
 
     [Collection("SqlServer")]
     public class SqlServerPharmaceuticalPrescriptionCreatorTests
@@ -24,15 +26,15 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
-        protected override IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
+        protected override IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator()
+        {
+            return new StoredEventTranslator(DataContractSerializerWrapper.Create(Encoding.Unicode));
+        }
+
+        protected override ISession CreateSession()
         {
             var configuration = new BelgianSqlServerHealthcareConfiguration(SqlServerConnectionFactory.ConnectionString);
-            var session = configuration.BuildSessionFactory().OpenSession();
-            return new NHibernateRepository<PharmaceuticalPrescription, PrescriptionIdentifier>
-             (
-                session,
-                new StoredEventTranslator(DataContractSerializerWrapper.Create(Encoding.Unicode))
-            );
+            return configuration.BuildSessionFactory().OpenSession();
         }
 
         #endregion Methods

@@ -4,20 +4,28 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using NHibernate;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Common.Application;
     using Core.Domain;
     using Core.Infrastructure.Testing;
+    using Core.Infrastructure.Data;
     using Domain.Facilities;
     using Domain.Practitioners;
     using Domain.Prescriptions;
     using Infrastructure;
+    using Mapping;
 
-    public abstract class PharmaceuticalPrescriptionCreatorTests<TFixture>
+    public abstract class PharmaceuticalPrescriptionCreatorTests<TFixture> : IDisposable
         where TFixture : IDbFixture<IHealthcareConnectionFactory>
     {
+        #region Fields
+
+        private ISession session;
+
+        #endregion Fields
 
         #region Constructors
 
@@ -45,6 +53,11 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
+        public void Dispose()
+        {
+            this.session.Dispose();
+        }
+
         [Fact]
         public async Task HandleAsync_WhenCalled_CreatePharmaceuticalPrescription()
         {
@@ -61,7 +74,10 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             prescription.PrescribedMedications().Should().NotBeNullOrEmpty();
         }
 
-        protected abstract IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository();
+
+        protected abstract IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator();
+
+        protected abstract ISession CreateSession();
 
         private static CreatePharmaceuticalPrescription CreateCommand()
         {
@@ -106,7 +122,16 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             };
         }
 
-        #endregion Methods
+        private IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
+        {
+            this.session = this.CreateSession();
+            return new NHibernateRepository<PharmaceuticalPrescription, PrescriptionIdentifier>
+             (
+                this.session,
+                this.CreateEventTranslator()
+            );
+        }
 
+        #endregion Methods
     }
 }

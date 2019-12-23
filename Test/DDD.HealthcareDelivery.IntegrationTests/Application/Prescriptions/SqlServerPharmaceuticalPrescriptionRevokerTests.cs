@@ -1,12 +1,12 @@
 ﻿using Xunit;
 using System.Text;
+using NHibernate;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Core.Domain;
     using Core.Infrastructure.Serialization;
-    using Core.Infrastructure.Data;
-    using Domain.Prescriptions;
+    using Mapping;
     using Infrastructure;
 
     [Collection("SqlServer")]
@@ -24,15 +24,15 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
-        protected override IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
+        protected override IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator()
+        {
+            return new StoredEventTranslator(DataContractSerializerWrapper.Create(Encoding.Unicode));
+        }
+
+        protected override ISession CreateSession()
         {
             var configuration = new BelgianSqlServerHealthcareConfiguration(SqlServerConnectionFactory.ConnectionString);
-            var session = configuration.BuildSessionFactory().OpenSession();
-            return new NHibernateRepository<PharmaceuticalPrescription, PrescriptionIdentifier>
-             (
-                session,
-                new StoredEventTranslator(DataContractSerializerWrapper.Create(Encoding.Unicode))
-            );
+            return configuration.BuildSessionFactory().OpenSession();
         }
 
         #endregion Methods

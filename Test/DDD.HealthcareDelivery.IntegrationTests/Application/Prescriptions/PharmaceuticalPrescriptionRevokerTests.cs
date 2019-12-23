@@ -3,17 +3,27 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Principal;
 using FluentAssertions;
+using NHibernate;
+using System;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Core.Domain;
+    using Core.Infrastructure.Data;
     using Domain.Prescriptions;
     using Core.Infrastructure.Testing;
     using Infrastructure;
+    using Mapping;
 
-    public abstract class PharmaceuticalPrescriptionRevokerTests<TFixture>
+    public abstract class PharmaceuticalPrescriptionRevokerTests<TFixture> : IDisposable
         where TFixture : IDbFixture<IHealthcareConnectionFactory>
     {
+
+        #region Fields
+
+        private ISession session;
+
+        #endregion Fields
 
         #region Constructors
 
@@ -40,6 +50,11 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
+        public void Dispose()
+        {
+            this.session.Dispose();
+        }
+
         [Fact]
         public async Task HandleAsync_WhenCalled_RevokePharmaceuticalPrescription()
         {
@@ -54,7 +69,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             prescription.Status.Should().Be(Domain.Prescriptions.PrescriptionStatus.Revoked);
         }
 
-        protected abstract IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository();
+        protected abstract IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator();
+
+        protected abstract ISession CreateSession();
 
         private static RevokePharmaceuticalPrescription CreateCommand()
         {
@@ -63,6 +80,16 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 PrescriptionIdentifier = 1,
                 RevocationReason = "Erreur"
             };
+        }
+
+        private IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
+        {
+            this.session = this.CreateSession();
+            return new NHibernateRepository<PharmaceuticalPrescription, PrescriptionIdentifier>
+             (
+                this.session,
+                this.CreateEventTranslator()
+            );
         }
 
         #endregion Methods
