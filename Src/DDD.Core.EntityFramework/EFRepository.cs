@@ -87,7 +87,10 @@ namespace DDD.Core.Infrastructure.Data
             return await query.FirstOrDefaultAsync(expression);
         }
 
-        protected abstract IEnumerable<Expression<Func<TStateEntity, object>>> RelatedEntitiesPaths();
+        protected virtual IEnumerable<Expression<Func<TStateEntity, object>>> RelatedEntitiesPaths()
+        {
+            return Enumerable.Empty<Expression<Func<TStateEntity, object>>>();
+        }
 
         private static Expression<Func<TStateEntity, bool>> BuildFindExpression(IEnumerable<string> keyNames,
                                                                                 IEnumerable<object> keyValues)
