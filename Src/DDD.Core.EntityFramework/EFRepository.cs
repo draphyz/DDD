@@ -26,9 +26,7 @@ namespace DDD.Core.Infrastructure.Data
         #region Fields
 
         private readonly StateEntitiesContext context;
-
         private readonly IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator;
-
         private readonly IObjectTranslator<IEvent, EventState> eventTranslator;
 
         #endregion Fields
@@ -49,18 +47,22 @@ namespace DDD.Core.Infrastructure.Data
 
         #endregion Constructors
 
+        #region Properties
+
+        protected DbConnection Connection => this.context.Database.Connection;
+
+        #endregion Properties
+
         #region Methods
 
         public async Task<TDomainEntity> FindAsync(ComparableValueObject identity)
         {
-            Condition.Requires(identity, nameof(identity))
-                     .IsNotNull();
+            Condition.Requires(identity, nameof(identity)).IsNotNull();
             await new SynchronizationContextRemover();
             var keyValues = identity.PrimitiveEqualityComponents();
             await this.OpenConnectionAsync();
             var stateEntity = await this.FindAsync(keyValues);
-            if (stateEntity == null) return null;
-            return this.entityTranslator.Translate(stateEntity);
+            return this.TranslateEntity(stateEntity);
         }
 
         public async Task SaveAsync(TDomainEntity aggregate)
@@ -70,9 +72,7 @@ namespace DDD.Core.Infrastructure.Data
             var stateEntity = aggregate.ToState();
             var events = ToEventStates(aggregate);
             await this.OpenConnectionAsync();
-            this.context.Set<TStateEntity>().Add(stateEntity);
-            this.context.Set<EventState>().AddRange(events);
-            await this.SaveChangesAsync();
+            await this.SaveAsync(stateEntity, events);
         }
 
         protected virtual async Task<TStateEntity> FindAsync(IEnumerable<object> keyValues)
@@ -80,16 +80,47 @@ namespace DDD.Core.Infrastructure.Data
             var keyNames = this.context.GetKeyNames<TStateEntity>();
             if (keyValues.Count() != keyNames.Count())
                 throw new InvalidOperationException($"You must specify {keyNames.Count()} identity components.");
+            var expression = BuildFindExpression(keyNames, keyValues);
+            return await this.Query().FirstOrDefaultAsync(expression);
+        }
+
+        /// <remarks>To avoid a promotion to an MSDTC transaction</remarks>
+        protected async Task OpenConnectionAsync()
+        {
+            try
+            {
+                if (this.Connection.State == ConnectionState.Closed)
+                    await this.Connection.OpenAsync();
+            }
+            catch (DbException ex)
+            {
+                throw new RepositoryException(ex, typeof(TDomainEntity));
+            }
+        }
+
+        protected IQueryable<TStateEntity> Query()
+        {
             var query = this.context.Set<TStateEntity>().AsNoTracking().AsQueryable();
             foreach (var path in this.RelatedEntitiesPaths())
                 query = query.Include(path);
-            var expression = BuildFindExpression(keyNames, keyValues);
-            return await query.FirstOrDefaultAsync(expression);
+            return query;
         }
 
         protected virtual IEnumerable<Expression<Func<TStateEntity, object>>> RelatedEntitiesPaths()
         {
             return Enumerable.Empty<Expression<Func<TStateEntity, object>>>();
+        }
+
+        protected virtual async Task SaveAsync(TStateEntity stateEntity, IEnumerable<EventState> events)
+        {
+            this.context.Set<TStateEntity>().Add(stateEntity);
+            this.context.Set<EventState>().AddRange(events);
+            await this.SaveChangesAsync();
+        }
+        protected TDomainEntity TranslateEntity(TStateEntity stateEntity)
+        {
+            if (stateEntity == null) return null;
+            return this.entityTranslator.Translate(stateEntity);
         }
 
         private static Expression<Func<TStateEntity, bool>> BuildFindExpression(IEnumerable<string> keyNames,
@@ -109,20 +140,6 @@ namespace DDD.Core.Infrastructure.Data
                     find = Expression.AndAlso(find, keyEqualsKeyValue);
             }
             return Expression.Lambda<Func<TStateEntity, bool>>(find, entity);
-        }
-
-        /// <remarks>To avoid a promotion to an MSDTC transaction</remarks>
-        private async Task OpenConnectionAsync()
-        {
-            try
-            {
-                if (this.context.Database.Connection.State == ConnectionState.Closed)
-                    await this.context.Database.Connection.OpenAsync();
-            }
-            catch (DbException ex)
-            {
-                throw new RepositoryException(ex, typeof(TDomainEntity));
-            }
         }
 
         private async Task SaveChangesAsync()
