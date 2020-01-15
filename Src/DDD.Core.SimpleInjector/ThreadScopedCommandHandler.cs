@@ -1,6 +1,7 @@
 ﻿using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using Conditions;
+using System;
 
 namespace DDD.Core.Infrastructure.DependencyInjection
 {
@@ -16,17 +17,17 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         #region Fields
 
         private readonly Container container;
-        private readonly ICommandHandler<TCommand> handler;
+        private readonly Func<ICommandHandler<TCommand>> handlerProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public ThreadScopedCommandHandler(ICommandHandler<TCommand> handler, Container container)
+        public ThreadScopedCommandHandler(Func<ICommandHandler<TCommand>> handlerProvider, Container container)
         {
-            Condition.Requires(handler, nameof(handler)).IsNotNull();
+            Condition.Requires(handlerProvider, nameof(handlerProvider)).IsNotNull();
             Condition.Requires(container, nameof(container)).IsNotNull();
-            this.handler = handler;
+            this.handlerProvider = handlerProvider;
             this.container = container;
         }
 
@@ -38,7 +39,8 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         {
             using (ThreadScopedLifestyle.BeginScope(container))
             {
-                this.handler.Handle(command);
+                var handler = this.handlerProvider();
+                handler.Handle(command);
             }
         }
 

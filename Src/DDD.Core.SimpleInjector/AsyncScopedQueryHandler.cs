@@ -2,6 +2,7 @@
 using SimpleInjector.Lifestyles;
 using Conditions;
 using System.Threading.Tasks;
+using System;
 
 namespace DDD.Core.Infrastructure.DependencyInjection
 {
@@ -17,17 +18,17 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         #region Fields
 
         private readonly Container container;
-        private readonly IAsyncQueryHandler<TQuery, TResult> handler;
+        private readonly Func<IAsyncQueryHandler<TQuery, TResult>> handlerProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public AsyncScopedQueryHandler(IAsyncQueryHandler<TQuery, TResult> handler, Container container)
+        public AsyncScopedQueryHandler(Func<IAsyncQueryHandler<TQuery, TResult>> handlerProvider, Container container)
         {
-            Condition.Requires(handler, nameof(handler)).IsNotNull();
+            Condition.Requires(handlerProvider, nameof(handlerProvider)).IsNotNull();
             Condition.Requires(container, nameof(container)).IsNotNull();
-            this.handler = handler;
+            this.handlerProvider = handlerProvider;
             this.container = container;
         }
 
@@ -39,7 +40,8 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         {
             using (AsyncScopedLifestyle.BeginScope(container))
             {
-                return await this.handler.HandleAsync(query);
+                var handler = this.handlerProvider();
+                return await handler.HandleAsync(query);
             }
         }
 
