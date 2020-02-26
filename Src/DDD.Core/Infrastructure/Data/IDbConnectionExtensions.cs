@@ -15,10 +15,10 @@ namespace DDD.Core.Infrastructure.Data
             switch (connection.GetType().ToString())
             {
                 case "System.Data.SqlClient.SqlConnection":
-                    return new SqlServer2012Expressions();
+                    return DbStandardExpressions.SqlServer2012;
 
                 case "Oracle.ManagedDataAccess.Client.OracleConnection":
-                    return new Oracle11Expressions();
+                    return DbStandardExpressions.Oracle11;
 
                 default:
                     throw new ArgumentException($"Connection type '{connection.GetType().Name}' not expected.", "connection");
