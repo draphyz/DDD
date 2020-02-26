@@ -7,6 +7,14 @@
     public abstract class DbStandardExpressions : IDbStandardExpressions
     {
 
+        #region Fields
+
+        public readonly static IDbStandardExpressions Oracle11 = new Oracle11Expressions();
+
+        public readonly static IDbStandardExpressions SqlServer2012 = new SqlServer2012Expressions();
+
+        #endregion Fields
+
         #region Methods
 
         public virtual string FromDummy() => string.Empty;
