@@ -25,7 +25,7 @@ namespace DDD.Common.Domain
                         primaryEmailAddress,
                         secondaryEmailAddress,
                         webSite))
-                throw new ArgumentException("You must a least specify a contact information.");
+                throw new ArgumentException("You must a least specify one contact information.");
             this.PostalAddress = postalAddress;
             if (!string.IsNullOrWhiteSpace(primaryTelephoneNumber))
                 this.PrimaryTelephoneNumber = primaryTelephoneNumber;

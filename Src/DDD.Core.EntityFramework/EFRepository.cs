@@ -28,6 +28,7 @@ namespace DDD.Core.Infrastructure.Data
         private readonly StateEntitiesContext context;
         private readonly IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator;
         private readonly IObjectTranslator<IEvent, EventState> eventTranslator;
+        private readonly IObjectTranslator<Exception, RepositoryException> exceptionTranslator = EFRepositoryExceptionTranslator.Default;
 
         #endregion Fields
 
@@ -94,7 +95,7 @@ namespace DDD.Core.Infrastructure.Data
             }
             catch (DbException ex)
             {
-                throw new RepositoryException(ex, typeof(TDomainEntity));
+                throw this.exceptionTranslator.Translate(ex, new { EntityType = typeof(TDomainEntity) });
             }
         }
 
@@ -148,13 +149,9 @@ namespace DDD.Core.Infrastructure.Data
             {
                 await this.context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                throw new RepositoryConcurrencyException(ex, typeof(TDomainEntity));
-            }
             catch (Exception ex) when (ex is DbUpdateException || ex is DbEntityValidationException)
             {
-                throw new RepositoryException(ex, typeof(TDomainEntity));
+                throw this.exceptionTranslator.Translate(ex, new { EntityType = typeof(TDomainEntity) });
             }
         }
 

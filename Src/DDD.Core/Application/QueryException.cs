@@ -5,32 +5,19 @@ namespace DDD.Core.Application
     /// <summary>
     /// Exception thrown when a query failed.
     /// </summary>
-    [Serializable]
     public class QueryException : ApplicationException
     {
 
         #region Constructors
 
-        public QueryException()
-            : base("The query failed.")
-        {
-        }
-
-        public QueryException(string message) : base(message)
-        {
-        }
-
-        public QueryException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public QueryException(string message, Exception innerException, IQuery query) : base(message, innerException)
+        public QueryException(bool isTransient, IQuery query = null, Exception innerException = null)
+            : base(isTransient, DefaultMessage(query), innerException)
         {
             this.Query = query;
         }
 
-        public QueryException(Exception innerException, IQuery query) 
-            : base($"The query '{query.GetType().Name}' failed.", innerException)
+        public QueryException(bool isTransient, string message, IQuery query = null, Exception innerException = null)
+            : base(isTransient, message, innerException)
         {
             this.Query = query;
         }
@@ -45,9 +32,17 @@ namespace DDD.Core.Application
 
         #region Methods
 
+        public static string DefaultMessage(IQuery query = null)
+        {
+            if (query == null)
+                return "A query failed.";
+            return $"The query '{query.GetType().Name}' failed.";
+        }
+
         public override string ToString()
         {
             var s = $"{this.GetType()}: {this.Message} ";
+            s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
             if (this.Query != null)
                 s += $"{Environment.NewLine}Query: {this.Query}";
             if (this.InnerException != null)

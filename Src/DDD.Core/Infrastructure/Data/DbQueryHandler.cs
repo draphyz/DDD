@@ -7,6 +7,7 @@ namespace DDD.Core.Infrastructure.Data
 {
     using Application;
     using Threading;
+    using Mapping;
 
     /// <summary>
     /// Base class for handling database queries.
@@ -17,6 +18,12 @@ namespace DDD.Core.Infrastructure.Data
     public abstract class DbQueryHandler<TQuery, TResult> : IAsyncQueryHandler<TQuery, TResult>
         where TQuery : class, IQuery<TResult>
     {
+
+        #region Fields
+
+        private readonly IObjectTranslator<DbException, QueryException> exceptionTranslator = DbToQueryExceptionTranslator.Default;
+
+        #endregion Fields
 
         #region Constructors
 
@@ -53,7 +60,7 @@ namespace DDD.Core.Infrastructure.Data
             }
             catch(DbException ex)
             {
-                throw new QueryException(ex, query);
+                throw this.exceptionTranslator.Translate(ex, new { Query = query });
             }
 
         }

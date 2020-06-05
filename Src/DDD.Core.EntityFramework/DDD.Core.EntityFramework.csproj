@@ -61,6 +61,7 @@
     <Compile Include="DbEntityValidationExceptionExtensions.cs" />
     <Compile Include="DbModelBuilderExtensions.cs" />
     <Compile Include="EFRepository.cs" />
+    <Compile Include="EFRepositoryExceptionTranslator.cs" />
     <Compile Include="EventStateConfiguration.cs" />
     <Compile Include="OracleEventStateConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

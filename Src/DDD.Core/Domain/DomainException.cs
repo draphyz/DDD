@@ -10,20 +10,44 @@ namespace DDD.Core.Domain
 
         #region Constructors
 
-        protected DomainException()
-            : base("An error has occurred in the domain layer.")
+        protected DomainException(bool isTransient, Exception innerException = null) 
+            : base(DefaultMessage(), innerException)
         {
+            this.IsTransient = isTransient;
         }
 
-        protected DomainException(string message) : base(message)
+        protected DomainException(bool isTransient, string message, Exception innerException = null) 
+            : base(message, innerException)
         {
-        }
-
-        protected DomainException(string message, Exception innerException) : base(message, innerException)
-        {
+            this.IsTransient = isTransient;
         }
 
         #endregion Constructors
 
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether the exception is transient.
+        /// </summary>
+        public bool IsTransient { get; }
+
+        #endregion Properties
+
+        #region Methods
+
+        public static string DefaultMessage() => "An error occurred in the domain layer.";
+
+        public override string ToString()
+        {
+            var s = $"{this.GetType()}: {this.Message} ";
+            s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
+            if (this.InnerException != null)
+                s += $" ---> {this.InnerException}";
+            if (this.StackTrace != null)
+                s += $"{Environment.NewLine}{this.StackTrace}";
+            return s;
+        }
+
+        #endregion Methods
     }
 }
