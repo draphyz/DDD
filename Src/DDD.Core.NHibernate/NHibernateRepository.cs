@@ -21,6 +21,7 @@ namespace DDD.Core.Infrastructure.Data
 
         private readonly IObjectTranslator<IEvent, StoredEvent> eventTranslator;
         private readonly ISession session;
+        private readonly IObjectTranslator<HibernateException, RepositoryException> exceptionTranslator = NHibernateRepositoryExceptionTranslator.Default;
 
         #endregion Fields
 
@@ -48,7 +49,7 @@ namespace DDD.Core.Infrastructure.Data
             }
             catch (HibernateException ex)
             {
-                throw new RepositoryException(ex, typeof(TDomainEntity));
+                throw this.exceptionTranslator.Translate(ex, new { EntityType = typeof(TDomainEntity) });
             }
         }
 
@@ -64,7 +65,7 @@ namespace DDD.Core.Infrastructure.Data
             }
             catch (HibernateException ex)
             {
-                throw new RepositoryException(ex, typeof(TDomainEntity));
+                throw this.exceptionTranslator.Translate(ex, new { EntityType = typeof(TDomainEntity) });
             }
         }
 

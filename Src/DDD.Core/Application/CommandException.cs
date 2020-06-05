@@ -10,43 +10,39 @@ namespace DDD.Core.Application
 
         #region Constructors
 
-        public CommandException()
-            : base("The command failed.")
-        {
-        }
-
-        public CommandException(string message) : base(message)
-        {
-        }
-
-        public CommandException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public CommandException(string message, Exception innerException, ICommand command) : base(message, innerException)
+        public CommandException(bool isTransient, ICommand command = null, Exception innerException = null)
+            : base(isTransient, DefaultMessage(command), innerException)
         {
             this.Command = command;
         }
 
-        public CommandException(Exception innerException, ICommand Command)
-            : base($"The command '{Command.GetType().Name}' failed.", innerException)
+        public CommandException(bool isTransient, string message, ICommand command = null, Exception innerException = null)
+            : base(isTransient, message, innerException)
         {
-            this.Command = Command;
+            this.Command = command;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public ICommand Command { get; set; }
+        public ICommand Command { get; }
 
         #endregion Properties
 
         #region Methods
 
+        public static string DefaultMessage(ICommand command = null)
+        {
+            if (command == null)
+                return "A command failed.";
+            return $"The command '{command.GetType().Name}' failed.";
+        }
+
         public override string ToString()
         {
             var s = $"{this.GetType()}: {this.Message} ";
+            s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
             if (this.Command != null)
                 s += $"{Environment.NewLine}Command: {this.Command}";
             if (this.InnerException != null)

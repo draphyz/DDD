@@ -3,33 +3,21 @@
 namespace DDD.Core.Domain
 {
     /// <summary>
-    /// Exception thrown by repositories when a problem occurred while saving or finding domain entities.
+    /// Exception thrown when an error occurred while calling a repository.
     /// </summary>
     public class RepositoryException : DomainException
     {
 
         #region Constructors
 
-        public RepositoryException() 
-            : base("A problem occurred while saving or finding domain entities.")
-        {
-        }
-
-        public RepositoryException(string message) : base(message)
-        {
-        }
-
-        public RepositoryException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        public RepositoryException(string message, Exception innerException, Type entityType) : base(message, innerException)
+        public RepositoryException(bool isTransient, Type entityType = null, Exception innerException = null)
+        : base(isTransient, DefaultMessage(entityType), innerException)
         {
             this.EntityType = entityType;
         }
 
-        public RepositoryException(Exception innerException, Type entityType)
-            : base($"A problem occurred while saving or finding domain entities of type '{entityType.Name}'.", innerException)
+        public RepositoryException(bool isTransient, string message, Type entityType = null, Exception innerException = null)
+            : base(isTransient, message, innerException)
         {
             this.EntityType = entityType;
         }
@@ -44,11 +32,19 @@ namespace DDD.Core.Domain
 
         #region Methods
 
+        public static string DefaultMessage(Type entityType = null)
+        {
+            if (entityType == null)
+                return "An error occurred while saving or finding a domain entity.";
+            return $"An error occurred while saving or finding a domain entity '{entityType.Name}'.";
+        }
+
         public override string ToString()
         {
             var s = $"{this.GetType()}: {this.Message} ";
+            s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
             if (this.EntityType != null)
-                s += $"{Environment.NewLine}Entity type: {this.EntityType}";
+                s += $"{Environment.NewLine}EntityType: {this.EntityType}";
             if (this.InnerException != null)
                 s += $" ---> {this.InnerException}";
             if (this.StackTrace != null)
@@ -57,6 +53,5 @@ namespace DDD.Core.Domain
         }
 
         #endregion Methods
-
     }
 }

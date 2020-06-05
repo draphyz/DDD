@@ -3,7 +3,7 @@
 namespace DDD.Core.Application
 {
     using Domain;
-    using System;
+    using Mapping;
 
     /// <summary>
     /// Base class for handling synchronously commands using a domain model.
@@ -12,6 +12,12 @@ namespace DDD.Core.Application
     public abstract class DomainCommandHandler<TCommand> : ICommandHandler<TCommand>
         where TCommand : class, ICommand
     {
+
+        #region Fields
+
+        private readonly IObjectTranslator<DomainException, CommandException> exceptionTranslator = DomainToCommandExceptionTranslator.Default;
+
+        #endregion Fields
 
         #region Methods
 
@@ -24,7 +30,7 @@ namespace DDD.Core.Application
             }
             catch (DomainException ex)
             {
-                throw new CommandException(ex, command);
+                throw this.exceptionTranslator.Translate(ex, new { Command = command });
             }
         }
 
