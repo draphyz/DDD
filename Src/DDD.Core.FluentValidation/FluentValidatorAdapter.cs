@@ -8,7 +8,7 @@ namespace DDD.Core.Infrastructure.Validation
     using Mapping;
     using Threading;
 
-    public class FluentValidatorAdapter<T> 
+    public class FluentValidatorAdapter<T>
         : DDD.Validation.IObjectValidator<T>, DDD.Validation.IAsyncObjectValidator<T>
         where T : class
     {
@@ -37,7 +37,7 @@ namespace DDD.Core.Infrastructure.Validation
         public DDD.Validation.ValidationResult Validate(T obj, string ruleSet = null)
         {
             var result = this.fluentValidator.Validate(obj, ruleSet: ruleSet);
-            return this.resultTranslator.Translate(result);
+            return this.resultTranslator.Translate(result, new { ObjectName = obj.GetType().Name });
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace DDD.Core.Infrastructure.Validation
         {
             await new SynchronizationContextRemover();
             var result = await this.fluentValidator.ValidateAsync(obj, ruleSet: ruleSet);
-            return this.resultTranslator.Translate(result);
+            return this.resultTranslator.Translate(result, new { ObjectName = obj.GetType().Name });
         }
 
         #endregion Methods

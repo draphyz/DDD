@@ -14,13 +14,16 @@ namespace DDD.Core.Infrastructure.Validation
 
         #region Methods
 
-        public DDD.Validation.ValidationResult Translate(ValidationResult result, 
-                                                         IDictionary<string, object> options)
+        public DDD.Validation.ValidationResult Translate(ValidationResult result, IDictionary<string, object> options)
         {
             Condition.Requires(result, nameof(result)).IsNotNull();
+            Condition.Requires(options, nameof(options))
+                     .IsNotNull()
+                     .Evaluate(options.ContainsKey("ObjectName"));
+            var objectName = (string)options["ObjectName"];
             var isSuccessful = result.Errors.All(f => f.Severity == Severity.Info);
             var failures = result.Errors.Select(f => ToFailure(f)).ToArray();
-            return new DDD.Validation.ValidationResult(isSuccessful, failures);
+            return new DDD.Validation.ValidationResult(isSuccessful, objectName, failures);
         }
 
         private static DDD.Validation.ValidationFailure ToFailure(ValidationFailure failure)
