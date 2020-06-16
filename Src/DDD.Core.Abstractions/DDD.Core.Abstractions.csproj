@@ -52,6 +52,7 @@
     <Compile Include="CharExtensions.cs" />
     <Compile Include="Collections\ICollectionExtensions.cs" />
     <Compile Include="Collections\IDictionaryExtensions.cs" />
+    <Compile Include="DependencyInjection\IKeyedServiceProvider.cs" />
     <Compile Include="IServiceProviderExtensions.cs" />
     <Compile Include="Mapping\IMappingProcessor.cs" />
     <Compile Include="Mapping\IMappingProcessorExtensions.cs" />
