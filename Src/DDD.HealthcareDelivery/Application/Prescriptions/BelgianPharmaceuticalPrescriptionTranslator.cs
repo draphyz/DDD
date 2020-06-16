@@ -31,7 +31,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                     command.Medications.Select(m => ToPrescribedMedication(m)),
                     command.CreatedOn,
                     new Alpha2LanguageCode(command.LanguageCode),
-                    command.DelivrableAt
+                    command.DeliverableAt
                 );
         }
 

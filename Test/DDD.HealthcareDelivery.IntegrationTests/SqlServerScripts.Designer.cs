@@ -100,7 +100,7 @@ namespace DDD.HealthcareDelivery {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [CreatedOn], [DelivrableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [PrescriberBoxNum], [PrescriberPostCode] [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [CreatedOn], [DeliverableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [PrescriberBoxNum], [PrescriberPostCode] [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FindPharmaceuticalPrescriptionsByPatient {
             get {
@@ -113,7 +113,7 @@ namespace DDD.HealthcareDelivery {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [CreatedOn], [DelivrableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [PrescriberBoxNum], [PrescriberPostCode] [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [CreatedOn], [DeliverableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [PrescriberBoxNum], [PrescriberPostCode] [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FindPrescribedMedicationsByPrescription {
             get {
@@ -126,7 +126,7 @@ namespace DDD.HealthcareDelivery {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [CreatedOn], [DelivrableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [PrescriberBoxNum], [PrescriberPostCode] [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[Prescription] ([PrescriptionId], [PrescriptionType], [Status], [Language], [CreatedOn], [DeliverableAt], [PrescriberId], [PrescriberType], [PrescriberLastName], [PrescriberFirstName], [PrescriberDisplayName], [PrescriberLicenseNum], [PrescriberSSN], [PrescriberSpeciality], [PrescriberPhone1], [PrescriberPhone2], [PrescriberEmail1], [PrescriberEmail2], [PrescriberWebSite], [PrescriberStreet], [PrescriberHouseNum], [PrescriberBoxNum], [PrescriberPostCode] [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string RevokePharmaceuticalPrescription {
             get {

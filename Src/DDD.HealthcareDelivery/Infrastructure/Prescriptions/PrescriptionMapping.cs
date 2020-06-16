@@ -68,7 +68,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 m.Type(NHibernateUtil.Date);
                 m.NotNullable(true);
             });
-            this.Property(p => p.DelivrableAt, m => m.Type(NHibernateUtil.Date));
+            this.Property(p => p.DeliverableAt, m => m.Type(NHibernateUtil.Date));
             // Prescriber
             this.Property(p => p.Prescriber, m =>
             {
