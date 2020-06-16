@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Conditions;
+﻿using Conditions;
+using System.Linq;
 
 namespace DDD.Validation
 {
@@ -11,10 +11,12 @@ namespace DDD.Validation
 
         #region Constructors
 
-        public ValidationResult(bool isSuccessful, ValidationFailure[] failures)
+        public ValidationResult(bool isSuccessful, string objectName, ValidationFailure[] failures)
         {
+            Condition.Requires(objectName, nameof(objectName)).IsNotNullOrWhiteSpace();
             Condition.Requires(failures, nameof(failures)).IsNotNull();
             this.IsSuccessful = isSuccessful;
+            this.ObjectName = objectName;
             this.Failures = failures;
         }
 
@@ -31,7 +33,15 @@ namespace DDD.Validation
 
         public bool IsSuccessful { get; private set; }
 
+        public string ObjectName { get; private set; }
+
         #endregion Properties
+
+        #region Methods
+
+        public bool HasFailures() => this.Failures.Any();
+
+        #endregion Methods
 
     }
 }
