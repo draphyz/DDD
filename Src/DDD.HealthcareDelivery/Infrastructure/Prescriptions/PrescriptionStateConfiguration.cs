@@ -45,7 +45,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 .IsRequired();
             this.Property(p => p.CreatedOn)
                 .HasColumnOrder(5);
-            this.Property(p => p.DelivrableAt)
+            this.Property(p => p.DeliverableAt)
                 .HasColumnOrder(6);
             this.Property(p => p.Prescriber.Identifier)
                 .HasColumnName(ToCasingConvention("PrescriberId"))

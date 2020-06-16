@@ -51,7 +51,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 new Alpha2LanguageCode(state.LanguageCode),
                 Enumeration.ParseCode<PrescriptionStatus>(state.Status),
                 state.CreatedOn,
-                state.DelivrableAt,
+                state.DeliverableAt,
                 state.EntityState
             );
 

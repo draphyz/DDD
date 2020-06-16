@@ -20,7 +20,7 @@
             // Fields
             this.Property(p => p.CreatedOn)
                 .HasColumnType("smalldatetime");
-            this.Property(p => p.DelivrableAt)
+            this.Property(p => p.DeliverableAt)
                 .HasColumnType("date");
             this.Property(p => p.Patient.Birthdate)
                 .HasColumnType("date");

@@ -9,7 +9,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public DateTime CreatedOn { get; set; }
 
-        public DateTime? DelivrableAt { get; set; }
+        public DateTime? DeliverableAt { get; set; }
 
         public int Identifier { get; set; }
 

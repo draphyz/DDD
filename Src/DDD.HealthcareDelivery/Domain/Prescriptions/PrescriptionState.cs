@@ -14,7 +14,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public DateTime CreatedOn { get; set; }
 
-        public DateTime? DelivrableAt { get; set; }
+        public DateTime? DeliverableAt { get; set; }
 
         public EntityState EntityState { get; set; }
 

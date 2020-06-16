@@ -114,7 +114,7 @@ namespace DDD.HealthcareDelivery {
         ///  SPCLEARSCHEMA();
         ///END;
         ////
-        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DelivrableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, Pa [rest of string was truncated]&quot;;.
+        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DeliverableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, Pa [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FindPharmaceuticalPrescriptionsByPatient {
             get {
@@ -127,7 +127,7 @@ namespace DDD.HealthcareDelivery {
         ///  SPCLEARSCHEMA();
         ///END;
         ////
-        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DelivrableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, Pa [rest of string was truncated]&quot;;.
+        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DeliverableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, Pa [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FindPrescribedMedicationsByPrescription {
             get {
@@ -140,7 +140,7 @@ namespace DDD.HealthcareDelivery {
         ///  SPCLEARSCHEMA();
         ///END;
         ////
-        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DelivrableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, Pa [rest of string was truncated]&quot;;.
+        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DeliverableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, Pa [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string RevokePharmaceuticalPrescription {
             get {

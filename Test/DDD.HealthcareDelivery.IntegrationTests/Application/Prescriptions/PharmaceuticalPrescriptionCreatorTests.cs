@@ -107,7 +107,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 FacilityName = "Medical Office Donald Duck",
                 PrescriptionIdentifier = 1,
                 CreatedOn = new DateTime(2018, 1, 1, 10, 6, 0),
-                DelivrableAt = new DateTime(2018, 2, 1),
+                DeliverableAt = new DateTime(2018, 2, 1),
                 Medications = new PrescribedMedicationDescriptor[]
                 {
                     new PrescribedMedicationDescriptor

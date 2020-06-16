@@ -44,7 +44,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             this.HealthFacility = healthFacility;
             this.Status = status;
             this.CreatedOn = createdOn;
-            this.DelivrableAt = delivrableAt;
+            this.DeliverableAt = delivrableAt;
             this.LanguageCode = languageCode;
         }
 
@@ -54,7 +54,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public DateTime CreatedOn { get; }
 
-        public DateTime? DelivrableAt { get; }
+        public DateTime? DeliverableAt { get; }
 
         public HealthFacility HealthFacility { get; }
 
@@ -94,7 +94,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 HealthFacility = this.HealthFacility.ToState(),
                 Status = this.Status.Code,
                 CreatedOn = this.CreatedOn,
-                DelivrableAt = this.DelivrableAt,
+                DeliverableAt = this.DeliverableAt,
                 LanguageCode = this.LanguageCode.Value,
                 EntityState = this.EntityState,
             };

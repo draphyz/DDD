@@ -71,7 +71,7 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         ///			WHEN &apos;ARC&apos; THEN 6
         ///		 END AS Status,
         ///         CreatedOn,
-        ///         DelivrableAt,
+        ///         DeliverableAt,
         ///		 PrescriberDisplayName
         ///FROM     Prescription
         ///WHERE    PrescriptionType = &apos;PHARM&apos;

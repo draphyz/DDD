@@ -18,7 +18,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
-        public DateTime? DelivrableAt { get; set; }
+        public DateTime? DeliverableAt { get; set; }
 
         public int FacilityIdentifier { get; set; }
 

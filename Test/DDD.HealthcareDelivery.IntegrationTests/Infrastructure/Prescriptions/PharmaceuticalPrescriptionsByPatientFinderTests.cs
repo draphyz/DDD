@@ -46,7 +46,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Identifier = 1,
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
-                        DelivrableAt = null,
+                        DeliverableAt = null,
                         PrescriberDisplayName = "Dr. Duck Donald"
                     },
                     new PharmaceuticalPrescriptionSummary
@@ -54,7 +54,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Identifier = 2,
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
-                        DelivrableAt = new DateTime(2017, 2, 18),
+                        DeliverableAt = new DateTime(2017, 2, 18),
                         PrescriberDisplayName = "Dr. Duck Donald"
                     },
                     new PharmaceuticalPrescriptionSummary
@@ -62,7 +62,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Identifier = 3,
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
-                        DelivrableAt = new DateTime(2017, 3, 18),
+                        DeliverableAt = new DateTime(2017, 3, 18),
                         PrescriberDisplayName = "Dr. Duck Donald"
                     },
                     new PharmaceuticalPrescriptionSummary
@@ -70,7 +70,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Identifier = 4,
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2016, 12, 18),
-                        DelivrableAt = new DateTime(2017, 4, 18),
+                        DeliverableAt = new DateTime(2017, 4, 18),
                         PrescriberDisplayName = "Dr. Duck Donald"
                     }
 
@@ -86,7 +86,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Identifier = 5,
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2017, 9, 25),
-                        DelivrableAt = null,
+                        DeliverableAt = null,
                         PrescriberDisplayName = "Dr. Duck Donald"
                     },
                     new PharmaceuticalPrescriptionSummary
@@ -94,7 +94,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Identifier = 6,
                         Status = PrescriptionStatus.Created,
                         CreatedOn = new DateTime(2017, 9, 25),
-                        DelivrableAt = new DateTime(2017, 12, 25),
+                        DeliverableAt = new DateTime(2017, 12, 25),
                         PrescriberDisplayName = "Dr. Duck Donald"
                     }
                 }
