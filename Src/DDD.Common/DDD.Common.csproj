@@ -35,10 +35,6 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Conditions, Version=2.1.0.24, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>L:\Packages\Conditions.2.1.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10\Conditions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,9 +66,6 @@
     <Compile Include="Domain\SocialSecurityNumber.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj">
       <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
       <Name>DDD.Core.Abstractions</Name>
@@ -81,6 +74,11 @@
       <Project>{c6c3e419-b9aa-44ad-9dbf-789294687ae6}</Project>
       <Name>DDD.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Conditions">
+      <Version>2.1.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
