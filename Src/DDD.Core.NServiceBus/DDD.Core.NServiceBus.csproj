@@ -35,12 +35,6 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Conditions, Version=2.1.0.24, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>L:\packages\Conditions.2.1.0\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+MonoTouch10\Conditions.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceBus.Core, Version=7.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <HintPath>L:\Packages\NServiceBus.7.1.6\lib\net452\NServiceBus.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Configuration" />
@@ -54,9 +48,6 @@
     <Compile Include="EndpointConfigurationExtensions.cs" />
     <Compile Include="NServiceBusEventPublisher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj">
@@ -73,7 +64,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="L:\Packages\NServiceBus.7.1.6\analyzers\dotnet\cs\NServiceBus.Core.Analyzer.dll" />
+    <PackageReference Include="Conditions">
+      <Version>2.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="NServiceBus">
+      <Version>7.1.6</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
