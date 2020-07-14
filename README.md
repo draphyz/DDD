@@ -1,6 +1,6 @@
-### Domain-Driven Design sample
+### Domain-Driven Design example
 
-This project is a sample of .NET implementation of a medical prescription model using the approach "Domain-Driven Design" (DDD) and the architectural pattern "Command and Query Responsibility Segregation" (CQRS).
+This project is an example of .NET implementation of a medical prescription model using the approach "Domain-Driven Design" (DDD) and the architectural pattern "Command and Query Responsibility Segregation" (CQRS).
 
 **Points of interest**
 
