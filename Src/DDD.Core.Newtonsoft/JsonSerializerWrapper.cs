@@ -59,7 +59,14 @@ namespace DDD.Core.Infrastructure.Serialization
             using (var reader = new StreamReader(stream, this.Encoding))
             using (var jsonReader = new JsonTextReader(reader))
             {
-                return this.serializer.Deserialize<T>(jsonReader);
+                try
+                {
+                    return this.serializer.Deserialize<T>(jsonReader);
+                }
+                catch(JsonException exception)
+                {
+                    throw new SerializationException(typeof(T), exception);
+                }
             }
         }
 
@@ -69,7 +76,14 @@ namespace DDD.Core.Infrastructure.Serialization
             using (StreamWriter writer = new StreamWriter(stream, this.Encoding))
             using (JsonTextWriter jsonWriter = new JsonTextWriter(writer))
             {
-                this.serializer.Serialize(jsonWriter, obj);
+                try
+                {
+                    this.serializer.Serialize(jsonWriter, obj);
+                }
+                catch (JsonException exception)
+                {
+                    throw new SerializationException(obj?.GetType(), exception);
+                }
             }
         }
 
