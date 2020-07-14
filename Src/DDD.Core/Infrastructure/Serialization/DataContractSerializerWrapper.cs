@@ -75,7 +75,14 @@ namespace DDD.Core.Infrastructure.Serialization
             using (var reader = XmlReader.Create(stream, this.readerSettings))
             {
                 var serializer = new DataContractSerializer(typeof(T));
-                return (T)serializer.ReadObject(reader);
+                try
+                {
+                    return (T)serializer.ReadObject(reader);
+                }
+                catch(System.Runtime.Serialization.SerializationException exception)
+                {
+                    throw new SerializationException(typeof(T), exception);
+                }
             }
         }
 
@@ -86,7 +93,14 @@ namespace DDD.Core.Infrastructure.Serialization
             using (var writer = XmlWriter.Create(stream, this.writerSettings))
             {
                 var serializer = new DataContractSerializer(obj.GetType());
-                serializer.WriteObject(writer, obj);
+                try
+                {
+                    serializer.WriteObject(writer, obj);
+                }
+                catch (System.Runtime.Serialization.SerializationException exception)
+                {
+                    throw new SerializationException(obj.GetType(), exception);
+                }
             }
         }
 

@@ -3,7 +3,7 @@
 namespace DDD.Mapping
 {
     /// <summary>
-    /// Defines a method that maps an input object of one type to an output object of a different type.
+    /// Defines a method that maps an input object of one type to an output object of another type.
     /// </summary>
     public interface IObjectMapper<in TSource, in TDestination>
         where TSource : class

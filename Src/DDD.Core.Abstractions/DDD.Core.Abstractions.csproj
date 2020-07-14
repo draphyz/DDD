@@ -55,6 +55,7 @@
     <Compile Include="Mapping\IObjectMapper.cs" />
     <Compile Include="Mapping\IObjectMapperExtensions.cs" />
     <Compile Include="Mapping\IObjectTranslatorExtensions.cs" />
+    <Compile Include="Mapping\MappingException.cs" />
     <Compile Include="Mapping\MappingProcessor.cs" />
     <Compile Include="Collections\IEnumerableExtensions.cs" />
     <Compile Include="Collections\KeyEqualityComparer.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Serialization\ITextSerializerExtensions.cs" />
     <Compile Include="Serialization\IXmlSerializer.cs" />
     <Compile Include="Serialization\JsonSerializationOptions.cs" />
+    <Compile Include="Serialization\SerializationException.cs" />
     <Compile Include="Serialization\XmlSerializationOptions.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Threading\SynchronizationContextRemover.cs" />
