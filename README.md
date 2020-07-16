@@ -12,7 +12,7 @@ Only a lightweight version of CQRS (no data projection, one data store) has been
 
 The envisaged model reflects the lifecycle of a medical prescription and, in particular, of a pharmaceutical prescription. This lifecycle can be resumed by the following diagram.
 
-[[https://github.com/draphyz/DDD/blob/entityframework/Doc/PrescriptionLifecycle.png|alt=Prescription Lifecycle]]
+![Alt Prescription Lifecycle](https://github.com/draphyz/DDD/blob/entityframework/Doc/PrescriptionLifecycle.png)
 
 The current model only takes into account use cases related to the prescriber : creation and revocation of a prescription.
 
@@ -29,23 +29,23 @@ Therefore, the domain model has been implemented as an object model without publ
 Two options has been considered to map the domain objects to the database tables :
 -	Mapping the domain model directly to the database by using a flexible and mature ORM like NHibernate 5 (branch nhibernate).
 
-[[https://github.com/draphyz/DDD/blob/entityframework/Doc/NHibernateMapping.png|alt=NHibernate Mapping]]
+![Alt NHibernate Mapping](https://github.com/draphyz/DDD/blob/entityframework/Doc/NHibernateMapping.png)
 
 -	Mapping the domain model to an intermediate model (state or persistence model) and then mapping the intermediate model to the database by using a less flexible and mature ORM like Entity Framework 6 (branch entityframework).
 
-[[https://github.com/draphyz/DDD/blob/entityframework/Doc/EntityFrameworkMapping.png|alt=Entity Framework Mapping]]
+![Alt Entity Framework Mapping](https://github.com/draphyz/DDD/blob/entityframework/Doc/EntityFrameworkMapping.png)
 
 By comparing the purity/complexity ratios of the two options, the first option is preferred to map the domain model to the database. In the branch "NHibernate", some minor changes have been made to the domain model, such as adding protected constructors or private setters.
 
 The interactions between main components on the command-side can be represented as follows :
 
-[[https://github.com/draphyz/DDD/blob/entityframework/Doc/CommandComponents.png|alt=Command Components]]
+![Alt Command Components](https://github.com/draphyz/DDD/blob/entityframework/Doc/CommandComponents.png)
 
 _Query Model_
 
 As mentioned above, command and query data stores are not differentiated but the architecture on the query-side is simplified (as shown on the following diagram). The query-side is composed of simple Data Transfer Objects mapped to the database by using the Micro ORM Dapper.
 
-[[https://github.com/draphyz/DDD/blob/entityframework/Doc/QueryComponents.png|alt=Query Components]]
+![Alt Query Components](https://github.com/draphyz/DDD/blob/entityframework/Doc/QueryComponents.png)
 
 **Projects**
 
