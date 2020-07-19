@@ -1,81 +1,27 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6D227AA7-FF90-48CA-B13D-ED23C1FFFBA5}</ProjectGuid>
+    <TargetFramework>net472</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DDD.Core.Infrastructure.Data</RootNamespace>
-    <AssemblyName>DDD.Core.EntityFramework</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\DDD.Core.EntityFramework.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\DDD.Core.EntityFramework.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DbContextExtensions.cs" />
-    <Compile Include="DbEntityValidationExceptionExtensions.cs" />
-    <Compile Include="DbModelBuilderExtensions.cs" />
-    <Compile Include="EFRepository.cs" />
-    <Compile Include="EFRepositoryExceptionTranslator.cs" />
-    <Compile Include="EventStateConfiguration.cs" />
-    <Compile Include="OracleEventStateConfiguration.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlServerEventStateConfiguration.cs" />
-    <Compile Include="StateEntitiesContext.cs" />
-    <Compile Include="StateEntityConvention.cs" />
-    <Compile Include="UpperCaseColumnNameConvention.cs" />
-    <Compile Include="UpperCaseForeignKeyNameConvention.cs" />
-    <Compile Include="UpperCaseTableNameConvention.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj">
-      <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
-      <Name>DDD.Core.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Core.Messages\DDD.Core.Messages.csproj">
-      <Project>{2438b31a-3a39-4878-81fa-be5ae715eae5}</Project>
-      <Name>DDD.Core.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Core\DDD.Core.csproj">
-      <Project>{c6c3e419-b9aa-44ad-9dbf-789294687ae6}</Project>
-      <Name>DDD.Core</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\DDD.Core.Messages\DDD.Core.Messages.csproj" />
+    <ProjectReference Include="..\DDD.Core\DDD.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Conditions">
@@ -84,13 +30,7 @@
     <PackageReference Include="EntityFramework">
       <Version>6.2.0</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

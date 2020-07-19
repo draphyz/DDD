@@ -1,150 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5B8FFFD3-9A1C-4620-9DB3-CD76CD9E79BF}</ProjectGuid>
+    <TargetFramework>net472</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DDD.HealthcareDelivery</RootNamespace>
-    <AssemblyName>DDD.HealthcareDelivery</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\DDD.HealthcareDelivery.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\DDD.HealthcareDelivery.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Transactions" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Application\Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
-    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionRevoker.cs" />
-    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionCreator.cs" />
-    <Compile Include="Domain\Patients\BelgianPatientTranslator.cs" />
-    <Compile Include="Domain\Prescriptions\BelgianPharmaceuticalPrescriptionTranslator.cs" />
-    <Compile Include="Domain\Prescriptions\PrescribedPharmaceuticalCompounding.cs" />
-    <Compile Include="Domain\Prescriptions\PrescribedPharmaceuticalProduct.cs" />
-    <Compile Include="Domain\Prescriptions\PrescribedPharmaceuticalSubstance.cs" />
-    <Compile Include="Domain\Practitioners\BelgianHealthcarePractitionerTranslator.cs" />
-    <Compile Include="Domain\Facilities\BelgianHealthFacilityTranslator.cs" />
-    <Compile Include="Domain\Facilities\BelgianHealthFacilityLicenseNumber.cs" />
-    <Compile Include="Domain\Prescriptions\BelgianPrescribedMedicationTranslator.cs" />
-    <Compile Include="Domain\Facilities\MedicalOffice.cs" />
-    <Compile Include="Domain\Practitioners\HealthcarePractitionerState.cs" />
-    <Compile Include="Domain\Facilities\HealthFacility.cs" />
-    <Compile Include="Domain\Facilities\HealthFacilityState.cs" />
-    <Compile Include="Domain\Facilities\Hospital.cs" />
-    <Compile Include="Domain\Prescriptions\PharmaceuticalPrescription.cs" />
-    <Compile Include="Domain\Practitioners\Physician.cs" />
-    <Compile Include="Domain\Prescriptions\PrescriptionIdentifier.cs" />
-    <Compile Include="Domain\Patients\PatientState.cs" />
-    <Compile Include="Domain\Facilities\HealthFacilityLicenseNumber.cs" />
-    <Compile Include="Domain\Practitioners\HealthcarePractitioner.cs" />
-    <Compile Include="Domain\Prescriptions\PrescribedMedication.cs" />
-    <Compile Include="Domain\Patients\Patient.cs" />
-    <Compile Include="Domain\Prescriptions\BelgianMedicationCode.cs" />
-    <Compile Include="Domain\Practitioners\BelgianHealthcarePractitionerLicenseNumber.cs" />
-    <Compile Include="Domain\Prescriptions\Prescription.cs" />
-    <Compile Include="Domain\Prescriptions\MedicationCode.cs" />
-    <Compile Include="Domain\Practitioners\HealthcarePractitionerLicenseNumber.cs" />
-    <Compile Include="Domain\Prescriptions\PrescribedMedicationState.cs" />
-    <Compile Include="Domain\Prescriptions\PharmaceuticalPrescriptionState.cs" />
-    <Compile Include="Domain\Prescriptions\PrescriptionState.cs" />
-    <Compile Include="Domain\Prescriptions\PrescriptionStatus.cs" />
-    <Compile Include="Infrastructure\HealthcareContext.cs" />
-    <Compile Include="Infrastructure\IHealthcareConnectionFactory.cs" />
-    <Compile Include="Infrastructure\OracleHealthcareContext.cs" />
-    <Compile Include="Infrastructure\Prescriptions\BelgianCreatePharmaceuticalPrescriptionValidator.cs" />
-    <Compile Include="Infrastructure\Prescriptions\BelgianPrescribedMedicationDescriptorValidator.cs" />
-    <Compile Include="Infrastructure\Prescriptions\OraclePrescriptionStateConfiguration.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PharmaceuticalPrescriptionRepository.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PharmaceuticalPrescriptionsByPatientFinder.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PharmaceuticalPrescriptionStateConfiguration.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PrescribedMedicationsByPrescriptionFinder.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PrescribedMedicationStateConfiguration.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PrescriptionIdentifierGenerator.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PrescriptionStateConfiguration.cs" />
-    <Compile Include="Infrastructure\Prescriptions\SqlServerPrescriptionStateConfiguration.cs" />
-    <Compile Include="Infrastructure\SqlScripts.Designer.cs">
+    <Compile Update="Infrastructure\SqlScripts.Designer.cs">
       <DependentUpon>SqlScripts.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Infrastructure\SqlServerHealthcareContext.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DDD.Common.Messages\DDD.Common.Messages.csproj">
-      <Project>{40A849C5-C8D7-4F76-856A-138AED73A6C3}</Project>
-      <Name>DDD.Common.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Common\DDD.Common.csproj">
-      <Project>{0b70b4fd-f5a0-4a6c-a3fd-90031e08c1c2}</Project>
-      <Name>DDD.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Core.Dapper\DDD.Core.Dapper.csproj">
-      <Project>{701da58b-ae36-429f-8621-64109b8d29d7}</Project>
-      <Name>DDD.Core.Dapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Core.EntityFramework\DDD.Core.EntityFramework.csproj">
-      <Project>{6d227aa7-ff90-48ca-b13d-ed23c1fffba5}</Project>
-      <Name>DDD.Core.EntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Core.FluentValidation\DDD.Core.FluentValidation.csproj">
-      <Project>{5e3745fc-ca80-4d0f-8a25-20ee0f9cf163}</Project>
-      <Name>DDD.Core.FluentValidation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Core.Messages\DDD.Core.Messages.csproj">
-      <Project>{2438B31A-3A39-4878-81FA-BE5AE715EAE5}</Project>
-      <Name>DDD.Core.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Core\DDD.Core.csproj">
-      <Project>{c6c3e419-b9aa-44ad-9dbf-789294687ae6}</Project>
-      <Name>DDD.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj">
-      <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
-      <Name>DDD.Core.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.HealthcareDelivery.Messages\DDD.HealthcareDelivery.Messages.csproj">
-      <Project>{b8bb212c-8afc-4258-a023-eb1f6937f53d}</Project>
-      <Name>DDD.HealthcareDelivery.Messages</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\DDD.Common.Messages\DDD.Common.Messages.csproj" />
+    <ProjectReference Include="..\DDD.Common\DDD.Common.csproj" />
+    <ProjectReference Include="..\DDD.Core.Dapper\DDD.Core.Dapper.csproj" />
+    <ProjectReference Include="..\DDD.Core.EntityFramework\DDD.Core.EntityFramework.csproj" />
+    <ProjectReference Include="..\DDD.Core.FluentValidation\DDD.Core.FluentValidation.csproj" />
+    <ProjectReference Include="..\DDD.Core.Messages\DDD.Core.Messages.csproj" />
+    <ProjectReference Include="..\DDD.Core\DDD.Core.csproj" />
+    <ProjectReference Include="..\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\DDD.HealthcareDelivery.Messages\DDD.HealthcareDelivery.Messages.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Conditions">
@@ -159,6 +49,7 @@
     <PackageReference Include="FluentValidation">
       <Version>8.1.3</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Oracle.ManagedDataAccess">
       <Version>18.3.0</Version>
     </PackageReference>
@@ -168,10 +59,11 @@
     <PackageReference Include="System.ComponentModel.Annotations">
       <Version>4.5.0</Version>
     </PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Infrastructure\Scripts\FindPharmaceuticalPrescriptionsByPatient.sql" />
-    <EmbeddedResource Include="Infrastructure\SqlScripts.resx">
+    <EmbeddedResource Update="Infrastructure\SqlScripts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SqlScripts.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
@@ -180,12 +72,4 @@
   <ItemGroup>
     <EmbeddedResource Include="Infrastructure\Scripts\FindPrescribedMedicationsByPrescription.sql" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

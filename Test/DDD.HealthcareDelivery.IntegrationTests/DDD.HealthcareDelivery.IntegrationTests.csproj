@@ -1,135 +1,47 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B53007C7-B314-40DF-B6E7-6C6576A5611C}</ProjectGuid>
+    <TargetFramework>net472</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DDD.HealthcareDelivery</RootNamespace>
-    <AssemblyName>DDD.HealthcareDelivery.IntegrationTests</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\Prescriptions\OraclePharmaceuticalPrescriptionRevokerTests.cs" />
-    <Compile Include="Application\Prescriptions\OraclePharmaceuticalPrescriptionCreatorTests.cs" />
-    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionRevokerTests.cs" />
-    <Compile Include="Application\Prescriptions\PharmaceuticalPrescriptionCreatorTests.cs" />
-    <Compile Include="Application\Prescriptions\SqlServerPharmaceuticalPrescriptionRevokerTests.cs" />
-    <Compile Include="Application\Prescriptions\SqlServerPharmaceuticalPrescriptionCreatorTests.cs" />
-    <Compile Include="OracleCollection.cs" />
-    <Compile Include="OracleConnectionFactory.cs" />
-    <Compile Include="OracleFixture.cs" />
-    <Compile Include="Infrastructure\Prescriptions\OraclePharmaceuticalPrescriptionsByPatientFinderTests.cs" />
-    <Compile Include="Infrastructure\Prescriptions\OraclePrescribedMedicationsByPrescriptionFinderTests.cs" />
-    <Compile Include="Infrastructure\Prescriptions\SqlServerPrescribedMedicationsByPrescriptionFinderTests.cs" />
-    <Compile Include="Infrastructure\Prescriptions\SqlServerPharmaceuticalPrescriptionsByPatientFinderTests.cs" />
-    <Compile Include="OracleScripts.Designer.cs">
+    <Compile Update="OracleScripts.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>OracleScripts.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PrescribedMedicationsByPrescriptionFinderTests.cs" />
-    <Compile Include="Infrastructure\Prescriptions\PharmaceuticalPrescriptionsByPatientFinderTests.cs" />
-    <Compile Include="SqlServerCollection.cs" />
-    <Compile Include="SqlServerConnectionFactory.cs" />
-    <Compile Include="SqlServerFixture.cs" />
-    <Compile Include="SqlServerScripts.Designer.cs">
+    <Compile Update="SqlServerScripts.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SqlServerScripts.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Src\DDD.Common.Messages\DDD.Common.Messages.csproj">
-      <Project>{40A849C5-C8D7-4F76-856A-138AED73A6C3}</Project>
-      <Name>DDD.Common.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\DDD.Common\DDD.Common.csproj">
-      <Project>{0B70B4FD-F5A0-4A6C-A3FD-90031E08C1C2}</Project>
-      <Name>DDD.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\DDD.Core.EntityFramework\DDD.Core.EntityFramework.csproj">
-      <Project>{6d227aa7-ff90-48ca-b13d-ed23c1fffba5}</Project>
-      <Name>DDD.Core.EntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\DDD.Core.Messages\DDD.Core.Messages.csproj">
-      <Project>{2438B31A-3A39-4878-81FA-BE5AE715EAE5}</Project>
-      <Name>DDD.Core.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\DDD.Core\DDD.Core.csproj">
-      <Project>{C6C3E419-B9AA-44AD-9DBF-789294687AE6}</Project>
-      <Name>DDD.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\DDD.Core.Dapper\DDD.Core.Dapper.csproj">
-      <Project>{701da58b-ae36-429f-8621-64109b8d29d7}</Project>
-      <Name>DDD.Core.Dapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\DDD.Core.Xunit\DDD.Core.Xunit.csproj">
-      <Project>{62b652de-4cc9-4b85-8ae9-d66ceea358dd}</Project>
-      <Name>DDD.Core.Xunit</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj">
-      <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
-      <Name>DDD.Core.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\DDD.HealthcareDelivery.Messages\DDD.HealthcareDelivery.Messages.csproj">
-      <Project>{b8bb212c-8afc-4258-a023-eb1f6937f53d}</Project>
-      <Name>DDD.HealthcareDelivery.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\DDD.HealthcareDelivery\DDD.HealthcareDelivery.csproj">
-      <Project>{5b8fffd3-9a1c-4620-9db3-cd76cd9e79bf}</Project>
-      <Name>DDD.HealthcareDelivery</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\Src\DDD.Common.Messages\DDD.Common.Messages.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Common\DDD.Common.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core.EntityFramework\DDD.Core.EntityFramework.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core.Messages\DDD.Core.Messages.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core\DDD.Core.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core.Dapper\DDD.Core.Dapper.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core.Xunit\DDD.Core.Xunit.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.HealthcareDelivery.Messages\DDD.HealthcareDelivery.Messages.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.HealthcareDelivery\DDD.HealthcareDelivery.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="OracleScripts.resx">
+    <EmbeddedResource Update="OracleScripts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>OracleScripts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="SqlServerScripts.resx">
+    <EmbeddedResource Update="SqlServerScripts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SqlServerScripts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
@@ -154,9 +66,12 @@
     <PackageReference Include="FluentAssertions">
       <Version>5.6.0</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Oracle.ManagedDataAccess.EntityFramework">
       <Version>18.3.0</Version>
     </PackageReference>
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
     <PackageReference Include="System.ValueTuple">
       <Version>4.5.0</Version>
     </PackageReference>
@@ -169,12 +84,4 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
