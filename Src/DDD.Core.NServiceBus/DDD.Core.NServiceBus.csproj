@@ -34,7 +34,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="NServiceBus">
-      <Version>7.1.6</Version>
+      <Version>7.3.0</Version>
     </PackageReference>
   </ItemGroup>
 </Project>
