@@ -9,18 +9,16 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Core.Domain;
     using Domain.Prescriptions;
-    using Core.Infrastructure.Testing;
     using Infrastructure;
     using Infrastructure.Prescriptions;
-    using Mapping;
 
     public abstract class PharmaceuticalPrescriptionRevokerTests<TFixture> : IDisposable
-        where TFixture : IDbFixture<IHealthcareConnectionFactory>
+        where TFixture : IPersistenceFixture<IHealthcareDeliveryConnectionFactory>
     {
 
         #region Fields
 
-        private HealthcareContext context;
+        private HealthcareDeliveryContext context;
 
         #endregion Fields
 
@@ -68,11 +66,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             prescription.Status.Should().Be(Domain.Prescriptions.PrescriptionStatus.Revoked);
         }
 
-
-        protected abstract HealthcareContext CreateContext();
-
-        protected abstract IObjectTranslator<IEvent, EventState> CreateEventTranslator();
-
         private static RevokePharmaceuticalPrescription CreateCommand()
         {
             return new RevokePharmaceuticalPrescription
@@ -84,12 +77,12 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         private IAsyncRepository<PharmaceuticalPrescription> CreateRepository()
         {
-            this.context = this.CreateContext();
+            this.context = this.Fixture.CreateContext();
             return new PharmaceuticalPrescriptionRepository
             (
                 this.context,
                 new Domain.Prescriptions.BelgianPharmaceuticalPrescriptionTranslator(),
-                this.CreateEventTranslator()
+                this.Fixture.CreateEventTranslator()
             );
         }
 

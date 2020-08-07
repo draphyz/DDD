@@ -1,20 +1,28 @@
-﻿namespace DDD.Core.Infrastructure.Data
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace DDD.Core.Infrastructure.Data
 {
+    using Domain;
+
     public class SqlServerEventStateConfiguration : EventStateConfiguration
     {
 
-        #region Constructors
+        #region Methods
 
-        public SqlServerEventStateConfiguration(bool useUpperCase) : base(useUpperCase)
+        public override void Configure(EntityTypeBuilder<EventState> builder)
         {
+            base.Configure(builder);
             // Fields
-            this.Property(e => e.OccurredOn)
-                .HasColumnType("datetime2");
-            this.Property(e => e.Body)
-                .HasColumnType("xml");
+            builder.Property(e => e.Id)
+                   .HasDefaultValueSql("NEXT VALUE FOR EventId");
+            builder.Property(e => e.OccurredOn)
+                   .HasColumnType("datetime2(2)");
+            builder.Property(e => e.Body)
+                   .HasColumnType("xml");
         }
 
-        #endregion Constructors
+        #endregion Methods
 
     }
 }

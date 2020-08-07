@@ -1,20 +1,29 @@
-﻿namespace DDD.Core.Infrastructure.Data
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace DDD.Core.Infrastructure.Data
 {
+    using Domain;
+
     public class OracleEventStateConfiguration : EventStateConfiguration
     {
 
-        #region Constructors
+        #region Methods
 
-        public OracleEventStateConfiguration(bool useUpperCase) : base(useUpperCase)
+        public override void Configure(EntityTypeBuilder<EventState> builder)
         {
+            base.Configure(builder);
             // Fields
-            this.Property(e => e.OccurredOn)
-                .HasColumnType("timestamp");
-            this.Property(e => e.Body)
-                .HasColumnType("xmltype");
+            // Not supported by the 11.2 Oracle databases
+            //builder.Property(e => e.Id)
+            //       .HasDefaultValueSql("EventId.NEXTVAL");
+            builder.Property(e => e.OccurredOn)
+                   .HasColumnType("timestamp(6)");
+            builder.Property(e => e.Body)
+                   .HasColumnType("xmltype");
         }
 
-        #endregion Constructors
+        #endregion Methods
 
     }
 }

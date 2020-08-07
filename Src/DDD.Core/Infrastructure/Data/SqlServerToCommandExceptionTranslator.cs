@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Collections.Generic;
 using Conditions;
 
@@ -19,16 +18,16 @@ namespace DDD.Core.Infrastructure.Data
                      .IsNotNull()
                      .Evaluate(options.ContainsKey("Command"));
             var command = (ICommand)options["Command"];
-            var sqlServerException = (SqlException)exception;
-            foreach (SqlError error in sqlServerException.Errors)
+            dynamic sqlServerException = exception;
+            foreach (dynamic error in sqlServerException.Errors)
             {
-                if (error.IsUnavailableError())
+                if (SqlServerErrorHelper.IsUnavailableError(error))
                     return new CommandUnavailableException(command, exception);
 
-                if (error.IsUnauthorizedError())
+                if (SqlServerErrorHelper.IsUnauthorizedError(error))
                     return new CommandUnauthorizedException(command, exception);
 
-                if (error.IsTimeoutError())
+                if (SqlServerErrorHelper.IsTimeoutError(error))
                     return new CommandTimeoutException(command, exception);
             }
             return new CommandException(isTransient: false, command, exception);

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Data.Entity.Core;
-using System.Data.Entity.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Data.Common;
 using Conditions;
@@ -54,12 +53,8 @@ namespace DDD.Core.Infrastructure.Data
         {
             switch (exception)
             {
-                case EntityException entityException:
-                    return UnwrapException(entityException.InnerException);
                 case DbUpdateException dbUpdateException:
                     return UnwrapException(dbUpdateException.InnerException);
-                case UpdateException updateException:
-                    return UnwrapException(updateException.InnerException);
                 default:
                     return exception;
             }

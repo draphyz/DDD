@@ -5,7 +5,7 @@
     /// <summary>
     /// Defines a connection factory for the context of healthcare delivery.
     /// </summary>
-    public interface IHealthcareConnectionFactory : IDbConnectionFactory
+    public interface IHealthcareDeliveryConnectionFactory : IDbConnectionFactory
     {
     }
 }

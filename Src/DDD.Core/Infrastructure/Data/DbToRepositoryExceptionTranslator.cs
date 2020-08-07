@@ -24,6 +24,7 @@ namespace DDD.Core.Infrastructure.Data
         public DbToRepositoryExceptionTranslator()
         {
             this.translators.Add("System.Data.SqlClient.SqlException", new SqlServerToRepositoryExceptionTranslator());
+            this.translators.Add("Microsoft.Data.SqlClient.SqlException", new SqlServerToRepositoryExceptionTranslator());
             this.translators.Add("Oracle.DataAccess.Client.OracleException", new OracleToRepositoryExceptionTranslator());
         }
 

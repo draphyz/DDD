@@ -22,9 +22,7 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         #region Constructors
 
-#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public AsyncPollyQueryHandler(IAsyncQueryHandler<TQuery, TResult> handler, IAsyncPolicy policy)
-#pragma warning restore CS3001 // Argument type is not CLS-compliant
         {
             Condition.Requires(handler, nameof(handler)).IsNotNull();
             Condition.Requires(policy, nameof(policy)).IsNotNull();

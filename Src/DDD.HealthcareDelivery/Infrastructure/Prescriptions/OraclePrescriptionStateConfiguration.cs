@@ -1,32 +1,24 @@
-﻿namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
+    using Domain.Prescriptions;
+
     internal class OraclePrescriptionStateConfiguration : PrescriptionStateConfiguration
     {
 
-        #region Constructors
+        #region Methods
 
-        public OraclePrescriptionStateConfiguration(bool useUpperCase) : base(useUpperCase)
+        public override void Configure(EntityTypeBuilder<PrescriptionState> builder)
         {
-            // Table
-            this.Map(p =>
-            {
-                p.ToTable(ToCasingConvention(TableName));
-                p.Requires(ToCasingConvention(Discriminator))
-                 .HasValue(string.Empty)
-                 .HasColumnOrder(2)
-                 .HasColumnType("varchar2")
-                 .HasMaxLength(5);
-            });
+            base.Configure(builder);
             // Fields
-            this.Property(p => p.CreatedOn)
-                .HasColumnType("date");
-            this.Property(p => p.DeliverableAt)
-                .HasColumnType("date");
-            this.Property(p => p.Patient.Birthdate)
-                .HasColumnType("date");
+            builder.Property(p => p.CreatedOn)
+                   .HasColumnType("date");
         }
 
-        #endregion Constructors
+        #endregion Methods
 
     }
 }

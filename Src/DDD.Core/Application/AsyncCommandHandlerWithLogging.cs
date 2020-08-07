@@ -22,9 +22,7 @@ namespace DDD.Core.Application
 
         #region Constructors
 
-#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public AsyncCommandHandlerWithLogging(IAsyncCommandHandler<TCommand> commandHandler, ILogger logger)
-#pragma warning restore CS3001 // Argument type is not CLS-compliant
         {
             Condition.Requires(commandHandler, nameof(commandHandler)).IsNotNull();
             Condition.Requires(logger, nameof(logger)).IsNotNull();

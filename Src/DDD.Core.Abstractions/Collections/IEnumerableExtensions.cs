@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Conditions;
-using System.Linq;
 
 namespace DDD.Collections
 {

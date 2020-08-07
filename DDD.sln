@@ -5,33 +5,33 @@ VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{7080D95A-39E8-418A-BA03-99ED89D4020E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.Abstractions", "Src\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj", "{596A8700-3D18-4A62-B200-1F78A9EA4617}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Abstractions", "Src\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj", "{596A8700-3D18-4A62-B200-1F78A9EA4617}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{1DF607A2-5750-4BF4-AB2F-E21EC51ECCA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.UnitTests", "Test\DDD.Core.UnitTests\DDD.Core.UnitTests.csproj", "{63505329-BD97-4C75-B7D7-77FB42670E79}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.UnitTests", "Test\DDD.Core.UnitTests\DDD.Core.UnitTests.csproj", "{63505329-BD97-4C75-B7D7-77FB42670E79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.Xunit", "Src\DDD.Core.Xunit\DDD.Core.Xunit.csproj", "{62B652DE-4CC9-4B85-8AE9-D66CEEA358DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Xunit", "Src\DDD.Core.Xunit\DDD.Core.Xunit.csproj", "{62B652DE-4CC9-4B85-8AE9-D66CEEA358DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.Dapper", "Src\DDD.Core.Dapper\DDD.Core.Dapper.csproj", "{701DA58B-AE36-429F-8621-64109B8D29D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Dapper", "Src\DDD.Core.Dapper\DDD.Core.Dapper.csproj", "{701DA58B-AE36-429F-8621-64109B8D29D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.Abstractions.UnitTests", "Test\DDD.Core.Abstractions.UnitTests\DDD.Core.Abstractions.UnitTests.csproj", "{9CC062C7-73EA-49B4-B694-31A5F48FD09D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Abstractions.UnitTests", "Test\DDD.Core.Abstractions.UnitTests\DDD.Core.Abstractions.UnitTests.csproj", "{9CC062C7-73EA-49B4-B694-31A5F48FD09D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core", "Src\DDD.Core\DDD.Core.csproj", "{C6C3E419-B9AA-44AD-9DBF-789294687AE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core", "Src\DDD.Core\DDD.Core.csproj", "{C6C3E419-B9AA-44AD-9DBF-789294687AE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.HealthcareDelivery", "Src\DDD.HealthcareDelivery\DDD.HealthcareDelivery.csproj", "{5B8FFFD3-9A1C-4620-9DB3-CD76CD9E79BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.HealthcareDelivery", "Src\DDD.HealthcareDelivery\DDD.HealthcareDelivery.csproj", "{5B8FFFD3-9A1C-4620-9DB3-CD76CD9E79BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Common", "Src\DDD.Common\DDD.Common.csproj", "{0B70B4FD-F5A0-4A6C-A3FD-90031E08C1C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Common", "Src\DDD.Common\DDD.Common.csproj", "{0B70B4FD-F5A0-4A6C-A3FD-90031E08C1C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Common.UnitTests", "Test\DDD.Common.UnitTests\DDD.Common.UnitTests.csproj", "{25F6B88A-4EFA-4516-BB7A-34ED68548636}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Common.UnitTests", "Test\DDD.Common.UnitTests\DDD.Common.UnitTests.csproj", "{25F6B88A-4EFA-4516-BB7A-34ED68548636}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.EntityFramework", "Src\DDD.Core.EntityFramework\DDD.Core.EntityFramework.csproj", "{6D227AA7-FF90-48CA-B13D-ED23C1FFFBA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.EntityFramework", "Src\DDD.Core.EntityFramework\DDD.Core.EntityFramework.csproj", "{6D227AA7-FF90-48CA-B13D-ED23C1FFFBA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.HealthcareDelivery.IntegrationTests", "Test\DDD.HealthcareDelivery.IntegrationTests\DDD.HealthcareDelivery.IntegrationTests.csproj", "{B53007C7-B314-40DF-B6E7-6C6576A5611C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.HealthcareDelivery.IntegrationTests", "Test\DDD.HealthcareDelivery.IntegrationTests\DDD.HealthcareDelivery.IntegrationTests.csproj", "{B53007C7-B314-40DF-B6E7-6C6576A5611C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.FluentValidation", "Src\DDD.Core.FluentValidation\DDD.Core.FluentValidation.csproj", "{5E3745FC-CA80-4D0F-8A25-20EE0F9CF163}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.FluentValidation", "Src\DDD.Core.FluentValidation\DDD.Core.FluentValidation.csproj", "{5E3745FC-CA80-4D0F-8A25-20EE0F9CF163}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.HealthcareDelivery.UnitTests", "Test\DDD.HealthcareDelivery.UnitTests\DDD.HealthcareDelivery.UnitTests.csproj", "{CA376D7C-2A71-4518-B297-4C4A08DBF19D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.HealthcareDelivery.UnitTests", "Test\DDD.HealthcareDelivery.UnitTests\DDD.HealthcareDelivery.UnitTests.csproj", "{CA376D7C-2A71-4518-B297-4C4A08DBF19D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{862B0E9C-B685-4C40-ACFB-83A193C82254}"
 	ProjectSection(SolutionItems) = preProject
@@ -42,24 +42,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{862B0E9C-B68
 		Doc\QueryComponents.png = Doc\QueryComponents.png
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.Newtonsoft", "Src\DDD.Core.Newtonsoft\DDD.Core.Newtonsoft.csproj", "{8BF8E0BD-B92C-4FC1-BE17-7C10036A2FE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Newtonsoft", "Src\DDD.Core.Newtonsoft\DDD.Core.Newtonsoft.csproj", "{8BF8E0BD-B92C-4FC1-BE17-7C10036A2FE2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{C4C73BC8-47A5-4D1C-AFA6-10B16DC8BBEE}"
 	ProjectSection(SolutionItems) = preProject
 		Build\CommonAssemblyInfo.cs = Build\CommonAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.Messages", "Src\DDD.Core.Messages\DDD.Core.Messages.csproj", "{2438B31A-3A39-4878-81FA-BE5AE715EAE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Messages", "Src\DDD.Core.Messages\DDD.Core.Messages.csproj", "{2438B31A-3A39-4878-81FA-BE5AE715EAE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.HealthcareDelivery.Messages", "Src\DDD.HealthcareDelivery.Messages\DDD.HealthcareDelivery.Messages.csproj", "{B8BB212C-8AFC-4258-A023-EB1F6937F53D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.HealthcareDelivery.Messages", "Src\DDD.HealthcareDelivery.Messages\DDD.HealthcareDelivery.Messages.csproj", "{B8BB212C-8AFC-4258-A023-EB1F6937F53D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Common.Messages", "Src\DDD.Common.Messages\DDD.Common.Messages.csproj", "{40A849C5-C8D7-4F76-856A-138AED73A6C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Common.Messages", "Src\DDD.Common.Messages\DDD.Common.Messages.csproj", "{40A849C5-C8D7-4F76-856A-138AED73A6C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.NServiceBus", "Src\DDD.Core.NServiceBus\DDD.Core.NServiceBus.csproj", "{436D869F-7566-4436-90A8-B655145C5BCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.NServiceBus", "Src\DDD.Core.NServiceBus\DDD.Core.NServiceBus.csproj", "{436D869F-7566-4436-90A8-B655145C5BCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.SimpleInjector", "Src\DDD.Core.SimpleInjector\DDD.Core.SimpleInjector.csproj", "{3EFAACD8-CF5E-4E31-884B-6B9F87F1E495}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.SimpleInjector", "Src\DDD.Core.SimpleInjector\DDD.Core.SimpleInjector.csproj", "{3EFAACD8-CF5E-4E31-884B-6B9F87F1E495}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.Polly", "Src\DDD.Core.Polly\DDD.Core.Polly.csproj", "{4878A4FB-2C1E-4C06-BB42-AFE1ACE2A882}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Polly", "Src\DDD.Core.Polly\DDD.Core.Polly.csproj", "{4878A4FB-2C1E-4C06-BB42-AFE1ACE2A882}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

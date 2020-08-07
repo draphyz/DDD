@@ -1,9 +1,7 @@
 ﻿using Conditions;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Validation;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
@@ -50,7 +48,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Properties
 
-        protected DbConnection Connection => this.context.Database.Connection;
+        protected DbConnection Connection() => this.context.Database.GetDbConnection();
 
         #endregion Properties
 
@@ -90,8 +88,9 @@ namespace DDD.Core.Infrastructure.Data
         {
             try
             {
-                if (this.Connection.State == ConnectionState.Closed)
-                    await this.Connection.OpenAsync();
+                var connection = this.Connection();
+                if (connection.State == ConnectionState.Closed)
+                    await connection.OpenAsync();
             }
             catch (DbException ex)
             {
@@ -149,7 +148,7 @@ namespace DDD.Core.Infrastructure.Data
             {
                 await this.context.SaveChangesAsync();
             }
-            catch (Exception ex) when (ex is DbUpdateException || ex is DbEntityValidationException)
+            catch (Exception ex) when (ex is DbUpdateException)
             {
                 throw this.exceptionTranslator.Translate(ex, new { EntityType = typeof(TDomainEntity) });
             }

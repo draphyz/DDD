@@ -1,72 +1,47 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Domain.Prescriptions;
 
-    internal class PrescribedMedicationStateConfiguration : EntityTypeConfiguration<PrescribedMedicationState> 
+    internal abstract class PrescribedMedicationStateConfiguration : IEntityTypeConfiguration<PrescribedMedicationState> 
     {
-
-        #region Fields
-
-        private readonly bool useUpperCase;
-
-        #endregion Fields
 
         #region Constructors
 
-        public PrescribedMedicationStateConfiguration(bool useUpperCase)
+        public virtual void Configure(EntityTypeBuilder<PrescribedMedicationState> builder)
         {
-            this.useUpperCase = useUpperCase;
             // Table
-            this.ToTable(ToCasingConvention("PrescMedication"));
+            builder.ToTable("PrescMedication");
             // Keys
-            this.HasKey(m => m.Identifier);
+            builder.HasKey(m => m.Identifier);
+            //// Indexes
+            builder.HasIndex(m => m.PrescriptionIdentifier)
+                   .HasName("IX_PRESCMED_PRESCID"); // Identifiers limited to 30 characters in Oracle 11g
             // Fields
-            this.Property(m => m.Identifier)
-                .HasColumnName(ToCasingConvention("PrescMedicationId"))
-                .HasColumnOrder(1)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-            this.Property(m => m.PrescriptionIdentifier)
-                .HasColumnName(ToCasingConvention("PrescriptionId"))
-                .HasColumnOrder(2);
-            this.Property(m => m.MedicationType)
-                .HasColumnOrder(3)
-                .IsUnicode(false)
-                .HasMaxLength(20)
-                .IsRequired();
-            this.Property(m => m.NameOrDescription)
-                .HasColumnName(ToCasingConvention("NameOrDesc"))
-                .HasColumnOrder(4)
-                .IsUnicode(false)
-                .HasMaxLength(1024)
-                .IsRequired();
-            this.Property(m => m.Posology)
-                .HasColumnOrder(5)
-                .IsUnicode(false)
-                .HasMaxLength(1024);
-            this.Property(m => m.Quantity)
-                .HasColumnOrder(6)
-                .IsUnicode(false)
-                .HasMaxLength(100); ;
-            this.Property(m => m.Duration)
-                .HasColumnOrder(7)
-                .IsUnicode(false)
-                .HasMaxLength(100);
-            this.Property(m => m.Code)
-                .HasColumnOrder(8)
-                .IsUnicode(false)
-                .HasMaxLength(20);
+            builder.Property(m => m.Identifier)
+                   .HasColumnName("PrescMedicationId");
+            builder.Property(m => m.PrescriptionIdentifier)
+                   .HasColumnName("PrescriptionId");
+            builder.Property(m => m.MedicationType)
+                   .HasMaxLength(20)
+                   .IsRequired();
+            builder.Property(m => m.NameOrDescription)
+                   .HasColumnName("NameOrDesc")
+                   .HasMaxLength(1024)
+                   .IsRequired();
+            builder.Property(m => m.Posology)
+                   .HasMaxLength(1024);
+            builder.Property(m => m.Quantity)
+                   .HasMaxLength(100); ;
+            builder.Property(m => m.Duration)
+                   .HasMaxLength(100);
+            builder.Property(m => m.Code)
+                   .HasMaxLength(20);
         }
 
         #endregion Constructors
-
-        #region Methods
-
-        protected string ToCasingConvention(string name) => this.useUpperCase ? name.ToUpperInvariant() : name;
-
-        #endregion Methods
 
     }
 }

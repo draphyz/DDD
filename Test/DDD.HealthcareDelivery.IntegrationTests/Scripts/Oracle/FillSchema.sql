@@ -293,3 +293,25 @@ END SPCLEARSCHEMA;
   ALTER TABLE TEST.PRESCMEDICATION ADD CONSTRAINT FK_PRESCMEDICATION__1901234065 FOREIGN KEY (PRESCRIPTIONID)
 	  REFERENCES TEST.PRESCRIPTION (PRESCRIPTIONID) ON DELETE CASCADE ENABLE
 /
+--------------------------------------------------------
+--  DDL for Trigger TR_EVENT
+--------------------------------------------------------
+create or replace trigger TEST.TR_EVENT
+before insert on TEST.EVENT for each row 
+begin 
+  if :new.EVENTID is NULL then 
+    select TEST.EVENTID.nextval into :new.EVENTID from dual;  
+  end if; 
+end;
+/
+--------------------------------------------------------
+--  DDL for Trigger TR_PRESCMEDICATION
+--------------------------------------------------------
+create or replace trigger TEST.TR_PRESCMEDICATION
+before insert on TEST.PRESCMEDICATION for each row 
+begin 
+  if :new.PRESCMEDICATIONID is NULL then 
+    select TEST.PRESCMEDICATIONID.nextval into :new.PRESCMEDICATIONID from dual;  
+  end if; 
+end;
+/

@@ -16,9 +16,7 @@ namespace DDD.Core.Application
         private readonly IAsyncQueryHandler<TQuery, TResult> queryHandler;
         private readonly ILogger logger;
 
-#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public AsyncQueryHandlerWithLogging(IAsyncQueryHandler<TQuery, TResult> queryHandler, ILogger logger)
-#pragma warning restore CS3001 // Argument type is not CLS-compliant
         {
             Condition.Requires(queryHandler, nameof(queryHandler)).IsNotNull();
             Condition.Requires(logger, nameof(logger)).IsNotNull();

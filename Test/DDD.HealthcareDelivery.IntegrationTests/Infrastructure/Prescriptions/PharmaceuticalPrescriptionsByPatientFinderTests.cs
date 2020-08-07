@@ -10,7 +10,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
     using Core.Infrastructure.Testing;
 
     public abstract class PharmaceuticalPrescriptionsByPatientFinderTests<TFixture>
-        where TFixture : IDbFixture<IHealthcareConnectionFactory>
+        where TFixture : IDbFixture<IHealthcareDeliveryConnectionFactory>
     {
         #region Fields
 

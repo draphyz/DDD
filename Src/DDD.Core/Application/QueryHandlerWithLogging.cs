@@ -10,14 +10,17 @@ namespace DDD.Core.Application
     public class QueryHandlerWithLogging<TQuery, TResult> : IQueryHandler<TQuery, TResult>
         where TQuery : class, IQuery<TResult>
     {
+
         #region Fields
 
-        private readonly IQueryHandler<TQuery, TResult> queryHandler;
         private readonly ILogger logger;
+        private readonly IQueryHandler<TQuery, TResult> queryHandler;
 
-#pragma warning disable CS3001 // Argument type is not CLS-compliant
+        #endregion Fields
+
+        #region Constructors
+
         public QueryHandlerWithLogging(IQueryHandler<TQuery, TResult> queryHandler, ILogger logger)
-#pragma warning restore CS3001 // Argument type is not CLS-compliant
         {
             Condition.Requires(queryHandler, nameof(queryHandler)).IsNotNull();
             Condition.Requires(logger, nameof(logger)).IsNotNull();
@@ -25,7 +28,7 @@ namespace DDD.Core.Application
             this.logger = logger;
         }
 
-        #endregion Fields
+        #endregion Constructors
 
         #region Methods
 
@@ -45,5 +48,6 @@ namespace DDD.Core.Application
         }
 
         #endregion Methods
+
     }
 }

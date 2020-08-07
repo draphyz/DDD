@@ -1,207 +1,157 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Domain.Prescriptions;
 
-    internal abstract class PrescriptionStateConfiguration : EntityTypeConfiguration<PrescriptionState>
+    internal abstract class PrescriptionStateConfiguration : IEntityTypeConfiguration<PrescriptionState>
     {
-
-        #region Fields
-
-        public const string Discriminator = "PrescriptionType";
-
-        public const string TableName = "Prescription";
-
-        private readonly bool useUpperCase;
-
-        #endregion Fields
-
-        #region Constructors
-
-        protected PrescriptionStateConfiguration(bool useUpperCase)
-        {
-            this.useUpperCase = useUpperCase;
-            // Keys
-            this.HasKey(p => p.Identifier);
-            // Fields
-            this.Property(p => p.Identifier)
-                .HasColumnName(ToCasingConvention("PrescriptionId"))
-                .HasColumnOrder(1)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None); ;
-            this.Property(p => p.Status)
-                .HasColumnOrder(3)
-                .IsUnicode(false)
-                .HasMaxLength(3)
-                .IsFixedLength()
-                .IsRequired();
-            this.Property(p => p.LanguageCode)
-                .HasColumnName(ToCasingConvention("Language"))
-                .HasColumnOrder(4)
-                .IsUnicode(false)
-                .HasMaxLength(2)
-                .IsFixedLength()
-                .IsRequired();
-            this.Property(p => p.CreatedOn)
-                .HasColumnOrder(5);
-            this.Property(p => p.DeliverableAt)
-                .HasColumnOrder(6);
-            this.Property(p => p.Prescriber.Identifier)
-                .HasColumnName(ToCasingConvention("PrescriberId"))
-                .HasColumnOrder(7);
-            this.Property(p => p.Prescriber.PractitionerType)
-                .HasColumnName(ToCasingConvention("PrescriberType"))
-                .HasColumnOrder(8)
-                .IsUnicode(false)
-                .HasMaxLength(20)
-                .IsRequired();
-            this.Property(p => p.Prescriber.FullName.LastName)
-                .HasColumnName(ToCasingConvention("PrescriberLastName"))
-                .HasColumnOrder(9)
-                .IsUnicode(false)
-                .HasMaxLength(50)
-                .IsRequired();
-            this.Property(p => p.Prescriber.FullName.FirstName)
-                .HasColumnName(ToCasingConvention("PrescriberFirstName"))
-                .HasColumnOrder(10)
-                .IsUnicode(false)
-                .HasMaxLength(50)
-                .IsRequired();
-            this.Property(p => p.Prescriber.DisplayName)
-                .HasColumnName(ToCasingConvention("PrescriberDisplayName"))
-                .HasColumnOrder(11)
-                .IsUnicode(false)
-                .HasMaxLength(100)
-                .IsRequired();
-            this.Property(p => p.Prescriber.LicenseNumber)
-                .HasColumnName(ToCasingConvention("PrescriberLicenseNum"))
-                .HasColumnOrder(12)
-                .IsUnicode(false)
-                .HasMaxLength(25)
-                .IsRequired();
-            this.Property(p => p.Prescriber.SocialSecurityNumber)
-                .HasColumnName(ToCasingConvention("PrescriberSSN"))
-                .HasColumnOrder(13)
-                .IsUnicode(false)
-                .HasMaxLength(25);
-            this.Property(p => p.Prescriber.Speciality)
-                .HasColumnName(ToCasingConvention("PrescriberSpeciality"))
-                .HasColumnOrder(14)
-                .IsUnicode(false)
-                .HasMaxLength(50);
-            this.Property(p => p.Prescriber.ContactInformation.PrimaryTelephoneNumber)
-                .HasColumnName(ToCasingConvention("PrescriberPhone1"))
-                .HasColumnOrder(15)
-                .IsUnicode(false)
-                .HasMaxLength(20);
-            this.Property(p => p.Prescriber.ContactInformation.SecondaryTelephoneNumber)
-                .HasColumnName(ToCasingConvention("PrescriberPhone2"))
-                .HasColumnOrder(16)
-                .IsUnicode(false)
-                .HasMaxLength(20);
-            this.Property(p => p.Prescriber.ContactInformation.PrimaryEmailAddress)
-                .HasColumnName(ToCasingConvention("PrescriberEmail1"))
-                .HasColumnOrder(17)
-                .IsUnicode(false)
-                .HasMaxLength(50);
-            this.Property(p => p.Prescriber.ContactInformation.SecondaryEmailAddress)
-                .HasColumnName(ToCasingConvention("PrescriberEmail2"))
-                .HasColumnOrder(18)
-                .IsUnicode(false)
-                .HasMaxLength(50);
-            this.Property(p => p.Prescriber.ContactInformation.WebSite)
-                .HasColumnName(ToCasingConvention("PrescriberWebSite"))
-                .HasColumnOrder(19)
-                .IsUnicode(false)
-                .HasMaxLength(255);
-            this.Property(p => p.Prescriber.ContactInformation.PostalAddress.Street)
-                .HasColumnName(ToCasingConvention("PrescriberStreet"))
-                .HasColumnOrder(20)
-                .IsUnicode(false)
-                .HasMaxLength(50);
-            this.Property(p => p.Prescriber.ContactInformation.PostalAddress.HouseNumber)
-                .HasColumnName(ToCasingConvention("PrescriberHouseNum"))
-                .HasColumnOrder(21)
-                .IsUnicode(false)
-                .HasMaxLength(10);
-            this.Property(p => p.Prescriber.ContactInformation.PostalAddress.BoxNumber)
-                .HasColumnName(ToCasingConvention("PrescriberBoxNum"))
-                .HasColumnOrder(22)
-                .IsUnicode(false)
-                .HasMaxLength(10);
-            this.Property(p => p.Prescriber.ContactInformation.PostalAddress.PostalCode)
-                .HasColumnName(ToCasingConvention("PrescriberPostCode"))
-                .HasColumnOrder(23)
-                .IsUnicode(false)
-                .HasMaxLength(10);
-            this.Property(p => p.Prescriber.ContactInformation.PostalAddress.City)
-                .HasColumnName(ToCasingConvention("PrescriberCity"))
-                .HasColumnOrder(24)
-                .IsUnicode(false)
-                .HasMaxLength(50);
-            this.Property(p => p.Prescriber.ContactInformation.PostalAddress.CountryCode)
-                .HasColumnName(ToCasingConvention("PrescriberCountry"))
-                .HasColumnOrder(25)
-                .IsUnicode(false)
-                .HasMaxLength(2)
-                .IsFixedLength();
-            this.Property(p => p.Patient.Identifier)
-                .HasColumnName(ToCasingConvention("PatientId"))
-                .HasColumnOrder(26);
-            this.Property(p => p.Patient.FullName.FirstName)
-                .HasColumnName(ToCasingConvention("PatientFirstName"))
-                .HasColumnOrder(27)
-                .IsUnicode(false)
-                .HasMaxLength(50)
-                .IsRequired();
-            this.Property(p => p.Patient.FullName.LastName)
-                .HasColumnName(ToCasingConvention("PatientLastName"))
-                .HasColumnOrder(28)
-                .IsUnicode(false)
-                .HasMaxLength(50)
-                .IsRequired();
-            this.Property(p => p.Patient.Sex)
-                .HasColumnName(ToCasingConvention("PatientSex"))
-                .HasColumnOrder(29)
-                .IsUnicode(false)
-                .HasMaxLength(2)
-                .IsRequired();
-            this.Property(p => p.Patient.SocialSecurityNumber)
-                .HasColumnName(ToCasingConvention("PatientSSN"))
-                .HasColumnOrder(30)
-                .IsUnicode(false)
-                .HasMaxLength(25);
-            this.Property(p => p.Patient.Birthdate)
-                .HasColumnName(ToCasingConvention("PatientBirthdate"))
-                .HasColumnOrder(31);
-            this.Property(p => p.HealthFacility.Identifier)
-                .HasColumnName(ToCasingConvention("FacilityId"))
-                .HasColumnOrder(32);
-            this.Property(p => p.HealthFacility.FacilityType)
-                .HasColumnName(ToCasingConvention("FacilityType"))
-                .HasColumnOrder(33)
-                .IsUnicode(false)
-                .HasMaxLength(20)
-                .IsRequired();
-            this.Property(p => p.HealthFacility.Name)
-                .HasColumnName(ToCasingConvention("FacilityName"))
-                .HasColumnOrder(34)
-                .IsUnicode(false)
-                .HasMaxLength(100)
-                .IsRequired();
-            this.Property(p => p.HealthFacility.LicenseNumber)
-                .HasColumnName(ToCasingConvention("FacilityLicenseNum"))
-                .HasColumnOrder(35)
-                .IsUnicode(false)
-                .HasMaxLength(25);
-        }
-
-        #endregion Constructors
 
         #region Methods
 
-        protected string ToCasingConvention(string name) => this.useUpperCase ? name.ToUpperInvariant() : name;
+        /// <remarks>
+        /// IsRequired() on properties of owned entities is ignored.
+        /// According to EF Core team, "value objects would work better if implemented using value converters".
+        /// https://github.com/dotnet/efcore/issues/18445
+        /// https://github.com/dotnet/efcore/issues/16943
+        /// </remarks>
+        public virtual void Configure(EntityTypeBuilder<PrescriptionState> builder)
+        {
+            // Table
+            builder.ToTable("Prescription");
+            // Keys
+            builder.HasKey(p => p.Identifier);
+            // Discriminator
+            builder.HasDiscriminator<string>("PrescriptionType")
+                   .HasValue<PharmaceuticalPrescriptionState>("PHARM");
+            // Fields
+            builder.Property<string>("PrescriptionType")
+                   .HasMaxLength(5)
+                   .IsRequired();
+            builder.Property(p => p.Identifier)
+                   .HasColumnName("PrescriptionId")
+                   .ValueGeneratedNever();
+            builder.Property(p => p.Status)
+                   .HasMaxLength(3)
+                   .IsFixedLength()
+                   .IsRequired();
+            builder.Property(p => p.LanguageCode)
+                   .HasColumnName("Language")
+                   .HasMaxLength(2)
+                   .IsFixedLength()
+                   .IsRequired();
+            builder.Property(p => p.DeliverableAt)
+                   .HasColumnType("date");
+            builder.OwnsOne(p => p.Prescriber, prescriber =>
+            {
+                prescriber.Property(p => p.Identifier)
+                          .HasColumnName("PrescriberId");
+                prescriber.Property(p => p.PractitionerType)
+                          .HasColumnName("PrescriberType")
+                          .HasMaxLength(20);
+                prescriber.OwnsOne(p => p.FullName, fullName =>
+                {
+                    fullName.Property(n => n.LastName)
+                            .HasColumnName("PrescriberLastName")
+                            .HasMaxLength(50);
+                    fullName.Property(n => n.FirstName)
+                            .HasColumnName("PrescriberFirstName")
+                            .HasMaxLength(50);
+                });
+                prescriber.Property(p => p.DisplayName)
+                          .HasColumnName("PrescriberDisplayName")
+                          .HasMaxLength(100);
+                prescriber.Property(p => p.LicenseNumber)
+                          .HasColumnName("PrescriberLicenseNum")
+                          .HasMaxLength(25);
+                prescriber.Property(p => p.SocialSecurityNumber)
+                          .HasColumnName("PrescriberSSN")
+                          .HasMaxLength(25);
+                prescriber.Property(p => p.Speciality)
+                          .HasColumnName("PrescriberSpeciality")
+                          .HasMaxLength(50);
+                prescriber.OwnsOne(p => p.ContactInformation, contactInfo =>
+                {
+                    contactInfo.Property(i => i.PrimaryTelephoneNumber)
+                               .HasColumnName("PrescriberPhone1")
+                               .HasMaxLength(20);
+                    contactInfo.Property(i => i.SecondaryTelephoneNumber)
+                               .HasColumnName("PrescriberPhone2")
+                               .HasMaxLength(20);
+                    contactInfo.Property(i => i.PrimaryEmailAddress)
+                               .HasColumnName("PrescriberEmail1")
+                               .HasMaxLength(50);
+                    contactInfo.Property(i => i.SecondaryEmailAddress)
+                               .HasColumnName("PrescriberEmail2")
+                               .HasMaxLength(50);
+                    contactInfo.Property(i => i.WebSite)
+                               .HasColumnName("PrescriberWebSite")
+                               .HasMaxLength(255);
+                    contactInfo.OwnsOne(i => i.PostalAddress, address =>
+                    {
+                        address.Property(a => a.Street)
+                               .HasColumnName("PrescriberStreet")
+                               .HasMaxLength(50);
+                        address.Property(a => a.HouseNumber)
+                               .HasColumnName("PrescriberHouseNum")
+                               .HasMaxLength(10);
+                        address.Property(a => a.BoxNumber)
+                               .HasColumnName("PrescriberBoxNum")
+                               .HasMaxLength(10);
+                        address.Property(a => a.PostalCode)
+                               .HasColumnName("PrescriberPostCode")
+                               .HasMaxLength(10);
+                        address.Property(a => a.City)
+                               .HasColumnName("PrescriberCity")
+                               .HasMaxLength(50);
+                        address.Property(a => a.CountryCode)
+                               .HasColumnName("PrescriberCountry")
+                               .HasMaxLength(2)
+                               .IsFixedLength();
+                    });
+                    contactInfo.Ignore(i => i.FaxNumber);
+                });
+            });
+            builder.OwnsOne(p => p.Patient, patient =>
+            {
+                patient.Property(p => p.Identifier)
+                       .HasColumnName("PatientId");
+                patient.OwnsOne(p => p.FullName, fullName =>
+                {
+                    fullName.Property(n => n.FirstName)
+                            .HasColumnName("PatientFirstName")
+                            .HasMaxLength(50);
+                    fullName.Property(n => n.LastName)
+                            .HasColumnName("PatientLastName")
+                            .HasMaxLength(50);
+                });
+                patient.Property(p => p.Sex)
+                       .HasColumnName("PatientSex")
+                       .HasMaxLength(2);
+                patient.Property(p => p.SocialSecurityNumber)
+                       .HasColumnName("PatientSSN")
+                       .HasMaxLength(25);
+                patient.Property(p => p.Birthdate)
+                       .HasColumnName("PatientBirthdate")
+                       .HasColumnType("date");
+                patient.Ignore(p => p.ContactInformation);
+            });
+            builder.OwnsOne(p => p.HealthFacility, facility =>
+            {
+                facility.Property(f => f.Identifier)
+                        .HasColumnName("FacilityId");
+                facility.Property(f => f.FacilityType)
+                       .HasColumnName("FacilityType")
+                       .HasMaxLength(20);
+                facility.Property(f => f.Name)
+                       .HasColumnName("FacilityName")
+                       .HasMaxLength(100);
+                facility.Property(f => f.LicenseNumber)
+                       .HasColumnName("FacilityLicenseNum")
+                       .HasMaxLength(25);
+            });
+        }
 
         #endregion Methods
 

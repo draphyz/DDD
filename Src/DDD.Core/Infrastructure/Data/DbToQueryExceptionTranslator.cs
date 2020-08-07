@@ -23,6 +23,7 @@ namespace DDD.Core.Infrastructure.Data
         public DbToQueryExceptionTranslator()
         {
             this.translators.Add("System.Data.SqlClient.SqlException", new SqlServerToQueryExceptionTranslator());
+            this.translators.Add("Microsoft.Data.SqlClient.SqlException", new SqlServerToQueryExceptionTranslator());
             this.translators.Add("Oracle.DataAccess.Client.OracleException", new OracleToQueryExceptionTranslator());
         }
 

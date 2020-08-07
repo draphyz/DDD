@@ -8,6 +8,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")] // Used by the runtime to bind to strongly named assemblies, format : MAJOR.0.0.0
 [assembly: AssemblyFileVersion("1.0.0.0")] // Used to uniquely identify a build of the individual assembly, format : MAJOR.MINOR.BUILD.REVISION
 [assembly: AssemblyInformationalVersion("1.0.0")] // Used to represent the product version, format : MAJOR.MINOR.PATCH
-[assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
 [assembly: NeutralResourcesLanguage("en-US")]

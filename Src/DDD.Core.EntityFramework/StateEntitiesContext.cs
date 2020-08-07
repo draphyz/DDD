@@ -1,43 +1,58 @@
-﻿using System.Data.Entity;
-using System.Data.Common;
+﻿using Conditions;
+using DDD.Core.Domain;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Data.Entity.Validation;
+using System.Linq;
+using System.Data.Common;
 
 namespace DDD.Core.Infrastructure.Data
 {
+    using Microsoft.EntityFrameworkCore;
+
     public abstract class StateEntitiesContext : DbContext
     {
 
+        #region Fields
+
+        private DbConnection connection;
+
+        #endregion Fields
+
         #region Constructors
 
-        static StateEntitiesContext()
+        protected StateEntitiesContext(IDbConnectionFactory connectionFactory)
         {
-            Database.SetInitializer<StateEntitiesContext>(null);
-        }
-
-        protected StateEntitiesContext(DbConnection connection, bool contextOwnsConnection)
-            : base(connection, contextOwnsConnection)
-        {
-            this.Configuration.LazyLoadingEnabled = false;
-            this.Configuration.AutoDetectChangesEnabled = false;
-        }
-
-        protected StateEntitiesContext(string nameOrConnectionString) : base(nameOrConnectionString)
-        {
-            this.Configuration.LazyLoadingEnabled = false;
-            this.Configuration.AutoDetectChangesEnabled = false;
+            Condition.Requires(connectionFactory, nameof(connectionFactory)).IsNotNull();
+            this.ConnectionFactory = connectionFactory;
+            this.ChangeTracker.LazyLoadingEnabled = false;
+            this.ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        protected DbConnection Connection
+        {
+            get
+            {
+                if (this.connection == null)
+                    this.connection = this.ConnectionFactory.CreateConnection();
+                return this.connection;
+            }
+        }
+
+        protected IDbConnectionFactory ConnectionFactory { get; }
+
+        #endregion Properties
 
         #region Methods
 
         public void FixEntityState()
         {
-            foreach (var entry in ChangeTracker.Entries<Domain.IStateEntity>())
+            foreach (var entry in ChangeTracker.Entries<Domain.IStateEntity>().ToList())
             {
-                Domain.IStateEntity entity = entry.Entity;
+                IStateEntity entity = entry.Entity;
                 switch (entity.EntityState)
                 {
                     case Domain.EntityState.Added:
@@ -62,56 +77,40 @@ namespace DDD.Core.Infrastructure.Data
         public override int SaveChanges()
         {
             this.FixEntityState();
-            this.SetGeneratedValues();
-            try
-            {
-                return base.SaveChanges();
-            }
-            catch (DbEntityValidationException ex)
-            {
-                ex.AddErrorsInData();
-                throw;
-            }
+            return base.SaveChanges();
         }
 
-        public override Task<int> SaveChangesAsync()
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
             this.FixEntityState();
-            this.SetGeneratedValues();
-            try
-            {
-                return base.SaveChangesAsync();
-            }
-            catch (DbEntityValidationException ex)
-            {
-                ex.AddErrorsInData();
-                throw;
-            }
+            return base.SaveChanges(acceptAllChangesOnSuccess);
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             this.FixEntityState();
-            this.SetGeneratedValues();
-            try
-            {
-                return base.SaveChangesAsync(cancellationToken);
-            }
-            catch (DbEntityValidationException ex)
-            {
-                ex.AddErrorsInData();
-                throw;
-            }
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Conventions.Add(new StateEntityConvention());
+            this.FixEntityState();
+            return base.SaveChangesAsync(cancellationToken);
         }
 
-        protected virtual void SetGeneratedValues()
+        protected virtual void ApplyConfigurations(ModelBuilder modelBuilder)
         {
+        }
+
+        protected virtual void ApplyConventions(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyStateEntityConvention();
+        }
+
+        protected override sealed void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            this.ApplyConfigurations(modelBuilder);
+            this.ApplyConventions(modelBuilder);
         }
 
         #endregion Methods

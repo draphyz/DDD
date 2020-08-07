@@ -1,64 +1,40 @@
-﻿using System.Data.Entity.ModelConfiguration;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DDD.Core.Infrastructure.Data
 {
-    using Core.Domain;
+    using Domain;
 
-    public abstract class EventStateConfiguration : EntityTypeConfiguration<EventState>
+    public abstract class EventStateConfiguration : IEntityTypeConfiguration<EventState>
     {
-
-        #region Fields
-
-        private readonly bool useUpperCase;
-
-        #endregion Fields
-
-        #region Constructors
-
-        protected EventStateConfiguration(bool useUpperCase)
-        {
-            this.useUpperCase = useUpperCase;
-            // Table
-            this.ToTable(ToCasingConvention("Event"));
-            // Keys
-            this.HasKey(e => e.Id);
-            // Fields
-            this.Property(e => e.Id)
-                .HasColumnName(ToCasingConvention("EventId"))
-                .HasColumnOrder(1)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-            this.Property(e => e.EventType)
-                .HasColumnOrder(2)
-                .IsUnicode(false)
-                .HasMaxLength(50)
-                .IsRequired();
-            this.Property(e => e.StreamId)
-                .HasColumnOrder(3)
-                .IsUnicode(false)
-                .HasMaxLength(50)
-                .IsRequired();
-            this.Property(e => e.CommitId)
-                .HasColumnOrder(4);
-            this.Property(e => e.OccurredOn)
-                .HasColumnOrder(5)
-                .HasPrecision(2);
-            this.Property(e => e.Subject)
-                .HasColumnOrder(6)
-                .IsUnicode(false)
-                .HasMaxLength(100);
-            this.Property(e => e.Body)
-                .HasColumnOrder(7)
-                .IsRequired();
-            this.Property(e => e.Dispatched)
-                .HasColumnOrder(8);
-        }
-
-        #endregion Constructors
 
         #region Methods
 
-        protected string ToCasingConvention(string name) => this.useUpperCase ? name.ToUpperInvariant() : name;
+        public virtual void Configure(EntityTypeBuilder<EventState> builder)
+        {
+            // Table
+            builder.ToTable("Event");
+            // Keys
+            builder.HasKey(e => e.Id);
+            // Fields
+            builder.Property(e => e.Id)
+                   .HasColumnName("EventId");
+            builder.Property(e => e.EventType)
+                   .IsUnicode(false)
+                   .HasMaxLength(50)
+                   .IsRequired();
+            builder.Property(e => e.StreamId)
+                   .IsUnicode(false)
+                   .HasMaxLength(50)
+                   .IsRequired();
+            builder.Property(e => e.CommitId);
+            builder.Property(e => e.Subject)
+                   .IsUnicode(false)
+                   .HasMaxLength(100);
+            builder.Property(e => e.Body)
+                   .IsRequired();
+            builder.Property(e => e.Dispatched);
+        }
 
         #endregion Methods
 

@@ -21,9 +21,7 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         #region Constructors
 
-#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public PollyQueryHandler(IQueryHandler<TQuery, TResult> handler, ISyncPolicy policy)
-#pragma warning restore CS3001 // Argument type is not CLS-compliant
         {
             Condition.Requires(handler, nameof(handler)).IsNotNull();
             Condition.Requires(policy, nameof(policy)).IsNotNull();

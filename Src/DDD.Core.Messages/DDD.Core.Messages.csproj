@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
     <OutputType>Library</OutputType>
     <RootNamespace>DDD.Core</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
