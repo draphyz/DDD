@@ -1,97 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{596A8700-3D18-4A62-B200-1F78A9EA4617}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DDD</RootNamespace>
-    <AssemblyName>DDD.Core.Abstractions</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net472</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DocumentationFile>bin\$(Configuration)\DDD.Core.Abstractions.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Debug\DDD.Core.Abstractions.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Release\DDD.Core.Abstractions.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="CharExtensions.cs" />
-    <Compile Include="Collections\ICollectionExtensions.cs" />
-    <Compile Include="Collections\IDictionaryExtensions.cs" />
-    <Compile Include="DependencyInjection\IKeyedServiceProvider.cs" />
-    <Compile Include="IServiceProviderExtensions.cs" />
-    <Compile Include="Mapping\IMappingProcessor.cs" />
-    <Compile Include="Mapping\IMappingProcessorExtensions.cs" />
-    <Compile Include="Mapping\IObjectMapper.cs" />
-    <Compile Include="Mapping\IObjectMapperExtensions.cs" />
-    <Compile Include="Mapping\IObjectTranslatorExtensions.cs" />
-    <Compile Include="Mapping\MappingException.cs" />
-    <Compile Include="Mapping\MappingProcessor.cs" />
-    <Compile Include="Collections\IEnumerableExtensions.cs" />
-    <Compile Include="Collections\KeyEqualityComparer.cs" />
-    <Compile Include="DateTimeExtensions.cs" />
-    <Compile Include="Mapping\DelegatingTranslator.cs" />
-    <Compile Include="Mapping\IObjectTranslator.cs" />
-    <Compile Include="Linq\IEnumerableExtensions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\IJsonSerializer.cs" />
-    <Compile Include="Serialization\ISerializer.cs" />
-    <Compile Include="Serialization\ISerializerExtensions.cs" />
-    <Compile Include="Serialization\ITextSerializer.cs" />
-    <Compile Include="Serialization\ITextSerializerExtensions.cs" />
-    <Compile Include="Serialization\IXmlSerializer.cs" />
-    <Compile Include="Serialization\JsonSerializationOptions.cs" />
-    <Compile Include="Serialization\SerializationException.cs" />
-    <Compile Include="Serialization\XmlSerializationOptions.cs" />
-    <Compile Include="StringExtensions.cs" />
-    <Compile Include="Threading\SynchronizationContextRemover.cs" />
-    <Compile Include="Validation\FailureLevel.cs" />
-    <Compile Include="Validation\IAsyncObjectValidator.cs" />
-    <Compile Include="Validation\IObjectValidator.cs" />
-    <Compile Include="Validation\ValidationFailure.cs" />
-    <Compile Include="Validation\ValidationResult.cs" />
+    <Compile Include="..\..\Build\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Conditions">
-      <Version>2.1.0</Version>
-    </PackageReference>
+    <PackageReference Include="Conditions" Version="2.1.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

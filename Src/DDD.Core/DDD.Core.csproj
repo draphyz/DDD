@@ -1,156 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C6C3E419-B9AA-44AD-9DBF-789294687AE6}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DDD.Core</RootNamespace>
-    <AssemblyName>DDD.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>net472</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DocumentationFile>bin\$(Configuration)\DDD.Core.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\DDD.Core.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\DDD.Core.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
-    <Compile Include="Application\ApplicationException.cs" />
-    <Compile Include="Application\AsyncCommandHandlerWithLogging.cs" />
-    <Compile Include="Application\AsyncDomainCommandHandler.cs" />
-    <Compile Include="Application\AsyncQueryHandlerWithLogging.cs" />
-    <Compile Include="Application\CommandConflictException.cs" />
-    <Compile Include="Application\CommandException.cs" />
-    <Compile Include="Application\CommandHandlerWithLogging.cs" />
-    <Compile Include="Application\CommandProcessor.cs" />
-    <Compile Include="Application\CommandTimeoutException.cs" />
-    <Compile Include="Application\CommandUnauthorizedException.cs" />
-    <Compile Include="Application\CommandUnavailableException.cs" />
-    <Compile Include="Application\DomainCommandHandler.cs" />
-    <Compile Include="Application\DomainToCommandExceptionTranslator.cs" />
-    <Compile Include="Application\IAsyncCommandHandler.cs" />
-    <Compile Include="Application\IAsyncCommandValidator.cs" />
-    <Compile Include="Application\IAsyncQueryHandler.cs" />
-    <Compile Include="Application\IAsyncQueryValidator.cs" />
-    <Compile Include="Application\ICommandHandler.cs" />
-    <Compile Include="Application\ICommandProcessor.cs" />
-    <Compile Include="Application\ICommandValidator.cs" />
-    <Compile Include="Application\IQueryHandler.cs" />
-    <Compile Include="Application\IQueryProcessor.cs" />
-    <Compile Include="Application\IQueryValidator.cs" />
-    <Compile Include="Application\QueryException.cs" />
-    <Compile Include="Application\QueryHandlerWithLogging.cs" />
-    <Compile Include="Application\QueryProcessor.cs" />
-    <Compile Include="Application\QueryTimeoutException.cs" />
-    <Compile Include="Application\QueryUnauthorizedException.cs" />
-    <Compile Include="Application\QueryUnavailableException.cs" />
-    <Compile Include="Domain\ComparableValueObject.cs" />
-    <Compile Include="Domain\DomainEntity.cs" />
-    <Compile Include="Domain\DomainException.cs" />
-    <Compile Include="Domain\DomainServiceConflictException.cs" />
-    <Compile Include="Domain\DomainServiceException.cs" />
-    <Compile Include="Domain\DomainServiceTimeoutException.cs" />
-    <Compile Include="Domain\DomainServiceUnauthorizedException.cs" />
-    <Compile Include="Domain\DomainServiceUnavailableException.cs" />
-    <Compile Include="Domain\EventHandler.cs" />
-    <Compile Include="Domain\EventPublisher.cs" />
-    <Compile Include="Domain\RepositoryConflictException.cs" />
-    <Compile Include="Domain\RepositoryException.cs" />
-    <Compile Include="Domain\RepositoryTimeoutException.cs" />
-    <Compile Include="Domain\RepositoryUnauthorizedException.cs" />
-    <Compile Include="Domain\RepositoryUnavailableException.cs" />
-    <Compile Include="Domain\StoredEventTranslator.cs" />
-    <Compile Include="Domain\IAsyncEventPublisher.cs" />
-    <Compile Include="Domain\IEventHandler.cs" />
-    <Compile Include="Domain\IEventHandler`1.cs" />
-    <Compile Include="Domain\IEventPublisher.cs" />
-    <Compile Include="Domain\IEventPublisherExtensions.cs" />
-    <Compile Include="Domain\IEnumerableExtensions.cs" />
-    <Compile Include="Domain\IAsyncRepository.cs" />
-    <Compile Include="Domain\IRepository.cs" />
-    <Compile Include="Infrastructure\Data\DbCommandHander.cs" />
-    <Compile Include="Infrastructure\Data\DbConnectionFactory.cs" />
-    <Compile Include="Infrastructure\Data\DbQueryHandler.cs" />
-    <Compile Include="Infrastructure\Data\DbScriptSplitter.cs" />
-    <Compile Include="Infrastructure\Data\DbStandardExpressions.cs" />
-    <Compile Include="Infrastructure\Data\DbToCommandExceptionTranslator.cs" />
-    <Compile Include="Infrastructure\Data\DbToQueryExceptionTranslator.cs" />
-    <Compile Include="Infrastructure\Data\DbToRepositoryExceptionTranslator.cs" />
-    <Compile Include="Infrastructure\Data\IDbConnectionExtensions.cs" />
-    <Compile Include="Infrastructure\Data\IDbConnectionFactory.cs" />
-    <Compile Include="Infrastructure\Data\IDbConnectionFactoryExtensions.cs" />
-    <Compile Include="Infrastructure\Data\IDbStandardExpressions.cs" />
-    <Compile Include="Infrastructure\Data\Oracle11Expressions.cs" />
-    <Compile Include="Infrastructure\Data\OracleErrorHelper.cs" />
-    <Compile Include="Infrastructure\Data\OracleToCommandExceptionTranslator.cs" />
-    <Compile Include="Infrastructure\Data\OracleToQueryExceptionTranslator.cs" />
-    <Compile Include="Infrastructure\Data\OracleToRepositoryExceptionTranslator.cs" />
-    <Compile Include="Infrastructure\Data\SqlErrorExtensions.cs" />
-    <Compile Include="Infrastructure\Data\SqlServer2012Expressions.cs" />
-    <Compile Include="Infrastructure\Data\SqlServerToCommandExceptionTranslator.cs" />
-    <Compile Include="Infrastructure\Data\SqlServerToQueryExceptionTranslator.cs" />
-    <Compile Include="Infrastructure\Data\SqlServerToRepositoryExceptionTranslator.cs" />
-    <Compile Include="Infrastructure\Serialization\DataContractSerializerWrapper.cs" />
-    <Compile Include="Infrastructure\Serialization\XmlSerializerWrapper.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Domain\StoredEvent.cs" />
-    <Compile Include="Domain\ValueObject.cs" />
+    <Compile Include="..\..\Build\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj">
-      <Project>{596a8700-3d18-4a62-b200-1f78a9ea4617}</Project>
-      <Name>DDD.Core.Abstractions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DDD.Core.Messages\DDD.Core.Messages.csproj">
-      <Project>{2438b31a-3a39-4878-81fa-be5ae715eae5}</Project>
-      <Name>DDD.Core.Messages</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\DDD.Core.Messages\DDD.Core.Messages.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Conditions">
-      <Version>2.1.0</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions">
-      <Version>3.1.0</Version>
-    </PackageReference>
+    <PackageReference Include="Conditions" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.0" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
