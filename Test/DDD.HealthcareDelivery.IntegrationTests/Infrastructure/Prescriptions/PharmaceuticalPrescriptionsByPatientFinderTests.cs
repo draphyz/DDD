@@ -7,10 +7,9 @@ using System;
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Application.Prescriptions;
-    using Core.Infrastructure.Testing;
 
     public abstract class PharmaceuticalPrescriptionsByPatientFinderTests<TFixture>
-        where TFixture : IDbFixture<IHealthcareConnectionFactory>
+        where TFixture : IPersistenceFixture<IHealthcareDeliveryConnectionFactory>
     {
         #region Fields
 

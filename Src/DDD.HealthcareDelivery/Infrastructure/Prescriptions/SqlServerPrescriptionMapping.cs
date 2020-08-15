@@ -13,7 +13,7 @@
     {
         #region Constructors
 
-        public SqlServerPrescriptionMapping() : base(false)
+        public SqlServerPrescriptionMapping() 
         {
             // Fields
             this.Discriminator(m => m.Column(m1 => m1.SqlType("varchar(5)")));

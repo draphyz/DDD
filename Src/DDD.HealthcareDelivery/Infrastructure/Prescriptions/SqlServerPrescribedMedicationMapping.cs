@@ -7,7 +7,7 @@
     {
         #region Constructors
 
-        public SqlServerPrescribedMedicationMapping() : base(false)
+        public SqlServerPrescribedMedicationMapping() 
         {
             // Fields
             this.Discriminator(m => m.Column(m1 => m1.SqlType("varchar(20)")));

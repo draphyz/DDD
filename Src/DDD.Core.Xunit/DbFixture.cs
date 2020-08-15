@@ -28,6 +28,7 @@ namespace DDD.Core.Infrastructure.Testing
             var resourceAssembly = Assembly.GetCallingAssembly();
             var resourceType = resourceAssembly.GetTypes().Single(t => t.Name == resourceFile);
             this.resourceManager = new ResourceManager(resourceType);
+            this.RegisterDbProviderFactory();
             this.CreateDatabase();
         }
 
@@ -61,7 +62,10 @@ namespace DDD.Core.Infrastructure.Testing
 
         protected abstract int[] ExecuteScript(string script, IDbConnection connection);
 
-        #endregion Methods
+        protected virtual void RegisterDbProviderFactory()
+        {
+        }
 
+        #endregion Methods
     }
 }

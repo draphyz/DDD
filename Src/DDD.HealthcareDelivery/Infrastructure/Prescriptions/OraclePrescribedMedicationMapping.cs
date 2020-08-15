@@ -7,7 +7,7 @@
     {
         #region Constructors
 
-        public OraclePrescribedMedicationMapping() : base(false)
+        public OraclePrescribedMedicationMapping()
         {
             // Fields
             this.Discriminator(m => m.Column(m1 => m1.SqlType("varchar2(20)")));

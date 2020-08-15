@@ -10,12 +10,12 @@ namespace DDD.Core.Infrastructure.Data
     using Mapping;
     using Core.Domain;
 
-    internal class NHibernateRepositoryExceptionTranslator : IObjectTranslator<HibernateException, RepositoryException>
+    internal class NHibernateRepositoryExceptionTranslator : IObjectTranslator<Exception, RepositoryException>
     {
 
         #region Fields
 
-        public static readonly IObjectTranslator<HibernateException, RepositoryException> Default = new NHibernateRepositoryExceptionTranslator();
+        public static readonly IObjectTranslator<Exception, RepositoryException> Default = new NHibernateRepositoryExceptionTranslator();
 
         private readonly IObjectTranslator<DbException, RepositoryException> dbExceptionTranslator = DbToRepositoryExceptionTranslator.Default;
 
@@ -23,7 +23,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public RepositoryException Translate(HibernateException exception, IDictionary<string, object> options = null)
+        public RepositoryException Translate(Exception exception, IDictionary<string, object> options = null)
         {
             Condition.Requires(exception, nameof(exception)).IsNotNull();
             Condition.Requires(options, nameof(options))
@@ -32,6 +32,8 @@ namespace DDD.Core.Infrastructure.Data
             var entityType = (Type)options["EntityType"];
             switch (exception)
             {
+                case DbException dbEx:
+                    return dbExceptionTranslator.Translate(dbEx, options);
                 case ADOException _:
                     var dbException = ADOExceptionHelper.ExtractDbException(exception);
                     if (dbException != null)

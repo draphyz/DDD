@@ -14,7 +14,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         #region Constructors
 
-        public PrescribedMedicationsByPrescriptionFinder(IHealthcareConnectionFactory connectionFactory) 
+        public PrescribedMedicationsByPrescriptionFinder(IHealthcareDeliveryConnectionFactory connectionFactory) 
             : base(connectionFactory)
         {
         }

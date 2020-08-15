@@ -4,7 +4,7 @@
     {
         #region Constructors
 
-        public SqlServerStoredEventMapping(bool useUpperCase) : base(useUpperCase)
+        public SqlServerStoredEventMapping() 
         {
             // Fields
             this.Property(e => e.Body, m => m.Column(m1 => m1.SqlType("xml")));

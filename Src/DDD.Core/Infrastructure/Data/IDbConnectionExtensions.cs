@@ -15,6 +15,7 @@ namespace DDD.Core.Infrastructure.Data
             switch (connection.GetType().ToString())
             {
                 case "System.Data.SqlClient.SqlConnection":
+                case "Microsoft.Data.SqlClient.SqlConnection":
                     return DbStandardExpressions.SqlServer2012;
 
                 case "Oracle.ManagedDataAccess.Client.OracleConnection":

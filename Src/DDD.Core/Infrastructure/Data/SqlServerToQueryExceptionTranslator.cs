@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Collections.Generic;
 using Conditions;
 
@@ -19,16 +18,16 @@ namespace DDD.Core.Infrastructure.Data
                      .IsNotNull()
                      .Evaluate(options.ContainsKey("Query"));
             var query = (IQuery)options["Query"];
-            var sqlServerException = (SqlException)exception;
-            foreach (SqlError error in sqlServerException.Errors)
+            dynamic sqlServerException = exception;
+            foreach (dynamic error in sqlServerException.Errors)
             {
-                if (error.IsUnavailableError())
+                if (SqlServerErrorHelper.IsUnavailableError(error))
                     return new QueryUnavailableException(query, exception);
 
-                if (error.IsUnauthorizedError())
+                if (SqlServerErrorHelper.IsUnauthorizedError(error))
                     return new QueryUnauthorizedException(query, exception);
 
-                if (error.IsTimeoutError())
+                if (SqlServerErrorHelper.IsTimeoutError(error))
                     return new QueryTimeoutException(query, exception);
             }
             return new QueryException(isTransient: false, query, exception);

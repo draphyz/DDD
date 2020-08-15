@@ -1,5 +1,4 @@
 ﻿using Conditions;
-using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Mapping.ByCode;
 
@@ -7,20 +6,20 @@ namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Prescriptions;
 
-    public abstract class HealthcareConfiguration : Configuration
+    public abstract class HealthcareDeliveryConfiguration : Configuration
     {
 
         #region Constructors
 
-        protected HealthcareConfiguration(string connectionString)
+        protected HealthcareDeliveryConfiguration(string connectionString)
         {
             Condition.Requires(connectionString, nameof(connectionString)).IsNotNullOrWhiteSpace();
-            var modelMapper = new ModelMapper();
-            this.InitializeModel(modelMapper);
             this.DataBaseIntegration(db =>
             {
                 db.ConnectionString = connectionString;
             });
+            var modelMapper = new ModelMapper();
+            this.AddMappings(modelMapper);
             this.AddMapping(modelMapper.CompileMappingForAllExplicitlyAddedEntities());
         }
 
@@ -28,10 +27,12 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Methods
 
-        protected virtual void InitializeModel(ModelMapper modelMapper)
+        protected virtual void AddMappings(ModelMapper modelMapper)
         {
+            modelMapper.AddMapping<PharmaceuticalPrescriptionMapping>();
             modelMapper.AddMapping<PrescribedPharmaceuticalProductMapping>();
         }
+       
 
         #endregion Methods
 

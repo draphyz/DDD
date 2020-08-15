@@ -25,9 +25,9 @@ namespace DDD.Core.Infrastructure.Data
         public const string NotNullDiscriminatorValue = "not null";
         public const string NullDiscriminatorValue = "null";
         private readonly Type returnedClass;
-        private Dictionary<Type, ClassMapping> classes;
+        private readonly Dictionary<Type, ClassMapping> classes;
         private bool isMutable;
-        private List<PropertyMapping> properties;
+        private readonly List<PropertyMapping> properties;
         private string[] propertyNames;
         private IType[] propertyTypes;
 

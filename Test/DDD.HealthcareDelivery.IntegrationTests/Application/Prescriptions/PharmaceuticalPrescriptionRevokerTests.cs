@@ -1,4 +1,5 @@
 ﻿using Xunit;
+using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Principal;
@@ -11,17 +12,17 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Core.Domain;
     using Core.Infrastructure.Data;
     using Domain.Prescriptions;
-    using Core.Infrastructure.Testing;
     using Infrastructure;
-    using Mapping;
 
     public abstract class PharmaceuticalPrescriptionRevokerTests<TFixture> : IDisposable
-        where TFixture : IDbFixture<IHealthcareConnectionFactory>
+        where TFixture : IPersistenceFixture<IHealthcareDeliveryConnectionFactory>
     {
 
         #region Fields
 
+        private ISessionFactory sessionFactory;
         private ISession session;
+        private DbConnection connection;
 
         #endregion Fields
 
@@ -53,6 +54,8 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         public void Dispose()
         {
             this.session.Dispose();
+            this.connection.Dispose();
+            this.sessionFactory.Dispose();
         }
 
         [Fact]
@@ -69,10 +72,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             prescription.Status.Should().Be(Domain.Prescriptions.PrescriptionStatus.Revoked);
         }
 
-        protected abstract IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator();
-
-        protected abstract ISession CreateSession();
-
         private static RevokePharmaceuticalPrescription CreateCommand()
         {
             return new RevokePharmaceuticalPrescription
@@ -84,11 +83,17 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         private IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
         {
-            this.session = this.CreateSession();
+            this.sessionFactory = this.Fixture.CreateSessionFactory();
+            this.connection = this.Fixture.ConnectionFactory.CreateOpenConnection();
+            this.session = this.sessionFactory
+                .WithOptions()
+                // To avoid transaction promotion from local to distributed
+                .Connection(this.connection)
+                .OpenSession();
             return new NHibernateRepository<PharmaceuticalPrescription, PrescriptionIdentifier>
              (
                 this.session,
-                this.CreateEventTranslator()
+                this.Fixture.CreateEventTranslator()
             );
         }
 

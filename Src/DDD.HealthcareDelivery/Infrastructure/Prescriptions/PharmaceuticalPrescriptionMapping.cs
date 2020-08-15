@@ -5,20 +5,13 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Domain.Prescriptions;
 
-    internal abstract class PharmaceuticalPrescriptionMapping : SubclassMapping<PharmaceuticalPrescription>
+    internal class PharmaceuticalPrescriptionMapping : SubclassMapping<PharmaceuticalPrescription>
     {
-
-        #region Fields
-
-        private readonly bool useUpperCase;
-
-        #endregion Fields
 
         #region Constructors
 
-        protected PharmaceuticalPrescriptionMapping(bool useUpperCase)
+        public PharmaceuticalPrescriptionMapping()
         {
-            this.useUpperCase = useUpperCase;
             this.Lazy(false);
             // Fields
             this.DiscriminatorValue("PHARM");
@@ -28,7 +21,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             {
                 m.Key(m1 =>
                 {
-                    m1.Column(ToCasingConvention("PrescriptionId"));
+                    m1.Column("PrescriptionId");
                     m1.NotNullable(true);
                 });
                 m.Cascade(Cascade.All);
@@ -37,12 +30,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         }
 
         #endregion Constructors
-
-        #region Methods
-
-        protected string ToCasingConvention(string name) => this.useUpperCase ? name.ToUpperInvariant() : name;
-
-        #endregion Methods
 
     }
 }

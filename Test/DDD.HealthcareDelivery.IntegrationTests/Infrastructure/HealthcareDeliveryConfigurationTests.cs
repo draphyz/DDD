@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NHibernate;
+using NHibernate.Tool.hbm2ddl;
 using System;
 using Xunit;
 
@@ -7,26 +8,25 @@ namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Common.Domain;
     using Core.Domain;
-    using Core.Infrastructure.Testing;
     using Domain.Facilities;
     using Domain.Patients;
     using Domain.Practitioners;
     using Domain.Prescriptions;
 
-    public abstract class HealthcareConfigurationTests<TFixture> : IDisposable
-        where TFixture : IDbFixture<IHealthcareConnectionFactory>
+    public abstract class HealthcareDeliveryConfigurationTests<TFixture> : IDisposable
+        where TFixture : IPersistenceFixture<IHealthcareDeliveryConnectionFactory>
     {
 
         #region Fields
 
-        private readonly HealthcareConfiguration configuration;
+        private readonly HealthcareDeliveryConfiguration configuration;
         private readonly ISession session;
 
         #endregion Fields
 
         #region Constructors
 
-        protected HealthcareConfigurationTests(TFixture fixture)
+        protected HealthcareDeliveryConfigurationTests(TFixture fixture)
         {
             this.Fixture = fixture;
             this.configuration = this.CreateConfiguration();
@@ -42,20 +42,20 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #endregion Properties
 
-        //[Fact]
-        //public void HealthcareConfiguration_WhenMappingValid_CanExportSchema()
-        //{
-        //    // Arrange
-        //    var schemaExport = new SchemaExport(this.configuration);
-        //    // Act
-        //    Action action = () => schemaExport.Execute(useStdOut: true,
-        //                                               execute: true,
-        //                                               justDrop: false,
-        //                                               connection: this.session.Connection,
-        //                                               exportOutput: Console.Out);
-        //    // Assert
-        //    action.Should().NotThrow();
-        //}
+        [Fact(Skip = "This test recreates the schema and thus can cause conflicts with other tests.")]
+        public void HealthcareConfiguration_WhenMappingValid_CanExportSchema()
+        {
+            // Arrange
+            var schemaExport = new SchemaExport(this.configuration);
+            // Act
+            Action action = () => schemaExport.Execute(useStdOut: true,
+                                                       execute: true,
+                                                       justDrop: false,
+                                                       connection: this.session.Connection,
+                                                       exportOutput: Console.Out);
+            // Assert
+            action.Should().NotThrow();
+        }
 
         #region Methods
 
@@ -109,7 +109,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
             // Assert
             prescription2.Should().BeEquivalentTo(prescription1);
         }
-        protected abstract HealthcareConfiguration CreateConfiguration();
+        protected abstract HealthcareDeliveryConfiguration CreateConfiguration();
 
         private static StoredEvent CreateEvent()
         {

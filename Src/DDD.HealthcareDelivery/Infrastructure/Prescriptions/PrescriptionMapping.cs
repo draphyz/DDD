@@ -1,4 +1,5 @@
 ﻿using NHibernate;
+using ByCode = NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
@@ -9,6 +10,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
     using Domain.Practitioners;
     using Domain.Facilities;
 
+
     internal abstract class PrescriptionMapping<TPractitionerLicenseNumber, TFacilityLicenseNumber, TSocialSecurityNumber, TSex> 
         : ClassMapping<Prescription>
         where TPractitionerLicenseNumber : HealthcarePractitionerLicenseNumber
@@ -17,30 +19,24 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         where TSex : Sex
     {
 
-        #region Fields
-
-        private readonly bool useUpperCase;
-
-        #endregion Fields
-
         #region Constructors
 
-        protected PrescriptionMapping(bool useUpperCase)
+        protected PrescriptionMapping()
         {
-            this.useUpperCase = useUpperCase;
             this.Lazy(false);
+            this.SchemaAction(ByCode.SchemaAction.None);
             // Table
-            this.Table(ToCasingConvention("Prescription"));
+            this.Table("Prescription");
             // Keys
             this.ComponentAsId(p => p.Identifier, m1 => 
             m1.Property(i => i.Value, m2 =>
             {
-                m2.Column(ToCasingConvention("PrescriptionId"));
+                m2.Column("PrescriptionId");
             }));
             // Fields
             this.Discriminator(m =>
             {
-                m.Column(ToCasingConvention("PrescriptionType"));
+                m.Column("PrescriptionType");
                 m.Length(5);
                 m.NotNullable(true);
             });
@@ -56,7 +52,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             {
                 m2.Column(m3 =>
                 {
-                    m3.Name(ToCasingConvention("Language"));
+                    m3.Name("Language");
                     m3.SqlType("char(2)");
                 });
                 m2.Type(NHibernateUtil.AnsiString);
@@ -76,102 +72,102 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 m.Columns
                 (m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberId"));
+                    m1.Name("PrescriberId");
                     m1.NotNullable(true);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberType"));
+                    m1.Name("PrescriberType");
                     m1.Length(20);
                     m1.NotNullable(true);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberLastName"));
+                    m1.Name("PrescriberLastName");
                     m1.Length(50);
                     m1.NotNullable(true);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberFirstName"));
+                    m1.Name("PrescriberFirstName");
                     m1.Length(50);
                     m1.NotNullable(true);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberDisplayName"));
+                    m1.Name("PrescriberDisplayName");
                     m1.Length(100);
                     m1.NotNullable(true);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberLicenseNum"));
+                    m1.Name("PrescriberLicenseNum");
                     m1.Length(25);
                     m1.NotNullable(true);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberSSN"));
+                    m1.Name("PrescriberSSN");
                     m1.Length(25);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberSpeciality"));
+                    m1.Name("PrescriberSpeciality");
                     m1.Length(50);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberPhone1"));
+                    m1.Name("PrescriberPhone1");
                     m1.Length(20);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberPhone2"));
+                    m1.Name("PrescriberPhone2");
                     m1.Length(20);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberEmail1"));
+                    m1.Name("PrescriberEmail1");
                     m1.Length(50);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberEmail2"));
+                    m1.Name("PrescriberEmail2");
                     m1.Length(50);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberWebSite"));
+                    m1.Name("PrescriberWebSite");
                     m1.Length(255);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberStreet"));
+                    m1.Name("PrescriberStreet");
                     m1.Length(50);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberHouseNum"));
+                    m1.Name("PrescriberHouseNum");
                     m1.Length(10);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberBoxNum"));
+                    m1.Name("PrescriberBoxNum");
                     m1.Length(10);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberPostCode"));
+                    m1.Name("PrescriberPostCode");
                     m1.Length(10);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberCity"));
+                    m1.Name("PrescriberCity");
                     m1.Length(50);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("PrescriberCountry"));
+                    m1.Name("PrescriberCountry");
                     m1.Length(2);
                     m1.SqlType("char(2)");
                 });
@@ -181,21 +177,21 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             {
                 m1.Property(p => p.Identifier, m2 =>
                 {
-                    m2.Column(ToCasingConvention("PatientId"));
+                    m2.Column("PatientId");
                     m2.NotNullable(true);
                 });
                 m1.Component(p => p.FullName, m2 =>
                 {
                     m2.Property(n => n.FirstName, m3 =>
                     {
-                        m3.Column(ToCasingConvention("PatientFirstName"));
+                        m3.Column("PatientFirstName");
                         m3.Type(NHibernateUtil.AnsiString);
                         m3.Length(50);
                         m3.NotNullable(true);
                     });
                     m2.Property(n => n.LastName, m3 =>
                     {
-                        m3.Column(ToCasingConvention("PatientLastName"));
+                        m3.Column("PatientLastName");
                         m3.Type(NHibernateUtil.AnsiString);
                         m3.Length(50);
                         m3.NotNullable(true);
@@ -203,7 +199,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 });
                 m1.Property(p => p.Sex, m3 =>
                 {
-                    m3.Column(ToCasingConvention("PatientSex"));
+                    m3.Column("PatientSex");
                     m3.Type(new EnumerationCodeType<TSex>());
                     m3.Length(2);
                     m3.NotNullable(true);
@@ -213,14 +209,14 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                     m2.Class<TSocialSecurityNumber>();
                     m2.Property(n => n.Value, m3 =>
                     {
-                        m3.Column(ToCasingConvention("PatientSSN"));
+                        m3.Column("PatientSSN");
                         m3.Type(NHibernateUtil.AnsiString);
                         m3.Length(25);
                     });
                 });
                 m1.Property(p => p.Birthdate, m2 =>
                 {
-                    m2.Column(ToCasingConvention("PatientBirthdate"));
+                    m2.Column("PatientBirthdate");
                     m2.Type(NHibernateUtil.Date);
                 });
             });
@@ -231,36 +227,30 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 m.Columns
                 (m1 =>
                 {
-                    m1.Name(ToCasingConvention("FacilityId"));
+                    m1.Name("FacilityId");
                     m1.NotNullable(true);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("FacilityType"));
+                    m1.Name("FacilityType");
                     m1.Length(20);
                     m1.NotNullable(true);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("FacilityName"));
+                    m1.Name("FacilityName");
                     m1.Length(100);
                     m1.NotNullable(true);
                 },
                 m1 =>
                 {
-                    m1.Name(ToCasingConvention("FacilityLicenseNum"));
+                    m1.Name("FacilityLicenseNum");
                     m1.Length(25);
                 });
             });
         }
 
         #endregion Constructors
-
-        #region Methods
-
-        protected string ToCasingConvention(string name) => this.useUpperCase ? name.ToUpperInvariant() : name;
-
-        #endregion Methods
 
     }
 }

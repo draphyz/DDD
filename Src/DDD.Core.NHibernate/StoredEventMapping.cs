@@ -7,22 +7,16 @@ namespace DDD.Core.Infrastructure.Data
 
     public abstract class StoredEventMapping : ClassMapping<StoredEvent>
     {
-        #region Fields
-
-        private readonly bool useUpperCase;
-
-        #endregion Fields
 
         #region Constructors
 
-        protected StoredEventMapping(bool useUpperCase)
+        protected StoredEventMapping()
         {
-            this.useUpperCase = useUpperCase;
             this.Lazy(false);
             // Table
-            this.Table(ToCasingConvention("Event"));
+            this.Table("Event");
             // Keys
-            this.Id(e => e.Id, m1 =>  m1.Column(ToCasingConvention("EventId")));
+            this.Id(e => e.Id, m1 =>  m1.Column("EventId"));
             // Fields
             this.Property(e => e.EventType, m =>
             {
@@ -48,12 +42,6 @@ namespace DDD.Core.Infrastructure.Data
         }
 
         #endregion Constructors
-
-        #region Methods
-
-        protected string ToCasingConvention(string name) => this.useUpperCase ? name.ToUpperInvariant() : name;
-
-        #endregion Methods
 
     }
 }

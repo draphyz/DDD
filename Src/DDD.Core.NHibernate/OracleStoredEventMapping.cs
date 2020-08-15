@@ -4,7 +4,7 @@
     {
         #region Constructors
 
-        public OracleStoredEventMapping(bool useUpperCase) : base(useUpperCase)
+        public OracleStoredEventMapping()
         {
             // Fields
             this.Id(e => e.Id, m => m.Column(m1 => m1.SqlType("number(19,0)")));

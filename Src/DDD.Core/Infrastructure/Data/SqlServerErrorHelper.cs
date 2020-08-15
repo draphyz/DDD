@@ -1,14 +1,13 @@
 ﻿using Conditions;
-using System.Data.SqlClient;
 
 namespace DDD.Core.Infrastructure.Data
 {
-    internal static class SqlErrorExtensions
+    internal static class SqlServerErrorHelper
     {
 
         #region Methods
 
-        public static bool IsUnavailableError(this SqlError error)
+        public static bool IsUnavailableError(dynamic error)
         {
             Condition.Requires(error, nameof(error)).IsNotNull();
             switch (error.Number)
@@ -70,7 +69,7 @@ namespace DDD.Core.Infrastructure.Data
             }
         }
 
-        public static bool IsUnauthorizedError(this SqlError error)
+        public static bool IsUnauthorizedError(dynamic error)
         {
             Condition.Requires(error, nameof(error)).IsNotNull();
             switch (error.Number)
@@ -105,7 +104,7 @@ namespace DDD.Core.Infrastructure.Data
             }
         }
 
-        public static bool IsTimeoutError(this SqlError error)
+        public static bool IsTimeoutError(dynamic error)
         {
             Condition.Requires(error, nameof(error)).IsNotNull();
             switch (error.Number)

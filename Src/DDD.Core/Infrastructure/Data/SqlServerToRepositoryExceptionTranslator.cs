@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Collections.Generic;
 using Conditions;
 using System;
@@ -21,16 +20,16 @@ namespace DDD.Core.Infrastructure.Data
                      .Evaluate(options.ContainsKey("EntityType"));
             var entityType = (Type)options["EntityType"];
             var outerException = options.ContainsKey("OuterException") ? (Exception)options["OuterException"] : exception;
-            var sqlServerException = (SqlException)exception;
-            foreach (SqlError error in sqlServerException.Errors)
+            dynamic sqlServerException = exception;
+            foreach (dynamic error in sqlServerException.Errors)
             {
-                if (error.IsUnavailableError())
+                if (SqlServerErrorHelper.IsUnavailableError(error))
                     return new RepositoryUnavailableException(entityType, outerException);
 
-                if (error.IsUnauthorizedError())
+                if (SqlServerErrorHelper.IsUnauthorizedError(error))
                     return new RepositoryUnauthorizedException(entityType, outerException);
 
-                if (error.IsTimeoutError())
+                if (SqlServerErrorHelper.IsTimeoutError(error))
                     return new RepositoryTimeoutException(entityType, outerException);
             }
             return new RepositoryException(isTransient: false, entityType, outerException);

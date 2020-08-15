@@ -2,6 +2,8 @@
 using NHibernate;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,8 +22,8 @@ namespace DDD.Core.Infrastructure.Data
         #region Fields
 
         private readonly IObjectTranslator<IEvent, StoredEvent> eventTranslator;
+        private readonly IObjectTranslator<Exception, RepositoryException> exceptionTranslator = NHibernateRepositoryExceptionTranslator.Default;
         private readonly ISession session;
-        private readonly IObjectTranslator<HibernateException, RepositoryException> exceptionTranslator = NHibernateRepositoryExceptionTranslator.Default;
 
         #endregion Fields
 
@@ -60,7 +62,7 @@ namespace DDD.Core.Infrastructure.Data
             try
             {
                 await this.session.SaveOrUpdateAsync(aggregate);
-                foreach(var @event in events)
+                foreach (var @event in events)
                     await this.session.SaveAsync(@event);
             }
             catch (HibernateException ex)

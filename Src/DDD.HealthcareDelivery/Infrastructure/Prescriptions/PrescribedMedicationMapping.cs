@@ -10,36 +10,29 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         where TMedicationCode : MedicationCode
     {
 
-        #region Fields
-
-        private readonly bool useUpperCase;
-
-        #endregion Fields
-
         #region Constructors
 
-        protected PrescribedMedicationMapping(bool useUpperCase)
+        protected PrescribedMedicationMapping()
         {
-            this.useUpperCase = useUpperCase;
             this.Lazy(false);
             // Table
-            this.Table(ToCasingConvention("PrescMedication"));
+            this.Table("PrescMedication");
             // Keys
             this.Id("identifier", m =>
             {
-                m.Column(ToCasingConvention("PrescMedicationId"));
-                m.Generator(Generators.Sequence, m1 => m1.Params(new { sequence = ToCasingConvention("PrescMedicationId") }));
+                m.Column("PrescMedicationId");
+                m.Generator(Generators.Sequence, m1 => m1.Params(new { sequence = "PrescMedicationId" }));
             });
             // Fields
             this.Discriminator(m =>
             {
-                m.Column(ToCasingConvention("MedicationType"));
+                m.Column("MedicationType");
                 m.Length(20);
                 m.NotNullable(true);
             });
             this.Property(med => med.NameOrDescription, m =>
             {
-                m.Column(ToCasingConvention("NameOrDesc"));
+                m.Column("NameOrDesc");
                 m.Type(NHibernateUtil.AnsiString);
                 m.Length(1024);
                 m.NotNullable(true);
@@ -64,7 +57,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 m.Class<TMedicationCode>();
                 m.Property(c => c.Value, m1 =>
                 {
-                    m1.Column(ToCasingConvention("Code"));
+                    m1.Column("Code");
                     m1.Type(NHibernateUtil.AnsiString);
                     m1.Length(20);
                 });
@@ -72,12 +65,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         }
 
         #endregion Constructors
-
-        #region Methods
-
-        protected string ToCasingConvention(string name) => this.useUpperCase ? name.ToUpperInvariant() : name;
-
-        #endregion Methods
 
     }
 }

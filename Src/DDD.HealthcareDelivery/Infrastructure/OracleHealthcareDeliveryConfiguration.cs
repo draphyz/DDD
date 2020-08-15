@@ -1,19 +1,17 @@
-﻿using NHibernate.Cfg;
-using NHibernate.Dialect;
+﻿using NHibernate.Dialect;
 using NHibernate.Driver;
 using NHibernate.Mapping.ByCode;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
-    using Prescriptions;
     using Core.Infrastructure.Data;
 
-    public abstract class OracleHealthcareConfiguration : HealthcareConfiguration
+    public abstract class OracleHealthcareDeliveryConfiguration : HealthcareDeliveryConfiguration
     {
 
         #region Constructors
 
-        protected OracleHealthcareConfiguration(string connectionString) : base(connectionString)
+        protected OracleHealthcareDeliveryConfiguration(string connectionString) : base(connectionString)
         {
             this.DataBaseIntegration(db =>
             {
@@ -27,10 +25,9 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Methods
 
-        protected override void InitializeModel(ModelMapper modelMapper)
+        protected override void AddMappings(ModelMapper modelMapper)
         {
-            base.InitializeModel(modelMapper);
-            modelMapper.AddMapping<OraclePharmaceuticalPrescriptionMapping>();
+            base.AddMappings(modelMapper);
             modelMapper.AddMapping<OracleStoredEventMapping>();
         }
 

@@ -6,10 +6,9 @@ using Xunit;
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Application.Prescriptions;
-    using Core.Infrastructure.Testing;
 
     public abstract class PrescribedMedicationsByPrescriptionFinderTests<TFixture>
-        where TFixture : IDbFixture<IHealthcareConnectionFactory>
+        where TFixture : IPersistenceFixture<IHealthcareDeliveryConnectionFactory>
     {
         #region Fields
 

@@ -8,12 +8,12 @@ namespace DDD.HealthcareDelivery.Infrastructure
     using Domain.Facilities;
     using Common.Domain;
 
-    public class BelgianSqlServerHealthcareConfiguration : SqlServerHealthcareConfiguration
+    public class BelgianSqlServerHealthcareDeliveryConfiguration : SqlServerHealthcareDeliveryConfiguration
     {
 
         #region Constructors
 
-        public BelgianSqlServerHealthcareConfiguration(string connectionString) : base(connectionString)
+        public BelgianSqlServerHealthcareDeliveryConfiguration(string connectionString) : base(connectionString)
         {
         }
 
@@ -21,9 +21,9 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Methods
 
-        protected override void InitializeModel(ModelMapper modelMapper)
+        protected override void AddMappings(ModelMapper modelMapper)
         {
-            base.InitializeModel(modelMapper);
+            base.AddMappings(modelMapper);
             modelMapper.AddMapping<SqlServerPrescriptionMapping<BelgianHealthcarePractitionerLicenseNumber,
                                                                 BelgianHealthFacilityLicenseNumber,
                                                                 BelgianSocialSecurityNumber,

@@ -12,7 +12,7 @@ namespace DDD.Core.Infrastructure.Data
         #region Fields
 
         private readonly string connectionString;
-        private readonly DbProviderFactory providerFactory;
+        private readonly string providerName;
 
         #endregion Fields
 
@@ -22,7 +22,7 @@ namespace DDD.Core.Infrastructure.Data
         {
             Condition.Requires(providerName, nameof(providerName)).IsNotNullOrWhiteSpace();
             Condition.Requires(connectionString, nameof(connectionString)).IsNotNullOrWhiteSpace();
-            this.providerFactory = DbProviderFactories.GetFactory(providerName);
+            this.providerName = providerName;
             this.connectionString = connectionString;
         }
 
@@ -32,7 +32,8 @@ namespace DDD.Core.Infrastructure.Data
 
         public DbConnection CreateConnection()
         {
-            var connection = this.providerFactory.CreateConnection();
+            var providerFactory = DbProviderFactories.GetFactory(providerName);
+            var connection = providerFactory.CreateConnection();
             connection.ConnectionString = this.connectionString;
             return connection;
         }
