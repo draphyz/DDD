@@ -59,6 +59,6 @@ The application layer can be tested by using the project "DDD.HealthcareDelivery
 
 **Cross-cutting concerns**
 
-The decorator pattern is especially useful in CQRS to handle cross-cutting concerns such as logging or error handling. Command or query handlers (small interfaces) can be easily decorated. You will find some examples of decorators in the projects "DDD.Core.Polly" or "DDD.Core".
+The decorator pattern is especially useful in CQRS to handle cross-cutting concerns such as logging or error handling. Command or query handlers (small interfaces) can be easily decorated. You will find some examples of decorators in the projects "DDD.Core.Polly" and "DDD.Core".
 
 
