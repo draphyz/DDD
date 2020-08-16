@@ -69,4 +69,4 @@ Exception chaining (or exception wrapping) has been used. Each abstraction has i
 - IQueryHandler throws exceptions of type QueryException
 - ICommandHandler throws exceptions of type CommandException
 
-The Domain and Application layers have their own base exception class (respectively DomainException and ApplicationException).
+The Domain and Application layers have their own base exception class (respectively DomainException and ApplicationException). These classes defines a property IsTransient indicating whether the exception is transient.
