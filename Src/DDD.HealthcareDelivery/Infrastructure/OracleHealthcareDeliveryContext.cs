@@ -12,7 +12,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Constructors
 
-        public OracleHealthcareDeliveryContext(IHealthcareDeliveryConnectionFactory connectionFactory) : base(connectionFactory)
+        public OracleHealthcareDeliveryContext(string connectionString) : base(connectionString)
         {
         }
 
@@ -22,13 +22,13 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseOracle(this.Connection, o => o.UseOracleSQLCompatibility("11"));
+            optionsBuilder.UseOracle(this.ConnectionString, o => o.UseOracleSQLCompatibility("11"));
         }
 
         protected override void ApplyConfigurations(ModelBuilder modelBuilder)
         {
             base.ApplyConfigurations(modelBuilder);
-            var connectionBuilder = new OracleConnectionStringBuilder(this.Connection.ConnectionString);
+            var connectionBuilder = new OracleConnectionStringBuilder(this.ConnectionString);
             modelBuilder.HasDefaultSchema(connectionBuilder.UserID);
             modelBuilder.ApplyConfiguration(new OracleEventStateConfiguration());
             modelBuilder.ApplyConfiguration(new OraclePrescriptionStateConfiguration());

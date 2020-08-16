@@ -83,7 +83,7 @@ namespace DDD.Core.Infrastructure.Data
             return await this.Query().FirstOrDefaultAsync(expression);
         }
 
-        /// <remarks>To avoid a promotion to an MSDTC transaction</remarks>
+        /// <remarks>To avoid a transaction promotion from local to distributed</remarks>
         protected async Task OpenConnectionAsync()
         {
             try

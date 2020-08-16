@@ -3,7 +3,6 @@ using DDD.Core.Domain;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
-using System.Data.Common;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -12,18 +11,12 @@ namespace DDD.Core.Infrastructure.Data
     public abstract class StateEntitiesContext : DbContext
     {
 
-        #region Fields
-
-        private DbConnection connection;
-
-        #endregion Fields
-
         #region Constructors
 
-        protected StateEntitiesContext(IDbConnectionFactory connectionFactory)
+        protected StateEntitiesContext(string connectionString)
         {
-            Condition.Requires(connectionFactory, nameof(connectionFactory)).IsNotNull();
-            this.ConnectionFactory = connectionFactory;
+            Condition.Requires(connectionString, nameof(connectionString)).IsNotNullOrWhiteSpace();
+            this.ConnectionString = connectionString;
             this.ChangeTracker.LazyLoadingEnabled = false;
             this.ChangeTracker.AutoDetectChangesEnabled = false;
         }
@@ -32,17 +25,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Properties
 
-        protected DbConnection Connection
-        {
-            get
-            {
-                if (this.connection == null)
-                    this.connection = this.ConnectionFactory.CreateConnection();
-                return this.connection;
-            }
-        }
-
-        protected IDbConnectionFactory ConnectionFactory { get; }
+        protected string ConnectionString { get; }
 
         #endregion Properties
 

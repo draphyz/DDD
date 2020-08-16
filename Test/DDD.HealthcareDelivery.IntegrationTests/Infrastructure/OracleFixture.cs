@@ -35,7 +35,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         public HealthcareDeliveryContext CreateContext()
         {
-            return new OracleHealthcareDeliveryContextWithLogging(this.ConnectionFactory, this.loggerFactory);
+            return new OracleHealthcareDeliveryContextWithLogging(OracleConnectionFactory.ConnectionString, this.loggerFactory);
         }
 
         public IObjectTranslator<IEvent, EventState> CreateEventTranslator()

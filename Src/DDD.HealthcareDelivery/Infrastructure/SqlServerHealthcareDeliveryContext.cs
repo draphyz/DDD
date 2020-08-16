@@ -10,7 +10,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Constructors
 
-        public SqlServerHealthcareDeliveryContext(IHealthcareDeliveryConnectionFactory connectionFactory) : base(connectionFactory)
+        public SqlServerHealthcareDeliveryContext(string connectionString) : base(connectionString)
         {
         }
 
@@ -20,7 +20,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(this.Connection);
+            optionsBuilder.UseSqlServer(this.ConnectionString);
         }
 
         protected override void ApplyConfigurations(ModelBuilder modelBuilder)

@@ -15,8 +15,8 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Constructors
 
-        public SqlServerHealthcareDeliveryContextWithLogging(IHealthcareDeliveryConnectionFactory connectionFactory, ILoggerFactory loggerFactory) 
-            : base(connectionFactory)
+        public SqlServerHealthcareDeliveryContextWithLogging(string connectionString, ILoggerFactory loggerFactory) 
+            : base(connectionString)
         {
             Condition.Requires(loggerFactory, nameof(loggerFactory)).IsNotNull();
             this.loggerFactory = loggerFactory;

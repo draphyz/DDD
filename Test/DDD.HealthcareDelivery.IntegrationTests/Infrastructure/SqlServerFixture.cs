@@ -35,7 +35,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         public HealthcareDeliveryContext CreateContext()
         {
-            return new SqlServerHealthcareDeliveryContextWithLogging(this.ConnectionFactory, this.loggerFactory);
+            return new SqlServerHealthcareDeliveryContextWithLogging(SqlServerConnectionFactory.ConnectionString, this.loggerFactory);
         }
 
         public IObjectTranslator<IEvent, EventState> CreateEventTranslator()

@@ -12,7 +12,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Constructors
 
-        protected HealthcareDeliveryContext(IHealthcareDeliveryConnectionFactory connectionFactory) : base(connectionFactory)
+        protected HealthcareDeliveryContext(string connectionString) : base(connectionString)
         {
         }
 
