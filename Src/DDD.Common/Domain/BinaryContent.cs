@@ -53,6 +53,8 @@ namespace DDD.Common.Domain
                 yield return this.Data[i];
         }
 
+        public override string ToString() => $"{this.GetType().Name} [data={this.Data}]";
+
         #endregion Methods
 
     }
