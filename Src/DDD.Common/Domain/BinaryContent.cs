@@ -13,7 +13,7 @@ namespace DDD.Common.Domain
 
         #region Fields
 
-        private static readonly BinaryContent Empty = new BinaryContent(new byte[0]);
+        public static readonly BinaryContent Empty = new BinaryContent(new byte[0]);
 
         #endregion Fields
 
