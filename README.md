@@ -59,6 +59,14 @@ The application layer can be tested by using the project "DDD.HealthcareDelivery
 
 **Cross-cutting concerns**
 
-The decorator pattern is especially useful in CQRS to handle cross-cutting concerns such as logging or error handling. Command or query handlers (small interfaces) can be easily decorated. You will find some examples of decorators in the projects "DDD.Core.Polly" or "DDD.Core".
+The decorator pattern is especially useful in CQRS to handle cross-cutting concerns such as logging or error handling. Command or query handlers (small interfaces) can be easily decorated. You will find some examples of decorators in the projects "DDD.Core.Polly" and "DDD.Core".
 
+Exception chaining (or exception wrapping) has been used. Each abstraction has its own set of exceptions :
 
+- ISerializer throws exceptions of type SerializationException
+- IObjectMapper or IObjectTranslator throws exceptions of type MappingException
+- IRepository throws exceptions of type RepositoryException
+- IQueryHandler throws exceptions of type QueryException
+- ICommandHandler throws exceptions of type CommandException
+
+The Domain and Application layers have their own base exception class (respectively DomainException and ApplicationException). These classes defines a property IsTransient indicating whether the exception is transient.
