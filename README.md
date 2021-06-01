@@ -55,7 +55,7 @@ The libraries are distributed by component (bounded context) :
 - The "Common" libraries include common components (EmailAddress, FullName, ...) that can be reused in multiple bounded contexts (shared kernel).
 - The "HealthcareDelivery" libraries include components related to the context of healthcare delivery.
 
-The application layer can be tested by using the project "DDD.HealthcareDelivery.IntegrationTests".
+The application layer can be tested by using the "DDD.HealthcareDelivery.IntegrationTests" project.
 
 **Cross-cutting concerns**
 
