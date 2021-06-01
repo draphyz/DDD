@@ -38,6 +38,8 @@ namespace DDD.Core.Application
                 case DomainServiceUnavailableException _:
                 case RepositoryUnavailableException _:
                     return new CommandUnavailableException(command, exception);
+                case DomainServiceInvalidException invalidEx:
+                    return new CommandInvalidException(command, invalidEx.Failures, exception);
                 default:
                     return new CommandException(exception.IsTransient, command, exception);
             }
