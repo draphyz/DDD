@@ -12,10 +12,9 @@
 
         public PrescribedPharmaceuticalCompounding(string nameOrDescription,
                                                    string posology = null,
-                                                   string quantity = null,
-                                                   string duration = null,
+                                                   byte? quantity = null,
                                                    int identifier = 0)
-            : base(nameOrDescription, posology, quantity, duration, null, identifier)
+            : base(nameOrDescription, posology, quantity, null, identifier)
         {
         }
 

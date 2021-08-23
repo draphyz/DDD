@@ -41,8 +41,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             (
                 medication.NameOrDescription,
                 medication.Posology,
-                medication.Quantity,
-                medication.Duration
+                medication.Quantity
             );
         }
 
@@ -164,7 +163,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 medication.NameOrDescription,
                 medication.Posology,
                 medication.Quantity,
-                medication.Duration,
                 BelgianMedicationCode.CreateIfNotEmpty(medication.Code)
             );
         }
@@ -175,7 +173,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 medication.NameOrDescription,
                 medication.Posology,
                 medication.Quantity,
-                medication.Duration,
                 BelgianMedicationCode.CreateIfNotEmpty(medication.Code)
            );
         }

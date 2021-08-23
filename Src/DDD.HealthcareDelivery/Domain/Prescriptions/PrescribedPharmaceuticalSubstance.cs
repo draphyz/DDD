@@ -10,11 +10,10 @@
 
         public PrescribedPharmaceuticalSubstance(string nameOrDescription,
                                                  string posology = null,
-                                                 string quantity = null,
-                                                 string duration = null,
+                                                 byte? quantity = null,
                                                  MedicationCode code = null,
                                                  int identifier = 0)
-            : base(nameOrDescription, posology, quantity, duration, code, identifier)
+            : base(nameOrDescription, posology, quantity, code, identifier)
         {
         }
 

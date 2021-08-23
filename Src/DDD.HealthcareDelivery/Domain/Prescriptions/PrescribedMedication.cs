@@ -20,8 +20,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         protected PrescribedMedication(string nameOrDescription,
                                        string posology = null,
-                                       string quantity = null,
-                                       string duration = null,
+                                       byte? quantity = null,
                                        MedicationCode code = null,
                                        int identifier = 0)
         {
@@ -29,10 +28,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             Condition.Requires(identifier, nameof(identifier)).IsGreaterOrEqual(0);
             this.NameOrDescription = nameOrDescription;
             this.Posology = posology;
-            if (!string.IsNullOrWhiteSpace(quantity))
+            if (quantity.HasValue)
+            {
+                Condition.Requires(quantity, nameof(quantity)).IsGreaterOrEqual(1);
                 this.Quantity = quantity;
-            if (!string.IsNullOrWhiteSpace(duration))
-                this.Duration = duration;
+            }
             this.Code = code;
             this.identifier = identifier;
         }
@@ -43,13 +43,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public MedicationCode Code { get; private set; }
 
-        public string Duration { get; private set; }
-
         public string NameOrDescription { get; private set; }
 
         public string Posology { get; private set; }
 
-        public string Quantity { get; private set; }
+        public byte? Quantity { get; private set; }
 
         #endregion Properties
 
@@ -60,13 +58,12 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             yield return this.NameOrDescription;
             yield return this.Posology;
             yield return this.Quantity;
-            yield return this.Duration;
             yield return this.Code;
         }
 
         public override string ToString()
         {
-            return $"{this.GetType().Name} [nameOrDescription={this.NameOrDescription}, posology={this.Posology}], quantity={this.Quantity}, duration={this.Duration}, code={this.Code}";
+            return $"{this.GetType().Name} [nameOrDescription={this.NameOrDescription}, posology={this.Posology}, quantity={this.Quantity}, code={this.Code}]";
         }
 
         #endregion Methods

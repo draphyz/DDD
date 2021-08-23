@@ -44,8 +44,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Identifier = 2,
                         NameOrDescription = "Dualkopt Coll. 10 ml",
                         Posology = "1 goutte 2 x/jour",
-                        Quantity = "1 flacon",
-                        Duration = null,
+                        Quantity = 1,
                         Code = "3260072"
                     },
                     new PrescribedMedicationDetails
@@ -53,8 +52,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Identifier = 1,
                         NameOrDescription = "Latansoc Mylan Coll. 2,5 ml X 3",
                         Posology = "1 goutte le soir",
-                        Quantity = "1 boîte de 3 flacons",
-                        Duration = null,
+                        Quantity = 1,
                         Code = null
                     }
                 }
@@ -69,8 +67,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                         Identifier = 3,
                         NameOrDescription = "Dualkopt Coll. 10 ml",
                         Posology = "1 goutte 2 x/jour",
-                        Quantity = "1 flacon",
-                        Duration = null,
+                        Quantity = 1,
                         Code = "3260072"
                     }
                 }

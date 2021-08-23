@@ -114,7 +114,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                         MedicationType = PrescribedMedicationType.Product,
                         Code = "0318717",
                         NameOrDescription = "ADALAT OROS 30 COMP 28 X 30 MG",
-                        Quantity = "1 boîte",
+                        Quantity = 1,
                         Posology = "appliquer 2 fois par jour jusqu'au 3 octobre 2018"
                     }
                 }

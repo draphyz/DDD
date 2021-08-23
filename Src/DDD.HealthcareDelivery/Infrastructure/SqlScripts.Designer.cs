@@ -89,7 +89,6 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         ///		 NameOrDesc AS NameOrDescription,
         ///         Posology,
         ///         Quantity,
-        ///         Duration,
         ///         Code
         ///FROM     PrescMedication
         ///WHERE    PrescriptionId = @PrescriptionId
