@@ -10,7 +10,7 @@ Only a light version of CQRS (no data projection, one data store) has been consi
 
 **Model**
 
-The model considered reflects the life cycle of a medical prescription and, in particular, of a pharmaceutical prescription. This life cycle can be summarized by the following diagram.
+The model considered is a simplified model reflecting the life cycle of a medical prescription and, in particular, of a pharmaceutical prescription. This life cycle can be summarized by the following diagram.
 
 ![Alt Prescription Lifecycle](https://github.com/draphyz/DDD/blob/entityframework/Doc/PrescriptionLifecycle.png)
 
@@ -55,18 +55,18 @@ The libraries are distributed by component (bounded context) :
 - The "Common" libraries include common components (EmailAddress, FullName, ...) that can be reused in multiple bounded contexts (shared kernel).
 - The "HealthcareDelivery" libraries include components related to the context of healthcare delivery.
 
-The application layer can be tested by using the project "DDD.HealthcareDelivery.IntegrationTests".
+The application layer can be tested by using the "DDD.HealthcareDelivery.IntegrationTests" project.
 
 **Cross-cutting concerns**
 
-The decorator pattern is especially useful in CQRS to handle cross-cutting concerns such as logging or error handling. Command or query handlers (small interfaces) can be easily decorated. You will find some examples of decorators in the projects "DDD.Core.Polly" and "DDD.Core".
+The decorator pattern is especially useful in CQRS to handle cross-cutting concerns such as logging or error handling. Command or query handlers (small interfaces) can be easily decorated. You will find some examples of decorators in the "DDD.Core.Polly" and "DDD.Core" projects.
 
 Exception chaining (or exception wrapping) has been used. Each abstraction has its own set of exceptions :
 
-- ISerializer throws exceptions of type SerializationException
-- IObjectMapper or IObjectTranslator throws exceptions of type MappingException
-- IRepository throws exceptions of type RepositoryException
-- IQueryHandler throws exceptions of type QueryException
-- ICommandHandler throws exceptions of type CommandException
+- ISerializer throws a SerializationException
+- IObjectMapper or IObjectTranslator throws a MappingException
+- IRepository throws a RepositoryException
+- IQueryHandler throws a QueryException
+- ICommandHandler throws a CommandException
 
 The Domain and Application layers have their own base exception class (respectively DomainException and ApplicationException). These classes defines a property IsTransient indicating whether the exception is transient.
