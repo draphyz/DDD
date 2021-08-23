@@ -6,6 +6,8 @@ using System.Linq;
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Common.Domain;
+    using Facilities;
+    using Practitioners;
     using Domain.Facilities;
     using Domain.Patients;
     using Domain.Practitioners;

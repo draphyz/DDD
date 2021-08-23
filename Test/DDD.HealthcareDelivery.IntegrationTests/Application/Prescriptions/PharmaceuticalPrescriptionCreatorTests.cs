@@ -12,8 +12,8 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Common.Application;
     using Core.Domain;
     using Core.Infrastructure.Data;
-    using Domain.Facilities;
-    using Domain.Practitioners;
+    using Facilities;
+    using Practitioners;
     using Domain.Prescriptions;
     using Infrastructure;
 

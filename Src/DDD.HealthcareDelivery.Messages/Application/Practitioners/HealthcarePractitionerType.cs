@@ -1,4 +1,4 @@
-﻿namespace DDD.HealthcareDelivery.Domain.Practitioners
+﻿namespace DDD.HealthcareDelivery.Application.Practitioners
 {
     public enum HealthcarePractitionerType
     {

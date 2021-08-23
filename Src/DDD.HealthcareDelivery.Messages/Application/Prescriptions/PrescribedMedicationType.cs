@@ -1,4 +1,4 @@
-﻿namespace DDD.HealthcareDelivery.Domain.Prescriptions
+﻿namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     public enum PrescribedMedicationType
     {
