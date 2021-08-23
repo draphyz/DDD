@@ -36,7 +36,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 state.NameOrDescription,
                 state.Posology,
                 state.Quantity,
-                state.Duration,
                 state.Identifier,
                 state.EntityState
             );
@@ -49,7 +48,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 state.NameOrDescription,
                 state.Posology,
                 state.Quantity,
-                state.Duration,
                 BelgianMedicationCode.CreateIfNotEmpty(state.Code),
                 state.Identifier,
                 state.EntityState
@@ -63,7 +61,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 state.NameOrDescription,
                 state.Posology,
                 state.Quantity,
-                state.Duration,
                 BelgianMedicationCode.CreateIfNotEmpty(state.Code),
                 state.Identifier,
                 state.EntityState

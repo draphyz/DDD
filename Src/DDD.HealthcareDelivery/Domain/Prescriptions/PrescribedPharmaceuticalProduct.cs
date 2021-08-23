@@ -14,12 +14,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public PrescribedPharmaceuticalProduct(string nameOrDescription, 
                                                string posology =null, 
-                                               string quantity = null, 
-                                               string duration = null,
+                                               byte? quantity = null, 
                                                MedicationCode code = null,
                                                int identifier = 0,
                                                EntityState entityState = EntityState.Added)
-            : base(nameOrDescription, posology, quantity, duration, code, identifier, entityState)
+            : base(nameOrDescription, posology, quantity, code, identifier, entityState)
         {
         }
 

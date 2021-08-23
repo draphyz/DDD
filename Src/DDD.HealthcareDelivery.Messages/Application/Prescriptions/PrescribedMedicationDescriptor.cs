@@ -18,9 +18,7 @@
 
         public string Posology { get; set; }
 
-        public string Quantity { get; set; }
-
-        public string Duration { get; set; }
+        public byte? Quantity { get; set; }
 
         #endregion Properties
 

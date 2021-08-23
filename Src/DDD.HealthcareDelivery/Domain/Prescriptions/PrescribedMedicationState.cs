@@ -9,8 +9,6 @@
 
         public string Code { get; set; }
 
-        public string Duration { get; set; }
-
         public EntityState EntityState { get; set; }
 
         public int Identifier { get; set; }
@@ -23,7 +21,7 @@
 
         public int PrescriptionIdentifier { get; set; }
 
-        public string Quantity { get; set; }
+        public byte? Quantity { get; set; }
 
         #endregion Properties
 

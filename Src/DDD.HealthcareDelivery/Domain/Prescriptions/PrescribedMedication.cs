@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using Conditions;
-using System;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
-    using Core;
     using Core.Domain;
 
     public abstract class PrescribedMedication
@@ -22,8 +20,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         protected PrescribedMedication(string nameOrDescription,
                                        string posology = null,
-                                       string quantity = null,
-                                       string duration = null,
+                                       byte? quantity = null,
                                        MedicationCode code = null,
                                        int identifier = 0,
                                        EntityState entityState = EntityState.Added)
@@ -32,10 +29,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             Condition.Requires(identifier, nameof(identifier)).IsGreaterOrEqual(0);
             this.NameOrDescription = nameOrDescription;
             this.Posology = posology;
-            if (!string.IsNullOrWhiteSpace(quantity))
+            if (quantity.HasValue)
+            {
+                Condition.Requires(quantity, nameof(quantity)).IsGreaterOrEqual(1);
                 this.Quantity = quantity;
-            if (!string.IsNullOrWhiteSpace(duration))
-                this.Duration = duration;
+            }
             this.Code = code;
             this.identifier = identifier;
             this.entityState = entityState;
@@ -47,13 +45,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public MedicationCode Code { get; }
 
-        public string Duration { get; }
-
         public string NameOrDescription { get; }
 
         public string Posology { get; }
 
-        public string Quantity { get; }
+        public byte? Quantity { get; }
 
         #endregion Properties
 
@@ -64,7 +60,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             yield return this.NameOrDescription;
             yield return this.Posology;
             yield return this.Quantity;
-            yield return this.Duration;
             yield return this.Code;
         }
 
@@ -77,14 +72,13 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 NameOrDescription = this.NameOrDescription,
                 Posology = this.Posology,
                 Quantity = this.Quantity,
-                Duration = this.Duration,
                 Code = this.Code?.Value
             };
         }
 
         public override string ToString()
         {
-            return $"{this.GetType().Name} [nameOrDescription={this.NameOrDescription}, posology={this.Posology}], quantity={this.Quantity}, duration={this.Duration}, code={this.Code}";
+            return $"{this.GetType().Name} [nameOrDescription={this.NameOrDescription}, posology={this.Posology}, quantity={this.Quantity}, code={this.Code}]";
         }
 
         #endregion Methods

@@ -12,11 +12,10 @@
 
         public PrescribedPharmaceuticalCompounding(string nameOrDescription,
                                                    string posology = null,
-                                                   string quantity = null,
-                                                   string duration = null,
+                                                   byte? quantity = null,
                                                    int identifier = 0,
                                                    EntityState entityState = EntityState.Added)
-            : base(nameOrDescription, posology, quantity, duration, null, identifier, entityState)
+            : base(nameOrDescription, posology, quantity, null, identifier, entityState)
         {
         }
 

@@ -19,7 +19,7 @@ namespace DDD.HealthcareDelivery.Infrastructure {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SqlScripts {
@@ -63,12 +63,12 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         /// <summary>
         ///   Looks up a localized string similar to SELECT   PrescriptionId AS Identifier,
         ///         CASE Status
-        ///			WHEN &apos;CRT&apos; THEN 1
-        ///			WHEN &apos;INP&apos; THEN 2
-        ///			WHEN &apos;DLV&apos; THEN 3
-        ///			WHEN &apos;RVK&apos; THEN 4
-        ///			WHEN &apos;EXP&apos; THEN 5
-        ///			WHEN &apos;ARC&apos; THEN 6
+        ///			WHEN &apos;CRT&apos; THEN 0
+        ///			WHEN &apos;INP&apos; THEN 1
+        ///			WHEN &apos;DLV&apos; THEN 2
+        ///			WHEN &apos;RVK&apos; THEN 3
+        ///			WHEN &apos;EXP&apos; THEN 4
+        ///			WHEN &apos;ARC&apos; THEN 5
         ///		 END AS Status,
         ///         CreatedOn,
         ///         DeliverableAt,
@@ -89,7 +89,6 @@ namespace DDD.HealthcareDelivery.Infrastructure {
         ///		 NameOrDesc AS NameOrDescription,
         ///         Posology,
         ///         Quantity,
-        ///         Duration,
         ///         Code
         ///FROM     PrescMedication
         ///WHERE    PrescriptionId = @PrescriptionId

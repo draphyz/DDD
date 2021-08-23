@@ -33,10 +33,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                    .IsRequired();
             builder.Property(m => m.Posology)
                    .HasMaxLength(1024);
-            builder.Property(m => m.Quantity)
-                   .HasMaxLength(100); ;
-            builder.Property(m => m.Duration)
-                   .HasMaxLength(100);
             builder.Property(m => m.Code)
                    .HasMaxLength(20);
         }
