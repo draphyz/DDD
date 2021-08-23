@@ -29,7 +29,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         public override PrescribedMedicationState ToState()
         {
             var state = base.ToState();
-            state.MedicationType = PrescribedMedicationType.Product.ToString();
+            state.MedicationType = "Product";
             return state;
         }
 

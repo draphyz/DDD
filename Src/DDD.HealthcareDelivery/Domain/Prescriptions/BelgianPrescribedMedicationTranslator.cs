@@ -15,13 +15,13 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                               IDictionary<string, object> options = null)
         {
             Condition.Requires(state, nameof(state)).IsNotNull();
-            switch (state.MedicationType.ToEnum<PrescribedMedicationType>())
+            switch (state.MedicationType)
             {
-                case PrescribedMedicationType.Product:
+                case "Product":
                     return CreateProduct(state);
-                case PrescribedMedicationType.Substance:
+                case "Substance":
                     return CreateSubstance(state);
-                case PrescribedMedicationType.Compounding:
+                case "Compounding":
                     return CreateCompounding(state);
                 default:
                     throw new ArgumentException($"Medication type '{state.MedicationType}' not expected.", nameof(state));

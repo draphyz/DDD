@@ -26,7 +26,7 @@
         public override PrescribedMedicationState ToState()
         {
             var state = base.ToState();
-            state.MedicationType = PrescribedMedicationType.Compounding.ToString();
+            state.MedicationType = "Compounding";
             return state;
         }
 
