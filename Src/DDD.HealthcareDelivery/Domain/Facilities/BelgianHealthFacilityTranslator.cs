@@ -5,6 +5,7 @@ using System.Collections.Generic;
 namespace DDD.HealthcareDelivery.Domain.Facilities
 {
     using Mapping;
+    using Application.Facilities;
 
     internal class BelgianHealthFacilityTranslator : IObjectTranslator<HealthFacilityState, HealthFacility>
     {

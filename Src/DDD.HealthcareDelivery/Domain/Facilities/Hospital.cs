@@ -22,7 +22,7 @@
         public override HealthFacilityState ToState()
         {
             var state = base.ToState();
-            state.FacilityType = HealthFacilityType.Hospital.ToString();
+            state.FacilityType = "Hospital";
             return state;
         }
 

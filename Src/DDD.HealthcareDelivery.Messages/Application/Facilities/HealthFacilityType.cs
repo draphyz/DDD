@@ -1,4 +1,4 @@
-﻿namespace DDD.HealthcareDelivery.Domain.Facilities
+﻿namespace DDD.HealthcareDelivery.Application.Facilities
 {
     public enum HealthFacilityType
     {

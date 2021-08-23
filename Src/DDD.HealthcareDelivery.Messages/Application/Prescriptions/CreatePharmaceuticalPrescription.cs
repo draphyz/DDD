@@ -5,8 +5,8 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Common.Application;
     using Core.Application;
-    using Domain.Facilities;
-    using Domain.Practitioners;
+    using Facilities;
+    using Practitioners;
 
     /// <summary>
     /// Encapsulates all information needed to create a pharmaceutical prescription.

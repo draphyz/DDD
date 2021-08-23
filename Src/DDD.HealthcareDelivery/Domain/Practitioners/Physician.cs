@@ -28,7 +28,7 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
         public override HealthcarePractitionerState ToState()
         {
             var state = base.ToState();
-            state.PractitionerType = HealthcarePractitionerType.Physician.ToString();
+            state.PractitionerType = "Physician";
             return state;
         }
 

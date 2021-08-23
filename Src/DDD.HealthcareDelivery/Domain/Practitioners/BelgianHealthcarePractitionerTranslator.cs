@@ -16,9 +16,9 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
                                                 IDictionary<string, object> options = null)
         {
             Condition.Requires(state, nameof(state)).IsNotNull();
-            switch (state.PractitionerType.ToEnum<HealthcarePractitionerType>())
+            switch (state.PractitionerType)
             {
-                case HealthcarePractitionerType.Physician:
+                case "Physician":
                     return CreatePhysician(state);
                 default:
                     throw new ArgumentException($"Practitioner type '{state.PractitionerType}' not expected.", nameof(state));
