@@ -2,12 +2,10 @@
 {
     using Common.Domain;
     using Domain.Practitioners;
-    using Domain.Facilities;
 
-    internal class OraclePrescriptionMapping<TPractitionerLicenseNumber, TFacilityLicenseNumber, TSocialSecurityNumber, TSex>
-        : PrescriptionMapping<TPractitionerLicenseNumber, TFacilityLicenseNumber, TSocialSecurityNumber, TSex>
+    internal class OraclePrescriptionMapping<TPractitionerLicenseNumber, TSocialSecurityNumber, TSex>
+        : PrescriptionMapping<TPractitionerLicenseNumber, TSocialSecurityNumber, TSex>
         where TPractitionerLicenseNumber : HealthcarePractitionerLicenseNumber
-        where TFacilityLicenseNumber : HealthFacilityLicenseNumber
         where TSocialSecurityNumber : SocialSecurityNumber
         where TSex : Sex
     {

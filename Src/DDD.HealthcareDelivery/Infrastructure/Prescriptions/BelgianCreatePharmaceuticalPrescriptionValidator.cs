@@ -28,10 +28,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             RuleFor(c => c.PatientLastName).NotEmpty().WithErrorCode("PatientLastNameEmpty");
             RuleFor(c => c.PatientSocialSecurityNumber).Length(11).WithErrorCode("PatientSocialSecurityNumberInvalid")
                                                        .Numeric().WithErrorCode("PatientSocialSecurityNumberInvalid");
-            RuleFor(c => c.FacilityIdentifier).GreaterThan(0).WithErrorCode("FacilityIdentifierInvalid");
-            RuleFor(c => c.FacilityName).NotEmpty().WithErrorCode("FacilityNameEmpty");
-            RuleFor(c => c.FacilityLicenseNumber).Length(8).WithErrorCode("FacilityLicenseNumberInvalid")
-                                                       .Numeric().WithErrorCode("FacilityLicenseNumberInvalid");
             RuleFor(p => p.PrescriptionIdentifier).GreaterThan(0).WithErrorCode("PrescriptionIdentifierInvalid");
             RuleFor(p => p.Medications).NotEmpty().WithErrorCode("MedicationsEmpty")
                                        .MaximumCount(10).WithErrorCode("MedicationsCountInvalid");

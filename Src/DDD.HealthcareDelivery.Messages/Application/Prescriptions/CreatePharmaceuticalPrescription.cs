@@ -5,7 +5,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Common.Application;
     using Core.Application;
-    using Facilities;
     using Practitioners;
 
     /// <summary>
@@ -20,13 +19,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public DateTime? DeliverableAt { get; set; }
 
-        public int FacilityIdentifier { get; set; }
-
-        public string FacilityLicenseNumber { get; set; }
-
-        public string FacilityName { get; set; }
-
-        public HealthFacilityType FacilityType { get; set; }
+        public int? EncounterIdentifier { get; set; }
 
         public string LanguageCode { get; set; }
 
@@ -91,8 +84,8 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public override string ToString()
         {
-            var format = $"{0} [prescriptionIdentifier={1}, prescriberIdentifier={2}, patientIdentifier={3}, facilityIdentifier={4}]";
-            return string.Format(format, this.GetType().Name, this.PrescriptionIdentifier, this.PrescriberIdentifier, this.PatientIdentifier, this.FacilityIdentifier);
+            var format = $"{0} [prescriptionIdentifier={1}, prescriberIdentifier={2}, patientIdentifier={3}]";
+            return string.Format(format, this.GetType().Name, this.PrescriptionIdentifier, this.PrescriberIdentifier, this.PatientIdentifier);
         }
 
         #endregion Methods

@@ -12,7 +12,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Common.Application;
     using Core.Domain;
     using Core.Infrastructure.Data;
-    using Facilities;
     using Practitioners;
     using Domain.Prescriptions;
     using Infrastructure;
@@ -101,11 +100,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                 PatientLastName = "Flintstone",
                 PatientBirthdate = new DateTime(1976, 2, 7),
                 PatientSex = Sex.Male,
-                FacilityIdentifier = 1,
-                FacilityType = HealthFacilityType.MedicalOffice,
-                FacilityName = "Medical Office Donald Duck",
                 PrescriptionIdentifier = 1,
                 CreatedOn = new DateTime(2018, 1, 1, 10, 6, 0),
+                EncounterIdentifier = 1,
                 DeliverableAt = new DateTime(2018, 2, 1),
                 Medications = new PrescribedMedicationDescriptor[]
                 {

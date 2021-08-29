@@ -72,15 +72,14 @@ namespace DDD.Core.Infrastructure.Data
         }
 
         private IEnumerable<StoredEvent> ToStoredEvents(TDomainEntity aggregate)
-        {
-            var commitId = Guid.NewGuid();
-            var subject = Thread.CurrentPrincipal?.Identity?.Name;
+        { 
+            var user = Thread.CurrentPrincipal?.Identity?.Name;
             return aggregate.AllEvents().Select(e =>
             {
                 var evt = this.eventTranslator.Translate(e);
                 evt.StreamId = aggregate.IdentityAsString();
-                evt.CommitId = commitId;
-                evt.Subject = subject;
+                evt.UniqueId = Guid.NewGuid();
+                evt.Username = user;
                 return evt;
             });
         }

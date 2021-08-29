@@ -1,13 +1,16 @@
 ﻿using Conditions;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
-namespace DDD.Core.Domain
+namespace DDD.Core.Infrastructure.Data
 {
+    using Domain;
     using Mapping;
-    using Serialization;
+    using DDD.Serialization;
 
     public class StoredEventTranslator : IObjectTranslator<IEvent, StoredEvent>
     {
+
         #region Fields
 
         private readonly ITextSerializer eventSerializer;
@@ -33,10 +36,25 @@ namespace DDD.Core.Domain
             {
                 OccurredOn = @event.OccurredOn,
                 EventType = @event.GetType().Name,
+                Version = ToVersion(@event.GetType().FullName),
                 Body = this.eventSerializer.SerializeToString(@event)
             };
         }
 
+        private static byte ToVersion(string fullName)
+        {
+            byte version = 1;
+            var match = Regex.Match(fullName, @".(Version|V)\d+.");
+            if (match.Success)
+            {
+                var value = Regex.Replace(match.Value, "(Version|V)", string.Empty)
+                                 .Replace(".", string.Empty);
+                version = byte.Parse(value);
+            }
+            return version;
+        }
+
         #endregion Methods
+
     }
 }

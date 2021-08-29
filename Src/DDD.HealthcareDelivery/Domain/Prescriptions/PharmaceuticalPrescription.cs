@@ -8,9 +8,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     using Collections;
     using Common.Domain;
     using Core.Domain;
-    using Facilities;
     using Patients;
     using Practitioners;
+    using Encounters;
 
     /// <summary>
     /// Represents a pharmaceutical prescription.
@@ -29,14 +29,14 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         public PharmaceuticalPrescription(PrescriptionIdentifier identifier,
                                           HealthcarePractitioner prescriber,
                                           Patient patient,
-                                          HealthFacility healthFacility,
                                           IEnumerable<PrescribedMedication> prescribedMedications,
                                           Alpha2LanguageCode languageCode,
                                           PrescriptionStatus status,
                                           DateTime createdOn,
+                                          EncounterIdentifier encounterIdentifier = null,
                                           DateTime? delivrableAt = null,
                                           IEnumerable<IDomainEvent> events = null)
-            : base(identifier, prescriber, patient, healthFacility, languageCode, status, createdOn, delivrableAt, events)
+            : base(identifier, prescriber, patient, languageCode, status, createdOn, encounterIdentifier, delivrableAt, events)
         {
             Condition.Requires(prescribedMedications, nameof(prescribedMedications))
                      .IsNotNull()
@@ -54,10 +54,10 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         public static PharmaceuticalPrescription Create(PrescriptionIdentifier identifier,
                                                         HealthcarePractitioner prescriber,
                                                         Patient patient,
-                                                        HealthFacility healthFacility,
                                                         IEnumerable<PrescribedMedication> prescribedMedications,
                                                         DateTime createdOn,
                                                         Alpha2LanguageCode languageCode,
+                                                        EncounterIdentifier encounterIdentifier = null,
                                                         DateTime? delivrableAt = null)
         {
             var prescription = new PharmaceuticalPrescription
@@ -65,11 +65,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 identifier,
                 prescriber,
                 patient,
-                healthFacility,
                 prescribedMedications,
                 languageCode,
                 PrescriptionStatus.Created,
                 createdOn,
+                encounterIdentifier,
                 delivrableAt
             );
             prescription.AddEvent(new PharmaceuticalPrescriptionCreated(identifier.Value, createdOn));
@@ -79,12 +79,12 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         public static PharmaceuticalPrescription Create(PrescriptionIdentifier identifier,
                                                         HealthcarePractitioner prescriber,
                                                         Patient patient,
-                                                        HealthFacility healthFacility,
                                                         IEnumerable<PrescribedMedication> prescribedMedications,
                                                         Alpha2LanguageCode languageCode,
+                                                        EncounterIdentifier encounterIdentifier = null,
                                                         DateTime? delivrableAt = null)
         {
-            return Create(identifier, prescriber, patient, healthFacility, prescribedMedications, DateTime.Now, languageCode, delivrableAt);
+            return Create(identifier, prescriber, patient, prescribedMedications, DateTime.Now, languageCode, encounterIdentifier, delivrableAt);
         }
 
         public IEnumerable<PrescribedMedication> PrescribedMedications() => this.prescribedMedications.ToImmutableHashSet();

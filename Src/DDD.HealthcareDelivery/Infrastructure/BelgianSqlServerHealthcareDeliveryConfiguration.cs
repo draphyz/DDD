@@ -5,7 +5,6 @@ namespace DDD.HealthcareDelivery.Infrastructure
     using Prescriptions;
     using Domain.Prescriptions;
     using Domain.Practitioners;
-    using Domain.Facilities;
     using Common.Domain;
 
     public class BelgianSqlServerHealthcareDeliveryConfiguration : SqlServerHealthcareDeliveryConfiguration
@@ -25,7 +24,6 @@ namespace DDD.HealthcareDelivery.Infrastructure
         {
             base.AddMappings(modelMapper);
             modelMapper.AddMapping<SqlServerPrescriptionMapping<BelgianHealthcarePractitionerLicenseNumber,
-                                                                BelgianHealthFacilityLicenseNumber,
                                                                 BelgianSocialSecurityNumber,
                                                                 BelgianSex>>();
             modelMapper.AddMapping<SqlServerPrescribedMedicationMapping<BelgianMedicationCode>>();

@@ -7,8 +7,7 @@ using Xunit;
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Common.Domain;
-    using Core.Domain;
-    using Domain.Facilities;
+    using Core.Infrastructure.Data;
     using Domain.Patients;
     using Domain.Practitioners;
     using Domain.Prescriptions;
@@ -118,8 +117,8 @@ namespace DDD.HealthcareDelivery.Infrastructure
                 Id = 1,
                 Body = @"<PharmaceuticalPrescriptionCreated xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""DDD.HealthcareDelivery.Domain.Prescriptions""><PrescriptionId>1</PrescriptionId><OccurredOn>2018-01-01T10:06:00</OccurredOn></PharmaceuticalPrescriptionCreated>",
                 StreamId = "1",
-                CommitId = Guid.NewGuid(),
-                Subject = "draphyz",
+                UniqueId = Guid.NewGuid(),
+                Username = "draphyz",
                 EventType = "PharmaceuticalPrescriptionCreated",
                 OccurredOn = new DateTime(2018, 1, 1)
             };
@@ -156,11 +155,6 @@ namespace DDD.HealthcareDelivery.Infrastructure
                     new FullName("Flintstone", "Fred"),
                     BelgianSex.Male,
                     new BelgianSocialSecurityNumber("60207273601")
-                ),
-                new MedicalOffice
-                (
-                    1,
-                    "Medical Office Donald Duck"
                 ),
                 new PrescribedMedication[]
                 {

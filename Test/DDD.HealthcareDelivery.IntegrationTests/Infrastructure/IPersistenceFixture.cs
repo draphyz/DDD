@@ -3,6 +3,7 @@
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Core.Domain;
+    using Core.Infrastructure.Data;
     using Core.Infrastructure.Testing;
     using Mapping;
 

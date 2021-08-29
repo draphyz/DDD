@@ -8,13 +8,11 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
     using Common.Infrastructure.Data;
     using Domain.Prescriptions;
     using Domain.Practitioners;
-    using Domain.Facilities;
 
 
-    internal abstract class PrescriptionMapping<TPractitionerLicenseNumber, TFacilityLicenseNumber, TSocialSecurityNumber, TSex> 
+    internal abstract class PrescriptionMapping<TPractitionerLicenseNumber, TSocialSecurityNumber, TSex> 
         : ClassMapping<Prescription>
         where TPractitionerLicenseNumber : HealthcarePractitionerLicenseNumber
-        where TFacilityLicenseNumber : HealthFacilityLicenseNumber
         where TSocialSecurityNumber : SocialSecurityNumber
         where TSex : Sex
     {
@@ -220,34 +218,12 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                     m2.Type(NHibernateUtil.Date);
                 });
             });
-            // Facility
-            this.Property(p => p.HealthFacility, m =>
+            // Encounter
+            this.Component(p => p.EncounterIdentifier, m1 =>
+            m1.Property(i => i.Value, m2 =>
             {
-                m.Type<HealthFacilityType<TFacilityLicenseNumber>>();
-                m.Columns
-                (m1 =>
-                {
-                    m1.Name("FacilityId");
-                    m1.NotNullable(true);
-                },
-                m1 =>
-                {
-                    m1.Name("FacilityType");
-                    m1.Length(20);
-                    m1.NotNullable(true);
-                },
-                m1 =>
-                {
-                    m1.Name("FacilityName");
-                    m1.Length(100);
-                    m1.NotNullable(true);
-                },
-                m1 =>
-                {
-                    m1.Name("FacilityLicenseNum");
-                    m1.Length(25);
-                });
-            });
+                m2.Column("EncounterId");
+            }));
         }
 
         #endregion Constructors

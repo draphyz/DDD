@@ -5,7 +5,6 @@ namespace DDD.HealthcareDelivery.Infrastructure
     using Prescriptions;
     using Domain.Prescriptions;
     using Domain.Practitioners;
-    using Domain.Facilities;
     using Common.Domain;
 
     public class BelgianOracleHealthcareDeliveryConfiguration : OracleHealthcareDeliveryConfiguration
@@ -25,7 +24,6 @@ namespace DDD.HealthcareDelivery.Infrastructure
         {
             base.AddMappings(modelMapper);
             modelMapper.AddMapping<OraclePrescriptionMapping<BelgianHealthcarePractitionerLicenseNumber,
-                                                             BelgianHealthFacilityLicenseNumber,
                                                              BelgianSocialSecurityNumber,
                                                              BelgianSex>>();
             modelMapper.AddMapping<OraclePrescribedMedicationMapping<BelgianMedicationCode>>();

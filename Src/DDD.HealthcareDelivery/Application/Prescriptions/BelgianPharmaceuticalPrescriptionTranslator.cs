@@ -6,12 +6,11 @@ using System.Linq;
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Common.Domain;
-    using Facilities;
     using Practitioners;
-    using Domain.Facilities;
     using Domain.Patients;
     using Domain.Practitioners;
     using Domain.Prescriptions;
+    using Domain.Encounters;
     using Mapping;
 
     public class BelgianPharmaceuticalPrescriptionTranslator
@@ -21,7 +20,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         #region Methods
 
         public PharmaceuticalPrescription Translate(CreatePharmaceuticalPrescription command,
-                                                                 IDictionary<string, object> options = null)
+                                                    IDictionary<string, object> options = null)
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
             return PharmaceuticalPrescription.Create
@@ -29,10 +28,10 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
                     new PrescriptionIdentifier(command.PrescriptionIdentifier),
                     ToPrescriber(command),
                     ToPatient(command),
-                    ToHealthFacility(command),
                     command.Medications.Select(m => ToPrescribedMedication(m)),
                     command.CreatedOn,
                     new Alpha2LanguageCode(command.LanguageCode),
+                    EncounterIdentifier.CreateIfNotEmpty(command.EncounterIdentifier),
                     command.DeliverableAt
                 );
         }
@@ -47,38 +46,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             );
         }
 
-        private static HealthFacility ToHealthFacility(CreatePharmaceuticalPrescription command)
-        {
-            switch (command.FacilityType)
-            {
-                case HealthFacilityType.Hospital:
-                    return ToHospital(command);
-                case HealthFacilityType.MedicalOffice:
-                    return ToMedicalOffice(command);
-                default:
-                    throw new ArgumentException($"Health facility type '{command.FacilityType}' not expected.", nameof(command));
-            }
-        }
-
-        private static Hospital ToHospital(CreatePharmaceuticalPrescription command)
-        {
-            return new Hospital
-            (
-                command.FacilityIdentifier,
-                command.FacilityName,
-                new BelgianHealthFacilityLicenseNumber(command.FacilityLicenseNumber)
-            );
-        }
-
-        private static MedicalOffice ToMedicalOffice(CreatePharmaceuticalPrescription command)
-        {
-            return new MedicalOffice
-            (
-                command.FacilityIdentifier,
-                command.FacilityName,
-                BelgianHealthFacilityLicenseNumber.CreateIfNotEmpty(command.FacilityLicenseNumber)
-            );
-        }
         private static Patient ToPatient(CreatePharmaceuticalPrescription command)
         {
             return new Patient

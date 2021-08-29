@@ -7,7 +7,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     using Common.Domain;
     using Patients;
     using Practitioners;
-    using Facilities;
 
     public class PharmaceuticalPrescriptionTests : PrescriptionTests
     {
@@ -37,7 +36,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                   new PrescriptionIdentifier(1),
                                   new Physician(1, new FullName("Duck", "Donald"), new BelgianHealthcarePractitionerLicenseNumber("19006951001")),
                                   new Patient(1, new FullName("Fred", "Flintstone"), BelgianSex.Male),
-                                  new MedicalOffice(1, "Medical Office Donald Duck"),
                                   new PrescribedMedication[] { new PrescribedPharmaceuticalProduct("ADALAT OROS 30 COMP 28 X 30 MG", "appliquer 2 fois par jour") },
                                   new Alpha2LanguageCode("FR")
                               );
@@ -54,7 +52,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                   new PrescriptionIdentifier(1),
                                   new Physician(1, new FullName("Duck", "Donald"), new BelgianHealthcarePractitionerLicenseNumber("19006951001")),
                                   new Patient(1, new FullName("Fred", "Flintstone"), BelgianSex.Male),
-                                  new MedicalOffice(1, "Medical Office Donald Duck"),
                                   new PrescribedMedication[] { new PrescribedPharmaceuticalProduct("ADALAT OROS 30 COMP 28 X 30 MG", "appliquer 2 fois par jour") },
                                   new Alpha2LanguageCode("FR")
                               );
@@ -71,7 +68,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                   new PrescriptionIdentifier(1),
                                   new Physician(1, new FullName("Duck", "Donald"), new BelgianHealthcarePractitionerLicenseNumber("19006951001")),
                                   new Patient(1, new FullName("Fred", "Flintstone"), BelgianSex.Male),
-                                  new MedicalOffice(1, "Medical Office Donald Duck"),
                                   new PrescribedMedication[] { new PrescribedPharmaceuticalProduct("ADALAT OROS 30 COMP 28 X 30 MG", "appliquer 2 fois par jour") },
                                   new DateTime(2016, 2, 7),
                                   new Alpha2LanguageCode("FR")
@@ -89,7 +85,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                   new PrescriptionIdentifier(1),
                                   new Physician(1, new FullName("Duck", "Donald"), new BelgianHealthcarePractitionerLicenseNumber("19006951001")),
                                   new Patient(1, new FullName("Fred", "Flintstone"), BelgianSex.Male),
-                                  new MedicalOffice(1, "Medical Office Donald Duck"),
                                   new PrescribedMedication[] { new PrescribedPharmaceuticalProduct("ADALAT OROS 30 COMP 28 X 30 MG", "appliquer 2 fois par jour") },
                                   new DateTime(2016, 2, 7),
                                   new Alpha2LanguageCode("FR")
@@ -113,7 +108,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 new PrescriptionIdentifier(1),
                 new Physician(1, new FullName("Duck", "Donald"), new BelgianHealthcarePractitionerLicenseNumber("19006951001")),
                 new Patient(1, new FullName("Fred", "Flintstone"), BelgianSex.Male),
-                new MedicalOffice(1, "Medical Office Donald Duck"),
                 new PrescribedMedication[] { new PrescribedPharmaceuticalProduct("ADALAT OROS 30 COMP 28 X 30 MG", "appliquer 2 fois par jour") },
                 new Alpha2LanguageCode("FR"),
                 status,

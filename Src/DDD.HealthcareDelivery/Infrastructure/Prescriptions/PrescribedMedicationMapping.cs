@@ -42,6 +42,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                 m.Type(NHibernateUtil.AnsiString);
                 m.Length(1024);
             });
+            this.Property(med => med.Quantity);
             this.Component(med => med.Code, m =>
             {
                 m.Class<TMedicationCode>();
