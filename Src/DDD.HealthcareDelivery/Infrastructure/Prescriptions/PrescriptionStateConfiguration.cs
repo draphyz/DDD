@@ -137,20 +137,8 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
                        .HasColumnType("date");
                 patient.Ignore(p => p.ContactInformation);
             });
-            builder.OwnsOne(p => p.HealthFacility, facility =>
-            {
-                facility.Property(f => f.Identifier)
-                        .HasColumnName("FacilityId");
-                facility.Property(f => f.FacilityType)
-                       .HasColumnName("FacilityType")
-                       .HasMaxLength(20);
-                facility.Property(f => f.Name)
-                       .HasColumnName("FacilityName")
-                       .HasMaxLength(100);
-                facility.Property(f => f.LicenseNumber)
-                       .HasColumnName("FacilityLicenseNum")
-                       .HasMaxLength(25);
-            });
+            builder.Property(p => p.EncounterIdentifier)
+                   .HasColumnName("EncounterId");
         }
 
         #endregion Methods

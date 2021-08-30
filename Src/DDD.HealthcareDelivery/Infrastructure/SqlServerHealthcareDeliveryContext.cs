@@ -27,7 +27,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
         {
             base.ApplyConfigurations(modelBuilder);
             modelBuilder.HasDefaultSchema("dbo");
-            modelBuilder.ApplyConfiguration(new SqlServerEventStateConfiguration());
+            modelBuilder.ApplyConfiguration(new SqlServerStoredEventConfiguration());
             modelBuilder.ApplyConfiguration(new SqlServerPrescriptionStateConfiguration());
             modelBuilder.ApplyConfiguration(new SqlServerPrescribedMedicationStateConfiguration());
         }

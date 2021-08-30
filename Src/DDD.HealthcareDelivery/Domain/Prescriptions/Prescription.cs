@@ -7,8 +7,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     using Core.Domain;
     using Common.Domain;
     using Patients;
-    using Facilities;
     using Practitioners;
+    using Encounters;
 
     /// <summary>
     /// Represents a health-care program implemented by a qualified healthcare practitioner (physician, dentist, ...) in the form of instructions that govern the plan of care for an individual patient.
@@ -23,10 +23,10 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         protected Prescription(PrescriptionIdentifier identifier,
                                HealthcarePractitioner prescriber,
                                Patient patient,
-                               HealthFacility healthFacility,
                                Alpha2LanguageCode languageCode,
                                PrescriptionStatus status,
                                DateTime createdOn,
+                               EncounterIdentifier encounterIdentifier = null,
                                DateTime? delivrableAt = null,
                                EntityState entityState = EntityState.Added,
                                IEnumerable<IDomainEvent> events = null)
@@ -35,17 +35,16 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
             Condition.Requires(identifier, nameof(identifier)).IsNotNull();
             Condition.Requires(prescriber, nameof(prescriber)).IsNotNull();
             Condition.Requires(patient, nameof(patient)).IsNotNull();
-            Condition.Requires(healthFacility, nameof(healthFacility)).IsNotNull();
             Condition.Requires(status, nameof(status)).IsNotNull();
             Condition.Requires(languageCode, nameof(languageCode)).IsNotNull();
             this.Identifier = identifier;
             this.Prescriber = prescriber;
             this.Patient = patient;
-            this.HealthFacility = healthFacility;
+            this.LanguageCode = languageCode;
             this.Status = status;
             this.CreatedOn = createdOn;
+            this.EncounterIdentifier = encounterIdentifier;
             this.DeliverableAt = delivrableAt;
-            this.LanguageCode = languageCode;
         }
 
         #endregion Constructors
@@ -56,7 +55,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public DateTime? DeliverableAt { get; }
 
-        public HealthFacility HealthFacility { get; }
+        public EncounterIdentifier EncounterIdentifier { get; private set; }
 
         public PrescriptionIdentifier Identifier { get; }
 
@@ -91,7 +90,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 Identifier = this.Identifier.Value,
                 Prescriber = this.Prescriber.ToState(),
                 Patient = this.Patient.ToState(),
-                HealthFacility = this.HealthFacility.ToState(),
+                EncounterIdentifier = this.EncounterIdentifier?.Value,
                 Status = this.Status.Code,
                 CreatedOn = this.CreatedOn,
                 DeliverableAt = this.DeliverableAt,

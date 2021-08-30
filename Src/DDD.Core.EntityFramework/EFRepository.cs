@@ -25,7 +25,7 @@ namespace DDD.Core.Infrastructure.Data
 
         private readonly StateEntitiesContext context;
         private readonly IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator;
-        private readonly IObjectTranslator<IEvent, EventState> eventTranslator;
+        private readonly IObjectTranslator<IEvent, StoredEvent> eventTranslator;
         private readonly IObjectTranslator<Exception, RepositoryException> exceptionTranslator = EFRepositoryExceptionTranslator.Default;
 
         #endregion Fields
@@ -34,7 +34,7 @@ namespace DDD.Core.Infrastructure.Data
 
         protected EFRepository(StateEntitiesContext context,
                                IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator,
-                               IObjectTranslator<IEvent, EventState> eventTranslator)
+                               IObjectTranslator<IEvent, StoredEvent> eventTranslator)
         {
             Condition.Requires(context, nameof(context)).IsNotNull();
             Condition.Requires(entityTranslator, nameof(entityTranslator)).IsNotNull();
@@ -111,10 +111,10 @@ namespace DDD.Core.Infrastructure.Data
             return Enumerable.Empty<Expression<Func<TStateEntity, object>>>();
         }
 
-        protected virtual async Task SaveAsync(TStateEntity stateEntity, IEnumerable<EventState> events)
+        protected virtual async Task SaveAsync(TStateEntity stateEntity, IEnumerable<StoredEvent> events)
         {
             this.context.Set<TStateEntity>().Add(stateEntity);
-            this.context.Set<EventState>().AddRange(events);
+            this.context.Set<StoredEvent>().AddRange(events);
             await this.SaveChangesAsync();
         }
         protected TDomainEntity TranslateEntity(TStateEntity stateEntity)
@@ -154,16 +154,15 @@ namespace DDD.Core.Infrastructure.Data
             }
         }
 
-        private IEnumerable<EventState> ToEventStates(TDomainEntity aggregate)
+        private IEnumerable<StoredEvent> ToEventStates(TDomainEntity aggregate)
         {
-            var commitId = Guid.NewGuid();
-            var subject = Thread.CurrentPrincipal?.Identity?.Name;
+            var username = Thread.CurrentPrincipal?.Identity?.Name;
             return aggregate.AllEvents().Select(e =>
             {
                 var evt = this.eventTranslator.Translate(e);
                 evt.StreamId = aggregate.IdentityAsString();
-                evt.CommitId = commitId;
-                evt.Subject = subject;
+                evt.UniqueId = Guid.NewGuid();
+                evt.Username = username;
                 return evt;
             });
         }

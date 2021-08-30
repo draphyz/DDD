@@ -5,12 +5,12 @@ namespace DDD.Core.Infrastructure.Data
 {
     using Domain;
 
-    public abstract class EventStateConfiguration : IEntityTypeConfiguration<EventState>
+    public abstract class StoredEventConfiguration : IEntityTypeConfiguration<StoredEvent>
     {
 
         #region Methods
 
-        public virtual void Configure(EntityTypeBuilder<EventState> builder)
+        public virtual void Configure(EntityTypeBuilder<StoredEvent> builder)
         {
             // Table
             builder.ToTable("Event");
@@ -23,17 +23,19 @@ namespace DDD.Core.Infrastructure.Data
                    .IsUnicode(false)
                    .HasMaxLength(50)
                    .IsRequired();
+            builder.Property(e => e.Version);
             builder.Property(e => e.StreamId)
                    .IsUnicode(false)
                    .HasMaxLength(50)
                    .IsRequired();
-            builder.Property(e => e.CommitId);
-            builder.Property(e => e.Subject)
+            builder.Property(e => e.UniqueId)
+                   .IsRequired();
+            builder.Property(e => e.Username)
                    .IsUnicode(false)
                    .HasMaxLength(100);
             builder.Property(e => e.Body)
                    .IsRequired();
-            builder.Property(e => e.Dispatched);
+            builder.Property(e => e.IsDispatched);
         }
 
         #endregion Methods

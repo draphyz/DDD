@@ -2,7 +2,6 @@
 using FluentValidation;
 using FluentAssertions;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
@@ -63,94 +62,6 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             var results = validator.Validate(command);
             // Assert
             results.Errors.Should().NotContain(f => f.ErrorCode == "MedicationCodeInvalid");
-        }
-
-        [Theory]
-        [InlineData(0)]
-        [InlineData(-1)]
-        [InlineData(-5)]
-        public void Validate_WhenFacilityIdentifierInvalid_ReturnsExpectedFailure(int facilityIdentifier)
-        {
-            // Arrange
-            var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescription { FacilityIdentifier = facilityIdentifier };
-            // Act
-            var results = validator.Validate(command);
-            // Assert
-            results.Errors.Should().ContainSingle(f => f.ErrorCode == "FacilityIdentifierInvalid" && f.Severity == Severity.Error);
-        }
-
-        [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
-        [InlineData(5)]
-        public void Validate_WhenFacilityIdentifierValid_ReturnsNoSpecificFailure(int facilityIdentifier)
-        {
-            // Arrange
-            var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescription { FacilityIdentifier = facilityIdentifier };
-            // Act
-            var results = validator.Validate(command);
-            // Assert
-            results.Errors.Should().NotContain(f => f.ErrorCode == "FacilityIdentifierInvalid");
-        }
-
-        [Theory]
-        [InlineData("aa")]
-        [InlineData("11111")]
-        [InlineData("1111111a")]
-        public void Validate_WhenFacilityLicenseNumberInvalid_ReturnsExpectedFailure(string facilityLicenseNumber)
-        {
-            // Arrange
-            var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescription { FacilityLicenseNumber = facilityLicenseNumber };
-            // Act
-            var results = validator.Validate(command);
-            // Assert
-            results.Errors.Should().Contain(f => f.ErrorCode == "FacilityLicenseNumberInvalid" && f.Severity == Severity.Error);
-        }
-
-        [Theory]
-        [InlineData("11111111")]
-        [InlineData("01234567")]
-        public void Validate_WhenFacilityLicenseNumberValid_ReturnsNoSpecificFailure(string facilityLicenseNumber)
-        {
-            // Arrange
-            var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescription { FacilityLicenseNumber = facilityLicenseNumber };
-            // Act
-            var results = validator.Validate(command);
-            // Assert
-            results.Errors.Should().NotContain(f => f.ErrorCode == "FacilityLicenseNumberInvalid");
-        }
-
-        [Theory]
-        [InlineData(null)]
-        [InlineData("")]
-        [InlineData("  ")]
-        public void Validate_WhenFacilityNameEmpty_ReturnsExpectedFailure(string facilityName)
-        {
-            // Arrange
-            var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescription { FacilityName = facilityName };
-            // Act
-            var results = validator.Validate(command);
-            // Assert
-            results.Errors.Should().ContainSingle(f => f.ErrorCode == "FacilityNameEmpty" && f.Severity == Severity.Error);
-        }
-
-        [Theory]
-        [InlineData("Medical Office Donald Duck")]
-        [InlineData("Centre ophtalmo")]
-        public void Validate_WhenFacilityNameNotEmpty_ReturnsNoSpecificFailure(string facilityName)
-        {
-            // Arrange
-            var validator = CreateValidator();
-            var command = new CreatePharmaceuticalPrescription { FacilityName = facilityName };
-            // Act
-            var results = validator.Validate(command);
-            // Assert
-            results.Errors.Should().NotContain(f => f.ErrorCode == "FacilityNameEmpty");
         }
 
         [Theory]

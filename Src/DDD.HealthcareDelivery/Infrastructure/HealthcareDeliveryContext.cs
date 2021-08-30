@@ -3,7 +3,6 @@
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Core.Infrastructure.Data;
-    using Core.Domain;
     using Domain.Prescriptions;
     using Prescriptions;
 
@@ -20,7 +19,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Properties
 
-        public virtual DbSet<EventState> Events { get; set; }
+        public virtual DbSet<StoredEvent> Events { get; set; }
 
         public virtual DbSet<PharmaceuticalPrescriptionState> PharmaceuticalPrescriptions { get; set; }
 

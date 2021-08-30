@@ -1,6 +1,7 @@
 ﻿namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Core.Domain;
+    using Core.Infrastructure.Data;
     using Core.Infrastructure.Testing;
     using Mapping;
 
@@ -11,7 +12,7 @@
         #region Methods
 
         HealthcareDeliveryContext CreateContext();
-        IObjectTranslator<IEvent, EventState> CreateEventTranslator();
+        IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator();
 
         #endregion Methods
 

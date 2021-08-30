@@ -5,12 +5,12 @@ namespace DDD.Core.Infrastructure.Data
 {
     using Domain;
 
-    public class OracleEventStateConfiguration : EventStateConfiguration
+    public class OracleStoredEventConfiguration : StoredEventConfiguration
     {
 
         #region Methods
 
-        public override void Configure(EntityTypeBuilder<EventState> builder)
+        public override void Configure(EntityTypeBuilder<StoredEvent> builder)
         {
             base.Configure(builder);
             // Fields

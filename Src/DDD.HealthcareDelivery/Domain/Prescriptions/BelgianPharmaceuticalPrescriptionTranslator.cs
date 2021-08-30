@@ -6,9 +6,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
     using Mapping;
     using Common.Domain;
-    using Facilities;
     using Patients;
     using Practitioners;
+    using Encounters;
 
     public class BelgianPharmaceuticalPrescriptionTranslator
         : IObjectTranslator<PharmaceuticalPrescriptionState, PharmaceuticalPrescription>
@@ -16,7 +16,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Fields
 
-        private readonly IObjectTranslator<HealthFacilityState, HealthFacility> facilityTranslator;
         private readonly IObjectTranslator<PrescribedMedicationState, PrescribedMedication> medicationTranslator;
         private readonly IObjectTranslator<PatientState, Patient> patientTranslator;
         private readonly IObjectTranslator<HealthcarePractitionerState, HealthcarePractitioner> practitionerTranslator;
@@ -29,7 +28,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         {
             this.practitionerTranslator = new BelgianHealthcarePractitionerTranslator();
             this.patientTranslator = new BelgianPatientTranslator();
-            this.facilityTranslator = new BelgianHealthFacilityTranslator();
             this.medicationTranslator = new BelgianPrescribedMedicationTranslator();
         }
 
@@ -46,11 +44,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                 new PrescriptionIdentifier(state.Identifier),
                 this.practitionerTranslator.Translate(state.Prescriber),
                 this.patientTranslator.Translate(state.Patient),
-                this.facilityTranslator.Translate(state.HealthFacility),
                 state.PrescribedMedications.Select(m => this.medicationTranslator.Translate(m)),
                 new Alpha2LanguageCode(state.LanguageCode),
                 Enumeration.ParseCode<PrescriptionStatus>(state.Status),
                 state.CreatedOn,
+                EncounterIdentifier.CreateIfNotEmpty(state.EncounterIdentifier),
                 state.DeliverableAt,
                 state.EntityState
             );

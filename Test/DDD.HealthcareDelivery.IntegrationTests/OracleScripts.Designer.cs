@@ -101,7 +101,7 @@ namespace DDD.HealthcareDelivery {
         ///   CREATE SEQUENCE  TEST.EVENTID  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE 
         ////
         /// --------------------------------------------------------
-        /// [rest of string was truncated]&quot;;.
+        ///--  DDL fo [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FillSchema {
             get {
@@ -114,7 +114,7 @@ namespace DDD.HealthcareDelivery {
         ///  SPCLEARSCHEMA();
         ///END;
         ////
-        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DeliverableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, P [rest of string was truncated]&quot;;.
+        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DeliverableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, Patie [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FindPharmaceuticalPrescriptionsByPatient {
             get {
@@ -140,7 +140,7 @@ namespace DDD.HealthcareDelivery {
         ///  SPCLEARSCHEMA();
         ///END;
         ////
-        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DeliverableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, P [rest of string was truncated]&quot;;.
+        ///INSERT INTO TEST.Prescription (PrescriptionId, PrescriptionType, Status, Language, CreatedOn, DeliverableAt, PrescriberId, PrescriberType, PrescriberLastName, PrescriberFirstName, PrescriberDisplayName, PrescriberLicenseNum, PrescriberSSN, PrescriberSpeciality, PrescriberPhone1, PrescriberPhone2, PrescriberEmail1, PrescriberEmail2, PrescriberWebSite, PrescriberStreet, PrescriberHouseNum, PrescriberBoxNum, PrescriberPostCode, PrescriberCity, PrescriberCountry, PatientId, Patie [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string RevokePharmaceuticalPrescription {
             get {

@@ -5,7 +5,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     using Core.Domain;
     using Patients;
     using Practitioners;
-    using Facilities;
 
     public abstract class PrescriptionState : IStateEntity
     {
@@ -16,9 +15,9 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public DateTime? DeliverableAt { get; set; }
 
-        public EntityState EntityState { get; set; }
+        public int? EncounterIdentifier { get; set; }
 
-        public HealthFacilityState HealthFacility { get; set; }
+        public EntityState EntityState { get; set; }
 
         public int Identifier { get; set; }
 
@@ -31,5 +30,6 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         public string Status { get; set; }
 
         #endregion Properties
+
     }
 }

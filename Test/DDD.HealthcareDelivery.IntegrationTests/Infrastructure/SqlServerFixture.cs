@@ -38,9 +38,9 @@ namespace DDD.HealthcareDelivery.Infrastructure
             return new SqlServerHealthcareDeliveryContextWithLogging(SqlServerConnectionFactory.ConnectionString, this.loggerFactory);
         }
 
-        public IObjectTranslator<IEvent, EventState> CreateEventTranslator()
+        public IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator()
         {
-            return new EventTranslator(DataContractSerializerWrapper.Create(Encoding.Unicode));
+            return new StoredEventTranslator(DataContractSerializerWrapper.Create(Encoding.Unicode));
         }
 
         protected override void CreateDatabase()

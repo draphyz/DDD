@@ -38,9 +38,9 @@ namespace DDD.HealthcareDelivery.Infrastructure
             return new OracleHealthcareDeliveryContextWithLogging(OracleConnectionFactory.ConnectionString, this.loggerFactory);
         }
 
-        public IObjectTranslator<IEvent, EventState> CreateEventTranslator()
+        public IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator()
         {
-            return new EventTranslator(DataContractSerializerWrapper.Create(new UTF8Encoding(false)));
+            return new StoredEventTranslator(DataContractSerializerWrapper.Create(new UTF8Encoding(false)));
         }
 
         protected override void CreateDatabase()

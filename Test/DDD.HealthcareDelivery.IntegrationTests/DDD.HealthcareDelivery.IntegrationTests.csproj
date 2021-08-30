@@ -44,12 +44,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\Oracle\CreatePharmaceuticalPrescription.sql" />
     <Content Include="Scripts\Oracle\CreateSchema.sql" />
     <Content Include="Scripts\Oracle\FillSchema.sql" />
     <Content Include="Scripts\Oracle\RevokePharmaceuticalPrescription.sql" />
     <Content Include="Scripts\SqlServer\CreateDatabase.sql" />
-    <Content Include="Scripts\SqlServer\CreatePharmaceuticalPrescription.sql" />
     <Content Include="Scripts\SqlServer\RevokePharmaceuticalPrescription.sql" />
     <Content Include="Scripts\Oracle\FindPharmaceuticalPrescriptionsByPatient.sql" />
     <Content Include="Scripts\Oracle\FindPrescribedMedicationsByPrescription.sql" />

@@ -1,27 +1,29 @@
 ﻿using System;
 
-namespace DDD.Core.Domain
+namespace DDD.Core.Infrastructure.Data
 {
-    public class EventState
+    public class StoredEvent
     {
 
         #region Properties
 
         public string Body { get; set; }
 
-        public Guid CommitId { get; set; }
-
-        public bool Dispatched { get; set; } = false;
-
         public string EventType { get; set; }
 
         public long Id { get; set; }
+
+        public bool IsDispatched { get; set; } = false;
 
         public DateTime OccurredOn { get; set; }
 
         public string StreamId { get; set; }
 
-        public string Subject { get; set; }
+        public Guid UniqueId { get; set; }
+
+        public string Username { get; set; }
+
+        public byte Version { get; set; } = 1;
 
         #endregion Properties
 
