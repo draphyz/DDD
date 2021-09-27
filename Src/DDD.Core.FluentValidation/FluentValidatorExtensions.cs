@@ -15,7 +15,7 @@ namespace DDD.Core.Infrastructure.Validation
         /// </summary>
         public static IRuleBuilderOptions<T, string> Alphabetic<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            return ruleBuilder.SetValidator(new AlphabeticValidator());
+            return ruleBuilder.SetValidator(new AlphabeticValidator<T>());
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace DDD.Core.Infrastructure.Validation
         /// </summary>
         public static IRuleBuilderOptions<T, string> Alphanumeric<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            return ruleBuilder.SetValidator(new AlphanumericValidator());
+            return ruleBuilder.SetValidator(new AlphanumericValidator<T>());
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace DDD.Core.Infrastructure.Validation
         /// </summary>
         public static IRuleBuilderOptions<T, IEnumerable> Count<T>(this IRuleBuilder<T, IEnumerable> ruleBuilder, int min, int max)
         {
-            return ruleBuilder.SetValidator(new CountValidator(min, max));
+            return ruleBuilder.SetValidator(new CountValidator<T>(min, max));
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace DDD.Core.Infrastructure.Validation
         /// </summary>
         public static IRuleBuilderOptions<T, IEnumerable> Count<T>(this IRuleBuilder<T, IEnumerable> ruleBuilder, int count)
         {
-            return ruleBuilder.SetValidator(new ExactCountValidator(count));
+            return ruleBuilder.SetValidator(new ExactCountValidator<T>(count));
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace DDD.Core.Infrastructure.Validation
         /// </summary>
         public static IRuleBuilderOptions<T, IEnumerable> MaximumCount<T>(this IRuleBuilder<T, IEnumerable> ruleBuilder, int max)
         {
-            return ruleBuilder.SetValidator(new MaximumCountValidator(max));
+            return ruleBuilder.SetValidator(new MaximumCountValidator<T>(max));
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace DDD.Core.Infrastructure.Validation
         /// </summary>
         public static IRuleBuilderOptions<T, IEnumerable> MinimumCount<T>(this IRuleBuilder<T, IEnumerable> ruleBuilder, int min)
         {
-            return ruleBuilder.SetValidator(new MinimumCountValidator(min));
+            return ruleBuilder.SetValidator(new MinimumCountValidator<T>(min));
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace DDD.Core.Infrastructure.Validation
         /// </summary>
         public static IRuleBuilderOptions<T, string> Numeric<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            return ruleBuilder.SetValidator(new NumericValidator());
+            return ruleBuilder.SetValidator(new NumericValidator<T>());
         }
 
         #endregion Methods

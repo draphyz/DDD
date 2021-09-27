@@ -36,7 +36,11 @@ namespace DDD.Core.Infrastructure.Validation
         /// <param name="ruleSet">The rule set.</param>
         public DDD.Validation.ValidationResult Validate(T obj, string ruleSet = null)
         {
-            var result = this.fluentValidator.Validate(obj, ruleSet: ruleSet);
+            ValidationResult result;
+            if (string.IsNullOrWhiteSpace(ruleSet))
+                result = this.fluentValidator.Validate(obj);
+            else
+                result = this.fluentValidator.Validate(obj, options => options.IncludeRuleSets(ruleSet.Split(',')));
             return this.resultTranslator.Translate(result, new { ObjectName = obj.GetType().Name });
         }
 
@@ -48,7 +52,11 @@ namespace DDD.Core.Infrastructure.Validation
         public async Task<DDD.Validation.ValidationResult> ValidateAsync(T obj, string ruleSet = null)
         {
             await new SynchronizationContextRemover();
-            var result = await this.fluentValidator.ValidateAsync(obj, ruleSet: ruleSet);
+            ValidationResult result;
+            if (string.IsNullOrWhiteSpace(ruleSet))
+                result = await this.fluentValidator.ValidateAsync(obj);
+            else
+                result = await this.fluentValidator.ValidateAsync(obj, options => options.IncludeRuleSets(ruleSet.Split(',')));
             return this.resultTranslator.Translate(result, new { ObjectName = obj.GetType().Name });
         }
 

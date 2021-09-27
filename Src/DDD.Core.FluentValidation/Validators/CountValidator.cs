@@ -1,17 +1,17 @@
 ﻿using System.Linq;
 using System.Collections;
+using FluentValidation;
 using FluentValidation.Validators;
 using Conditions;
 
 namespace DDD.Core.Infrastructure.Validation.Validators
 {
-    internal class CountValidator : PropertyValidator
+    internal class CountValidator<T> : PropertyValidator<T, IEnumerable>
     {
-        public int Min { get; }
 
-        public int? Max { get; }
+        #region Constructors
 
-        public CountValidator(int min, int? max, string errorMessage) : base(errorMessage)
+        public CountValidator(int min, int? max)
         {
             Condition.Requires(min, nameof(min)).IsGreaterOrEqual(0);
             if (max.HasValue)
@@ -20,17 +20,22 @@ namespace DDD.Core.Infrastructure.Validation.Validators
             this.Max = max;
         }
 
-        public CountValidator(int min, int? max) 
-            : this(min, max, "'{PropertyName}' must contain between {Min} and {Max} items. '{PropertyName}' has {Count} items.")
-        {
-        }
+        #endregion Constructors
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        #region Properties
+
+        public int? Max { get; }
+        public int Min { get; }
+        public override string Name => "CountValidator";
+
+        #endregion Properties
+
+        #region Methods
+
+        public override bool IsValid(ValidationContext<T> context, IEnumerable value)
         {
-            if (context.PropertyValue == null) return true;
-            var collection = context.PropertyValue as IEnumerable;
-            if (collection == null) return true;
-            var count = collection.Cast<object>().Count();
+            if (value == null) return true;
+            var count = value.Cast<object>().Count();
             if (count < this.Min || (this.Max.HasValue && count > this.Max))
             {
                 context.MessageFormatter.AppendArgument("Count", count);
@@ -41,5 +46,11 @@ namespace DDD.Core.Infrastructure.Validation.Validators
             }
             return true;
         }
+
+        protected override string GetDefaultMessageTemplate(string errorCode)
+            => "'{PropertyName}' must contain between {Min} and {Max} items. '{PropertyName}' has {Count} items.";
+
+        #endregion Methods
+
     }
 }

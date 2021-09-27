@@ -58,7 +58,7 @@ namespace DDD.Mapping
             // Arrange
             var source = new FakeObject1();
             // Act
-            var destination = this.processor.Translate<FakeObject2>(source);
+            _ = this.processor.Translate<FakeObject2>(source);
             // Assert
             this.translator1To2.Received(1).Translate(source);
         }

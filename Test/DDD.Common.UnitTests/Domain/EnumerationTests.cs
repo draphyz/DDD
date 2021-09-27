@@ -115,7 +115,7 @@ namespace DDD.Common.Domain
             // Act
             var all = Enumeration.All<FakeEnumeration>();
             // Assert
-            all.Should().BeEquivalentTo(FakeEnumeration.Fake1, FakeEnumeration.Fake2, FakeEnumeration.Fake3);
+            all.Should().BeEquivalentTo(new[] { FakeEnumeration.Fake1, FakeEnumeration.Fake2, FakeEnumeration.Fake3 });
         }
 
         [Theory]
@@ -199,7 +199,7 @@ namespace DDD.Common.Domain
         public void TryParseCode_WhenInvalidCode_ReturnsFalse(string code, bool ignoreCase)
         {
             // Act
-            var success = Enumeration.TryParseCode<FakeEnumeration>(code, ignoreCase, out var result);
+            var success = Enumeration.TryParseCode<FakeEnumeration>(code, ignoreCase, out _);
             // Assert
             success.Should().BeFalse();
         }
@@ -222,7 +222,7 @@ namespace DDD.Common.Domain
         public void TryParseCode_WhenValidCode_ReturnsTrue(string code, bool ignoreCase)
         {
             // Act
-            var success = Enumeration.TryParseCode<FakeEnumeration>(code, ignoreCase, out var result);
+            var success = Enumeration.TryParseCode<FakeEnumeration>(code, ignoreCase, out _);
             // Assert
             success.Should().BeTrue();
         }
@@ -239,7 +239,7 @@ namespace DDD.Common.Domain
         public void TryParseName_WhenInvalidName_ReturnsFalse(string name, bool ignoreCase)
         {
             // Act
-            var success = Enumeration.TryParseName<FakeEnumeration>(name, ignoreCase, out var result);
+            var success = Enumeration.TryParseName<FakeEnumeration>(name, ignoreCase, out _);
             // Assert
             success.Should().BeFalse();
         }
@@ -261,7 +261,7 @@ namespace DDD.Common.Domain
         public void TryParseName_WhenValidName_ReturnsTrue(string name, bool ignoreCase)
         {
             // Act
-            var success = Enumeration.TryParseName<FakeEnumeration>(name, ignoreCase, out var result);
+            var success = Enumeration.TryParseName<FakeEnumeration>(name, ignoreCase, out _);
             // Assert
             success.Should().BeTrue();
         }
@@ -272,7 +272,7 @@ namespace DDD.Common.Domain
         public void TryParseValue_WhenInvalidValue_ReturnsFalse(int value)
         {
             // Act
-            var success = Enumeration.TryParseValue<FakeEnumeration>(value, out var result);
+            var success = Enumeration.TryParseValue<FakeEnumeration>(value, out _);
             // Assert
             success.Should().BeFalse();
         }
@@ -293,7 +293,7 @@ namespace DDD.Common.Domain
         public void TryParseValue_WhenValidValue_ReturnsTrue(int value)
         {
             // Act
-            var success = Enumeration.TryParseValue<FakeEnumeration>(value, out var result);
+            var success = Enumeration.TryParseValue<FakeEnumeration>(value, out _);
             // Assert
             success.Should().BeTrue();
         }

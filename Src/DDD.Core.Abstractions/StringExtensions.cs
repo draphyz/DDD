@@ -60,8 +60,7 @@ namespace DDD
         public static bool IsShortDateString(this string instance, IFormatProvider provider)
         {
             Condition.Requires(instance, nameof(instance)).IsNotNull();
-            DateTime result;
-            return DateTime.TryParseExact(instance, "d", provider, DateTimeStyles.None, out result);
+            return DateTime.TryParseExact(instance, "d", provider, DateTimeStyles.None, out _);
         }
         /// <summary>
         /// Returns a string containing a specified number of characters from the left side of a string.
