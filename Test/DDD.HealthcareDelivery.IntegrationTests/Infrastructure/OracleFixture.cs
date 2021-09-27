@@ -2,7 +2,7 @@
 using System.Text;
 using NHibernate;
 using Oracle.ManagedDataAccess.Client;
-#if NETCOREAPP3_1
+#if (NETCOREAPP3_1 || NET5_0)
 using System.Data.Common;
 #endif
 
@@ -57,7 +57,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         protected override void RegisterDbProviderFactory()
         {
-#if NETCOREAPP3_1
+#if (NETCOREAPP3_1 || NET5_0)
             DbProviderFactories.RegisterFactory("Oracle.ManagedDataAccess.Client", OracleClientFactory.Instance);
 #endif
         }

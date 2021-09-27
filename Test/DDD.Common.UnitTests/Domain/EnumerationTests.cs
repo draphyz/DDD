@@ -115,7 +115,7 @@ namespace DDD.Common.Domain
             // Act
             var all = Enumeration.All<FakeEnumeration>();
             // Assert
-            all.Should().BeEquivalentTo(FakeEnumeration.Fake1, FakeEnumeration.Fake2, FakeEnumeration.Fake3);
+            all.Should().BeEquivalentTo(new[] { FakeEnumeration.Fake1, FakeEnumeration.Fake2, FakeEnumeration.Fake3 });
         }
 
         [Theory]

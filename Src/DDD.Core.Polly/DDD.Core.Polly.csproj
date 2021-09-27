@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net472;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net48;netstandard2.1;net5.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <RootNamespace>DDD.Core.Infrastructure.ErrorHandling</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -26,7 +26,7 @@
     <PackageReference Include="Conditions.NetStandard" Version="1.1.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Polly">
-      <Version>7.2.1</Version>
+      <Version>7.2.2</Version>
     </PackageReference>
   </ItemGroup>
 </Project>

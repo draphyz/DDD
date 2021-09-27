@@ -1,29 +1,26 @@
-﻿using FluentValidation.Validators;
+﻿using FluentValidation;
+using FluentValidation.Validators;
 
 namespace DDD.Core.Infrastructure.Validation.Validators
 {
-    using Core;
-
-    internal class AlphabeticValidator : PropertyValidator
+    internal class AlphabeticValidator<T> : PropertyValidator<T, string>
     {
 
-        #region Constructors
+        #region Properties
 
-        public AlphabeticValidator() : base("'{PropertyName}' should be alphabetic.")
-        {
-        }
+        public override string Name => "AlphabeticValidator";
 
-        #endregion Constructors
+        #endregion Properties
 
         #region Methods
 
-        protected override bool IsValid(PropertyValidatorContext context)
+        public override bool IsValid(ValidationContext<T> context, string value)
         {
-            if (context.PropertyValue == null) return true;
-            var value = context.PropertyValue as string;
             if (value == null) return true;
             return value.IsAlphabetic();
         }
+
+        protected override string GetDefaultMessageTemplate(string errorCode) => "'{PropertyName}' should be alphabetic.";
 
         #endregion Methods
 
