@@ -6,24 +6,19 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
     using Core.Domain;
 
-    [DataContract(Namespace = "DDD.HealthcareDelivery.Domain.Prescriptions")]
+    [DataContract(Namespace = "DDD.HealthcareDelivery.Prescriptions")]
     public class PharmaceuticalPrescriptionRevoked : IDomainEvent
     {
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, DateTime occuredOn, string reason = null)
+        public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, DateTime occurredOn, string reason = null)
         {
             Condition.Requires(prescriptionIdentifier, nameof(prescriptionIdentifier)).IsGreaterThan(0);
             Condition.Requires(reason, nameof(reason)).IsNotNullOrWhiteSpace();
             this.PrescriptionIdentifier = prescriptionIdentifier;
             this.Reason = reason;
-            this.OccurredOn = occuredOn;
-        }
-
-        public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, string reason = null)
-            : this(prescriptionIdentifier, DateTime.Now, reason)
-        {
+            this.OccurredOn = occurredOn;
         }
 
         /// <remarks>For serialization</remarks>

@@ -35,7 +35,7 @@ namespace DDD.Core.Infrastructure.Data
                 m.NotNullable(true);
             });
             this.Property(e => e.UniqueId, m => m.NotNullable(true));
-            this.Property(e => e.OccurredOn, m => m.Precision(2));
+            this.Property(e => e.OccurredOn, m => m.Precision(3)); // in milliseconds
             this.Property(e => e.Username, m =>
             {
                 m.Type(NHibernateUtil.AnsiString);
