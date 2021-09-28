@@ -84,7 +84,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                                         EncounterIdentifier encounterIdentifier = null,
                                                         DateTime? delivrableAt = null)
         {
-            return Create(identifier, prescriber, patient, prescribedMedications, DateTime.Now, languageCode, encounterIdentifier, delivrableAt);
+            return Create(identifier, prescriber, patient, prescribedMedications, TimestampProvider.LocalTimestamp(), languageCode, encounterIdentifier, delivrableAt);
         }
 
         public IEnumerable<PrescribedMedication> PrescribedMedications() => this.prescribedMedications.ToImmutableHashSet();
@@ -98,7 +98,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         protected override void AddPrescriptionRevokedEvent(string reason)
         {
-            this.AddEvent(new PharmaceuticalPrescriptionRevoked(this.Identifier.Value, reason));
+            this.AddEvent(new PharmaceuticalPrescriptionRevoked(this.Identifier.Value, TimestampProvider.LocalTimestamp(), reason));
         }
 
         private static PrescribedMedicationState ToPrescribedMedicationState(PrescribedMedication medication,

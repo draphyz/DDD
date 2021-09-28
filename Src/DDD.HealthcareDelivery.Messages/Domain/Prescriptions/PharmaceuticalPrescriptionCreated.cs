@@ -6,17 +6,17 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
     using Core.Domain;
 
-    [DataContract(Namespace = "DDD.HealthcareDelivery.Domain.Prescriptions")]
+    [DataContract(Namespace = "DDD.HealthcareDelivery.Prescriptions")]
     public class PharmaceuticalPrescriptionCreated : IDomainEvent
     {
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionCreated(int prescriptionIdentifier, DateTime occuredOn)
+        public PharmaceuticalPrescriptionCreated(int prescriptionIdentifier, DateTime occurredOn)
         {
             Condition.Requires(prescriptionIdentifier, nameof(prescriptionIdentifier)).IsGreaterThan(0);
             this.PrescriptionIdentifier = prescriptionIdentifier;
-            this.OccurredOn = occuredOn;
+            this.OccurredOn = occurredOn;
         }
 
         /// <remarks>For serialization</remarks>

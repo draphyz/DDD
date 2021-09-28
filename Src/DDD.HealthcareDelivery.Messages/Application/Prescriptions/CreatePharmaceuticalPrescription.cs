@@ -15,7 +15,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Properties
 
-        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public DateTime CreatedOn { get; set; }
 
         public DateTime? DeliverableAt { get; set; }
 
