@@ -61,6 +61,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.SimpleInjector", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Polly", "Src\DDD.Core.Polly\DDD.Core.Polly.csproj", "{4878A4FB-2C1E-4C06-BB42-AFE1ACE2A882}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.Newtonsoft.UnitTests", "Test\DDD.Core.Newtonsoft.UnitTests\DDD.Core.Newtonsoft.UnitTests.csproj", "{79451079-0453-4FCF-B929-486F29A921A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{4878A4FB-2C1E-4C06-BB42-AFE1ACE2A882}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4878A4FB-2C1E-4C06-BB42-AFE1ACE2A882}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4878A4FB-2C1E-4C06-BB42-AFE1ACE2A882}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79451079-0453-4FCF-B929-486F29A921A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79451079-0453-4FCF-B929-486F29A921A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79451079-0453-4FCF-B929-486F29A921A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79451079-0453-4FCF-B929-486F29A921A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,6 +178,7 @@ Global
 		{436D869F-7566-4436-90A8-B655145C5BCA} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
 		{3EFAACD8-CF5E-4E31-884B-6B9F87F1E495} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
 		{4878A4FB-2C1E-4C06-BB42-AFE1ACE2A882} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
+		{79451079-0453-4FCF-B929-486F29A921A3} = {1DF607A2-5750-4BF4-AB2F-E21EC51ECCA0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {983C3AB4-301E-47A3-93FF-2E4BD8F2090F}
