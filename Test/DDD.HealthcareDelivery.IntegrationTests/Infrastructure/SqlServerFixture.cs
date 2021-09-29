@@ -29,7 +29,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         public IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator()
         {
-            return new StoredEventTranslator(DataContractSerializerWrapper.Create(Encoding.Unicode));
+            return new StoredEventTranslator(JsonSerializerWrapper.Create(false));
         }
 
         public ISessionFactory CreateSessionFactory()

@@ -32,7 +32,6 @@ namespace DDD.Core.Infrastructure.Data
             {
                 m.Type(NHibernateUtil.AnsiString);
                 m.Length(50);
-                m.NotNullable(true);
             });
             this.Property(e => e.UniqueId, m => m.NotNullable(true));
             this.Property(e => e.OccurredOn, m => m.Precision(3)); // in milliseconds
@@ -41,7 +40,11 @@ namespace DDD.Core.Infrastructure.Data
                 m.Type(NHibernateUtil.AnsiString);
                 m.Length(100);
             });
-            this.Property(e => e.Body, m => m.NotNullable(true));
+            this.Property(e => e.Body, m =>
+            {
+                m.Type(NHibernateUtil.AnsiString);
+                m.NotNullable(true);
+            });
             this.Property(e => e.IsDispatched);
         }
 

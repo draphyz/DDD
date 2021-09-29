@@ -7,7 +7,7 @@
         public SqlServerStoredEventMapping() 
         {
             // Fields
-            this.Property(e => e.Body, m => m.Column(m1 => m1.SqlType("xml")));
+            this.Property(e => e.Body, m => m.Column(m1 => m1.Length(8000)));
         }
 
         #endregion Constructors
