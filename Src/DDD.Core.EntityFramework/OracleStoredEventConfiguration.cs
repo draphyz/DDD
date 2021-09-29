@@ -19,8 +19,6 @@ namespace DDD.Core.Infrastructure.Data
             //       .HasDefaultValueSql("EventId.NEXTVAL");
             builder.Property(e => e.OccurredOn)
                    .HasColumnType("timestamp(3)"); // in milliseconds
-            builder.Property(e => e.Body)
-                   .HasColumnType("xmltype");
         }
 
         #endregion Methods

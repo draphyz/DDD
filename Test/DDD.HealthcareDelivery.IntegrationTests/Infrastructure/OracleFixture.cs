@@ -40,7 +40,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         public IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator()
         {
-            return new StoredEventTranslator(DataContractSerializerWrapper.Create(new UTF8Encoding(false)));
+            return new StoredEventTranslator(JsonSerializerWrapper.Create(false));
         }
 
         protected override void CreateDatabase()

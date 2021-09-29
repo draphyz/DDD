@@ -26,14 +26,14 @@ namespace DDD.Core.Infrastructure.Data
             builder.Property(e => e.Version);
             builder.Property(e => e.StreamId)
                    .IsUnicode(false)
-                   .HasMaxLength(50)
-                   .IsRequired();
+                   .HasMaxLength(50);
             builder.Property(e => e.UniqueId)
                    .IsRequired();
             builder.Property(e => e.Username)
                    .IsUnicode(false)
                    .HasMaxLength(100);
             builder.Property(e => e.Body)
+                   .IsUnicode(false)
                    .IsRequired();
             builder.Property(e => e.IsDispatched);
         }

@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\Src\DDD.Common\DDD.Common.csproj" />
     <ProjectReference Include="..\..\Src\DDD.Core.EntityFramework\DDD.Core.EntityFramework.csproj" />
     <ProjectReference Include="..\..\Src\DDD.Core.Messages\DDD.Core.Messages.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core.Newtonsoft\DDD.Core.Newtonsoft.csproj" />
     <ProjectReference Include="..\..\Src\DDD.Core\DDD.Core.csproj" />
     <ProjectReference Include="..\..\Src\DDD.Core.Dapper\DDD.Core.Dapper.csproj" />
     <ProjectReference Include="..\..\Src\DDD.Core.Xunit\DDD.Core.Xunit.csproj" />
