@@ -148,7 +148,7 @@ namespace DDD.Core.Infrastructure.Data
             {
                 await this.context.SaveChangesAsync();
             }
-            catch (Exception ex) when (ex is DbUpdateException)
+            catch (DbUpdateException ex)
             {
                 throw this.exceptionTranslator.Translate(ex, new { EntityType = typeof(TDomainEntity) });
             }
