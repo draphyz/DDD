@@ -7,10 +7,11 @@ namespace DDD.Serialization
 
         #region Properties
 
-        public static Encoding Encoding { get; set; } = Encoding.UTF8;
+        public static Encoding Encoding { get; set; } = new UTF8Encoding(false);
 
         public static bool Indent { get; set; } = true;
 
         #endregion Properties
+
     }
 }

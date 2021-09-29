@@ -1,4 +1,5 @@
 ﻿using Conditions;
+using System;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -21,17 +22,12 @@ namespace DDD.Core.Infrastructure.Serialization
         #region Constructors
 
         public XmlSerializerWrapper()
+            : this(DefaultWriterSettings(), DefaultReaderSettings())
         {
-            this.writerSettings = new XmlWriterSettings
-            {
-                Encoding = XmlSerializationOptions.Encoding,
-                Indent = XmlSerializationOptions.Indent
-            };
-            this.readerSettings = new XmlReaderSettings();
         }
 
-        private XmlSerializerWrapper(XmlWriterSettings writerSettings,
-                                     XmlReaderSettings readerSettings)
+        public XmlSerializerWrapper(XmlWriterSettings writerSettings,
+                                    XmlReaderSettings readerSettings)
         {
             Condition.Requires(writerSettings, nameof(writerSettings)).IsNotNull();
             Condition.Requires(readerSettings, nameof(readerSettings)).IsNotNull();
@@ -54,20 +50,14 @@ namespace DDD.Core.Infrastructure.Serialization
         public static XmlSerializerWrapper Create(Encoding encoding, bool indent = true)
         {
             Condition.Requires(encoding, nameof(encoding)).IsNotNull();
-            var writerSettings = new XmlWriterSettings
-            {
-                Encoding = encoding,
-                Indent = indent
-            };
-            var readerSettings = new XmlReaderSettings();
+            var writerSettings = DefaultWriterSettings();
+            writerSettings.Encoding = encoding;
+            writerSettings.Indent = indent;
+            var readerSettings = DefaultReaderSettings();
             return new XmlSerializerWrapper(writerSettings, readerSettings);
         }
 
-        public static XmlSerializerWrapper Create(XmlWriterSettings writerSettings,
-                                                  XmlReaderSettings readerSettings)
-        {
-            return new XmlSerializerWrapper(writerSettings, readerSettings);
-        }
+        public static XmlSerializerWrapper Create(bool indent = true) => Create(XmlSerializationOptions.Encoding, indent);
 
         public T Deserialize<T>(Stream stream)
         {
@@ -75,7 +65,14 @@ namespace DDD.Core.Infrastructure.Serialization
             using (var reader = XmlReader.Create(stream, this.readerSettings))
             {
                 var serializer = new XmlSerializer(typeof(T));
-                return (T)serializer.Deserialize(reader);
+                try
+                {
+                    return (T)serializer.Deserialize(reader);
+                }
+                catch (InvalidOperationException exception)
+                {
+                    throw new SerializationException(typeof(T), exception);
+                }
             }
         }
 
@@ -86,8 +83,26 @@ namespace DDD.Core.Infrastructure.Serialization
             using (var writer = XmlWriter.Create(stream, this.writerSettings))
             {
                 var serializer = new XmlSerializer(obj.GetType());
-                serializer.Serialize(writer, obj);
+                try
+                {
+                    serializer.Serialize(writer, obj);
+                }
+                catch (InvalidOperationException exception)
+                {
+                    throw new SerializationException(obj.GetType(), exception);
+                }
             }
+        }
+
+        private static XmlReaderSettings DefaultReaderSettings() => new XmlReaderSettings();
+
+        private static XmlWriterSettings DefaultWriterSettings()
+        {
+            return new XmlWriterSettings
+            {
+                Encoding = XmlSerializationOptions.Encoding,
+                Indent = XmlSerializationOptions.Indent
+            };
         }
 
         #endregion Methods
