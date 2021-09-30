@@ -6,7 +6,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
     using Core.Domain;
 
-    [DataContract(Namespace = "DDD.HealthcareDelivery.Prescriptions")]
+    [DataContract(Namespace = "http://schemas.ddd.com/healthcare-delivery")]
     public class PharmaceuticalPrescriptionRevoked : IDomainEvent
     {
 
