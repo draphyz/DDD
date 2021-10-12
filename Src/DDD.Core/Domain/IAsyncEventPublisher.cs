@@ -2,9 +2,6 @@
 
 namespace DDD.Core.Domain
 {
-    /// <summary>
-    /// Publish asynchronously events outside the local bounded context (used to decouple bounded contexts).
-    /// </summary>
     public interface IAsyncEventPublisher
     {
 

@@ -6,7 +6,7 @@ namespace DDD.Core.Domain
     {
         #region Properties
 
-        public DateTime OccurredOn => TimestampProvider.LocalTimestamp();
+        public DateTime OccurredOn => EventTimestampProvider.LocalTimestamp();
 
         #endregion Properties
     }

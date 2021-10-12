@@ -10,8 +10,6 @@ namespace DDD
 
         #region Fields
 
-        private readonly static TimestampProvider local = new TimestampProvider(isLocal: true);
-        private readonly static TimestampProvider universal = new TimestampProvider(isLocal: false);
         private readonly object locker = new object();
         private readonly Func<DateTime> now;
         private DateTime lastTimestamp = DateTime.MinValue;
@@ -47,16 +45,6 @@ namespace DDD
         #endregion Properties
 
         #region Methods
-
-        /// <summary>
-        /// Provides a local timestamp with a resolution of one millisecond.
-        /// </summary>
-        public static DateTime LocalTimestamp() => local.Timestamp();
-
-        /// <summary>
-        /// Provides a universal timestamp with a resolution of one millisecond.
-        /// </summary>
-        public static DateTime UniversalTimestamp() => universal.Timestamp();
 
         /// <summary>
         /// Provides a timestamp.
