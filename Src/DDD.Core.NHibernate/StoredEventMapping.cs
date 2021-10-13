@@ -13,7 +13,7 @@ namespace DDD.Core.Infrastructure.Data
         {
             this.Lazy(false);
             // Table
-            this.Table("Event");
+            this.Table("StoredEvent");
             // Keys
             this.Id(e => e.Id, m1 =>  
             {
@@ -28,6 +28,11 @@ namespace DDD.Core.Infrastructure.Data
                 m.NotNullable(true);
             });
             this.Property(e => e.Version);
+            this.Property(e => e.StreamType, m =>
+            {
+                m.Type(NHibernateUtil.AnsiString);
+                m.Length(50);
+            });
             this.Property(e => e.StreamId, m =>
             {
                 m.Type(NHibernateUtil.AnsiString);

@@ -19,6 +19,8 @@ namespace DDD.Core.Infrastructure.Data
 
         public string StreamId { get; set; }
 
+        public string StreamType { get; set; }
+
         public Guid UniqueId { get; set; }
 
         public string Username { get; set; }
