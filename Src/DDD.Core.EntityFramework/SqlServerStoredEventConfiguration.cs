@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DDD.Core.Infrastructure.Data
 {
-    using Domain;
-
     public class SqlServerStoredEventConfiguration : StoredEventConfiguration
     {
 

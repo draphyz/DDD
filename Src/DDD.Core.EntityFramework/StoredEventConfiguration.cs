@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DDD.Core.Infrastructure.Data
 {
-    using Domain;
-
     public abstract class StoredEventConfiguration : IEntityTypeConfiguration<StoredEvent>
     {
 
@@ -13,7 +11,7 @@ namespace DDD.Core.Infrastructure.Data
         public virtual void Configure(EntityTypeBuilder<StoredEvent> builder)
         {
             // Table
-            builder.ToTable("Event");
+            builder.ToTable("StoredEvent");
             // Keys
             builder.HasKey(e => e.Id);
             // Fields
@@ -24,6 +22,9 @@ namespace DDD.Core.Infrastructure.Data
                    .HasMaxLength(50)
                    .IsRequired();
             builder.Property(e => e.Version);
+            builder.Property(e => e.StreamType)
+                   .IsUnicode(false)
+                   .HasMaxLength(50);
             builder.Property(e => e.StreamId)
                    .IsUnicode(false)
                    .HasMaxLength(50);
