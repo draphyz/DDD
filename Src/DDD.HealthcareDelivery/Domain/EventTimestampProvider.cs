@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace DDD.Core.Domain
+namespace DDD.HealthcareDelivery.Domain
 {
     /// <summary>
-    /// Provides unique timestamps for events.
+    /// Provides unique timestamps for the events of the context of healthcare delivery.
     /// </summary>
     public static class EventTimestampProvider
     {
