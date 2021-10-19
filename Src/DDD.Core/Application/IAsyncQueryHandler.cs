@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
@@ -12,7 +13,7 @@ namespace DDD.Core.Application
     {
         #region Methods
 
-        Task<TResult> HandleAsync(TQuery query);
+        Task<TResult> HandleAsync(TQuery query, CancellationToken cancellationToken = default);
 
         #endregion Methods
     }

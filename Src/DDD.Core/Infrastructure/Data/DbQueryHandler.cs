@@ -1,6 +1,7 @@
 ﻿using Conditions;
 using System.Data;
 using System.Data.Common;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Infrastructure.Data
@@ -47,7 +48,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public async Task<TResult> HandleAsync(TQuery query)
+        public async Task<TResult> HandleAsync(TQuery query, CancellationToken cancellationToken = default)
         {
             Condition.Requires(query, nameof(query)).IsNotNull();
             await new SynchronizationContextRemover();
@@ -55,7 +56,7 @@ namespace DDD.Core.Infrastructure.Data
             {
                 using (var connection = await this.ConnectionFactory.CreateOpenConnectionAsync())
                 {
-                    return await this.ExecuteAsync(query, connection);
+                    return await this.ExecuteAsync(query, connection, cancellationToken);
                 }
             }
             catch(DbException ex)
@@ -65,7 +66,7 @@ namespace DDD.Core.Infrastructure.Data
 
         }
 
-        protected abstract Task<TResult> ExecuteAsync(TQuery query, IDbConnection connection);
+        protected abstract Task<TResult> ExecuteAsync(TQuery query, IDbConnection connection, CancellationToken cancellationToken = default);
 
         #endregion Methods
 

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Polly;
 using Conditions;
 
@@ -34,9 +35,9 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         #region Methods
 
-        public async Task HandleAsync(TCommand command)
+        public async Task HandleAsync(TCommand command, CancellationToken cancellationToken = default)
         {
-            await policy.ExecuteAsync(() => this.handler.HandleAsync(command));
+            await policy.ExecuteAsync(() => this.handler.HandleAsync(command, cancellationToken));
         }
 
         #endregion Methods

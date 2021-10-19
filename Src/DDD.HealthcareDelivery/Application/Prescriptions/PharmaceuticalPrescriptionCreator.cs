@@ -1,4 +1,5 @@
 ﻿using Conditions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -39,12 +40,12 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
-        protected override async Task ExecuteAsync(CreatePharmaceuticalPrescription command)
+        protected override async Task ExecuteAsync(CreatePharmaceuticalPrescription command, CancellationToken cancellationToken = default)
         {
             var prescription = this.translator.Translate(command);
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await this.repository.SaveAsync(prescription);
+                await this.repository.SaveAsync(prescription, cancellationToken);
                 this.publisher.PublishAll(prescription.AllEvents());
                 scope.Complete();
             }

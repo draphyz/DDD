@@ -1,4 +1,5 @@
 ﻿using NServiceBus;
+using System.Threading;
 using System.Threading.Tasks;
 using Conditions;
 
@@ -28,10 +29,11 @@ namespace DDD.Core.Infrastructure.Messaging
 
         #region Methods
 
-        public async Task PublishAsync(IEvent @event)
+        public async Task PublishAsync(IEvent @event, CancellationToken cancellationToken = default)
         {
             Condition.Requires(@event, nameof(@event)).IsNotNull();
             await new SynchronizationContextRemover();
+            // Cancellation token support will be implemented in NServiceBus 8 (not yet released)
             await this.session.Publish(@event);
         }
 

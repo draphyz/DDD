@@ -54,43 +54,43 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public async Task<TDomainEntity> FindAsync(ComparableValueObject identity)
+        public async Task<TDomainEntity> FindAsync(ComparableValueObject identity, CancellationToken cancellationToken = default)
         {
             Condition.Requires(identity, nameof(identity)).IsNotNull();
             await new SynchronizationContextRemover();
             var keyValues = identity.PrimitiveEqualityComponents();
-            await this.OpenConnectionAsync();
-            var stateEntity = await this.FindAsync(keyValues);
+            await this.OpenConnectionAsync(cancellationToken);
+            var stateEntity = await this.FindAsync(keyValues, cancellationToken);
             return this.TranslateEntity(stateEntity);
         }
 
-        public async Task SaveAsync(TDomainEntity aggregate)
+        public async Task SaveAsync(TDomainEntity aggregate, CancellationToken cancellationToken = default)
         {
             Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
             await new SynchronizationContextRemover();
             var stateEntity = aggregate.ToState();
             var events = ToEventStates(aggregate);
-            await this.OpenConnectionAsync();
-            await this.SaveAsync(stateEntity, events);
+            await this.OpenConnectionAsync(cancellationToken);
+            await this.SaveAsync(stateEntity, events, cancellationToken);
         }
 
-        protected virtual async Task<TStateEntity> FindAsync(IEnumerable<object> keyValues)
+        protected virtual async Task<TStateEntity> FindAsync(IEnumerable<object> keyValues, CancellationToken cancellationToken = default)
         {
             var keyNames = this.context.GetKeyNames<TStateEntity>();
             if (keyValues.Count() != keyNames.Count())
                 throw new InvalidOperationException($"You must specify {keyNames.Count()} identity components.");
             var expression = BuildFindExpression(keyNames, keyValues);
-            return await this.Query().FirstOrDefaultAsync(expression);
+            return await this.Query().FirstOrDefaultAsync(expression, cancellationToken);
         }
 
         /// <remarks>To avoid a transaction promotion from local to distributed</remarks>
-        protected async Task OpenConnectionAsync()
+        protected async Task OpenConnectionAsync(CancellationToken cancellationToken = default)
         {
             try
             {
                 var connection = this.Connection();
                 if (connection.State == ConnectionState.Closed)
-                    await connection.OpenAsync();
+                    await connection.OpenAsync(cancellationToken);
             }
             catch (DbException ex)
             {
@@ -111,12 +111,13 @@ namespace DDD.Core.Infrastructure.Data
             return Enumerable.Empty<Expression<Func<TStateEntity, object>>>();
         }
 
-        protected virtual async Task SaveAsync(TStateEntity stateEntity, IEnumerable<StoredEvent> events)
+        protected virtual async Task SaveAsync(TStateEntity stateEntity, IEnumerable<StoredEvent> events, CancellationToken cancellationToken = default)
         {
             this.context.Set<TStateEntity>().Add(stateEntity);
             this.context.Set<StoredEvent>().AddRange(events);
-            await this.SaveChangesAsync();
+            await this.SaveChangesAsync(cancellationToken);
         }
+
         protected TDomainEntity TranslateEntity(TStateEntity stateEntity)
         {
             if (stateEntity == null) return null;
@@ -142,11 +143,11 @@ namespace DDD.Core.Infrastructure.Data
             return Expression.Lambda<Func<TStateEntity, bool>>(find, entity);
         }
 
-        private async Task SaveChangesAsync()
+        private async Task SaveChangesAsync(CancellationToken cancellationToken)
         {
             try
             {
-                await this.context.SaveChangesAsync();
+                await this.context.SaveChangesAsync(cancellationToken);
             }
             catch (DbUpdateException ex)
             {

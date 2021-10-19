@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dapper;
 using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
@@ -20,13 +21,18 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         }
 
         protected override Task<IEnumerable<PharmaceuticalPrescriptionSummary>> ExecuteAsync(FindPharmaceuticalPrescriptionsByPatient query, 
-                                                                                             IDbConnection connection)
+                                                                                             IDbConnection connection,
+                                                                                             CancellationToken cancellationToken = default)
         {
             var expressions = connection.Expressions();
             return connection.QueryAsync<PharmaceuticalPrescriptionSummary>
            (
-                SqlScripts.FindPharmaceuticalPrescriptionsByPatient.Replace("@", expressions.ParameterPrefix()),
-                new { PatientId = query.PatientIdentifier }
+                new CommandDefinition
+                (
+                    SqlScripts.FindPharmaceuticalPrescriptionsByPatient.Replace("@", expressions.ParameterPrefix()), 
+                    new { PatientId = query.PatientIdentifier }, 
+                    cancellationToken: cancellationToken
+                )
             );
         }
 

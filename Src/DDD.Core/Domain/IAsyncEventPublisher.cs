@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Domain
 {
@@ -7,7 +8,7 @@ namespace DDD.Core.Domain
 
         #region Methods
 
-        Task PublishAsync(IEvent @event);
+        Task PublishAsync(IEvent @event, CancellationToken cancellationToken = default);
 
         #endregion Methods
 

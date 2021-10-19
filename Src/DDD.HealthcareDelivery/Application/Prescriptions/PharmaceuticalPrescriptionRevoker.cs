@@ -1,4 +1,5 @@
 ﻿using Conditions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -34,13 +35,13 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
-        protected override async Task ExecuteAsync(RevokePharmaceuticalPrescription command)
+        protected override async Task ExecuteAsync(RevokePharmaceuticalPrescription command, CancellationToken cancellationToken = default)
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 var prescription = await this.repository.FindAsync(new PrescriptionIdentifier(command.PrescriptionIdentifier));
                 prescription.Revoke(command.RevocationReason);
-                await this.repository.SaveAsync(prescription);
+                await this.repository.SaveAsync(prescription, cancellationToken);
                 this.publisher.PublishAll(prescription.AllEvents());
                 scope.Complete();
             }

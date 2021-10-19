@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 namespace DDD.Core.Infrastructure.Validation
 {
     using Mapping;
+    using System.Threading;
     using Threading;
 
     public class FluentValidatorAdapter<T>
@@ -49,14 +50,15 @@ namespace DDD.Core.Infrastructure.Validation
         /// </summary>
         /// <param name="obj">The object to validate.</param>
         /// <param name="ruleSet">The rule set.</param>
-        public async Task<DDD.Validation.ValidationResult> ValidateAsync(T obj, string ruleSet = null)
+        /// <param name="cancellationToken">An optional cancellation token.</param>
+        public async Task<DDD.Validation.ValidationResult> ValidateAsync(T obj, string ruleSet = null, CancellationToken cancellationToken = default)
         {
             await new SynchronizationContextRemover();
             ValidationResult result;
             if (string.IsNullOrWhiteSpace(ruleSet))
-                result = await this.fluentValidator.ValidateAsync(obj);
+                result = await this.fluentValidator.ValidateAsync(obj, cancellationToken);
             else
-                result = await this.fluentValidator.ValidateAsync(obj, options => options.IncludeRuleSets(ruleSet.Split(',')));
+                result = await this.fluentValidator.ValidateAsync(obj, options => options.IncludeRuleSets(ruleSet.Split(',')), cancellationToken);
             return this.resultTranslator.Translate(result, new { ObjectName = obj.GetType().Name });
         }
 
