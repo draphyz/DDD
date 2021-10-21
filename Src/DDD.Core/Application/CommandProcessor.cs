@@ -1,5 +1,6 @@
 ﻿using Conditions;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
@@ -38,12 +39,12 @@ namespace DDD.Core.Application
             handler.Handle(command);
         }
 
-        public Task ProcessAsync<TCommand>(TCommand command) where TCommand : class, ICommand
+        public Task ProcessAsync<TCommand>(TCommand command, CancellationToken cancellationToken = default) where TCommand : class, ICommand
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
             var handler = this.serviceProvider.GetService<IAsyncCommandHandler<TCommand>>();
             if (handler == null) throw new InvalidOperationException($"The command handler for type {typeof(ICommandHandler<TCommand>)} could not be found.");
-            return handler.HandleAsync(command);
+            return handler.HandleAsync(command, cancellationToken);
         }
 
         public ValidationResult Validate<TCommand>(TCommand command, string ruleSet = null) where TCommand : class, ICommand
@@ -54,12 +55,12 @@ namespace DDD.Core.Application
             return validator.Validate(command, ruleSet);
         }
 
-        public Task<ValidationResult> ValidateAsync<TCommand>(TCommand command, string ruleSet = null) where TCommand : class, ICommand
+        public Task<ValidationResult> ValidateAsync<TCommand>(TCommand command, string ruleSet = null, CancellationToken cancellationToken = default) where TCommand : class, ICommand
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
             var validator = this.serviceProvider.GetService<IAsyncCommandValidator<TCommand>>();
             if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(ICommandValidator<TCommand>)} could not be found.");
-            return validator.ValidateAsync(command, ruleSet);
+            return validator.ValidateAsync(command, ruleSet, cancellationToken);
         }
 
         #endregion Methods
