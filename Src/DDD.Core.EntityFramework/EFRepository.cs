@@ -70,7 +70,7 @@ namespace DDD.Core.Infrastructure.Data
             Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
             await new SynchronizationContextRemover();
             var stateEntity = aggregate.ToState();
-            var events = ToEventStates(aggregate);
+            var events = ToStoredEvents(aggregate);
             await this.OpenConnectionAsync(cancellationToken);
             await this.SaveAsync(stateEntity, events, cancellationToken);
         }
@@ -156,7 +156,7 @@ namespace DDD.Core.Infrastructure.Data
             }
         }
 
-        private IEnumerable<StoredEvent> ToEventStates(TDomainEntity aggregate)
+        private IEnumerable<StoredEvent> ToStoredEvents(TDomainEntity aggregate)
         {
             var username = Thread.CurrentPrincipal?.Identity?.Name;
             return aggregate.AllEvents().Select(e =>
