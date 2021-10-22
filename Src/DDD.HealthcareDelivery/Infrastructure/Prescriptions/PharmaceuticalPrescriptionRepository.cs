@@ -10,7 +10,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
     using Core.Infrastructure.Data;
 
     public class PharmaceuticalPrescriptionRepository
-        : EFRepository<PharmaceuticalPrescription, PharmaceuticalPrescriptionState>
+        : EFRepository<PharmaceuticalPrescription, PharmaceuticalPrescriptionState, PrescriptionIdentifier>
     {
 
         #region Constructors

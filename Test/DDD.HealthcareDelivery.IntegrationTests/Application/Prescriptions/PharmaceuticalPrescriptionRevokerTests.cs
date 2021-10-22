@@ -41,7 +41,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         protected TFixture Fixture { get; }
         protected PharmaceuticalPrescriptionRevoker Handler { get; }
-        protected IAsyncRepository<PharmaceuticalPrescription> Repository { get; }
+        protected IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> Repository { get; }
 
         #endregion Properties
 
@@ -75,7 +75,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             };
         }
 
-        private IAsyncRepository<PharmaceuticalPrescription> CreateRepository()
+        private IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
         {
             this.context = this.Fixture.CreateContext();
             return new PharmaceuticalPrescriptionRepository

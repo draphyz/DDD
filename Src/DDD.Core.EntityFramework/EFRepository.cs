@@ -15,10 +15,11 @@ namespace DDD.Core.Infrastructure.Data
     using Mapping;
     using Threading;
 
-    public abstract class EFRepository<TDomainEntity, TStateEntity>
-        : IAsyncRepository<TDomainEntity>
+    public abstract class EFRepository<TDomainEntity, TStateEntity, TIdentity>
+        : IAsyncRepository<TDomainEntity, TIdentity>
         where TDomainEntity : DomainEntity, IStateObjectConvertible<TStateEntity>
         where TStateEntity : class, IStateEntity, new()
+        where TIdentity : ComparableValueObject
     {
 
         #region Fields
@@ -54,7 +55,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public async Task<TDomainEntity> FindAsync(ComparableValueObject identity, CancellationToken cancellationToken = default)
+        public async Task<TDomainEntity> FindAsync(TIdentity identity, CancellationToken cancellationToken = default)
         {
             Condition.Requires(identity, nameof(identity)).IsNotNull();
             await new SynchronizationContextRemover();
