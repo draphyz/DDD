@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
@@ -11,7 +12,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        Task HandleAsync(TCommand command);
+        Task HandleAsync(TCommand command, CancellationToken cancellationToken = default);
 
         #endregion Methods
 

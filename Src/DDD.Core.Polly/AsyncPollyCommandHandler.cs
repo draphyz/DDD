@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Polly;
 using Conditions;
 
@@ -22,9 +23,7 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         #region Constructors
 
-#pragma warning disable CS3001 // Argument type is not CLS-compliant
         public AsyncPollyCommandHandler(IAsyncCommandHandler<TCommand> handler, IAsyncPolicy policy)
-#pragma warning restore CS3001 // Argument type is not CLS-compliant
         {
             Condition.Requires(handler, nameof(handler)).IsNotNull();
             Condition.Requires(policy, nameof(policy)).IsNotNull();
@@ -36,9 +35,9 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         #region Methods
 
-        public async Task HandleAsync(TCommand command)
+        public async Task HandleAsync(TCommand command, CancellationToken cancellationToken = default)
         {
-            await policy.ExecuteAsync(() => this.handler.HandleAsync(command));
+            await policy.ExecuteAsync(() => this.handler.HandleAsync(command, cancellationToken));
         }
 
         #endregion Methods

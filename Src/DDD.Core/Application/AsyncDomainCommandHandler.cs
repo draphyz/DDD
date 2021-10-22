@@ -1,4 +1,5 @@
 ﻿using Conditions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
@@ -22,13 +23,13 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public async Task HandleAsync(TCommand command)
+        public async Task HandleAsync(TCommand command, CancellationToken cancellationToken = default)
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
             await new SynchronizationContextRemover();
             try
             {
-                await this.ExecuteAsync(command);
+                await this.ExecuteAsync(command, cancellationToken);
             }
             catch (DomainException ex)
             {
@@ -36,7 +37,7 @@ namespace DDD.Core.Application
             }
         }
 
-        protected abstract Task ExecuteAsync(TCommand command);
+        protected abstract Task ExecuteAsync(TCommand command, CancellationToken cancellationToken = default);
 
         #endregion Methods
 

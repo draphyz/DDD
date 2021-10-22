@@ -41,13 +41,13 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public async Task<TDomainEntity> FindAsync(TIdentity identity)
+        public async Task<TDomainEntity> FindAsync(TIdentity identity, CancellationToken cancellationToken = default)
         {
             Condition.Requires(identity, nameof(identity)).IsNotNull();
             await new SynchronizationContextRemover();
             try
             {
-                return await this.session.GetAsync<TDomainEntity>(identity);
+                return await this.session.GetAsync<TDomainEntity>(identity, cancellationToken);
             }
             catch (HibernateException ex)
             {
@@ -55,15 +55,15 @@ namespace DDD.Core.Infrastructure.Data
             }
         }
 
-        public async Task SaveAsync(TDomainEntity aggregate)
+        public async Task SaveAsync(TDomainEntity aggregate, CancellationToken cancellationToken = default)
         {
             var events = ToStoredEvents(aggregate);
             await new SynchronizationContextRemover();
             try
             {
-                await this.session.SaveOrUpdateAsync(aggregate);
+                await this.session.SaveOrUpdateAsync(aggregate, cancellationToken);
                 foreach (var @event in events)
-                    await this.session.SaveAsync(@event);
+                    await this.session.SaveAsync(@event, cancellationToken);
             }
             catch (HibernateException ex)
             {

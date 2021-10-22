@@ -1,9 +1,10 @@
-﻿using System.Data;
-using Dapper;
+﻿using Dapper;
 using Conditions;
+using System;
+using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System;
 using System.Text.RegularExpressions;
 
 namespace DDD.Core.Infrastructure.Data
@@ -59,13 +60,13 @@ namespace DDD.Core.Infrastructure.Data
             return connection.QuerySingle<TValue>(sql);
         }
 
-        public static Task<TValue> NextValueAsync<TValue>(this IDbConnection connection, string sequence, string schema = null)
+        public static Task<TValue> NextValueAsync<TValue>(this IDbConnection connection, string sequence, string schema = null, CancellationToken cancellationToken = default)
         {
             Condition.Requires(connection, nameof(connection)).IsNotNull();
             Condition.Requires(sequence, nameof(sequence)).IsNotNullOrEmpty();
             var expressions = connection.Expressions();
             var sql = $"SELECT {expressions.NextValue(sequence, schema)} {expressions.FromDummy()}";
-            return connection.QuerySingleAsync<TValue>(sql);
+            return connection.QuerySingleAsync<TValue>(new CommandDefinition(sql, cancellationToken: cancellationToken));
         }
 
         #endregion Methods

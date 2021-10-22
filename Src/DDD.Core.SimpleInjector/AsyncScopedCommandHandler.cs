@@ -1,6 +1,7 @@
 ﻿using SimpleInjector;
 using SimpleInjector.Lifestyles;
 using Conditions;
+using System.Threading;
 using System.Threading.Tasks;
 using System;
 
@@ -36,12 +37,12 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Methods
 
-        public async Task HandleAsync(TCommand command)
+        public async Task HandleAsync(TCommand command, CancellationToken cancellationToken = default)
         {
             using (AsyncScopedLifestyle.BeginScope(container))
             {
                 var handler = this.handlerProvider();
-                await handler.HandleAsync(command);
+                await handler.HandleAsync(command, cancellationToken);
             }
         }
 

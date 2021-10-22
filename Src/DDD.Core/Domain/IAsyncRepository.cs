@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Domain
 {
@@ -8,9 +9,9 @@ namespace DDD.Core.Domain
     {
         #region Methods
 
-        Task<TDomainEntity> FindAsync(TIdentity identity);
+        Task<TDomainEntity> FindAsync(TIdentity identity, CancellationToken cancellationToken = default);
 
-        Task SaveAsync(TDomainEntity aggregate);
+        Task SaveAsync(TDomainEntity aggregate, CancellationToken cancellationToken = default);
 
         #endregion Methods
     }
