@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using Conditions;
 
 namespace DDD
 {
@@ -12,11 +13,11 @@ namespace DDD
         #region Methods
 
         /// <summary>
-        /// Converts the value of the current DateTime object to its equivalent short date string representation using the culture-specific format information.
+        /// Gets the next date and time.
         /// </summary>
-        public static string ToShortDateString(this DateTime instance, IFormatProvider provider)
+        public static DateTime Next(this DateTime instance)
         {
-            return instance.ToString("d", provider);
+            return instance.AddTicks(1);
         }
 
         /// <summary>
@@ -27,7 +28,14 @@ namespace DDD
             return instance.ToString("d", new CultureInfo("fr-FR"));
         }
 
-        #endregion Methods
+        /// <summary>
+        /// Converts the value of the current DateTime object to its equivalent short date string representation using the culture-specific format information.
+        /// </summary>
+        public static string ToShortDateString(this DateTime instance, IFormatProvider provider)
+        {
+            return instance.ToString("d", provider);
+        }
 
+        #endregion Methods
     }
 }
