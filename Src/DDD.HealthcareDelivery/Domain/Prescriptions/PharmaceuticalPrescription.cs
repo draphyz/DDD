@@ -84,14 +84,14 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                                         EncounterIdentifier encounterIdentifier = null,
                                                         DateTime? delivrableAt = null)
         {
-            return Create(identifier, prescriber, patient, prescribedMedications, EventTimestampProvider.LocalTimestamp(), languageCode, encounterIdentifier, delivrableAt);
+            return Create(identifier, prescriber, patient, prescribedMedications, SystemTime.Local(), languageCode, encounterIdentifier, delivrableAt);
         }
 
         public IEnumerable<PrescribedMedication> PrescribedMedications() => this.prescribedMedications.ToImmutableHashSet();
 
         protected override void AddPrescriptionRevokedEvent(string reason)
         {
-            this.AddEvent(new PharmaceuticalPrescriptionRevoked(this.Identifier.Value, EventTimestampProvider.LocalTimestamp(), reason));
+            this.AddEvent(new PharmaceuticalPrescriptionRevoked(this.Identifier.Value, SystemTime.Local(), reason));
         }
 
         #endregion Methods
