@@ -24,7 +24,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Fields
 
-        private readonly StateEntitiesContext context;
+        private readonly BoundedContext context;
         private readonly IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator;
         private readonly IObjectTranslator<IEvent, StoredEvent> eventTranslator;
         private readonly IObjectTranslator<Exception, RepositoryException> exceptionTranslator = EFRepositoryExceptionTranslator.Default;
@@ -33,7 +33,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Constructors
 
-        protected EFRepository(StateEntitiesContext context,
+        protected EFRepository(BoundedContext context,
                                IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator,
                                IObjectTranslator<IEvent, StoredEvent> eventTranslator)
         {

@@ -6,7 +6,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
     using Domain.Prescriptions;
     using Prescriptions;
 
-    public abstract class HealthcareDeliveryContext : StateEntitiesContext
+    public abstract class HealthcareDeliveryContext : BoundedContext
     {
 
         #region Constructors
@@ -19,8 +19,6 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Properties
 
-        public virtual DbSet<StoredEvent> Events { get; set; }
-
         public virtual DbSet<PharmaceuticalPrescriptionState> PharmaceuticalPrescriptions { get; set; }
 
         #endregion Properties
@@ -30,7 +28,6 @@ namespace DDD.HealthcareDelivery.Infrastructure
         protected override void ApplyConfigurations(ModelBuilder modelBuilder)
         {
             base.ApplyConfigurations(modelBuilder);
-            modelBuilder.HasSequence<long>("EventId");
             modelBuilder.HasSequence<int>("PrescMedicationId");
             modelBuilder.ApplyConfiguration(new PharmaceuticalPrescriptionStateConfiguration());
         }

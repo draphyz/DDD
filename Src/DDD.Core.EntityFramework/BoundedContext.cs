@@ -8,12 +8,15 @@ namespace DDD.Core.Infrastructure.Data
 {
     using Microsoft.EntityFrameworkCore;
 
-    public abstract class StateEntitiesContext : DbContext
+    /// <summary>
+    /// Represents a <see cref="DbContext"/> used to store a domain model.
+    /// </summary>
+    public abstract class BoundedContext : DbContext
     {
 
         #region Constructors
 
-        protected StateEntitiesContext(string connectionString)
+        protected BoundedContext(string connectionString)
         {
             Condition.Requires(connectionString, nameof(connectionString)).IsNotNullOrWhiteSpace();
             this.ConnectionString = connectionString;
@@ -24,6 +27,8 @@ namespace DDD.Core.Infrastructure.Data
         #endregion Constructors
 
         #region Properties
+
+        public virtual DbSet<StoredEvent> Events { get; set; }
 
         protected string ConnectionString { get; }
 
@@ -88,6 +93,7 @@ namespace DDD.Core.Infrastructure.Data
         protected virtual void ApplyConventions(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyStateEntityConvention();
+            modelBuilder.HasSequence<long>("EventId");
         }
 
         protected override sealed void OnModelCreating(ModelBuilder modelBuilder)
