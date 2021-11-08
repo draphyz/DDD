@@ -1,41 +1,70 @@
 ﻿using Conditions;
-using System.Collections.Generic;
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Domain
 {
+    using Threading;
+
     public class EventPublisher : IEventPublisher
     {
         #region Fields
 
-        private List<IEventHandler> subscribers = new List<IEventHandler>();
+        private readonly IServiceProvider serviceProvider;
 
         #endregion Fields
 
+        #region Constructors
+
+        public EventPublisher(IServiceProvider serviceProvider)
+        {
+            Condition.Requires(serviceProvider, nameof(serviceProvider)).IsNotNull();
+            this.serviceProvider = serviceProvider;
+        }
+
+        #endregion Constructors
+
         #region Methods
 
-        public void Publish(IEvent @event)
+        public void Publish<TEvent>(TEvent @event) where TEvent : class, IEvent
         {
             Condition.Requires(@event, nameof(@event)).IsNotNull();
-            foreach (var subscriber in this.subscribers)
+            if (typeof(TEvent) == typeof(IEvent))
             {
-                if (subscriber.EventType.IsAssignableFrom(@event.GetType()))
-                    subscriber.Handle(@event);
+                var handlerType = typeof(IEventHandler<>).MakeGenericType(@event.GetType());
+                var handlers = this.serviceProvider.GetServices(handlerType).Cast<IEventHandler>();
+                foreach (var handler in handlers)
+                    handler.Handle(@event);
+            }
+            else
+            {
+                var handlers = this.serviceProvider.GetServices<IEventHandler<TEvent>>();
+                foreach (var handler in handlers)
+                    handler.Handle(@event);
             }
         }
 
-        public void Subscribe(IEventHandler subscriber)
+        public async Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : class, IEvent
         {
-            Condition.Requires(subscriber, nameof(subscriber)).IsNotNull();
-            this.subscribers.Add(subscriber);
-        }
-
-        public void UnSubscribe(IEventHandler subscriber)
-        {
-            Condition.Requires(subscriber, nameof(subscriber)).IsNotNull();
-            this.subscribers.Remove(subscriber);
+            Condition.Requires(@event, nameof(@event)).IsNotNull();
+            await new SynchronizationContextRemover();
+            if (typeof(TEvent) == typeof(IEvent))
+            {
+                var handlerType = typeof(IAsyncEventHandler<>).MakeGenericType(@event.GetType());
+                var handlers = this.serviceProvider.GetServices(handlerType).Cast<IAsyncEventHandler>();
+                foreach (var handler in handlers)
+                    await handler.HandleAsync(@event, cancellationToken);
+            }
+            else
+            {
+                var handlers = this.serviceProvider.GetServices<IAsyncEventHandler<TEvent>>();
+                foreach (var handler in handlers)
+                    await handler.HandleAsync(@event, cancellationToken);
+            }
         }
 
         #endregion Methods
-
     }
 }

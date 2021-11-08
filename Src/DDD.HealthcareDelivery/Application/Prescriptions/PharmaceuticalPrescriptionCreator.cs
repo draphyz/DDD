@@ -16,7 +16,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Fields
 
-        private readonly IEventPublisher publisher;
         private readonly IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository;
         private readonly IObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription> translator;
 
@@ -25,14 +24,11 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         #region Constructors
 
         public PharmaceuticalPrescriptionCreator(IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository,
-                                                 IEventPublisher publisher,
                                                  IObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription> translator)
         {
             Condition.Requires(repository, nameof(repository)).IsNotNull();
-            Condition.Requires(publisher, nameof(publisher)).IsNotNull();
             Condition.Requires(translator, nameof(translator)).IsNotNull();
             this.repository = repository;
-            this.publisher = publisher;
             this.translator = translator;
         }
 
@@ -46,7 +42,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await this.repository.SaveAsync(prescription, cancellationToken);
-                this.publisher.PublishAll(prescription.AllEvents());
                 scope.Complete();
             }
         }

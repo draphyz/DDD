@@ -2,8 +2,11 @@
 
 namespace DDD.Core.Domain
 {
+    /// <summary>
+    /// Base class for handling events.
+    /// </summary>
     public abstract class EventHandler<TEvent> : IEventHandler<TEvent>
-        where TEvent : IEvent
+        where TEvent : class, IEvent 
     {
         #region Properties
 

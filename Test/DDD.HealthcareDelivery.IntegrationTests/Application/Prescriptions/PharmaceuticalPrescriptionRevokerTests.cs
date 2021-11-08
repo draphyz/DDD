@@ -34,8 +34,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             this.Repository = this.CreateRepository();
             this.Handler = new PharmaceuticalPrescriptionRevoker
             (
-                Repository,
-                new EventPublisher()
+                Repository
             );
         }
 

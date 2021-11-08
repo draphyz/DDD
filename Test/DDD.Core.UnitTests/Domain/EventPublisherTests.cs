@@ -1,161 +1,216 @@
 ﻿using NSubstitute;
 using System.Collections.Generic;
 using Xunit;
+using SimpleInjector;
 
 namespace DDD.Core.Domain
 {
     using Collections;
+    using System.Threading.Tasks;
 
     public class EventPublisherTests
     {
+
         #region Methods
 
-        public static IEnumerable<object[]> SubscribersToOtherEventsThanThisEvent()
+        public static IEnumerable<object[]> AsyncHandlersOfOtherEventsThanThisEvent()
         {
-            var fakeSubscriber1 = FakeSubscriber<FakeEvent1>();
-            var fakeSubscriber2 = FakeSubscriber<FakeEvent2>();
-            var fakeSubscriber3 = FakeSubscriber<FakeEvent3>();
-            var fakeSubscriber4 = FakeSubscriber<FakeEvent3>();
-            var publisher = new EventPublisher();
-            publisher.Subscribe(fakeSubscriber1);
-            publisher.Subscribe(fakeSubscriber2);
-            publisher.Subscribe(fakeSubscriber3);
-            publisher.Subscribe(fakeSubscriber4);
+            var fakeHandler1 = FakeAsyncHandler<FakeEvent1>();
+            var fakeHandler2 = FakeAsyncHandler<FakeEvent2>();
+            var fakeHandler3 = FakeAsyncHandler<FakeEvent3>();
+            var fakeHandler4 = FakeAsyncHandler<FakeEvent3>();
+            var container = new Container();
+            container.Collection.Register(fakeHandler1);
+            container.Collection.Register(fakeHandler2);
+            container.Collection.Register(fakeHandler3, fakeHandler4);
+            var publisher = new EventPublisher(container);
             yield return new object[]
             {
                 publisher,
                 new FakeEvent1(),
-                new IEventHandler[] { fakeSubscriber2, fakeSubscriber3, fakeSubscriber4 }
+                new IAsyncEventHandler[] { fakeHandler2, fakeHandler3, fakeHandler4 }
             };
             yield return new object[]
             {
                 publisher,
                 new FakeEvent2(),
-                new IEventHandler[] { fakeSubscriber3, fakeSubscriber4 }
+                new IAsyncEventHandler[] { fakeHandler3, fakeHandler4 }
             };
             yield return new object[]
             {
                 publisher,
                 new FakeEvent3(),
-                new IEventHandler[] { fakeSubscriber1, fakeSubscriber2 }
+                new IAsyncEventHandler[] { fakeHandler1, fakeHandler2 }
             };
         }
 
-        public static IEnumerable<object[]> SubscribersToThisEvent()
+        public static IEnumerable<object[]> AsyncHandlersOfThisEvent()
         {
-            var fakeSubscriber1 = FakeSubscriber<FakeEvent1>();
-            var fakeSubscriber2 = FakeSubscriber<FakeEvent2>();
-            var fakeSubscriber3 = FakeSubscriber<FakeEvent3>();
-            var fakeSubscriber4 = FakeSubscriber<FakeEvent3>();
-            var publisher = new EventPublisher();
-            publisher.Subscribe(fakeSubscriber1);
-            publisher.Subscribe(fakeSubscriber2);
-            publisher.Subscribe(fakeSubscriber3);
-            publisher.Subscribe(fakeSubscriber4);
+            var fakeHandler1 = FakeAsyncHandler<FakeEvent1>();
+            var fakeHandler2 = FakeAsyncHandler<FakeEvent2>();
+            var fakeHandler3 = FakeAsyncHandler<FakeEvent3>();
+            var fakeHandler4 = FakeAsyncHandler<FakeEvent3>();
+            var container = new Container();
+            container.Collection.Register(fakeHandler1);
+            container.Collection.Register(fakeHandler2);
+            container.Collection.Register(fakeHandler3, fakeHandler4);
+            var publisher = new EventPublisher(container);
             yield return new object[]
             {
                 publisher,
                 new FakeEvent1(),
-                new IEventHandler[] { fakeSubscriber1 }
+                new IAsyncEventHandler[] { fakeHandler1 }
             };
             yield return new object[]
             {
                 publisher,
                 new FakeEvent2(),
-                new IEventHandler[] { fakeSubscriber1, fakeSubscriber2 }
+                new IAsyncEventHandler[] { fakeHandler1, fakeHandler2 }
             };
             yield return new object[]
             {
                 publisher,
                 new FakeEvent3(),
-                new IEventHandler[] { fakeSubscriber3, fakeSubscriber4 }
+                new IAsyncEventHandler[] { fakeHandler3, fakeHandler4 }
             };
         }
 
-        public static IEnumerable<object[]> UnSubscribersToThisEvent()
+        public static IEnumerable<object[]> HandlersOfOtherEventsThanThisEvent()
         {
-            var fakeSubscriber1 = FakeSubscriber<FakeEvent1>();
-            var fakeSubscriber2 = FakeSubscriber<FakeEvent2>();
-            var fakeSubscriber3 = FakeSubscriber<FakeEvent3>();
-            var fakeSubscriber4 = FakeSubscriber<FakeEvent3>();
-            var publisher = new EventPublisher();
-            publisher.Subscribe(fakeSubscriber1);
-            publisher.Subscribe(fakeSubscriber2);
-            publisher.Subscribe(fakeSubscriber3);
-            publisher.Subscribe(fakeSubscriber4);
-            publisher.UnSubscribe(fakeSubscriber1);
-            publisher.UnSubscribe(fakeSubscriber2);
-            publisher.UnSubscribe(fakeSubscriber3);
-            publisher.UnSubscribe(fakeSubscriber4);
+            var fakeHandler1 = FakeHandler<FakeEvent1>();
+            var fakeHandler2 = FakeHandler<FakeEvent2>();
+            var fakeHandler3 = FakeHandler<FakeEvent3>();
+            var fakeHandler4 = FakeHandler<FakeEvent3>();
+            var container = new Container();
+            container.Collection.Register(fakeHandler1);
+            container.Collection.Register(fakeHandler2);
+            container.Collection.Register(fakeHandler3, fakeHandler4);
+            var publisher = new EventPublisher(container);
             yield return new object[]
             {
                 publisher,
                 new FakeEvent1(),
-                new IEventHandler[] { fakeSubscriber1 }
+                new IEventHandler[] { fakeHandler2, fakeHandler3, fakeHandler4 }
             };
             yield return new object[]
             {
                 publisher,
                 new FakeEvent2(),
-                new IEventHandler[] { fakeSubscriber1, fakeSubscriber2 }
+                new IEventHandler[] { fakeHandler3, fakeHandler4 }
             };
             yield return new object[]
             {
                 publisher,
                 new FakeEvent3(),
-                new IEventHandler[] { fakeSubscriber3, fakeSubscriber4 }
+                new IEventHandler[] { fakeHandler1, fakeHandler2 }
+            };
+        }
+
+        public static IEnumerable<object[]> HandlersOfThisEvent()
+        {
+            var fakeHandler1 = FakeHandler<FakeEvent1>();
+            var fakeHandler2 = FakeHandler<FakeEvent2>();
+            var fakeHandler3 = FakeHandler<FakeEvent3>();
+            var fakeHandler4 = FakeHandler<FakeEvent3>();
+            var container = new Container();
+            container.Collection.Register(fakeHandler1);
+            container.Collection.Register(fakeHandler2);
+            container.Collection.Register(fakeHandler3, fakeHandler4);
+            var publisher = new EventPublisher(container);
+            yield return new object[]
+            {
+                publisher,
+                new FakeEvent1(),
+                new IEventHandler[] { fakeHandler1 }
+            };
+            yield return new object[]
+            {
+                publisher,
+                new FakeEvent2(),
+                new IEventHandler[] { fakeHandler1, fakeHandler2 }
+            };
+            yield return new object[]
+            {
+                publisher,
+                new FakeEvent3(),
+                new IEventHandler[] { fakeHandler3, fakeHandler4 }
             };
         }
 
         [Theory]
-        [MemberData(nameof(SubscribersToThisEvent))]
-        public void Publish_WhenCalled_CallsSubscribersToThisEvent(EventPublisher publisher,
-                                                                   IEvent @event,
-                                                                   IEnumerable<IEventHandler> subscribersToThisEvent)
+        [MemberData(nameof(HandlersOfThisEvent))]
+        public void Publish_WhenCalled_CallsHandlersOfThisEvent(EventPublisher publisher,
+                                                                IEvent @event,
+                                                                IEnumerable<IEventHandler> handlersOfThisEvent)
         {
             // Arrange
-            subscribersToThisEvent.ForEach(s => s.ClearReceivedCalls());
+            handlersOfThisEvent.ForEach(s => s.ClearReceivedCalls());
             // Act
             publisher.Publish(@event);
             // Assert
-            Assert.All(subscribersToThisEvent, s => s.Received(1).Handle(@event));
+            Assert.All(handlersOfThisEvent, s => s.Received(1).Handle(@event));
+        }
+
+
+        [Theory]
+        [MemberData(nameof(HandlersOfOtherEventsThanThisEvent))]
+        public void Publish_WhenCalled_DoesNotCallHandlersOfOtherEvents(EventPublisher publisher,
+                                                                        IEvent @event,
+                                                                        IEnumerable<IEventHandler> handlersOfOtherEvents)
+        {
+            // Arrange
+            handlersOfOtherEvents.ForEach(s => s.ClearReceivedCalls());
+            // Act
+            publisher.Publish(@event);
+            // Assert
+            Assert.All(handlersOfOtherEvents, s => s.DidNotReceive().Handle(Arg.Any<IEvent>()));
         }
 
         [Theory]
-        [MemberData(nameof(UnSubscribersToThisEvent))]
-        public void Publish_WhenCalled_DoesNotCallUnSubscribersToThisEvent(EventPublisher publisher,
-                                                                           IEvent @event,
-                                                                           IEnumerable<IEventHandler> unSubscribersToThisEvent)
+        [MemberData(nameof(AsyncHandlersOfThisEvent))]
+        public async Task PublishAsync_WhenCalled_CallsHandlersOfThisEvent(EventPublisher publisher,
+                                                        IEvent @event,
+                                                        IEnumerable<IAsyncEventHandler> handlersOfThisEvent)
         {
             // Arrange
-            unSubscribersToThisEvent.ForEach(s => s.ClearReceivedCalls());
+            handlersOfThisEvent.ForEach(s => s.ClearReceivedCalls());
             // Act
-            publisher.Publish(@event);
+            await publisher.PublishAsync(@event);
             // Assert
-            Assert.All(unSubscribersToThisEvent, s => s.DidNotReceive().Handle(Arg.Any<IEvent>()));
+            Assert.All(handlersOfThisEvent, s => s.Received(1).HandleAsync(@event));
         }
+
 
         [Theory]
-        [MemberData(nameof(SubscribersToOtherEventsThanThisEvent))]
-        public void Publish_WhenCalled_DoesNotCallSubscribersToOtherEvents(EventPublisher publisher,
-                                                                           IEvent @event,
-                                                                           IEnumerable<IEventHandler> subscribersToOtherEvents)
+        [MemberData(nameof(AsyncHandlersOfOtherEventsThanThisEvent))]
+        public async Task PublishAsync_WhenCalled_DoesNotCallHandlersOfOtherEvents(EventPublisher publisher,
+                                                                        IEvent @event,
+                                                                        IEnumerable<IAsyncEventHandler> handlersOfOtherEvents)
         {
             // Arrange
-            subscribersToOtherEvents.ForEach(s => s.ClearReceivedCalls());
+            handlersOfOtherEvents.ForEach(s => s.ClearReceivedCalls());
             // Act
-            publisher.Publish(@event);
+            await publisher.PublishAsync(@event);
             // Assert
-            Assert.All(subscribersToOtherEvents, s => s.DidNotReceive().Handle(Arg.Any<IEvent>()));
+            Assert.All(handlersOfOtherEvents, s => s.DidNotReceive().HandleAsync(Arg.Any<IEvent>()));
         }
 
-        private static IEventHandler<TEvent> FakeSubscriber<TEvent>() where TEvent : IEvent
+        private static IAsyncEventHandler<TEvent> FakeAsyncHandler<TEvent>() where TEvent : class, IEvent
         {
-            var fakeSubscriber = Substitute.For<IEventHandler<TEvent>>();
-            fakeSubscriber.EventType.Returns(typeof(TEvent));
-            return fakeSubscriber;
+            var fakeHandler = Substitute.For<IAsyncEventHandler<TEvent>>();
+            fakeHandler.EventType.Returns(typeof(TEvent));
+            return fakeHandler;
+        }
+
+        private static IEventHandler<TEvent> FakeHandler<TEvent>() where TEvent : class, IEvent
+        {
+            var fakeHandler = Substitute.For<IEventHandler<TEvent>>();
+            fakeHandler.EventType.Returns(typeof(TEvent));
+            return fakeHandler;
         }
 
         #endregion Methods
+
     }
+
 }

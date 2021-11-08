@@ -37,7 +37,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             this.Handler = new PharmaceuticalPrescriptionCreator
             (
                 Repository,
-                new EventPublisher(),
                 new BelgianPharmaceuticalPrescriptionTranslator()
             );
         }

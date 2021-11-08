@@ -8,6 +8,8 @@ using DDD.DependencyInjection;
 
 namespace DDD.Core.Infrastructure.DependencyInjection
 {
+    using Core.Domain;
+
     public static class ContainerExtensions
     {
 
@@ -34,6 +36,17 @@ namespace DDD.Core.Infrastructure.DependencyInjection
             var implementationTypes = container.GetTypesToRegister(openGenericServiceType, assemblies)
                                                .Where(predicate);
             container.Register(openGenericServiceType, implementationTypes);
+        }
+
+        public static void RegisterEventHandlers(this Container container, params Assembly[] assemblies)
+        {
+            Condition.Requires(container, nameof(container)).IsNotNull();
+            var handlerTypes = container.GetTypesToRegister(typeof(IEventHandler<>), assemblies, new TypesToRegisterOptions
+            {
+                IncludeGenericTypeDefinitions = true,
+                IncludeComposites = false,
+            });
+            container.Collection.Register(typeof(IEventHandler<>), handlerTypes);
         }
 
         #endregion Methods

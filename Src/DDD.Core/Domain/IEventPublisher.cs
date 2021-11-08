@@ -1,18 +1,19 @@
-﻿namespace DDD.Core.Domain
+﻿using System.Threading;
+using System.Threading.Tasks;
+
+namespace DDD.Core.Domain
 {
     /// <summary>
-    /// Publish synchronously events inside the local bounded context (used to decouple layers).
+    /// Defines a component that publishes events of any type.
     /// </summary>
     public interface IEventPublisher
     {
 
         #region Methods
 
-        void Publish(IEvent @event);
+        void Publish<TEvent>(TEvent @event) where TEvent : class, IEvent;
 
-        void Subscribe(IEventHandler subscriber);
-
-        void UnSubscribe(IEventHandler subscriber);
+        Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : class, IEvent;
 
         #endregion Methods
 

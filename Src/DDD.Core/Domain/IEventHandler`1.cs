@@ -1,7 +1,10 @@
 ﻿namespace DDD.Core.Domain
 {
+    /// <summary>
+    /// Defines a method that handles an event of a specified type.
+    /// </summary>
     public interface IEventHandler<in TEvent> : IEventHandler
-        where TEvent : IEvent
+        where TEvent : class, IEvent
     {
         #region Methods
 
