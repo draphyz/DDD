@@ -7,7 +7,6 @@ using Xunit.Sdk;
 
 namespace DDD.Core.Infrastructure.Testing
 {
-    [CLSCompliant(false)]
     [DataDiscoverer("Xunit.Sdk.MemberDataDiscoverer", "xunit.core")]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public class CustomMemberDataAttribute : MemberDataAttributeBase
