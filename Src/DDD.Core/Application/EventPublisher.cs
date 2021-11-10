@@ -4,8 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDD.Core.Domain
+namespace DDD.Core.Application
 {
+    using Domain;
     using Threading;
 
     public class EventPublisher : IEventPublisher

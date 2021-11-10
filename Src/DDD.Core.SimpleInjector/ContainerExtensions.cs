@@ -8,7 +8,7 @@ using DDD.DependencyInjection;
 
 namespace DDD.Core.Infrastructure.DependencyInjection
 {
-    using Core.Domain;
+    using Core.Application;
 
     public static class ContainerExtensions
     {

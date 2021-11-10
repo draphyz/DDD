@@ -1,5 +1,7 @@
-﻿namespace DDD.Core.Domain
+﻿namespace DDD.Core.Application
 {
+    using Domain;
+
     /// <summary>
     /// Defines a method that handles an event of a specified type.
     /// </summary>

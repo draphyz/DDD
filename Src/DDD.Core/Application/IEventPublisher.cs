@@ -1,8 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDD.Core.Domain
+namespace DDD.Core.Application
 {
+    using Domain;
+
     /// <summary>
     /// Defines a component that publishes events of any type.
     /// </summary>

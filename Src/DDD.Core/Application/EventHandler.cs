@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace DDD.Core.Domain
+namespace DDD.Core.Application
 {
+    using Domain;
+
     /// <summary>
     /// Base class for handling events.
     /// </summary>

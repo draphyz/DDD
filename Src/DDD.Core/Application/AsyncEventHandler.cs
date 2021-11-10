@@ -2,8 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDD.Core.Domain
+namespace DDD.Core.Application
 {
+    using Domain;
+
     /// <summary>
     /// Base class for handling asynchronously events.
     /// </summary>
