@@ -2,8 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDD.Core.Domain
+namespace DDD.Core.Application
 {
+    using Domain;
+
     public interface IAsyncEventHandler
     {
         #region Properties

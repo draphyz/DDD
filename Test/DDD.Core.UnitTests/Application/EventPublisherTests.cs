@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Xunit;
 using SimpleInjector;
 
-namespace DDD.Core.Domain
+namespace DDD.Core.Application
 {
+    using Domain;
     using Collections;
     using System.Threading.Tasks;
 

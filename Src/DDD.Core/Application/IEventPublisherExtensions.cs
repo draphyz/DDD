@@ -1,9 +1,10 @@
 ﻿using Conditions;
 using System.Collections.Generic;
+using System.Threading;
 
-namespace DDD.Core.Domain
+namespace DDD.Core.Application
 {
-    using System.Threading;
+    using Domain;
     using Threading;
 
     public static class IEventPublisherExtensions
