@@ -32,11 +32,12 @@ namespace DDD.Core.Infrastructure.Data
         public StoredEvent Translate(IEvent @event, IDictionary<string, object> options = null)
         {
             Condition.Requires(@event, nameof(@event)).IsNotNull();
+            var eventType = @event.GetType();
             return new StoredEvent()
             {
                 OccurredOn = @event.OccurredOn,
-                EventType = @event.GetType().Name,
-                Version = ToVersion(@event.GetType().FullName),
+                EventType = $"{eventType.FullName}, {eventType.Assembly.GetName().Name}",
+                Version = ToVersion(eventType.FullName),
                 Body = this.eventSerializer.SerializeToString(@event)
             };
         }

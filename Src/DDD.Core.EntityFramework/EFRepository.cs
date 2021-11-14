@@ -162,10 +162,9 @@ namespace DDD.Core.Infrastructure.Data
             return aggregate.AllEvents().Select(e =>
             {
                 var evt = this.eventTranslator.Translate(e);
-                evt.StreamType = aggregate.GetType().Name;
                 evt.StreamId = aggregate.IdentityAsString();
-                evt.UniqueId = Guid.NewGuid();
-                evt.Username = username;
+                evt.StreamType = aggregate.GetType().Name;
+                evt.IssuedBy = username;
                 return evt;
             });
         }

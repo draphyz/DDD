@@ -11,7 +11,7 @@ namespace DDD.Core.Infrastructure.Data
         public virtual void Configure(EntityTypeBuilder<StoredEvent> builder)
         {
             // Table
-            builder.ToTable("StoredEvent");
+            builder.ToTable("Event");
             // Keys
             builder.HasKey(e => e.Id);
             // Fields
@@ -19,24 +19,23 @@ namespace DDD.Core.Infrastructure.Data
                    .HasColumnName("EventId");
             builder.Property(e => e.EventType)
                    .IsUnicode(false)
-                   .HasMaxLength(50)
+                   .HasMaxLength(250)
                    .IsRequired();
             builder.Property(e => e.Version);
-            builder.Property(e => e.StreamType)
-                   .IsUnicode(false)
-                   .HasMaxLength(50);
-            builder.Property(e => e.StreamId)
-                   .IsUnicode(false)
-                   .HasMaxLength(50);
-            builder.Property(e => e.UniqueId)
-                   .IsRequired();
-            builder.Property(e => e.Username)
-                   .IsUnicode(false)
-                   .HasMaxLength(100);
             builder.Property(e => e.Body)
                    .IsUnicode(false)
                    .IsRequired();
-            builder.Property(e => e.IsDispatched);
+            builder.Property(e => e.StreamId)
+                   .IsUnicode(false)
+                   .HasMaxLength(50)
+                   .IsRequired();
+            builder.Property(e => e.StreamType)
+                   .IsUnicode(false)
+                   .HasMaxLength(50)
+                   .IsRequired();
+            builder.Property(e => e.IssuedBy)
+                   .IsUnicode(false)
+                   .HasMaxLength(100);
         }
 
         #endregion Methods
