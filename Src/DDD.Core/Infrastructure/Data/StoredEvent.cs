@@ -13,17 +13,13 @@ namespace DDD.Core.Infrastructure.Data
 
         public long Id { get; set; }
 
-        public bool IsDispatched { get; set; } = false;
-
         public DateTime OccurredOn { get; set; }
 
         public string StreamId { get; set; }
 
         public string StreamType { get; set; }
 
-        public Guid UniqueId { get; set; }
-
-        public string Username { get; set; }
+        public string IssuedBy { get; set; }
 
         public byte Version { get; set; } = 1;
 

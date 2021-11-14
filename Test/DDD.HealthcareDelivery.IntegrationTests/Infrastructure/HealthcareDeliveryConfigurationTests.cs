@@ -115,12 +115,13 @@ namespace DDD.HealthcareDelivery.Infrastructure
             return new StoredEvent
             {
                 Id = 1,
-                Body = @"<PharmaceuticalPrescriptionCreated xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""DDD.HealthcareDelivery.Domain.Prescriptions""><PrescriptionId>1</PrescriptionId><OccurredOn>2018-01-01T10:06:00</OccurredOn></PharmaceuticalPrescriptionCreated>",
+                EventType = "DDD.HealthcareDelivery.Domain.Prescriptions.PharmaceuticalPrescriptionCreated, DDD.HealthcareDelivery.Messages",
+                Version = 1,
+                OccurredOn = new DateTime(2018, 1, 1),
+                Body = "{\"prescriptionId\":1,\"occurredOn\":\"2018 - 01 - 01T10:06:00\"}",
                 StreamId = "1",
-                UniqueId = Guid.NewGuid(),
-                Username = "draphyz",
-                EventType = "PharmaceuticalPrescriptionCreated",
-                OccurredOn = new DateTime(2018, 1, 1)
+                StreamType = "PharmaceuticalPrescription",
+                IssuedBy = "draphyz"
             };
         }
 

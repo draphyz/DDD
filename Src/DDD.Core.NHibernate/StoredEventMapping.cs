@@ -13,7 +13,7 @@ namespace DDD.Core.Infrastructure.Data
         {
             this.Lazy(false);
             // Table
-            this.Table("StoredEvent");
+            this.Table("Event");
             // Keys
             this.Id(e => e.Id, m1 =>  
             {
@@ -24,33 +24,33 @@ namespace DDD.Core.Infrastructure.Data
             this.Property(e => e.EventType, m =>
             {
                 m.Type(NHibernateUtil.AnsiString);
-                m.Length(50);
+                m.Length(250);
                 m.NotNullable(true);
             });
             this.Property(e => e.Version);
-            this.Property(e => e.StreamType, m =>
-            {
-                m.Type(NHibernateUtil.AnsiString);
-                m.Length(50);
-            });
-            this.Property(e => e.StreamId, m =>
-            {
-                m.Type(NHibernateUtil.AnsiString);
-                m.Length(50);
-            });
-            this.Property(e => e.UniqueId, m => m.NotNullable(true));
             this.Property(e => e.OccurredOn, m => m.Precision(3)); // in milliseconds
-            this.Property(e => e.Username, m =>
-            {
-                m.Type(NHibernateUtil.AnsiString);
-                m.Length(100);
-            });
             this.Property(e => e.Body, m =>
             {
                 m.Type(NHibernateUtil.AnsiString);
                 m.NotNullable(true);
             });
-            this.Property(e => e.IsDispatched);
+            this.Property(e => e.StreamId, m =>
+            {
+                m.Type(NHibernateUtil.AnsiString);
+                m.Length(50);
+                m.NotNullable(true);
+            });
+            this.Property(e => e.StreamType, m =>
+            {
+                m.Type(NHibernateUtil.AnsiString);
+                m.Length(50);
+                m.NotNullable(true);
+            });
+            this.Property(e => e.IssuedBy, m =>
+            {
+                m.Type(NHibernateUtil.AnsiString);
+                m.Length(100);
+            });
         }
 
         #endregion Constructors
