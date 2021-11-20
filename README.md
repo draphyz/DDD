@@ -4,9 +4,24 @@ This project is an example of a .NET implementation of a medical prescription mo
 
 **Points of interest**
 
-The goal of the project is to experiment with some .NET implementations of the core concepts of DDD (entities, value objects, domain events, ...) and CQRS (commands, queries, command and query handlers, ...) on the basis of a concrete model.
+This project has been created to test an implementation in .NET of the core concepts of DDD (entities, value objects, domain events, ...) and CQRS (commands, queries, command and query handlers, ...) on the basis of a concrete model.
 
-Only a light version of CQRS (no data projection, one data store) has been considered.
+The final goal of the project is to develop, for personal use, the main components of a message-based architecture that combines the benefits of the Hexagonal Architecture, CQRS and DDD, namely :
+
+-	reusability of the application code
+-	isolation of the business and application logic from external dependencies
+-	reduction of complexity by splitting the system into smaller parts with high cohesion and low coupling
+-	maintainability, testability and readability of code
+-	encapsulation of the business logic and rules in domain objects if necessary
+
+The scalability of the system is important, but is not the main concern. I want to develop a solution that combines the above-mentioned benefits, but that is accessible to small development teams and that can be deployed in different types of environment. For this reason, only a light version of CQRS (no data projection, one data store) has been considered and no messaging framework (like Apache Kafka or NServiceBus) has been used.
+
+The main components are developed from technologies commonly used by .NET developers :
+
+-	a relational database
+-	an ORM framework
+-	an Ioc container
+
 
 **Model**
 
