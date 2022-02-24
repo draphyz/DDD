@@ -1,4 +1,5 @@
 ﻿using System.Data.Common;
+using System.Threading;
 using System.Threading.Tasks;
 using Conditions;
 
@@ -19,12 +20,12 @@ namespace DDD.Core.Infrastructure.Data
             return connection;
         }
 
-        public static async Task<DbConnection> CreateOpenConnectionAsync(this IDbConnectionFactory factory)
+        public static async Task<DbConnection> CreateOpenConnectionAsync(this IDbConnectionFactory factory, CancellationToken cancellationToken = default)
         {
             Condition.Requires(factory, nameof(factory)).IsNotNull();
             await new SynchronizationContextRemover();
             var connection = factory.CreateConnection();
-            await connection.OpenAsync();
+            await connection.OpenAsync(cancellationToken);
             return connection;
         }
 
