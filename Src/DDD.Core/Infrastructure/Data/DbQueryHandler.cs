@@ -54,7 +54,7 @@ namespace DDD.Core.Infrastructure.Data
             await new SynchronizationContextRemover();
             try
             {
-                using (var connection = await this.ConnectionFactory.CreateOpenConnectionAsync())
+                using (var connection = await this.ConnectionFactory.CreateOpenConnectionAsync(cancellationToken))
                 {
                     return await this.ExecuteAsync(query, connection, cancellationToken);
                 }
