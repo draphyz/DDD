@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using DDD.Serialization;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -25,6 +27,11 @@ namespace DDD.Core.Infrastructure.Data
             builder.Property(e => e.Body)
                    .IsUnicode(false)
                    .IsRequired();
+            builder.Property(e => e.BodyFormat)
+                   .IsUnicode(false)
+                   .IsRequired()
+                   .HasConversion(f => f.ToString().ToUpper(),
+                                  f => (SerializationFormat)Enum.Parse(typeof(SerializationFormat), f, true));
             builder.Property(e => e.StreamId)
                    .IsUnicode(false)
                    .HasMaxLength(50)
