@@ -1,6 +1,7 @@
 ﻿using NHibernate;
 using NHibernate.Mapping.ByCode.Conformist;
 using NHibernate.Mapping.ByCode;
+using DDD.Serialization;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -32,6 +33,11 @@ namespace DDD.Core.Infrastructure.Data
             this.Property(e => e.Body, m =>
             {
                 m.Type(NHibernateUtil.AnsiString);
+                m.NotNullable(true);
+            });
+            this.Property(e => e.BodyFormat, m =>
+            {
+                m.Type(new EnumUpperStringType<SerializationFormat>());
                 m.NotNullable(true);
             });
             this.Property(e => e.StreamId, m =>

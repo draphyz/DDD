@@ -39,6 +39,8 @@ namespace DDD.Core.Infrastructure.Serialization
 
         public Encoding Encoding { get; }
 
+        public SerializationFormat Format => SerializationFormat.Json;
+
         public bool Indent => this.settings.Formatting == Formatting.Indented;
 
         #endregion Properties

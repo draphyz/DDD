@@ -42,6 +42,8 @@ namespace DDD.Core.Infrastructure.Serialization
 
         public Encoding Encoding => this.writerSettings.Encoding;
 
+        public SerializationFormat Format => SerializationFormat.Xml;
+
         public bool Indent => this.writerSettings.Indent;
 
         #endregion Properties

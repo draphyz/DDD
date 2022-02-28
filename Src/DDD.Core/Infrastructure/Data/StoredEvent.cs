@@ -1,4 +1,5 @@
 ﻿using System;
+using DDD.Serialization;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -9,17 +10,19 @@ namespace DDD.Core.Infrastructure.Data
 
         public string Body { get; set; }
 
+        public SerializationFormat BodyFormat { get; set; }
+
         public string EventType { get; set; }
 
         public long Id { get; set; }
+
+        public string IssuedBy { get; set; }
 
         public DateTime OccurredOn { get; set; }
 
         public string StreamId { get; set; }
 
         public string StreamType { get; set; }
-
-        public string IssuedBy { get; set; }
 
         public byte Version { get; set; } = 1;
 

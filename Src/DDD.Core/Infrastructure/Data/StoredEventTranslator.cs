@@ -38,7 +38,8 @@ namespace DDD.Core.Infrastructure.Data
                 OccurredOn = @event.OccurredOn,
                 EventType = $"{eventType.FullName}, {eventType.Assembly.GetName().Name}",
                 Version = ToVersion(eventType.FullName),
-                Body = this.eventSerializer.SerializeToString(@event)
+                Body = this.eventSerializer.SerializeToString(@event),
+                BodyFormat = this.eventSerializer.Format
             };
         }
 
