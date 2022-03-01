@@ -38,6 +38,7 @@ namespace DDD.Core.Infrastructure.Data
             this.Property(e => e.BodyFormat, m =>
             {
                 m.Type(new EnumUpperStringType<SerializationFormat>());
+                m.Length(20);
                 m.NotNullable(true);
             });
             this.Property(e => e.StreamId, m =>
