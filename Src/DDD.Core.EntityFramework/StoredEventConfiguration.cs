@@ -29,6 +29,7 @@ namespace DDD.Core.Infrastructure.Data
                    .IsRequired();
             builder.Property(e => e.BodyFormat)
                    .IsUnicode(false)
+                   .HasMaxLength(20)
                    .IsRequired()
                    .HasConversion(f => f.ToString().ToUpper(),
                                   f => (SerializationFormat)Enum.Parse(typeof(SerializationFormat), f, true));
