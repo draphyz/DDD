@@ -62,19 +62,20 @@ namespace DDD.Core.Infrastructure.Serialization
 
         public static DataContractSerializerWrapper Create(bool indent = true) => Create(XmlSerializationOptions.Encoding, indent);
 
-        public T Deserialize<T>(Stream stream)
+        public object Deserialize(Stream stream, Type type)
         {
             Condition.Requires(stream, nameof(stream)).IsNotNull();
+            Condition.Requires(type, nameof(type)).IsNotNull();
             using (var reader = XmlReader.Create(stream, this.readerSettings))
             {
-                var serializer = new DataContractSerializer(typeof(T));
+                var serializer = new DataContractSerializer(type);
                 try
                 {
-                    return (T)serializer.ReadObject(reader);
+                    return serializer.ReadObject(reader);
                 }
                 catch (RuntimeSerializationException exception)
                 {
-                    throw new SerializationException(typeof(T), exception);
+                    throw new SerializationException(type, exception);
                 }
             }
         }
