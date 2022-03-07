@@ -2,6 +2,7 @@
 using NHibernate.Mapping.ByCode.Conformist;
 using NHibernate.Mapping.ByCode;
 using DDD.Serialization;
+using NHibernate.Type;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -37,7 +38,7 @@ namespace DDD.Core.Infrastructure.Data
             });
             this.Property(e => e.BodyFormat, m =>
             {
-                m.Type(new EnumUpperStringType<SerializationFormat>());
+                m.Type(new EnumStringType<SerializationFormat>());
                 m.Length(20);
                 m.NotNullable(true);
             });
