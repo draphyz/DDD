@@ -31,8 +31,7 @@ namespace DDD.Core.Infrastructure.Data
                    .IsUnicode(false)
                    .HasMaxLength(20)
                    .IsRequired()
-                   .HasConversion(f => f.ToString().ToUpper(),
-                                  f => (SerializationFormat)Enum.Parse(typeof(SerializationFormat), f, true));
+                   .HasConversion<string>();
             builder.Property(e => e.StreamId)
                    .IsUnicode(false)
                    .HasMaxLength(50)
