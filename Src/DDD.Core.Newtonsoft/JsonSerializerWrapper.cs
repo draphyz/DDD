@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.IO;
 using System.Text;
 
@@ -57,21 +58,22 @@ namespace DDD.Core.Infrastructure.Serialization
 
         public static JsonSerializerWrapper Create(bool indent = true) => Create(JsonSerializationOptions.Encoding, indent);
 
-        public T Deserialize<T>(Stream stream)
+        public object Deserialize(Stream stream, Type type)
         {
 
             Condition.Requires(stream, nameof(stream)).IsNotNull();
+            Condition.Requires(type, nameof(type)).IsNotNull();
             using (var streamReader = new StreamReader(stream, this.Encoding, true, 1024, true))
             using (var jsonReader = new JsonTextReader(streamReader))
             {
                 var serializer = JsonSerializer.Create(this.settings);
                 try
                 {
-                    return serializer.Deserialize<T>(jsonReader);
+                    return serializer.Deserialize(jsonReader, type);
                 }
                 catch (JsonException exception)
                 {
-                    throw new SerializationException(typeof(T), exception);
+                    throw new SerializationException(type, exception);
                 }
             }
         }

@@ -36,7 +36,7 @@ namespace DDD.Core.Infrastructure.Serialization
             // Act
             serializer.Serialize(this.stream, obj1);
             this.stream.Position = 0;
-            var obj2 = serializer.Deserialize<FakePerson>(this.stream);
+            var obj2 = serializer.Deserialize(this.stream, typeof(FakePerson));
             // Assert
             obj2.Should().BeEquivalentTo(obj1);
         }

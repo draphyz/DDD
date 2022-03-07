@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace DDD.Serialization
 {
@@ -13,7 +14,7 @@ namespace DDD.Serialization
 
         #region Methods
 
-        T Deserialize<T>(Stream stream);
+        object Deserialize(Stream stream, Type type);
 
         void Serialize(Stream stream, object obj);
 
