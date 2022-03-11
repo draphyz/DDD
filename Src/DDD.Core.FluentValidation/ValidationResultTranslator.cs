@@ -14,7 +14,7 @@ namespace DDD.Core.Infrastructure.Validation
 
         #region Methods
 
-        public DDD.Validation.ValidationResult Translate(ValidationResult result, IDictionary<string, object> options)
+        public DDD.Validation.ValidationResult Translate(ValidationResult result, IDictionary<string, object> options = null)
         {
             Condition.Requires(result, nameof(result)).IsNotNull();
             Condition.Requires(options, nameof(options))
@@ -26,6 +26,16 @@ namespace DDD.Core.Infrastructure.Validation
             return new DDD.Validation.ValidationResult(isSuccessful, objectName, failures);
         }
 
+        private static string GetCustomStateInfo(object customState, string infoType)
+        {
+            if (customState == null) return null;
+            var state = customState.ToString();
+            var parts = state.Split('=');
+            if (parts.Length == 2 && parts[0] == infoType)
+                return parts[1];
+            return null;
+        }
+
         private static DDD.Validation.ValidationFailure ToFailure(ValidationFailure failure)
         {
             Condition.Requires(failure, nameof(failure)).IsNotNull();
@@ -35,11 +45,11 @@ namespace DDD.Core.Infrastructure.Validation
                 failure.ErrorCode,
                 failure.Severity.ToString().ToEnum<DDD.Validation.FailureLevel>(),
                 failure.PropertyName,
-                failure.AttemptedValue
+                failure.AttemptedValue?.ToString(),
+                GetCustomStateInfo(failure.CustomState, "category")
             );
         }
 
         #endregion Methods
-
     }
 }
