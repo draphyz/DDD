@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Conditions;
+using FluentValidation;
 using System.Collections;
 
 namespace DDD.Core.Infrastructure.Validation
@@ -70,6 +71,15 @@ namespace DDD.Core.Infrastructure.Validation
         public static IRuleBuilderOptions<T, string> Numeric<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
             return ruleBuilder.SetValidator(new NumericValidator<T>());
+        }
+
+        /// <summary>
+        /// Specifies a custom category associated with the validation failure when validation fails for this rule.
+        /// </summary>
+        public static IRuleBuilderOptions<T, TProperty> WithCategory<T, TProperty>(this IRuleBuilderOptions<T, TProperty> rule, string category)
+        {
+            Condition.Requires(category, nameof(category)).IsNotNullOrWhiteSpace();
+            return rule.WithState(x => $"category={category}");
         }
 
         #endregion Methods
