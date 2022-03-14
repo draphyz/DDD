@@ -14,7 +14,7 @@ namespace DDD.Core.Application
         #region Methods
 
         /// <summary>
-        /// Publishes all events sequentially to handle them synchronously.
+        /// Publishes all events synchronously.
         /// </summary>
         public static void PublishAll(this IEventPublisher publisher, IEnumerable<IEvent> events)
         {
@@ -27,7 +27,7 @@ namespace DDD.Core.Application
         }
 
         /// <summary>
-        /// Publishes all events sequentially to handle them asynchronously.
+        /// Publishes all events asynchronously and sequentially.
         /// </summary>
         public async static Task PublishAllAsync(this IEventPublisher publisher, IEnumerable<IEvent> events, CancellationToken cancellationToken = default)
         {
