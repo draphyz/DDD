@@ -1,9 +1,10 @@
 ﻿using System;
+using Conditions;
 
 namespace DDD
 {
     /// <summary>
-    /// Provides unique timestamps based on the current date and time on this computer with a specified resolution.
+    /// Provides unique timestamps with a specified resolution.
     /// </summary>
     public class UniqueTimestampProvider : ITimestampProvider
     {
@@ -11,31 +12,23 @@ namespace DDD
         #region Fields
 
         private readonly object locker = new object();
-        private readonly Func<DateTime> timestamp;
+        private readonly ITimestampProvider provider;
         private DateTime lastTimestamp = DateTime.MinValue;
 
         #endregion Fields
 
         #region Constructors
 
-        public UniqueTimestampProvider(bool isLocal, TimeSpan resolution)
+        public UniqueTimestampProvider(ITimestampProvider provider, TimeSpan resolution)
         {
-            this.IsLocal = isLocal;
+            Condition.Requires(provider, nameof(provider)).IsNotNull();
+            this.provider = provider;
             this.Resolution = resolution;
-            if (isLocal)
-                this.timestamp = () => DateTime.Now;
-            else
-                this.timestamp = () => DateTime.UtcNow;
         }
 
         #endregion Constructors
 
         #region Properties
-
-        /// <summary>
-        /// Indicates whether the provided timestamps are local or universal.
-        /// </summary>
-        public bool IsLocal { get; }
 
         /// <summary>
         /// Indicates the resolution of the provided timestamps.
@@ -47,11 +40,11 @@ namespace DDD
         #region Methods
 
         /// <summary>
-        /// Provides a unique timestamp on this computer.
+        /// Provides a unique timestamp.
         /// </summary>
         public DateTime GetTimestamp()
         {
-            var timestamp = this.timestamp();
+            var timestamp = this.provider.GetTimestamp();
             lock (locker)
             {
                 if ((timestamp - lastTimestamp) < Resolution)

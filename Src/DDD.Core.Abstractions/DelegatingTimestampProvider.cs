@@ -3,6 +3,9 @@ using System;
 
 namespace DDD
 {
+    /// <summary>
+    /// Provides timestamps based on a delegate.
+    /// </summary>
     public class DelegatingTimestampProvider : ITimestampProvider
     {
 
@@ -23,10 +26,6 @@ namespace DDD
         #endregion Constructors
 
         #region Methods
-
-        public static ITimestampProvider CreateLocal() => new DelegatingTimestampProvider(() => DateTime.Now);
-
-        public static ITimestampProvider CreateUniversal() => new DelegatingTimestampProvider(() => DateTime.UtcNow);
 
         public DateTime GetTimestamp() => this.timestamp();
 

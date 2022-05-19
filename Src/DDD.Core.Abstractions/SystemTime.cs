@@ -4,7 +4,7 @@ namespace DDD
 {
     /// <summary>
     /// This class must be used in the production code instead of the standard built-in DateTime to provide local and universal system times.
-    /// It allows changing and resetting the current time in unit tests.
+    /// It allows changing and resetting the current time in tests.
     /// </summary>
     public static class SystemTime
     {
@@ -28,21 +28,21 @@ namespace DDD
         #region Methods
 
         /// <summary>
-        /// Gets the current date and time on this computer.
+        /// Gets the current date and time on this computer, expressed as the local time.
         /// </summary>
         public static DateTime Local() => localProvider.GetTimestamp();
 
         /// <summary>
-        /// Resets the default timestamp providers (for unit testing).
+        /// Resets the default timestamp providers based on the current date and time on this computer (for testing).
         /// </summary>
         public static void Reset()
         {
-            localProvider = DelegatingTimestampProvider.CreateLocal();
-            universalProvider = DelegatingTimestampProvider.CreateUniversal();
+            localProvider = new LocalTimestampProvider();
+            universalProvider = new UniversalTimestampProvider();
         }
 
         /// <summary>
-        /// Replaces the default local timestamp provider (for unit testing).
+        /// Replaces the default local timestamp provider (for testing).
         /// </summary>
         public static void SetLocalProvider(ITimestampProvider provider)
         {
@@ -50,7 +50,7 @@ namespace DDD
         }
 
         /// <summary>
-        /// Replaces the default local timestamp provider (for unit testing).
+        /// Replaces the default local timestamp provider (for testing).
         /// </summary>
         public static void SetLocalProvider(Func<DateTime> timestamp)
         {
@@ -58,7 +58,7 @@ namespace DDD
         }
 
         /// <summary>
-        /// Replaces the default universal timestamp provider (for unit testing).
+        /// Replaces the default universal timestamp provider (for testing).
         /// </summary>
         public static void SetUniversalProvider(ITimestampProvider provider)
         {
@@ -66,7 +66,7 @@ namespace DDD
         }
 
         /// <summary>
-        /// Replaces the default universal timestamp provider (for unit testing).
+        /// Replaces the default universal timestamp provider (for testing).
         /// </summary>
         public static void SetUniversalProvider(Func<DateTime> timestamp)
         {
