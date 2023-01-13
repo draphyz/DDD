@@ -53,27 +53,74 @@ namespace DDD
         }
 
         [Theory]
-        [InlineData("Olivier", 0, "")]
-        [InlineData("Olivier", 10, "Olivier")]
-        [InlineData("Olivier", 3, "ier")]
-        [InlineData("Olivier", 4, "vier")]
-        public void Right_WhenSpecifiedLengthGreaterOrEqualToZero_ReturnsExpectedString(string instance, int length, string expected)
+        [InlineData("asd", true)]
+        [InlineData("aSd", true)]
+        [InlineData("123345", false)]
+        [InlineData("123asd", false)]
+        [InlineData("!##$", false)]
+        public void IsAlphabetic_WhenStringNotNull_ReturnsExpectedValue(string instance, bool expected)
         {
             // Act
-            var result = instance.Right(length);
+            var result = instance.IsAlphabetic();
             // Assert
             result.Should().Be(expected);
         }
 
-        [Fact]
-        public void Right_WhenSpecifiedLengthLessThanZero_ThrowsArgumentException()
+        [Theory]
+        [InlineData("asd", true)]
+        [InlineData("aSd", true)]
+        [InlineData("123345", true)]
+        [InlineData("123asd", true)]
+        [InlineData("!##$", false)]
+        [InlineData("a!##$", false)]
+        public void IsAlphanumeric_WhenStringNotNull_ReturnsExpectedValue(string instance, bool expected)
         {
-            // Arrange
-            var instance = "Olivier";
             // Act
-            Action action = () => instance.Right(-1);
+            var result = instance.IsAlphanumeric();
             // Assert
-            action.Should().Throw<ArgumentException>();
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("01/01/2001", true)]
+        [InlineData("10/01/2001", true)]
+        [InlineData("01/10/2001", true)]
+        [InlineData("01.01.2001", false)]
+        [InlineData("01-01-2001", false)]
+        [InlineData("01/01/01", false)]
+        [InlineData("1/1/2001", false)]
+        [InlineData("10/1/2001", false)]
+        [InlineData("1/10/2001", false)]
+        public void IsFrenchShortDateString_WhenStringNotNull_ReturnsExpectedValue(string instance, bool expected)
+        {
+            // Act
+            var result = instance.IsFrenchShortDateString();
+            // Assert
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("123345", true)]
+        [InlineData("asd", false)]
+        [InlineData("aSd", false)]
+        [InlineData("123asd", false)]
+        [InlineData("!##$", false)]
+        public void IsNumeric_WhenStringNotNull_ReturnsExpectedValue(string instance, bool expected)
+        {
+            // Act
+            var result = instance.IsNumeric();
+            // Assert
+            result.Should().Be(expected);
+        }
+
+        [Theory]
+        [MemberData(nameof(IsShortDateString))]
+        public void IsShortDateString_WhenStringNotNull_ReturnsExpectedValue(string instance, IFormatProvider provider, bool expected)
+        {
+            // Act
+            var result = instance.IsShortDateString(provider);
+            // Assert
+            result.Should().Be(expected);
         }
 
         [Theory]
@@ -101,45 +148,12 @@ namespace DDD
         }
 
         [Theory]
-        [InlineData("asd", true)]
-        [InlineData("aSd", true)]
-        [InlineData("123345", false)]
-        [InlineData("123asd", false)]
-        [InlineData("!##$", false)]
-        public void IsAlphabetic_WhenStringNotNull_ReturnsExpectedValue(string instance, bool expected)
+        [InlineData("Olivier", new char[] { 'o', 'v', 'e' }, "Oliir")]
+        [InlineData("Olivier", new char[] { 'O', 'v', 'e' }, "liir")]
+        public void Remove_WhenArgumentsNotNull_ReturnsExpectedValue(string instance, char[] oldChars, string expected)
         {
             // Act
-            var result = instance.IsAlphabetic();
-            // Assert
-            result.Should().Be(expected);
-        }
-
-
-        [Theory]
-        [InlineData("123345", true)]
-        [InlineData("asd", false)]
-        [InlineData("aSd", false)]
-        [InlineData("123asd", false)]
-        [InlineData("!##$", false)]
-        public void IsNumeric_WhenStringNotNull_ReturnsExpectedValue(string instance, bool expected)
-        {
-            // Act
-            var result = instance.IsNumeric();
-            // Assert
-            result.Should().Be(expected);
-        }
-
-        [Theory]
-        [InlineData("asd", true)]
-        [InlineData("aSd", true)]
-        [InlineData("123345", true)]
-        [InlineData("123asd", true)]
-        [InlineData("!##$", false)]
-        [InlineData("a!##$", false)]
-        public void IsAlphanumeric_WhenStringNotNull_ReturnsExpectedValue(string instance, bool expected)
-        {
-            // Act
-            var result = instance.IsAlphanumeric();
+            var result = instance.Remove(oldChars);
             // Assert
             result.Should().Be(expected);
         }
@@ -157,29 +171,36 @@ namespace DDD
         }
 
         [Theory]
-        [MemberData(nameof(IsShortDateString))]
-        public void IsShortDateString_WhenStringNotNull_ReturnsExpectedValue(string instance, IFormatProvider provider, bool expected)
+        [InlineData("Olivier", 0, "")]
+        [InlineData("Olivier", 10, "Olivier")]
+        [InlineData("Olivier", 3, "ier")]
+        [InlineData("Olivier", 4, "vier")]
+        public void Right_WhenSpecifiedLengthGreaterOrEqualToZero_ReturnsExpectedString(string instance, int length, string expected)
         {
             // Act
-            var result = instance.IsShortDateString(provider);
+            var result = instance.Right(length);
             // Assert
             result.Should().Be(expected);
         }
 
+        [Fact]
+        public void Right_WhenSpecifiedLengthLessThanZero_ThrowsArgumentException()
+        {
+            // Arrange
+            var instance = "Olivier";
+            // Act
+            Action action = () => instance.Right(-1);
+            // Assert
+            action.Should().Throw<ArgumentException>();
+        }
+
         [Theory]
-        [InlineData("01/01/2001", true)]
-        [InlineData("10/01/2001", true)]
-        [InlineData("01/10/2001", true)]
-        [InlineData("01.01.2001", false)]
-        [InlineData("01-01-2001", false)]
-        [InlineData("01/01/01", false)]
-        [InlineData("1/1/2001", false)]
-        [InlineData("10/1/2001", false)]
-        [InlineData("1/10/2001", false)]
-        public void IsFrenchShortDateString_WhenStringNotNull_ReturnsExpectedValue(string instance, bool expected)
+        [InlineData("iPhone", "i_Phone")]
+        [InlineData("DreamWorks", "Dream_Works")]
+        public void ToSnakeCase_WhenStringNotNull_ReturnsExpectedValue(string instance, string expected)
         {
             // Act
-            var result = instance.IsFrenchShortDateString();
+            var result = instance.ToSnakeCase();
             // Assert
             result.Should().Be(expected);
         }
@@ -197,18 +218,6 @@ namespace DDD
             result.Should().Be(expected);
         }
 
-        [Theory]
-        [InlineData("iPhone", "i_Phone")]
-        [InlineData("DreamWorks", "Dream_Works")]
-        public void ToSnakeCase_WhenStringNotNull_ReturnsExpectedValue(string instance, string expected)
-        {
-            // Act
-            var result = instance.ToSnakeCase();
-            // Assert
-            result.Should().Be(expected);
-        }
-
         #endregion Methods
-
     }
 }

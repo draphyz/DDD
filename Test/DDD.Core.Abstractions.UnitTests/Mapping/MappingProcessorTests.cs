@@ -53,12 +53,23 @@ namespace DDD.Mapping
         }
 
         [Fact]
-        public void Translate_WhenCalled_CallsExpectedTranslator()
+        public void Translate_SpecifiedType_CallsExpectedTranslator()
         {
             // Arrange
             var source = new FakeObject1();
             // Act
-            _ = this.processor.Translate<FakeObject2>(source);
+            var destination = this.processor.Translate<FakeObject1, FakeObject2>(source);
+            // Assert
+            this.translator1To2.Received(1).Translate(source);
+        }
+
+        [Fact]
+        public void Translate_Object_CallsExpectedTranslator()
+        {
+            // Arrange
+            var source = new FakeObject1();
+            // Act
+            var destination = this.processor.Translate<FakeObject2>(source);
             // Assert
             this.translator1To2.Received(1).Translate(source);
         }
