@@ -6,14 +6,13 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
+    using Collections;
     using Domain;
 
-    public class DbToRepositoryExceptionTranslator : IObjectTranslator<DbException, RepositoryException>
+    public class DbToRepositoryExceptionTranslator : ObjectTranslator<DbException, RepositoryException>
     {
 
         #region Fields
-
-        public static readonly IObjectTranslator<DbException, RepositoryException> Default = new DbToRepositoryExceptionTranslator();
 
         private readonly Dictionary<string, IObjectTranslator<DbException, RepositoryException>> translators = new Dictionary<string, IObjectTranslator<DbException, RepositoryException>>();
 
@@ -24,7 +23,6 @@ namespace DDD.Core.Infrastructure.Data
         public DbToRepositoryExceptionTranslator()
         {
             this.translators.Add("System.Data.SqlClient.SqlException", new SqlServerToRepositoryExceptionTranslator());
-            this.translators.Add("Microsoft.Data.SqlClient.SqlException", new SqlServerToRepositoryExceptionTranslator());
             this.translators.Add("Oracle.DataAccess.Client.OracleException", new OracleToRepositoryExceptionTranslator());
         }
 
@@ -32,19 +30,17 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public RepositoryException Translate(DbException exception, IDictionary<string, object> options = null)
+        public override RepositoryException Translate(DbException exception, IDictionary<string, object> context = null)
         {
             Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("EntityType"));
             var exceptionType = exception.GetType().FullName;
             if (this.translators.TryGetValue(exceptionType, out var translator))
-                return translator.Translate(exception, options);
-            else 
+                return translator.Translate(exception, context);
+            else
             {
-                var entityType = (Type)options["EntityType"];
-                var outerException = options.ContainsKey("OuterException") ? (Exception)options["OuterException"] : exception;
+                Type entityType = null;
+                context?.TryGetValue("EntityType", out entityType);
+                var outerException = context.ContainsKey("OuterException") ? (Exception)context["OuterException"] : exception;
                 return new RepositoryException(isTransient: false, entityType, outerException);
             }
         }

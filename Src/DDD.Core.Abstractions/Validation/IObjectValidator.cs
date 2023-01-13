@@ -1,16 +1,10 @@
 ﻿namespace DDD.Validation
 {
     /// <summary>
-    /// Defines a method that validates an object of a specified type.
+    /// Defines methods that validate synchronously and asynchronously an object of a specified type.
     /// </summary>
-    public interface IObjectValidator<in T> where T :class
+    public interface IObjectValidator<in T> : ISyncObjectValidator<T>, IAsyncObjectValidator<T>
+        where T : class
     {
-
-        #region Methods
-
-        ValidationResult Validate(T obj, string ruleSet = null);
-
-        #endregion Methods
-
     }
 }

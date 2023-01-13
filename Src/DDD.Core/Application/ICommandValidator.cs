@@ -1,11 +1,9 @@
 ﻿namespace DDD.Core.Application
 {
-    using Validation; 
-
     /// <summary>
-    /// Defines a method that validates a command of a specified type.
+    /// Defines methods that validate synchronously and asynchronously  a command of a specified type.
     /// </summary>
-    public interface ICommandValidator<in TCommand> : IObjectValidator<TCommand>
+    public interface ICommandValidator<in TCommand> : ISyncCommandValidator<TCommand>, IAsyncCommandValidator<TCommand>
         where TCommand : class, ICommand
     {
     }

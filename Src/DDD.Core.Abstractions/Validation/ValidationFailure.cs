@@ -18,7 +18,7 @@ namespace DDD.Validation
                                  string code,
                                  FailureLevel level = FailureLevel.Warning,
                                  string propertyName = null,
-                                 string propertyValue = null,
+                                 object propertyValue = null,
                                  string category = null)
         {
             Condition.Requires(message, nameof(message)).IsNotNullOrWhiteSpace();
@@ -82,7 +82,7 @@ namespace DDD.Validation
 		/// </summary>
         [DataMember(Name = "propertyValue")]
         [XmlElement("propertyValue")]
-        public string PropertyValue { get; private set; }
+        public object PropertyValue { get; private set; }
 
         #endregion Properties
 

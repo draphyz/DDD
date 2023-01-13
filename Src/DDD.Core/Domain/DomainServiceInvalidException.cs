@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace DDD.Core.Domain
 {
@@ -44,9 +45,20 @@ namespace DDD.Core.Domain
 
         public bool HasFailures() => this.Failures != null && this.Failures.Any();
 
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            if (this.Failures != null)
+            {
+                for (var i = 0; i < this.Failures.Length; i++)
+                    info.AddValue($"Failure{i}", this.Failures[i]);
+            }
+        }
+
         public override string ToString()
         {
             var s = $"{this.GetType()}: {this.Message} ";
+            s += $"{Environment.NewLine}Timestamp: {this.Timestamp}";
             s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
             if (this.ServiceType != null)
                 s += $"{Environment.NewLine}ServiceType: {this.ServiceType}";

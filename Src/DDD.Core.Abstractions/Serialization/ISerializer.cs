@@ -19,5 +19,6 @@ namespace DDD.Serialization
         void Serialize(Stream stream, object obj);
 
         #endregion Methods
+
     }
 }

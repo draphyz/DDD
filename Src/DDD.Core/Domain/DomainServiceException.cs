@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace DDD.Core.Domain
 {
@@ -39,9 +40,17 @@ namespace DDD.Core.Domain
             return $"An error occurred while calling the service '{serviceType.Name}'.";
         }
 
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            if (this.ServiceType != null)
+                info.AddValue("ServiceType", this.ServiceType);
+        }
+
         public override string ToString()
         {
             var s = $"{this.GetType()}: {this.Message} ";
+            s += $"{Environment.NewLine}Timestamp: {this.Timestamp}";
             s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
             if (this.ServiceType != null)
                 s += $"{Environment.NewLine}ServiceType: {this.ServiceType}";

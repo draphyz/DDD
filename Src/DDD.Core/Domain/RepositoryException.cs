@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace DDD.Core.Domain
 {
@@ -39,9 +40,17 @@ namespace DDD.Core.Domain
             return $"An error occurred while saving or finding a domain entity '{entityType.Name}'.";
         }
 
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            if (this.EntityType != null)
+                info.AddValue("EntityType", this.EntityType);
+        }
+
         public override string ToString()
         {
             var s = $"{this.GetType()}: {this.Message} ";
+            s += $"{Environment.NewLine}Timestamp: {this.Timestamp}";
             s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
             if (this.EntityType != null)
                 s += $"{Environment.NewLine}EntityType: {this.EntityType}";

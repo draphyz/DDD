@@ -5,19 +5,21 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
+    using Collections;
     using Application;
 
-    internal class OracleToQueryExceptionTranslator : IObjectTranslator<DbException, QueryException>
+    /// <remarks>
+    /// Use dynamic type to avoid to add a dependency on the Oracle library.
+    /// </remarks>
+    internal class OracleToQueryExceptionTranslator : ObjectTranslator<DbException, QueryException>
     {
         #region Methods
 
-        public QueryException Translate(DbException exception, IDictionary<string, object> options = null)
+        public override QueryException Translate(DbException exception, IDictionary<string, object> context = null)
         {
             Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("Query"));
-            var query = (IQuery)options["Query"];
+            IQuery query = null;
+            context?.TryGetValue("Query", out query);
             dynamic oracleException = exception;
             foreach (dynamic error in oracleException.Errors)
             {
@@ -29,6 +31,9 @@ namespace DDD.Core.Infrastructure.Data
 
                 if (OracleErrorHelper.IsTimeoutError(error))
                     return new QueryTimeoutException(query, exception);
+
+                if (OracleErrorHelper.IsConflictError(error))
+                    return new QueryConflictException(query, exception);
             }
             return new QueryException(isTransient: false, query, exception);
         }

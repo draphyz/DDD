@@ -62,6 +62,7 @@ namespace DDD
             Condition.Requires(instance, nameof(instance)).IsNotNull();
             return DateTime.TryParseExact(instance, "d", provider, DateTimeStyles.None, out _);
         }
+
         /// <summary>
         /// Returns a string containing a specified number of characters from the left side of a string.
         /// </summary>
@@ -79,6 +80,24 @@ namespace DDD
             if (length == 0) return string.Empty;
             if (length >= instance.Length) return instance;
             return instance.Substring(0, length);
+        }
+
+        /// <summary>
+        /// Returns a new string in which all occurrences of specified characters in this instance are removed.
+        /// </summary>
+        /// <param name="instance">The current instance.</param>
+        /// <param name="oldChars">The characters to be removed.</param>
+        public static string Remove(this string instance, params char[] oldChars)
+        {
+            Condition.Requires(instance, nameof(instance)).IsNotNull();
+            Condition.Requires(oldChars, nameof(oldChars)).IsNotNull();
+            var index = instance.IndexOfAny(oldChars);
+            while (index >= 0)
+            {
+                instance = instance.Remove(index, 1);
+                index = instance.IndexOfAny(oldChars);
+            }
+            return instance;
         }
 
         /// <summary>
@@ -166,6 +185,5 @@ namespace DDD
         }
 
         #endregion Methods
-
     }
 }

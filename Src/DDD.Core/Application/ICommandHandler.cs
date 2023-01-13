@@ -1,17 +1,10 @@
 ﻿namespace DDD.Core.Application
 {
     /// <summary>
-    /// Defines a method that handles a command of a specified type.
+    /// Defines methods that handle synchronously and asynchronously a command of a specified type.
     /// </summary>
-    public interface ICommandHandler<in TCommand>
+    public interface ICommandHandler<in TCommand> : ISyncCommandHandler<TCommand>, IAsyncCommandHandler<TCommand>
         where TCommand : class, ICommand
     {
-
-        #region Methods
-
-        void Handle(TCommand command);
-
-        #endregion Methods
-
     }
 }

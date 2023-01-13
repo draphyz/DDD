@@ -4,7 +4,7 @@ using System;
 namespace DDD
 {
     /// <summary>
-    /// Provides timestamps based on a delegate.
+    /// Adapter that converts a delegate into an object that implements ITimestampProvider.
     /// </summary>
     public class DelegatingTimestampProvider : ITimestampProvider
     {

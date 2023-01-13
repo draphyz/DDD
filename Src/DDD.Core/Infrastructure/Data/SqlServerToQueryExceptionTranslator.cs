@@ -5,30 +5,32 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
+    using Collections;
     using Application;
 
-    internal class SqlServerToQueryExceptionTranslator : IObjectTranslator<DbException, QueryException>
+    internal class SqlServerToQueryExceptionTranslator : ObjectTranslator<DbException, QueryException>
     {
         #region Methods
 
-        public QueryException Translate(DbException exception, IDictionary<string, object> options = null)
+        public override QueryException Translate(DbException exception, IDictionary<string, object> context = null)
         {
             Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("Query"));
-            var query = (IQuery)options["Query"];
+            IQuery query = null;
+            context?.TryGetValue("Query", out query);
             dynamic sqlServerException = exception;
             foreach (dynamic error in sqlServerException.Errors)
             {
-                if (SqlServerErrorHelper.IsUnavailableError(error))
+                if (error.IsUnavailableError())
                     return new QueryUnavailableException(query, exception);
 
-                if (SqlServerErrorHelper.IsUnauthorizedError(error))
+                if (error.IsUnauthorizedError())
                     return new QueryUnauthorizedException(query, exception);
 
-                if (SqlServerErrorHelper.IsTimeoutError(error))
+                if (error.IsTimeoutError())
                     return new QueryTimeoutException(query, exception);
+
+                if (error.IsConflictError())
+                    return new QueryConflictException(query, exception);
             }
             return new QueryException(isTransient: false, query, exception);
         }

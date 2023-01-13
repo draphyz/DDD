@@ -23,7 +23,7 @@ namespace DDD.Core.Infrastructure.Data
             var commands = Regex.Split(script,
                                       $@"^\s*({batchSeparator}[ \t]+[0-9]+|{batchSeparator})(?:\s+|$)",
                                       RegexOptions.IgnoreCase | RegexOptions.Multiline,
-                                      TimeSpan.FromMilliseconds(1000.0));
+                                      TimeSpan.FromMilliseconds(5000.0));
             return commands.Where(c => !IsSeparatorOrEmpty(c, batchSeparator));
         }
 
@@ -38,7 +38,7 @@ namespace DDD.Core.Infrastructure.Data
                                  @"(--[^\r?\n]*)|(/\*[\w\W]*?(?=\*/)\*/)",
                                  string.Empty,
                                  RegexOptions.Multiline,
-                                 TimeSpan.FromMilliseconds(1000.0));
+                                 TimeSpan.FromMilliseconds(5000.0));
         }
 
         #endregion Methods

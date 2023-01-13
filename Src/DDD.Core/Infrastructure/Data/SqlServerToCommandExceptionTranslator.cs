@@ -6,29 +6,31 @@ namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
     using Application;
+    using Collections;
 
-    internal class SqlServerToCommandExceptionTranslator : IObjectTranslator<DbException, CommandException>
+    internal class SqlServerToCommandExceptionTranslator : ObjectTranslator<DbException, CommandException>
     {
         #region Methods
 
-        public CommandException Translate(DbException exception, IDictionary<string, object> options = null)
+        public override CommandException Translate(DbException exception, IDictionary<string, object> context = null)
         {
             Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("Command"));
-            var command = (ICommand)options["Command"];
+            ICommand command = null;
+            context?.TryGetValue("Command", out command);
             dynamic sqlServerException = exception;
             foreach (dynamic error in sqlServerException.Errors)
             {
-                if (SqlServerErrorHelper.IsUnavailableError(error))
+                if (error.IsUnavailableError())
                     return new CommandUnavailableException(command, exception);
 
-                if (SqlServerErrorHelper.IsUnauthorizedError(error))
+                if (error.IsUnauthorizedError())
                     return new CommandUnauthorizedException(command, exception);
 
-                if (SqlServerErrorHelper.IsTimeoutError(error))
+                if (error.IsTimeoutError())
                     return new CommandTimeoutException(command, exception);
+
+                if (error.IsConflictError())
+                    return new CommandConflictException(command, exception);
             }
             return new CommandException(isTransient: false, command, exception);
         }

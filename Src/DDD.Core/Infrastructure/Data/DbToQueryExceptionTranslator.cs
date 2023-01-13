@@ -5,14 +5,13 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
+    using Collections;
     using Application;
 
-    public class DbToQueryExceptionTranslator : IObjectTranslator<DbException, QueryException>
+    public class DbToQueryExceptionTranslator : ObjectTranslator<DbException, QueryException>
     {
 
         #region Fields
-
-        public static readonly IObjectTranslator<DbException, QueryException> Default = new DbToQueryExceptionTranslator();
 
         private readonly Dictionary<string, IObjectTranslator<DbException, QueryException>> translators = new Dictionary<string, IObjectTranslator<DbException, QueryException>>();
 
@@ -23,7 +22,6 @@ namespace DDD.Core.Infrastructure.Data
         public DbToQueryExceptionTranslator()
         {
             this.translators.Add("System.Data.SqlClient.SqlException", new SqlServerToQueryExceptionTranslator());
-            this.translators.Add("Microsoft.Data.SqlClient.SqlException", new SqlServerToQueryExceptionTranslator());
             this.translators.Add("Oracle.DataAccess.Client.OracleException", new OracleToQueryExceptionTranslator());
         }
 
@@ -31,18 +29,16 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public QueryException Translate(DbException exception, IDictionary<string, object> options = null)
+        public override QueryException Translate(DbException exception, IDictionary<string, object> context = null)
         {
             Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("Query"));
             var exceptionType = exception.GetType().FullName;
             if (this.translators.TryGetValue(exceptionType, out var translator))
-                return translator.Translate(exception, options);
-            else 
+                return translator.Translate(exception, context);
+            else
             {
-                var query = (IQuery)options["Query"];
+                IQuery query = null;
+                context?.TryGetValue("Query", out query);
                 return new QueryException(isTransient: false, query, exception);
             }
         }

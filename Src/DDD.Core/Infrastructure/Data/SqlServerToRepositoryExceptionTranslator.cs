@@ -6,31 +6,33 @@ using System;
 namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
+    using Collections;
     using Domain;
 
-    internal class SqlServerToRepositoryExceptionTranslator : IObjectTranslator<DbException, RepositoryException>
+    internal class SqlServerToRepositoryExceptionTranslator : ObjectTranslator<DbException, RepositoryException>
     {
         #region Methods
 
-        public RepositoryException Translate(DbException exception, IDictionary<string, object> options = null)
+        public override RepositoryException Translate(DbException exception, IDictionary<string, object> context = null)
         {
             Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("EntityType"));
-            var entityType = (Type)options["EntityType"];
-            var outerException = options.ContainsKey("OuterException") ? (Exception)options["OuterException"] : exception;
+            Type entityType = null;
+            context?.TryGetValue("EntityType", out entityType);
+            var outerException = context.ContainsKey("OuterException") ? (Exception)context["OuterException"] : exception;
             dynamic sqlServerException = exception;
             foreach (dynamic error in sqlServerException.Errors)
             {
-                if (SqlServerErrorHelper.IsUnavailableError(error))
+                if (error.IsUnavailableError())
                     return new RepositoryUnavailableException(entityType, outerException);
 
-                if (SqlServerErrorHelper.IsUnauthorizedError(error))
+                if (error.IsUnauthorizedError())
                     return new RepositoryUnauthorizedException(entityType, outerException);
 
-                if (SqlServerErrorHelper.IsTimeoutError(error))
+                if (error.IsTimeoutError())
                     return new RepositoryTimeoutException(entityType, outerException);
+
+                if (error.IsConflictError())
+                    return new RepositoryConflictException(entityType, outerException);
             }
             return new RepositoryException(isTransient: false, entityType, outerException);
         }

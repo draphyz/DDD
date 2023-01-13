@@ -1,7 +1,6 @@
 ﻿using Conditions;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
@@ -35,18 +34,18 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public async Task HandleAsync(TCommand command, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(TCommand command, IMessageContext context = null)
         {
-            if (this.logger.IsEnabled(LogLevel.Information))
+            if (this.logger.IsEnabled(LogLevel.Debug))
             {
-                this.logger.LogInformation("Executing command {Command}.", command);
+                this.logger.LogDebug("Le traitement de la commande {Command} par {CommandHandler} a commencé.", command, this.commandHandler.GetType().Name);
                 var stopWatch = Stopwatch.StartNew();
-                await this.commandHandler.HandleAsync(command, cancellationToken);
+                await this.commandHandler.HandleAsync(command, context);
                 stopWatch.Stop();
-                this.logger.LogInformation("Command executed in {CommandExecutionTime} ms.", stopWatch.ElapsedMilliseconds);
+                this.logger.LogDebug("Le traitement de la commande {Command} par {CommandHandler} s'est terminé (temps d'exécution: {CommandExecutionTime} ms).", command, this.commandHandler.GetType().Name, stopWatch.ElapsedMilliseconds);
             }
             else
-                await this.commandHandler.HandleAsync(command, cancellationToken);
+                await this.commandHandler.HandleAsync(command, context);
         }
 
         #endregion Methods

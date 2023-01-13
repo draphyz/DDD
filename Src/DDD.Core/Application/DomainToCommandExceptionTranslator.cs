@@ -1,29 +1,22 @@
-﻿using System.Collections.Generic;
-using Conditions;
+﻿using Conditions;
+using System.Collections.Generic;
 
 namespace DDD.Core.Application
 {
     using Mapping;
     using Domain;
+    using Collections;
 
-    internal class DomainToCommandExceptionTranslator : IObjectTranslator<DomainException, CommandException>
+    public class DomainToCommandExceptionTranslator : ObjectTranslator<DomainException, CommandException>
     {
-
-        #region Fields
-
-        public static readonly IObjectTranslator<DomainException, CommandException> Default = new DomainToCommandExceptionTranslator();
-
-        #endregion Fields
 
         #region Methods
 
-        public CommandException Translate(DomainException exception, IDictionary<string, object> options = null)
+        public override CommandException Translate(DomainException exception, IDictionary<string, object> context = null)
         {
-            Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("Command"));
-            var command = (ICommand)options["Command"];
+            Condition.Requires(exception).IsNotNull();
+            ICommand command = null;
+            context?.TryGetValue("Command", out command);
             switch (exception)
             {
                 case DomainServiceConflictException _:
@@ -41,8 +34,8 @@ namespace DDD.Core.Application
                 case DomainServiceInvalidException invalidEx:
                     return new CommandInvalidException(command, invalidEx.Failures, exception);
                 default:
-                    return new CommandException(exception.IsTransient, command, exception);
-            }
+                    return new CommandException(isTransient: false, command, exception);
+            };
         }
 
         #endregion Methods

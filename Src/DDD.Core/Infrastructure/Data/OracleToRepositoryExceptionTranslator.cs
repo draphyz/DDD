@@ -6,20 +6,22 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
+    using Collections;
     using Domain;
 
-    internal class OracleToRepositoryExceptionTranslator : IObjectTranslator<DbException, RepositoryException>
+    /// <remarks>
+    /// Use dynamic type to avoid to add a dependency on the Oracle library.
+    /// </remarks>
+    internal class OracleToRepositoryExceptionTranslator : ObjectTranslator<DbException, RepositoryException>
     {
         #region Methods
 
-        public RepositoryException Translate(DbException exception, IDictionary<string, object> options = null)
+        public override RepositoryException Translate(DbException exception, IDictionary<string, object> context = null)
         {
             Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("EntityType"));
-            var entityType = (Type)options["EntityType"];
-            var outerException = options.ContainsKey("OuterException") ? (Exception)options["OuterException"] : exception;
+            Type entityType = null;
+            context?.TryGetValue("EntityType", out entityType);
+            var outerException = context.ContainsKey("OuterException") ? (Exception)context["OuterException"] : exception;
             dynamic oracleException = exception;
             foreach (dynamic error in oracleException.Errors)
             {
@@ -31,6 +33,9 @@ namespace DDD.Core.Infrastructure.Data
 
                 if (OracleErrorHelper.IsTimeoutError(error))
                     return new RepositoryTimeoutException(entityType, outerException);
+
+                if (OracleErrorHelper.IsConflictError(error))
+                    return new RepositoryConflictException(entityType, outerException);
             }
             return new RepositoryException(isTransient: false, entityType, outerException);
         }
