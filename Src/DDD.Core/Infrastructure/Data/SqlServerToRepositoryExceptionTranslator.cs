@@ -22,16 +22,16 @@ namespace DDD.Core.Infrastructure.Data
             dynamic sqlServerException = exception;
             foreach (dynamic error in sqlServerException.Errors)
             {
-                if (error.IsUnavailableError())
+                if (SqlServerErrorHelper.IsUnavailableError(error))
                     return new RepositoryUnavailableException(entityType, outerException);
 
-                if (error.IsUnauthorizedError())
+                if (SqlServerErrorHelper.IsUnauthorizedError(error))
                     return new RepositoryUnauthorizedException(entityType, outerException);
 
-                if (error.IsTimeoutError())
+                if (SqlServerErrorHelper.IsTimeoutError(error))
                     return new RepositoryTimeoutException(entityType, outerException);
 
-                if (error.IsConflictError())
+                if (SqlServerErrorHelper.IsConflictError(error))
                     return new RepositoryConflictException(entityType, outerException);
             }
             return new RepositoryException(isTransient: false, entityType, outerException);

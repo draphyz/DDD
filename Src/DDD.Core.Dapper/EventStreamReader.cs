@@ -9,11 +9,12 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using DDD.Core.Domain;
     using Mapping;
     using Threading;
 
     public class EventStreamReader<TContext> : IQueryHandler<ReadEventStream, IEnumerable<Event>, TContext>
-        where TContext : class, IBoundedContext
+        where TContext : BoundedContext
     {
 
         #region Fields
@@ -108,8 +109,7 @@ namespace DDD.Core.Infrastructure.Data
                     query.Top,
                     StreamPosition = query.StreamPosition.ToByteArray(),
                     query.ExcludedStreamIds,
-                    query.StreamType,
-                    query.StreamSource
+                    query.StreamType
                 };
             return query;
         }

@@ -3,7 +3,7 @@
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     [Collection("SqlServer")]
-    public class SqlServerHealthcareDeliveryContextTests : HealthcareDeliveryContextTests<SqlServerFixture>
+    public class SqlServerHealthcareDeliveryContextTests : DbHealthcareDeliveryContextTests<SqlServerFixture>
     {
 
         #region Constructors

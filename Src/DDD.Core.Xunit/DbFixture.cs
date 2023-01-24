@@ -1,52 +1,51 @@
 ﻿using Conditions;
-using System.Data;
+using System;
 using System.Resources;
-using System.Reflection;
 using System.Linq;
+using System.Diagnostics;
+using System.Configuration;
+using System.Data;
+using System.Data.Common;
 
 namespace DDD.Core.Infrastructure.Testing
 {
     using Data;
+    using Application;
+    using DDD.Core.Domain;
 
-    public abstract class DbFixture<TConnectionFactory> : IDbFixture<TConnectionFactory>
-        where TConnectionFactory : class, IDbConnectionFactory
+    public abstract class DbFixture<TContext> : IDbFixture<TContext>
+        where TContext : BoundedContext, new()
     {
 
         #region Fields
 
         private readonly ResourceManager resourceManager;
+        private readonly ConnectionStringSettings connectionSettings;
 
         #endregion Fields
 
         #region Constructors
 
-        protected DbFixture(TConnectionFactory connectionFactory, string resourceFile)
+        protected DbFixture(string resourceFile, ConnectionStringSettings connectionSettings)
         {
-            Condition.Requires(connectionFactory, nameof(connectionFactory)).IsNotNull();
             Condition.Requires(resourceFile, nameof(resourceFile)).IsNotNullOrWhiteSpace();
-            this.ConnectionFactory = connectionFactory;
-            var resourceAssembly = Assembly.GetCallingAssembly();
-            var resourceType = resourceAssembly.GetTypes().Single(t => t.Name == resourceFile);
+            Condition.Requires(connectionSettings, nameof(connectionSettings)).IsNotNull();
+            this.LoadConfiguration();
+            var resourceType = GetResourceType(resourceFile);
             this.resourceManager = new ResourceManager(resourceType);
-            this.RegisterDbProviderFactory();
+            this.connectionSettings = connectionSettings;
             this.CreateDatabase();
         }
 
         #endregion Constructors
 
-        #region Properties
-
-        public TConnectionFactory ConnectionFactory { get; }
-
-        #endregion Properties
-
         #region Methods
 
         public int[] ExecuteScript(string script)
         {
-            Condition.Requires(script, nameof(script)).IsNotNullOrWhiteSpace();
-            using (var connection = this.ConnectionFactory.CreateOpenConnection())
+            using (var connection = this.CreateConnection())
             {
+                connection.Open();
                 return this.ExecuteScript(script, connection);
             }
         }
@@ -58,14 +57,46 @@ namespace DDD.Core.Infrastructure.Testing
             return this.ExecuteScript(script);
         }
 
-        protected abstract void CreateDatabase();
+        public IDbConnectionProvider<TContext> CreateConnectionProvider(bool pooling = true)
+        {
+            var connectionString = this.SetPooling(connectionSettings.ConnectionString, pooling);
+            return new LazyDbConnectionProvider<TContext>(connectionSettings.ProviderName, connectionString);
+        }
+
+        public DbConnection CreateConnection(bool pooling = true)
+        {
+            var connectionString = this.SetPooling(connectionSettings.ConnectionString, pooling);
+            var providerFactory = DbProviderFactories.GetFactory(connectionSettings.ProviderName);
+            var connection = providerFactory.CreateConnection();
+            connection.ConnectionString = connectionString;
+            return connection;
+        }
+
+        protected abstract string SetPooling(string connectionString, bool pooling);
 
         protected abstract int[] ExecuteScript(string script, IDbConnection connection);
 
-        protected virtual void RegisterDbProviderFactory()
+        protected abstract void CreateDatabase();
+
+        protected virtual void LoadConfiguration()
+        { 
+        }
+
+        private static Type GetResourceType(string resourceFile)
         {
+            var callingAssemblies = new StackTrace().GetFrames()
+                                                    .Select(x => x.GetMethod().ReflectedType.Assembly)
+                                                    .Distinct();
+            foreach (var assembly in callingAssemblies)
+            {
+                var resourceType = assembly.GetTypes().FirstOrDefault(t => t.Name == resourceFile);
+                if (resourceType != null)
+                    return resourceType;
+            }
+            throw new ArgumentException($"Cannot find the resource file '{resourceFile}'", nameof(resourceFile));
         }
 
         #endregion Methods
+
     }
 }

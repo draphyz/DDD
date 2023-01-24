@@ -11,7 +11,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
     using Encounters;
 
     public class BelgianPharmaceuticalPrescriptionTranslator
-        : IObjectTranslator<PharmaceuticalPrescriptionState, PharmaceuticalPrescription>
+        : ObjectTranslator<PharmaceuticalPrescriptionState, PharmaceuticalPrescription>
     {
 
         #region Fields
@@ -35,8 +35,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Methods
 
-        public PharmaceuticalPrescription Translate(PharmaceuticalPrescriptionState state,
-                                                    IDictionary<string, object> options = null)
+        public override PharmaceuticalPrescription Translate(PharmaceuticalPrescriptionState state,
+                                                             IDictionary<string, object> context = null)
         {
             Condition.Requires(state, nameof(state)).IsNotNull();
             return new PharmaceuticalPrescription

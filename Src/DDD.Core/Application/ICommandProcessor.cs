@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
+    using Domain;
+    using System.Net;
     using Validation;
 
     /// <summary>
@@ -12,6 +14,16 @@ namespace DDD.Core.Application
     {
 
         #region Methods
+
+        /// <summary>
+        /// Specify the bounded context in which the command must be processed.
+        /// </summary>
+        IContextualCommandProcessor<TContext> In<TContext>(TContext context) where TContext : BoundedContext;
+
+        /// <summary>
+        /// Specify the bounded context in which the command must be processed.
+        /// </summary>
+        IContextualCommandProcessor In(BoundedContext context);
 
         /// <summary>
         /// Processes synchronously a command of a specified type.
@@ -34,6 +46,5 @@ namespace DDD.Core.Application
         Task<ValidationResult> ValidateAsync<TCommand>(TCommand command, string ruleSet = null, CancellationToken cancellationToken = default) where TCommand : class, ICommand;
 
         #endregion Methods
-
     }
 }

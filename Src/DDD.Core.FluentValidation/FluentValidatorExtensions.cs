@@ -85,4 +85,5 @@ namespace DDD.Core.Infrastructure.Validation
         #endregion Methods
 
     }
+
 }

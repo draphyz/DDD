@@ -4,6 +4,9 @@ using Microsoft.Extensions.Logging;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
+    using Core.Infrastructure.Data;
+    using Domain;
+
     public class SqlServerHealthcareDeliveryContextWithLogging : SqlServerHealthcareDeliveryContext
     {
 
@@ -15,8 +18,8 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Constructors
 
-        public SqlServerHealthcareDeliveryContextWithLogging(string connectionString, ILoggerFactory loggerFactory) 
-            : base(connectionString)
+        public SqlServerHealthcareDeliveryContextWithLogging(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider, ILoggerFactory loggerFactory) 
+            : base(connectionProvider)
         {
             Condition.Requires(loggerFactory, nameof(loggerFactory)).IsNotNull();
             this.loggerFactory = loggerFactory;

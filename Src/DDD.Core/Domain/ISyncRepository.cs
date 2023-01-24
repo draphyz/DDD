@@ -13,10 +13,7 @@ namespace DDD.Core.Domain
 
         TDomainEntity Find(TIdentity identity);
 
-        /// <remarks>
-        /// Do not respect the DDD rule 'One aggregate modified by transaction' (for simplicity).
-        /// </remarks>
-        void Save(IEnumerable<TDomainEntity> aggregates);
+        void Save(TDomainEntity aggregate);
 
         #endregion Methods
     }

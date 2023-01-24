@@ -8,11 +8,12 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using DDD.Core.Domain;
     using Mapping;
     using Threading;
 
     public class RecurringCommandRegister<TContext> : ICommandHandler<RegisterRecurringCommand, TContext>
-        where TContext : class, IBoundedContext
+        where TContext : BoundedContext
     {
 
         #region Fields
@@ -150,7 +151,7 @@ namespace DDD.Core.Infrastructure.Data
         {
             if (command.Body != recurringCommand.Body) return true;
             if (command.BodyFormat != recurringCommand.BodyFormat) return true;
-            if (command.CronExpression != recurringCommand.CronExpression) return true;
+            if (command.RecurringExpression != recurringCommand.RecurringExpression) return true;
             return false;
         }
 
@@ -164,7 +165,7 @@ namespace DDD.Core.Infrastructure.Data
                     command.CommandType,
                     command.Body,
                     command.BodyFormat,
-                    command.CronExpression
+                    command.RecurringExpression
                 };
             return command;
         }

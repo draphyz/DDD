@@ -34,13 +34,12 @@ namespace DDD.Core.Application
         {
             Condition.Requires(@event, nameof(@event)).IsNotNull();
             Guid eventId = default;
-            string streamId = null, streamType = null, streamSource = null, issuedBy = null;
+            string streamId = null, streamType = null, issuedBy = null;
             if (context != null)
             {
                 context.TryGetValue("EventId", out eventId);
                 context.TryGetValue("StreamId", out streamId);
                 context.TryGetValue("StreamType", out streamType);
-                context.TryGetValue("StreamSource", out streamSource);
                 context.TryGetValue("IssuedBy", out issuedBy);
             }
             var eventType = @event.GetType();
@@ -53,7 +52,6 @@ namespace DDD.Core.Application
                 BodyFormat = this.eventSerializer.Format.ToString().ToUpper(),
                 StreamId = streamId,
                 StreamType = streamType,
-                StreamSource = streamSource,
                 IssuedBy = issuedBy
             };
         }

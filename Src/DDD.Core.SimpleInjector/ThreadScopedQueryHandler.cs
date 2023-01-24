@@ -10,20 +10,20 @@ namespace DDD.Core.Infrastructure.DependencyInjection
     /// <summary>
     /// A decorator that defines a scope around the synchronous execution of a query.
     /// </summary>
-    public class ThreadScopedQueryHandler<TQuery, TResult> : IQueryHandler<TQuery, TResult>
+    public class ThreadScopedQueryHandler<TQuery, TResult> : ISyncQueryHandler<TQuery, TResult>
         where TQuery : class, IQuery<TResult>
     {
 
         #region Fields
 
         private readonly Container container;
-        private readonly Func<IQueryHandler<TQuery, TResult>> handlerProvider;
+        private readonly Func<ISyncQueryHandler<TQuery, TResult>> handlerProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public ThreadScopedQueryHandler(Func<IQueryHandler<TQuery, TResult>> handlerProvider, Container container)
+        public ThreadScopedQueryHandler(Func<ISyncQueryHandler<TQuery, TResult>> handlerProvider, Container container)
         {
             Condition.Requires(handlerProvider, nameof(handlerProvider)).IsNotNull();
             Condition.Requires(container, nameof(container)).IsNotNull();
@@ -35,12 +35,12 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Methods
 
-        public TResult Handle(TQuery query)
+        public TResult Handle(TQuery query, IMessageContext context = null)
         {
             using (ThreadScopedLifestyle.BeginScope(container))
             {
                 var handler = this.handlerProvider();
-                return handler.Handle(query);
+                return handler.Handle(query, context);
             }
         }
 

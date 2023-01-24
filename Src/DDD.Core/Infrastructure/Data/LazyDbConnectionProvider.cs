@@ -6,9 +6,10 @@ using System;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using DDD.Core.Domain;
 
     public class LazyDbConnectionProvider<TContext>
-        : IDbConnectionProvider<TContext> where TContext : class, IBoundedContext, new()
+        : IDbConnectionProvider<TContext> where TContext : BoundedContext, new()
     {
 
         #region Fields
@@ -36,9 +37,8 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Properties
 
-        public TContext Context { get; }
-
         public DbConnection Connection => this.lazyConnection.Value;
+        public TContext Context { get; }
 
         #endregion Properties
 

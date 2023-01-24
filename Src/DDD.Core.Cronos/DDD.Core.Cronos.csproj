@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+	  <TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
+	  <OutputType>Library</OutputType>
+	  <RootNamespace>DDD.Core.Infrastructure</RootNamespace>
+	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Build\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Cronos" Version="0.7.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DDD.Core\DDD.Core.csproj" />
+  </ItemGroup>
+</Project>

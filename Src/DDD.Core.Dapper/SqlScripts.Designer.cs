@@ -129,7 +129,7 @@ namespace DDD.Core.Infrastructure.Data {
         ///       CommandType,
         ///       Body,
         ///       BodyFormat,
-        ///       CronExpression
+        ///       RecurringExpression
         ///FROM Command
         ///WHERE CommandType = @CommandType.
         /// </summary>
@@ -144,7 +144,7 @@ namespace DDD.Core.Infrastructure.Data {
         ///       CommandType,
         ///       Body,
         ///       BodyFormat,
-        ///       CronExpression
+        ///       RecurringExpression
         ///FROM Command
         ///ORDER BY CommandId.
         /// </summary>
@@ -173,13 +173,13 @@ namespace DDD.Core.Infrastructure.Data {
         ///            CommandType,
         ///            Body,
         ///            BodyFormat,
-        ///            CronExpression)
+        ///            RecurringExpression)
         ///     VALUES
         ///           (@CommandId,
         ///            @CommandType,
         ///            @Body,
         ///            @BodyFormat,
-        ///            @CronExpression).
+        ///            @RecurringExpression).
         /// </summary>
         internal static string InsertRecurringCommand {
             get {
@@ -295,7 +295,7 @@ namespace DDD.Core.Infrastructure.Data {
         ///   Looks up a localized string similar to UPDATE Command
         ///SET Body = @Body,
         ///    BodyFormat = @BodyFormat,
-        ///    CronExpression = @CronExpression
+        ///    RecurringExpression = @RecurringExpression
         ///WHERE CommandId = @CommandId.
         /// </summary>
         internal static string UpdateRecurringCommand {

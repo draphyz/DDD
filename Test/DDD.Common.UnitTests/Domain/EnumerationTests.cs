@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using DDD.Common.Domain;
+using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -110,10 +111,10 @@ namespace DDD.Common.Domain
         }
 
         [Fact]
-        public void All_WhenCalled_ReturnsAllConstants()
+        public void AllInstances_WhenCalled_ReturnsExpectedInstances()
         {
             // Act
-            var all = Enumeration.All<FakeEnumeration>();
+            var all = Enumeration.AllInstances<FakeEnumeration>();
             // Assert
             all.Should().BeEquivalentTo(new[] { FakeEnumeration.Fake1, FakeEnumeration.Fake2, FakeEnumeration.Fake3 });
         }
@@ -199,7 +200,7 @@ namespace DDD.Common.Domain
         public void TryParseCode_WhenInvalidCode_ReturnsFalse(string code, bool ignoreCase)
         {
             // Act
-            var success = Enumeration.TryParseCode<FakeEnumeration>(code, ignoreCase, out _);
+            var success = Enumeration.TryParseCode<FakeEnumeration>(code, ignoreCase, out var result);
             // Assert
             success.Should().BeFalse();
         }
@@ -222,7 +223,7 @@ namespace DDD.Common.Domain
         public void TryParseCode_WhenValidCode_ReturnsTrue(string code, bool ignoreCase)
         {
             // Act
-            var success = Enumeration.TryParseCode<FakeEnumeration>(code, ignoreCase, out _);
+            var success = Enumeration.TryParseCode<FakeEnumeration>(code, ignoreCase, out var result);
             // Assert
             success.Should().BeTrue();
         }

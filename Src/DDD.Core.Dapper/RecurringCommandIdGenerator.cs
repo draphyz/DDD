@@ -4,10 +4,11 @@ using System;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using DDD.Core.Domain;
     using Mapping;
 
     public class RecurringCommandIdGenerator<TContext> : ISyncQueryHandler<GenerateRecurringCommandId, Guid, TContext>
-        where TContext : class, IBoundedContext
+        where TContext : BoundedContext
     {
 
         #region Fields

@@ -3,7 +3,7 @@
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     [Collection("Oracle")]
-    public class OracleHealthcareDeliveryContextTests : HealthcareDeliveryContextTests<OracleFixture>
+    public class OracleHealthcareDeliveryContextTests : DbHealthcareDeliveryContextTests<OracleFixture>
     {
 
         #region Constructors

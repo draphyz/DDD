@@ -9,18 +9,18 @@ namespace DDD.Core.Infrastructure.Validation
     using Mapping;
 
     internal class ValidationResultTranslator
-        : IObjectTranslator<ValidationResult, DDD.Validation.ValidationResult>
+        : ObjectTranslator<ValidationResult, DDD.Validation.ValidationResult>
     {
 
         #region Methods
 
-        public DDD.Validation.ValidationResult Translate(ValidationResult result, IDictionary<string, object> options = null)
+        public override DDD.Validation.ValidationResult Translate(ValidationResult result, IDictionary<string, object> context = null)
         {
             Condition.Requires(result, nameof(result)).IsNotNull();
-            Condition.Requires(options, nameof(options))
+            Condition.Requires(context, nameof(context))
                      .IsNotNull()
-                     .Evaluate(options.ContainsKey("ObjectName"));
-            var objectName = (string)options["ObjectName"];
+                     .Evaluate(context.ContainsKey("ObjectName"));
+            var objectName = (string)context["ObjectName"];
             var isSuccessful = result.Errors.All(f => f.Severity == Severity.Info);
             var failures = result.Errors.Select(f => ToFailure(f)).ToArray();
             return new DDD.Validation.ValidationResult(isSuccessful, objectName, failures);
@@ -45,7 +45,7 @@ namespace DDD.Core.Infrastructure.Validation
                 failure.ErrorCode,
                 failure.Severity.ToString().ToEnum<DDD.Validation.FailureLevel>(),
                 failure.PropertyName,
-                failure.AttemptedValue?.ToString(),
+                failure.AttemptedValue,
                 GetCustomStateInfo(failure.CustomState, "category")
             );
         }

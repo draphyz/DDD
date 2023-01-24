@@ -6,7 +6,7 @@ namespace DDD.Core.Domain
     {
         #region Properties
 
-        public DateTime OccurredOn => SystemTime.Local();
+        public DateTime OccurredOn => DateTime.Now;
 
         #endregion Properties
     }

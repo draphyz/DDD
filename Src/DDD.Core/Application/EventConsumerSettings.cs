@@ -1,11 +1,18 @@
 ﻿using Conditions;
+using DDD.Core.Domain;
 using System.Runtime.Serialization;
 
 namespace DDD.Core.Application
 {
     [DataContract()]
-    public class EventConsumerSettings
+    public class EventConsumerSettings<TContext>
+        where TContext : BoundedContext, new()
     {
+        #region Fields
+
+        private readonly TContext context;
+
+        #endregion Fields
 
         #region Constructors
 
@@ -17,6 +24,7 @@ namespace DDD.Core.Application
                 Condition.Requires(consumationMax, nameof(consumationMax)).IsGreaterThan(0);
             this.ConsumationDelay = consumationDelay;
             this.ConsumationMax = consumationMax;
+            this.context = new TContext();
         }
 
         #endregion Constructors
@@ -35,7 +43,11 @@ namespace DDD.Core.Application
         [DataMember(Order = 2)]
         public long? ConsumationMax { get; }
 
-        #endregion Properties
+        /// <summary>
+        /// Gets the associated context.
+        /// </summary>
+        public TContext Context => this.context;
 
+        #endregion Properties
     }
 }

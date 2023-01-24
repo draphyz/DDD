@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
+    using Domain;
     using Validation;
 
     /// <summary>
@@ -12,6 +13,16 @@ namespace DDD.Core.Application
     {
 
         #region Methods
+
+        /// <summary>
+        /// Specify the bounded context in which the query must be processed.
+        /// </summary>
+        IContextualQueryProcessor<TContext> In<TContext>(TContext context) where TContext : BoundedContext;
+
+        /// <summary>
+        /// Specify the bounded context in which the query must be processed.
+        /// </summary>
+        IContextualQueryProcessor In(BoundedContext context);
 
         /// <summary>
         /// Processes synchronously a query of a specified type and provides a result of a specified type.
@@ -34,6 +45,5 @@ namespace DDD.Core.Application
         Task<ValidationResult> ValidateAsync<TQuery>(TQuery query, string ruleSet = null, CancellationToken cancellationToken = default) where TQuery : class, IQuery;
 
         #endregion Methods
-
     }
 }

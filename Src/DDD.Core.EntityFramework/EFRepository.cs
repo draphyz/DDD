@@ -6,17 +6,19 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Data;
 using System.Data.Common;
+using DDD.Data;
 
 namespace DDD.Core.Infrastructure.Data
 {
     using Domain;
+    using Application;
     using Mapping;
     using Threading;
 
-    public abstract class EFRepository<TDomainEntity, TStateEntity, TIdentity>
-        : IAsyncRepository<TDomainEntity, TIdentity>
+    public abstract class EFRepository<TContext, TDomainEntity, TStateEntity, TIdentity>
+        : IRepository<TDomainEntity, TIdentity>
+        where TContext : BoundedContext
         where TDomainEntity : DomainEntity, IStateObjectConvertible<TStateEntity>
         where TStateEntity : class, IStateEntity, new()
         where TIdentity : ComparableValueObject
@@ -24,18 +26,18 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Fields
 
-        private readonly BoundedContext context;
+        private readonly DbBoundedContext<TContext> context;
         private readonly IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator;
-        private readonly IObjectTranslator<IEvent, StoredEvent> eventTranslator;
-        private readonly IObjectTranslator<Exception, RepositoryException> exceptionTranslator = EFRepositoryExceptionTranslator.Default;
+        private readonly IObjectTranslator<IEvent, Event> eventTranslator;
+        private readonly IObjectTranslator<Exception, RepositoryException> exceptionTranslator = new EFRepositoryExceptionTranslator();
 
         #endregion Fields
 
         #region Constructors
 
-        protected EFRepository(BoundedContext context,
+        protected EFRepository(DbBoundedContext<TContext> context,
                                IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator,
-                               IObjectTranslator<IEvent, StoredEvent> eventTranslator)
+                               IObjectTranslator<IEvent, Event> eventTranslator)
         {
             Condition.Requires(context, nameof(context)).IsNotNull();
             Condition.Requires(entityTranslator, nameof(entityTranslator)).IsNotNull();
@@ -55,48 +57,92 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
+        public TDomainEntity Find(TIdentity identity)
+        {
+            Condition.Requires(identity, nameof(identity)).IsNotNull();
+            try
+            {
+                var keyValues = identity.PrimitiveEqualityComponents();
+                // To avoid a promotion to an MSDTC transaction
+                this.Connection().OpenIfClosed();
+                var stateEntity = this.Find(keyValues);
+                return this.TranslateEntity(stateEntity);
+            }
+            catch (Exception ex) when (ex.ShouldBeWrappedIn<RepositoryException>())
+            {
+                throw this.TranslateException(ex);
+            }
+        }
+
         public async Task<TDomainEntity> FindAsync(TIdentity identity, CancellationToken cancellationToken = default)
         {
             Condition.Requires(identity, nameof(identity)).IsNotNull();
-            await new SynchronizationContextRemover();
-            var keyValues = identity.PrimitiveEqualityComponents();
-            await this.OpenConnectionAsync(cancellationToken);
-            var stateEntity = await this.FindAsync(keyValues, cancellationToken);
-            return this.TranslateEntity(stateEntity);
+            try
+            {
+                await new SynchronizationContextRemover();
+                var keyValues = identity.PrimitiveEqualityComponents();
+                // To avoid a promotion to an MSDTC transaction
+                await this.Connection().OpenIfClosedAsync(cancellationToken);
+                var stateEntity = await this.FindAsync(keyValues, cancellationToken);
+                return this.TranslateEntity(stateEntity);
+            }
+            catch (Exception ex) when (ex.ShouldBeWrappedIn<RepositoryException>())
+            {
+                throw this.TranslateException(ex);
+            }
+        }
+
+        public void Save(TDomainEntity aggregate)
+        {
+            Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
+            try
+            {
+                var stateEntity = aggregate.ToState();
+                var events = ToEvents(aggregate);
+                // To avoid a promotion to an MSDTC transaction
+                this.Connection().OpenIfClosed();
+                this.Save(stateEntity, events);
+            }
+            catch (Exception ex) when (ex.ShouldBeWrappedIn<RepositoryException>())
+            {
+                throw this.TranslateException(ex);
+            }
         }
 
         public async Task SaveAsync(TDomainEntity aggregate, CancellationToken cancellationToken = default)
         {
             Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
-            await new SynchronizationContextRemover();
-            var stateEntity = aggregate.ToState();
-            var events = ToStoredEvents(aggregate);
-            await this.OpenConnectionAsync(cancellationToken);
-            await this.SaveAsync(stateEntity, events, cancellationToken);
+            try
+            {
+                await new SynchronizationContextRemover();
+                var stateEntity = aggregate.ToState();
+                var events = ToEvents(aggregate);
+                // To avoid a promotion to an MSDTC transaction
+                await this.Connection().OpenIfClosedAsync(cancellationToken);
+                await this.SaveAsync(stateEntity, events, cancellationToken);
+            }
+            catch (Exception ex) when (ex.ShouldBeWrappedIn<RepositoryException>())
+            {
+                throw this.TranslateException(ex);
+            }
         }
 
-        protected virtual async Task<TStateEntity> FindAsync(IEnumerable<object> keyValues, CancellationToken cancellationToken = default)
+        protected virtual TStateEntity Find(IEnumerable<object> keyValues)
         {
             var keyNames = this.context.GetKeyNames<TStateEntity>();
             if (keyValues.Count() != keyNames.Count())
                 throw new InvalidOperationException($"You must specify {keyNames.Count()} identity components.");
             var expression = BuildFindExpression(keyNames, keyValues);
-            return await this.Query().FirstOrDefaultAsync(expression, cancellationToken);
+            return this.Query().FirstOrDefault(expression);
         }
 
-        /// <remarks>To avoid a transaction promotion from local to distributed</remarks>
-        protected async Task OpenConnectionAsync(CancellationToken cancellationToken = default)
+        protected virtual Task<TStateEntity> FindAsync(IEnumerable<object> keyValues, CancellationToken cancellationToken)
         {
-            try
-            {
-                var connection = this.Connection();
-                if (connection.State == ConnectionState.Closed)
-                    await connection.OpenAsync(cancellationToken);
-            }
-            catch (DbException ex)
-            {
-                throw this.exceptionTranslator.Translate(ex, new { EntityType = typeof(TDomainEntity) });
-            }
+            var keyNames = this.context.GetKeyNames<TStateEntity>();
+            if (keyValues.Count() != keyNames.Count())
+                throw new InvalidOperationException($"You must specify {keyNames.Count()} identity components.");
+            var expression = BuildFindExpression(keyNames, keyValues);
+            return this.Query().FirstOrDefaultAsync(expression, cancellationToken);
         }
 
         protected IQueryable<TStateEntity> Query()
@@ -112,11 +158,23 @@ namespace DDD.Core.Infrastructure.Data
             return Enumerable.Empty<Expression<Func<TStateEntity, object>>>();
         }
 
-        protected virtual async Task SaveAsync(TStateEntity stateEntity, IEnumerable<StoredEvent> events, CancellationToken cancellationToken = default)
+        protected virtual void Save(TStateEntity stateEntity, IEnumerable<Event> events)
         {
             this.context.Set<TStateEntity>().Add(stateEntity);
-            this.context.Set<StoredEvent>().AddRange(events);
-            await this.SaveChangesAsync(cancellationToken);
+            this.context.Events.AddRange(events);
+            this.context.SaveChanges();
+        }
+
+        protected virtual Task SaveAsync(TStateEntity stateEntity, IEnumerable<Event> events, CancellationToken cancellationToken)
+        {
+            this.context.Set<TStateEntity>().Add(stateEntity);
+            this.context.Events.AddRange(events);
+            return this.context.SaveChangesAsync(cancellationToken);
+        }
+
+        protected RepositoryException TranslateException(Exception ex)
+        {
+            return this.exceptionTranslator.Translate(ex, new { EntityType = typeof(TDomainEntity) });
         }
 
         protected TDomainEntity TranslateEntity(TStateEntity stateEntity)
@@ -144,28 +202,21 @@ namespace DDD.Core.Infrastructure.Data
             return Expression.Lambda<Func<TStateEntity, bool>>(find, entity);
         }
 
-        private async Task SaveChangesAsync(CancellationToken cancellationToken)
+        private IEnumerable<Event> ToEvents(TDomainEntity aggregate)
         {
-            try
-            {
-                await this.context.SaveChangesAsync(cancellationToken);
-            }
-            catch (DbUpdateException ex)
-            {
-                throw this.exceptionTranslator.Translate(ex, new { EntityType = typeof(TDomainEntity) });
-            }
-        }
-
-        private IEnumerable<StoredEvent> ToStoredEvents(TDomainEntity aggregate)
-        {
+            var guidGenerator = this.Connection().SequentialGuidGenerator();
             var username = Thread.CurrentPrincipal?.Identity?.Name;
             return aggregate.AllEvents().Select(e =>
             {
-                var evt = this.eventTranslator.Translate(e);
-                evt.StreamId = aggregate.IdentityAsString();
-                evt.StreamType = aggregate.GetType().Name;
-                evt.IssuedBy = username;
-                return evt;
+                var context = new
+                {
+                    EventId = guidGenerator.Generate(),
+                    StreamId = aggregate.IdentityAsString(),
+                    StreamType = aggregate.GetType().Name,
+                    StreamSource = this.context.Code,
+                    IssuedBy = username
+                };
+                return this.eventTranslator.Translate(e, context);
             });
         }
 

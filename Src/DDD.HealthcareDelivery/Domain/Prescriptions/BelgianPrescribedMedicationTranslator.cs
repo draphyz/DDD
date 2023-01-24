@@ -6,13 +6,13 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
     using Mapping;
 
-    internal class BelgianPrescribedMedicationTranslator : IObjectTranslator<PrescribedMedicationState, PrescribedMedication>
+    internal class BelgianPrescribedMedicationTranslator : ObjectTranslator<PrescribedMedicationState, PrescribedMedication>
     {
 
         #region Methods
 
-        public PrescribedMedication Translate(PrescribedMedicationState state,
-                                              IDictionary<string, object> options = null)
+        public override PrescribedMedication Translate(PrescribedMedicationState state,
+                                                       IDictionary<string, object> context = null)
         {
             Condition.Requires(state, nameof(state)).IsNotNull();
             switch (state.MedicationType)

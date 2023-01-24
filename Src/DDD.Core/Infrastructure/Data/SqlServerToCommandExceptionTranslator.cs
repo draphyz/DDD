@@ -20,16 +20,16 @@ namespace DDD.Core.Infrastructure.Data
             dynamic sqlServerException = exception;
             foreach (dynamic error in sqlServerException.Errors)
             {
-                if (error.IsUnavailableError())
+                if (SqlServerErrorHelper.IsUnavailableError(error))
                     return new CommandUnavailableException(command, exception);
 
-                if (error.IsUnauthorizedError())
+                if (SqlServerErrorHelper.IsUnauthorizedError(error))
                     return new CommandUnauthorizedException(command, exception);
 
-                if (error.IsTimeoutError())
+                if (SqlServerErrorHelper.IsTimeoutError(error))
                     return new CommandTimeoutException(command, exception);
 
-                if (error.IsConflictError())
+                if (SqlServerErrorHelper.IsConflictError(error))
                     return new CommandConflictException(command, exception);
             }
             return new CommandException(isTransient: false, command, exception);

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using System;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -9,7 +9,8 @@ namespace DDD.Core.Infrastructure.Data
 
         public static bool IsUnavailableError(dynamic error)
         {
-            Condition.Requires(error, nameof(error)).IsNotNull();
+            // Condition.Requires(error, nameof(error)).IsNotNull() does not work with dynamic
+            if (error == null) throw new ArgumentNullException(nameof(error));
             switch (error.Number)
             {
                 // SQL Error Code: 40613
@@ -71,7 +72,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public static bool IsUnauthorizedError(dynamic error)
         {
-            Condition.Requires(error, nameof(error)).IsNotNull();
+            if (error == null) throw new ArgumentNullException(nameof(error));
             switch (error.Number)
             {
                 // SQL Error Code: 40532
@@ -106,7 +107,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public static bool IsTimeoutError(dynamic error)
         {
-            Condition.Requires(error, nameof(error)).IsNotNull();
+            if (error == null) throw new ArgumentNullException(nameof(error));
             switch (error.Number)
             {
                 // DBNETLIB Error Code: -2
@@ -116,6 +117,15 @@ namespace DDD.Core.Infrastructure.Data
                 default:
                     return false;
             }
+        }
+
+        public static bool IsConflictError(dynamic error)
+        {
+            if (error == null) throw new ArgumentNullException(nameof(error));
+            return error.Number switch
+            {
+                _ => false,
+            };
         }
 
         #endregion Methods

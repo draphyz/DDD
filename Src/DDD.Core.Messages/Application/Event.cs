@@ -21,8 +21,6 @@ namespace DDD.Core.Application
 
         public string StreamType { get; set; }
 
-        public string StreamSource { get; set; }
-
         public string IssuedBy { get; set; }
 
         #endregion Properties
@@ -30,7 +28,7 @@ namespace DDD.Core.Application
         #region Methods
 
         public override string ToString()
-            => $"{this.GetType().Name} [ {nameof(EventId)}={this.EventId}, {nameof(EventType)}={this.EventType}, {nameof(StreamId)}={this.StreamId}, {nameof(StreamType)}={this.StreamType}, {nameof(StreamSource)}={this.StreamSource}]";
+            => $"{this.GetType().Name} [ {nameof(EventId)}={this.EventId}, {nameof(EventType)}={this.EventType}, {nameof(StreamId)}={this.StreamId}, {nameof(StreamType)}={this.StreamType}]";
 
         #endregion Methods
 

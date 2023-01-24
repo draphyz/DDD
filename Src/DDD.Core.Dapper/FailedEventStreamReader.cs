@@ -8,11 +8,12 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using DDD.Core.Domain;
     using Mapping;
     using Threading;
 
     public class FailedEventStreamReader<TContext> : IQueryHandler<ReadFailedEventStream, IEnumerable<Event>, TContext>
-        where TContext : class, IBoundedContext
+        where TContext : BoundedContext
     {
 
         #region Fields
@@ -106,8 +107,7 @@ namespace DDD.Core.Infrastructure.Data
                     EventIdMin = query.EventIdMin.ToByteArray(),
                     EventIdMax = query.EventIdMax.ToByteArray(),
                     query.StreamId,
-                    query.StreamType,
-                    query.StreamSource
+                    query.StreamType
                 };
             return query;
         }

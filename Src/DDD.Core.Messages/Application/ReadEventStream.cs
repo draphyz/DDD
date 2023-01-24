@@ -10,7 +10,6 @@ namespace DDD.Core.Application
 
         public string[] ExcludedStreamIds { get; set; } = { };
         public Guid StreamPosition { get; set; }
-        public string StreamSource { get; set; }
         public string StreamType { get; set; }
         public short Top { get; set; } = 100;
 
@@ -19,7 +18,7 @@ namespace DDD.Core.Application
         #region Methods
 
         public override string ToString()
-            => $"{this.GetType().Name} [{nameof(StreamType)}={this.StreamType}, {nameof(StreamSource)}={this.StreamSource}, {nameof(StreamPosition)}={this.StreamPosition}]";
+            => $"{this.GetType().Name} [{nameof(StreamType)}={this.StreamType}, {nameof(StreamPosition)}={this.StreamPosition}]";
 
         #endregion Methods
 

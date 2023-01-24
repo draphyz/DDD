@@ -7,28 +7,25 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
+    using Collections;
     using Core.Domain;
 
-    internal class EFRepositoryExceptionTranslator : IObjectTranslator<Exception, RepositoryException>
+    internal class EFRepositoryExceptionTranslator : ObjectTranslator<Exception, RepositoryException>
     {
 
         #region Fields
 
-        public static readonly IObjectTranslator<Exception, RepositoryException> Default = new EFRepositoryExceptionTranslator();
-
-        private readonly IObjectTranslator<DbException, RepositoryException> dbExceptionTranslator = DbToRepositoryExceptionTranslator.Default;
+        private readonly IObjectTranslator<DbException, RepositoryException> dbExceptionTranslator = new DbToRepositoryExceptionTranslator();
 
         #endregion Fields
 
         #region Methods
 
-        public RepositoryException Translate(Exception exception, IDictionary<string, object> options = null)
+        public override RepositoryException Translate(Exception exception, IDictionary<string, object> context = null)
         {
             Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("EntityType"));
-            var entityType = (Type)options["EntityType"];
+            Type entityType = null;
+            context?.TryGetValue("EntityType", out entityType);
             switch (exception)
             {
                 case DbUpdateConcurrencyException _:
@@ -39,8 +36,8 @@ namespace DDD.Core.Infrastructure.Data
                     var unwrappedException = UnwrapException(exception);
                     if (unwrappedException is DbException dbException)
                     {
-                        options.Add("OuterException", exception);
-                        return dbExceptionTranslator.Translate(dbException, options);
+                        context.Add("OuterException", exception);
+                        return dbExceptionTranslator.Translate(dbException, context);
                     }
                     else
                     {

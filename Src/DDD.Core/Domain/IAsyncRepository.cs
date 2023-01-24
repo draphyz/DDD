@@ -15,10 +15,7 @@ namespace DDD.Core.Domain
 
         Task<TDomainEntity> FindAsync(TIdentity identity, CancellationToken cancellationToken = default);
 
-        /// <remarks>
-        /// Do not respect the DDD rule 'One aggregate modified by transaction' (for simplicity).
-        /// </remarks>
-        Task SaveAsync(IEnumerable<TDomainEntity> aggregates, CancellationToken cancellationToken = default);
+        Task SaveAsync(TDomainEntity aggregate, CancellationToken cancellationToken = default);
 
         #endregion Methods
     }

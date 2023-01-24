@@ -6,18 +6,20 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Mapping;
     using Core.Domain;
+    using Core.Application;
     using Domain.Prescriptions;
     using Core.Infrastructure.Data;
+    using DDD.HealthcareDelivery.Domain;
 
     public class PharmaceuticalPrescriptionRepository
-        : EFRepository<PharmaceuticalPrescription, PharmaceuticalPrescriptionState, PrescriptionIdentifier>
+        : EFRepository<HealthcareDeliveryContext, PharmaceuticalPrescription, PharmaceuticalPrescriptionState, PrescriptionIdentifier>
     {
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionRepository(HealthcareDeliveryContext context,
+        public PharmaceuticalPrescriptionRepository(DbHealthcareDeliveryContext context,
                                                     IObjectTranslator<PharmaceuticalPrescriptionState, PharmaceuticalPrescription> prescriptionTranslator,
-                                                    IObjectTranslator<IEvent, StoredEvent> eventTranslator)
+                                                    IObjectTranslator<IEvent, Event> eventTranslator)
             : base(context, prescriptionTranslator, eventTranslator)
         {
         }

@@ -1,8 +1,10 @@
 ﻿using Conditions;
+using System;
 using System.Threading;
 
 namespace DDD.Core.Application
 {
+    using Domain;
     using Collections;
 
     public static class IMessageContextExtensions
@@ -36,6 +38,7 @@ namespace DDD.Core.Application
             Condition.Requires(stream, nameof(stream)).IsNotNull();
             context.Add(MessageContextInfo.Stream, stream);
         }
+
         public static CancellationToken CancellationToken(this IMessageContext context)
         {
             Condition.Requires(context, nameof(context)).IsNotNull();

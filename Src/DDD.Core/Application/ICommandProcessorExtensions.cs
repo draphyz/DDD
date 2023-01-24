@@ -4,12 +4,19 @@ using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
+    using Domain;
     using Threading;
 
     public static class ICommandProcessorExtensions
     {
 
         #region Methods
+
+        public static IContextualCommandProcessor<TContext> In<TContext>(this ICommandProcessor processor) where TContext : BoundedContext, new()
+        {
+            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            return processor.In<TContext>(new TContext());
+        }
 
         public static void Process<TCommand>(this ICommandProcessor processor,
                                              TCommand command,

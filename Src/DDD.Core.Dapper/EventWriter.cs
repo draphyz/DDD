@@ -9,11 +9,12 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using DDD.Core.Domain;
     using Mapping;
     using Threading;
 
     public class EventWriter<TContext> : ICommandHandler<WriteEvents, TContext>
-        where TContext : class, IBoundedContext
+        where TContext : BoundedContext
     {
 
         #region Fields
@@ -114,7 +115,6 @@ namespace DDD.Core.Infrastructure.Data
                         @event.BodyFormat,
                         @event.StreamId,
                         @event.StreamType,
-                        @event.StreamSource,
                         @event.IssuedBy
                     };
             }

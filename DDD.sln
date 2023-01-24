@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.181
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{7080D95A-39E8-418A-BA03-99ED89D4020E}"
 EndProject
@@ -60,6 +60,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Polly", "Src\DDD.Core.Polly\DDD.Core.Polly.csproj", "{4878A4FB-2C1E-4C06-BB42-AFE1ACE2A882}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Newtonsoft.UnitTests", "Test\DDD.Core.Newtonsoft.UnitTests\DDD.Core.Newtonsoft.UnitTests.csproj", "{79451079-0453-4FCF-B929-486F29A921A3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Dapper.IntegrationTests", "Test\DDD.Core.Dapper.IntegrationTests\DDD.Core.Dapper.IntegrationTests.csproj", "{BE9741AF-8BA6-4314-BD8B-12D45AD40BCB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Dapper.Oracle", "Src\DDD.Core.Dapper.Oracle\DDD.Core.Dapper.Oracle.csproj", "{B35C230E-153B-4D97-9CB6-87009205E632}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.NSubstitute", "Src\DDD.Core.NSubstitute\DDD.Core.NSubstitute.csproj", "{437A3000-7858-4627-BDA9-5E80871DFE02}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Cronos", "Src\DDD.Core.Cronos\DDD.Core.Cronos.csproj", "{F6AF43B9-6C04-43EB-8FFB-04A8B64196AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +155,22 @@ Global
 		{79451079-0453-4FCF-B929-486F29A921A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79451079-0453-4FCF-B929-486F29A921A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79451079-0453-4FCF-B929-486F29A921A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE9741AF-8BA6-4314-BD8B-12D45AD40BCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE9741AF-8BA6-4314-BD8B-12D45AD40BCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE9741AF-8BA6-4314-BD8B-12D45AD40BCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE9741AF-8BA6-4314-BD8B-12D45AD40BCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B35C230E-153B-4D97-9CB6-87009205E632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B35C230E-153B-4D97-9CB6-87009205E632}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B35C230E-153B-4D97-9CB6-87009205E632}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B35C230E-153B-4D97-9CB6-87009205E632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{437A3000-7858-4627-BDA9-5E80871DFE02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{437A3000-7858-4627-BDA9-5E80871DFE02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{437A3000-7858-4627-BDA9-5E80871DFE02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{437A3000-7858-4627-BDA9-5E80871DFE02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6AF43B9-6C04-43EB-8FFB-04A8B64196AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6AF43B9-6C04-43EB-8FFB-04A8B64196AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6AF43B9-6C04-43EB-8FFB-04A8B64196AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6AF43B9-6C04-43EB-8FFB-04A8B64196AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,6 +196,10 @@ Global
 		{3EFAACD8-CF5E-4E31-884B-6B9F87F1E495} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
 		{4878A4FB-2C1E-4C06-BB42-AFE1ACE2A882} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
 		{79451079-0453-4FCF-B929-486F29A921A3} = {1DF607A2-5750-4BF4-AB2F-E21EC51ECCA0}
+		{BE9741AF-8BA6-4314-BD8B-12D45AD40BCB} = {1DF607A2-5750-4BF4-AB2F-E21EC51ECCA0}
+		{B35C230E-153B-4D97-9CB6-87009205E632} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
+		{437A3000-7858-4627-BDA9-5E80871DFE02} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
+		{F6AF43B9-6C04-43EB-8FFB-04A8B64196AB} = {7080D95A-39E8-418A-BA03-99ED89D4020E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {983C3AB4-301E-47A3-93FF-2E4BD8F2090F}

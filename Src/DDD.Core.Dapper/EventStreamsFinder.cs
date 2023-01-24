@@ -7,11 +7,12 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using DDD.Core.Domain;
     using Mapping;
     using Threading;
 
     public class EventStreamsFinder<TContext> : IQueryHandler<FindEventStreams, IEnumerable<EventStream>, TContext>
-        where TContext : class, IBoundedContext
+        where TContext : BoundedContext
     {
 
         #region Fields

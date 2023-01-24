@@ -7,18 +7,20 @@ using FluentAssertions;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
+    using Domain;
     using Core.Domain;
+    using Core.Infrastructure.Data;
     using Domain.Prescriptions;
     using Infrastructure;
     using Infrastructure.Prescriptions;
 
     public abstract class PharmaceuticalPrescriptionRevokerTests<TFixture> : IDisposable
-        where TFixture : IPersistenceFixture<IHealthcareDeliveryConnectionFactory>
+        where TFixture : IPersistenceFixture
     {
 
         #region Fields
 
-        private HealthcareDeliveryContext context;
+        private DbHealthcareDeliveryContext context;
 
         #endregion Fields
 
@@ -27,11 +29,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         protected PharmaceuticalPrescriptionRevokerTests(TFixture fixture)
         {
             this.Fixture = fixture;
+            this.ConnectionProvider = fixture.CreateConnectionProvider(pooling:false); // To check transaction escalation (MSDTC)
             this.Repository = this.CreateRepository();
-            this.Handler = new PharmaceuticalPrescriptionRevoker
-            (
-                Repository
-            );
+            this.Handler = new PharmaceuticalPrescriptionRevoker (Repository);
         }
 
         #endregion Constructors
@@ -39,8 +39,12 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         #region Properties
 
         protected TFixture Fixture { get; }
+
+        protected IDbConnectionProvider<HealthcareDeliveryContext> ConnectionProvider { get; }
+
         protected PharmaceuticalPrescriptionRevoker Handler { get; }
-        protected IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> Repository { get; }
+
+        protected IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> Repository { get; }
 
         #endregion Properties
 
@@ -48,6 +52,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public void Dispose()
         {
+            this.ConnectionProvider.Dispose();
             this.context.Dispose();
         }
 
@@ -74,9 +79,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             };
         }
 
-        private IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
+        private IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
         {
-            this.context = this.Fixture.CreateContext();
+            this.context = this.Fixture.CreateDbContext(this.ConnectionProvider);
             return new PharmaceuticalPrescriptionRepository
             (
                 this.context,

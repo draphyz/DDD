@@ -49,7 +49,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         {
             Condition.Requires(instanceCreator, nameof(instanceCreator)).IsNotNull();
             Condition.Requires(lifestyle, nameof(lifestyle)).IsNotNull();
-            var producer = lifestyle.CreateProducer(instanceCreator, container);
+            var producer = lifestyle.CreateProducer<TService>(instanceCreator, container);
             this.producers.Add(key, producer);
         }
 

@@ -1,7 +1,9 @@
-﻿namespace DDD.Core.Application
+﻿using DDD.Core.Domain;
+
+namespace DDD.Core.Application
 {
     public interface IEventConsumer<out TContext> : IEventConsumer
-        where TContext : class, IBoundedContext
+        where TContext : BoundedContext
     {
         #region Properties
 

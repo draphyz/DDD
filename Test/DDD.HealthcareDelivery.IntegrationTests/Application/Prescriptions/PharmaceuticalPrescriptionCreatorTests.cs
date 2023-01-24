@@ -10,17 +10,19 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Common.Application;
     using Core.Domain;
     using Practitioners;
+    using Domain;
     using Domain.Prescriptions;
     using Infrastructure;
     using Infrastructure.Prescriptions;
+    using Core.Infrastructure.Data;
 
     public abstract class PharmaceuticalPrescriptionCreatorTests<TFixture> : IDisposable
-        where TFixture : IPersistenceFixture<IHealthcareDeliveryConnectionFactory>
+        where TFixture : IPersistenceFixture
     {
 
         #region Fields
 
-        private HealthcareDeliveryContext context;
+        private DbHealthcareDeliveryContext context;
 
         #endregion Fields
 
@@ -29,6 +31,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         protected PharmaceuticalPrescriptionCreatorTests(TFixture fixture)
         {
             this.Fixture = fixture;
+            this.ConnectionProvider = fixture.CreateConnectionProvider(pooling:false); // To check transaction escalation (MSDTC)
             this.Repository = this.CreateRepository();
             this.Handler = new PharmaceuticalPrescriptionCreator
             (
@@ -42,8 +45,12 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         #region Properties
 
         protected TFixture Fixture { get; }
+
+        protected IDbConnectionProvider<HealthcareDeliveryContext> ConnectionProvider { get; }
+
         protected PharmaceuticalPrescriptionCreator Handler { get; }
-        protected IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> Repository { get; }
+
+        protected IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> Repository { get; }
 
         #endregion Properties
 
@@ -51,6 +58,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public void Dispose()
         {
+            this.ConnectionProvider.Dispose();
             this.context.Dispose();
         }
 
@@ -111,9 +119,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             };
         }
 
-        private IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
+        private IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
         {
-            this.context = this.Fixture.CreateContext();
+            this.context = this.Fixture.CreateDbContext(this.ConnectionProvider);
             return new PharmaceuticalPrescriptionRepository
             (
                 this.context,

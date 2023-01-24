@@ -6,26 +6,31 @@ using System;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
+    using Domain;
     using Application.Prescriptions;
     using Core.Infrastructure.Testing;
+    using Core.Infrastructure.Data;
 
-    public abstract class PharmaceuticalPrescriptionsByPatientFinderTests<TFixture>
-        where TFixture : IDbFixture<IHealthcareDeliveryConnectionFactory>
+    public abstract class PharmaceuticalPrescriptionsByPatientFinderTests<TFixture> : IDisposable
+        where TFixture : IDbFixture<HealthcareDeliveryContext>
     {
-        #region Fields
-
-        private readonly TFixture fixture;
-
-        #endregion Fields
 
         #region Constructors
 
         protected PharmaceuticalPrescriptionsByPatientFinderTests(TFixture fixture)
         {
-            this.fixture = fixture;
+            this.Fixture = fixture;
+            this.ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        protected IDbConnectionProvider<HealthcareDeliveryContext> ConnectionProvider { get; }
+        protected TFixture Fixture { get; }
+
+        #endregion Properties
 
         #region Methods
 
@@ -106,14 +111,20 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         public async Task HandleAsync_WhenCalled_ReturnsValidResults(FindPharmaceuticalPrescriptionsByPatient query, IEnumerable<PharmaceuticalPrescriptionSummary> expectedResults)
         {
             // Arrange
-            this.fixture.ExecuteScriptFromResources("FindPharmaceuticalPrescriptionsByPatient");
-            var handler = new PharmaceuticalPrescriptionsByPatientFinder(this.fixture.ConnectionFactory);
+            this.Fixture.ExecuteScriptFromResources("FindPharmaceuticalPrescriptionsByPatient");
+            var handler = new PharmaceuticalPrescriptionsByPatientFinder(this.ConnectionProvider);
             // Act
             var results = await handler.HandleAsync(query);
             // Assert
-            results.Should().BeEquivalentTo(expectedResults, options => options.WithStrictOrdering());
+            results.Should().BeEquivalentTo(expectedResults, context => context.WithStrictOrdering());
+        }
+
+        public void Dispose()
+        {
+            this.ConnectionProvider.Dispose();
         }
 
         #endregion Methods
+
     }
 }

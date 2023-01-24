@@ -8,10 +8,10 @@ namespace DDD.Core.Application
     {
         #region Fields
 
-        private readonly ICommandHandler<FakeCommand1> handlerOfCommand1;
-        private readonly ICommandHandler<FakeCommand2> handlerOfCommand2;
-        private readonly ICommandValidator<FakeCommand1> validatorOfCommand1;
-        private readonly ICommandValidator<FakeCommand2> validatorOfCommand2;
+        private readonly ISyncCommandHandler<FakeCommand1> handlerOfCommand1;
+        private readonly ISyncCommandHandler<FakeCommand2> handlerOfCommand2;
+        private readonly ISyncCommandValidator<FakeCommand1> validatorOfCommand1;
+        private readonly ISyncCommandValidator<FakeCommand2> validatorOfCommand2;
         private readonly CommandProcessor processor;
 
         #endregion Fields
@@ -20,18 +20,18 @@ namespace DDD.Core.Application
 
         public CommandProcessorTests()
         {
-            this.handlerOfCommand1 = Substitute.For<ICommandHandler<FakeCommand1>>();
-            this.handlerOfCommand2 = Substitute.For<ICommandHandler<FakeCommand2>>();
-            this.validatorOfCommand1 = Substitute.For<ICommandValidator<FakeCommand1>>();
-            this.validatorOfCommand2 = Substitute.For<ICommandValidator<FakeCommand2>>();
+            this.handlerOfCommand1 = Substitute.For<ISyncCommandHandler<FakeCommand1>>();
+            this.handlerOfCommand2 = Substitute.For<ISyncCommandHandler<FakeCommand2>>();
+            this.validatorOfCommand1 = Substitute.For<ISyncCommandValidator<FakeCommand1>>();
+            this.validatorOfCommand2 = Substitute.For<ISyncCommandValidator<FakeCommand2>>();
             var serviceProvider = Substitute.For<IServiceProvider>();
-            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ICommandHandler<FakeCommand1>))))
+            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncCommandHandler<FakeCommand1>))))
                            .Returns(this.handlerOfCommand1);
-            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ICommandHandler<FakeCommand2>))))
+            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncCommandHandler<FakeCommand2>))))
                            .Returns(this.handlerOfCommand2);
-            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ICommandValidator<FakeCommand1>))))
+            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncCommandValidator<FakeCommand1>))))
                            .Returns(this.validatorOfCommand1);
-            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ICommandValidator<FakeCommand2>))))
+            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncCommandValidator<FakeCommand2>))))
                            .Returns(this.validatorOfCommand2);
             processor = new CommandProcessor(serviceProvider);
         }

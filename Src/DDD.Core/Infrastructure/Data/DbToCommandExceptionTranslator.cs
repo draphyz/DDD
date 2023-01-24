@@ -22,7 +22,8 @@ namespace DDD.Core.Infrastructure.Data
         public DbToCommandExceptionTranslator()
         {
             this.translators.Add("System.Data.SqlClient.SqlException", new SqlServerToCommandExceptionTranslator());
-            this.translators.Add("Oracle.DataAccess.Client.OracleException", new OracleToCommandExceptionTranslator());
+            this.translators.Add("Microsoft.Data.SqlClient.SqlException", new SqlServerToCommandExceptionTranslator());
+            this.translators.Add("Oracle.ManagedDataAccess.Client.OracleException", new OracleToCommandExceptionTranslator());
         }
 
         #endregion Constructors

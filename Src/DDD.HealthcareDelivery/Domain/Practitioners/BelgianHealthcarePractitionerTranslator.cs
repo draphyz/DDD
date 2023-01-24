@@ -7,13 +7,13 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
     using Mapping;
     using Common.Domain;
 
-    internal class BelgianHealthcarePractitionerTranslator : IObjectTranslator<HealthcarePractitionerState, HealthcarePractitioner>
+    internal class BelgianHealthcarePractitionerTranslator : ObjectTranslator<HealthcarePractitionerState, HealthcarePractitioner>
     {
 
         #region Methods
 
-        public HealthcarePractitioner Translate(HealthcarePractitionerState state,
-                                                IDictionary<string, object> options = null)
+        public override HealthcarePractitioner Translate(HealthcarePractitionerState state,
+                                                IDictionary<string, object> context = null)
         {
             Condition.Requires(state, nameof(state)).IsNotNull();
             switch (state.PractitionerType)

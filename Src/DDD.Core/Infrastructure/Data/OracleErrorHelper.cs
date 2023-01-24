@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using System;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -11,7 +11,8 @@ namespace DDD.Core.Infrastructure.Data
 
         public static bool IsUnavailableError(dynamic error)
         {
-            Condition.Requires(error, nameof(error)).IsNotNull();
+            // Condition.Requires(error, nameof(error)).IsNotNull() does not work with dynamic
+            if (error == null) throw new ArgumentNullException(nameof(error));
             return (dynamic)error.Number switch
             {
                 // Oracle Error Code: 3114
@@ -23,7 +24,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public static bool IsUnauthorizedError(dynamic error)
         {
-            Condition.Requires(error, nameof(error)).IsNotNull();
+            if (error == null) throw new ArgumentNullException(nameof(error));
             return (dynamic)error.Number switch
             {
                 // Oracle Error Code: 1017
@@ -35,7 +36,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public static bool IsTimeoutError(dynamic error)
         {
-            Condition.Requires(error, nameof(error)).IsNotNull();
+            if (error == null) throw new ArgumentNullException(nameof(error));
             return (dynamic)error.Number switch
             {
                 // Oracle Error Code: 1013
@@ -47,7 +48,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public static bool IsConflictError(dynamic error)
         {
-            Condition.Requires(error, nameof(error)).IsNotNull();
+            if (error == null) throw new ArgumentNullException(nameof(error));
             return (dynamic)error.Number switch
             {
                 _ => false,

@@ -1,30 +1,37 @@
 ﻿using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
+    using Domain;
     using Application.Prescriptions;
     using Core.Infrastructure.Testing;
+    using Core.Infrastructure.Data;
 
-    public abstract class PrescribedMedicationsByPrescriptionFinderTests<TFixture>
-        where TFixture : IDbFixture<IHealthcareDeliveryConnectionFactory>
+    public abstract class PrescribedMedicationsByPrescriptionFinderTests<TFixture> : IDisposable
+        where TFixture : IDbFixture<HealthcareDeliveryContext>
     {
-        #region Fields
-
-        private readonly TFixture fixture;
-
-        #endregion Fields
 
         #region Constructors
 
         protected PrescribedMedicationsByPrescriptionFinderTests(TFixture fixture)
         {
-            this.fixture = fixture;
+            this.Fixture = fixture;
+            this.ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        protected TFixture Fixture { get; }
+
+        protected IDbConnectionProvider<HealthcareDeliveryContext> ConnectionProvider { get; }
+
+        #endregion Properties
 
         #region Methods
 
@@ -80,12 +87,17 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
         public async Task HandleAsync_WhenCalled_ReturnsValidResults(FindPrescribedMedicationsByPrescription query, IEnumerable<PrescribedMedicationDetails> expectedResults)
         {
             // Arrange
-            this.fixture.ExecuteScriptFromResources("FindPrescribedMedicationsByPrescription");
-            var handler = new PrescribedMedicationsByPrescriptionFinder(this.fixture.ConnectionFactory);
+            this.Fixture.ExecuteScriptFromResources("FindPrescribedMedicationsByPrescription");
+            var handler = new PrescribedMedicationsByPrescriptionFinder(this.ConnectionProvider);
             // Act
             var results = await handler.HandleAsync(query);
             // Assert
             results.Should().BeEquivalentTo(expectedResults);
+        }
+
+        public void Dispose()
+        {
+            this.ConnectionProvider.Dispose();
         }
 
         #endregion Methods

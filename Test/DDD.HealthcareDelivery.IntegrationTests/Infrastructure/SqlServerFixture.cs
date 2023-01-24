@@ -1,31 +1,24 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Logging;
-using System.Data;
-using System.Text;
-#if (NETCOREAPP3_1 || NET5_0)
+﻿using System.Data;
 using System.Data.Common;
-#endif
+using System.Configuration;
+using Microsoft.Data.SqlClient;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
+    using Domain;
     using Core.Infrastructure.Testing;
     using Core.Infrastructure.Data;
     using Core.Domain;
+    using Core.Application;
     using Core.Infrastructure.Serialization;
     using Mapping;
-
-    public class SqlServerFixture : DbFixture<SqlServerConnectionFactory>, IPersistenceFixture<SqlServerConnectionFactory>
+    
+    public class SqlServerFixture : DbFixture<HealthcareDeliveryContext>, IPersistenceFixture
     {
-
-        #region Fields
-
-        private readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
-
-        #endregion Fields
 
         #region Constructors
 
-        public SqlServerFixture() : base(SqlServerConnectionFactory.Create(), "SqlServerScripts")
+        public SqlServerFixture() : base("SqlServerScripts", ConfigurationManager.ConnectionStrings["SqlServer"])
         {
         }
 
@@ -33,19 +26,19 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Methods
 
-        public HealthcareDeliveryContext CreateContext()
+        public DbHealthcareDeliveryContext CreateDbContext(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider)
         {
-            return new SqlServerHealthcareDeliveryContextWithLogging(SqlServerConnectionFactory.ConnectionString, this.loggerFactory);
+            return new SqlServerHealthcareDeliveryContext(connectionProvider);
         }
 
-        public IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator()
+        public IObjectTranslator<IEvent, Event> CreateEventTranslator()
         {
-            return new StoredEventTranslator(JsonSerializerWrapper.Create(false));
+            return new EventTranslator(JsonSerializerWrapper.Create(false));
         }
 
         protected override void CreateDatabase()
         {
-            using (var connection = this.ConnectionFactory.CreateConnection())
+            using (var connection = this.CreateConnection())
             {
                 var builder = new SqlConnectionStringBuilder(connection.ConnectionString) { InitialCatalog = "master" };
                 connection.ConnectionString = builder.ConnectionString;
@@ -59,14 +52,19 @@ namespace DDD.HealthcareDelivery.Infrastructure
             return connection.ExecuteScript(script);
         }
 
-        protected override void RegisterDbProviderFactory()
+        protected override void LoadConfiguration()
         {
-#if (NETCOREAPP3_1 || NET5_0)
+#if (NET6_0)
             DbProviderFactories.RegisterFactory("Microsoft.Data.SqlClient", SqlClientFactory.Instance);
 #endif
         }
 
-        #endregion Methods
+        protected override string SetPooling(string connectionString, bool pooling)
+        {
+            var builder = new SqlConnectionStringBuilder(connectionString) { Pooling = pooling };
+            return builder.ConnectionString;
+        }
 
+        #endregion Methods
     }
 }

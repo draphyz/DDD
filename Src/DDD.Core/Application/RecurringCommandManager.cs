@@ -7,23 +7,23 @@ using Microsoft.Extensions.Logging;
 
 namespace DDD.Core.Application
 {
+    using DDD.Core.Domain;
     using DependencyInjection;
     using Serialization;
     using Threading;
 
-    public class RecurringCommandManager<TContext> : IRecurringCommandManager, IDisposable 
-        where TContext : class, IBoundedContext
+    public class RecurringCommandManager<TContext> : IRecurringCommandManager<TContext>, IDisposable 
+        where TContext : BoundedContext, new()
     {
 
         #region Fields
 
-        private readonly IQueryProcessor<TContext> coreQueryProcessor;
-        private readonly ICommandProcessor<TContext> coreCommandProcessor;
-        private readonly ICommandProcessor recurringCommandProcessor;
+        private readonly IQueryProcessor queryProcessor;
+        private readonly ICommandProcessor commandProcessor;
         private readonly IKeyedServiceProvider<SerializationFormat, ITextSerializer> commandSerializers;
-        private readonly ICronScheduleFactory cronScheduleFactory;
+        private readonly IRecurringScheduleFactory recurringScheduleFactory;
         private readonly ILogger logger;
-        private readonly RecurringCommandManagerSettings settings;
+        private readonly RecurringCommandManagerSettings<TContext> settings;
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private Task manageCommands;
         private bool disposed;
@@ -32,26 +32,23 @@ namespace DDD.Core.Application
 
         #region Constructors
 
-        public RecurringCommandManager(ICommandProcessor<TContext> coreCommandProcessor,
-                                       IQueryProcessor<TContext> coreQueryProcessor,
-                                       ICommandProcessor recurringCommandProcessor,
+        public RecurringCommandManager(ICommandProcessor commandProcessor,
+                                       IQueryProcessor queryProcessor,
                                        IKeyedServiceProvider<SerializationFormat, ITextSerializer> commandSerializers,
-                                       ICronScheduleFactory cronScheduleFactory,
+                                       IRecurringScheduleFactory recurringScheduleFactory,
                                        ILogger logger,
-                                       RecurringCommandManagerSettings settings)
+                                       RecurringCommandManagerSettings<TContext> settings)
         {
-            Condition.Requires(coreCommandProcessor, nameof(coreCommandProcessor)).IsNotNull();
-            Condition.Requires(coreQueryProcessor, nameof(coreQueryProcessor)).IsNotNull();
-            Condition.Requires(recurringCommandProcessor, nameof(recurringCommandProcessor)).IsNotNull();
+            Condition.Requires(commandProcessor, nameof(commandProcessor)).IsNotNull();
+            Condition.Requires(queryProcessor, nameof(queryProcessor)).IsNotNull();
             Condition.Requires(commandSerializers, nameof(commandSerializers)).IsNotNull();
-            Condition.Requires(cronScheduleFactory, nameof(cronScheduleFactory)).IsNotNull();
+            Condition.Requires(recurringScheduleFactory, nameof(recurringScheduleFactory)).IsNotNull();
             Condition.Requires(logger, nameof(logger)).IsNotNull();
             Condition.Requires(settings, nameof(settings)).IsNotNull();
-            this.coreCommandProcessor = coreCommandProcessor;
-            this.coreQueryProcessor = coreQueryProcessor;
-            this.recurringCommandProcessor = recurringCommandProcessor;
+            this.commandProcessor = commandProcessor;
+            this.queryProcessor = queryProcessor;
             this.commandSerializers = commandSerializers;
-            this.cronScheduleFactory = cronScheduleFactory;
+            this.recurringScheduleFactory = recurringScheduleFactory;
             this.logger = logger;
             this.settings = settings;
         }
@@ -60,7 +57,7 @@ namespace DDD.Core.Application
 
         #region Properties
 
-        public TContext Context => this.coreCommandProcessor.Context;
+        public TContext Context => this.settings.Context;
 
         public bool IsRunning { get; private set; }
 
@@ -70,23 +67,23 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public async Task RegisterAsync(ICommand command, string cronExpression, CancellationToken cancellationToken = default)
+        public async Task RegisterAsync(ICommand command, string recurringExpression, CancellationToken cancellationToken = default)
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
-            Condition.Requires(cronExpression, nameof(cronExpression)).IsNotNull();
-            this.ValidateCronExpression(cronExpression);
+            Condition.Requires(recurringExpression, nameof(recurringExpression)).IsNotNull();
+            this.ValidateRecurringExpression(recurringExpression);
             await new SynchronizationContextRemover();
             var commandSerializer = this.commandSerializers.GetService(this.settings.CurrentSerializationFormat);
-            var commandId = this.coreQueryProcessor.Process(new GenerateRecurringCommandId(), MessageContext.CancellableContext(cancellationToken));
-            var registerCommand = new RegisterRecurringCommand
+            var commandId = this.queryProcessor.In<TContext>().Process(new GenerateRecurringCommandId(), MessageContext.CancellableContext(cancellationToken));
+            var registrationCommand = new RegisterRecurringCommand
             {
                 CommandId = commandId,
                 CommandType = command.GetType().ShortAssemblyQualifiedName(),
                 Body = commandSerializer.SerializeToString(command),
                 BodyFormat = commandSerializer.Format.ToString().ToUpper(),
-                CronExpression = cronExpression
+                RecurringExpression = recurringExpression
             };
-            await this.coreCommandProcessor.ProcessAsync(registerCommand, MessageContext.CancellableContext(cancellationToken));
+            await this.commandProcessor.In<TContext>().ProcessAsync(registrationCommand, MessageContext.CancellableContext(cancellationToken));
         }
 
         public void Start()
@@ -141,27 +138,27 @@ namespace DDD.Core.Application
         {
             try
             {
-                this.logger.LogInformation("La gestion des commandes récurrentes dans le contexte '{Context}' a commencé.", this.Context.Name);
-                this.logger.LogDebug("Les paramètres de configuration de gestion des commandes récurrentes dans le contexte '{Context}' sont les suivants : {@Settings}", this.Context.Name, this.settings);
+                this.logger.LogInformation("Recurring command management in the context '{Context}' has started.", this.Context.Name);
+                this.logger.LogDebug("The configuration settings of recurring command management in the context '{Context}' are the following : {@Settings}", this.Context.Name, this.settings);
                 this.CancellationToken.ThrowIfCancellationRequested(); 
                 await new SynchronizationContextRemover();
                 var commandInfos = await this.FindAllRecurringCommandsAsync();
                 var tasks = new List<Task>();
                 foreach (var commandInfo in commandInfos)
-                    tasks.Add(ManageCommandAsync(commandInfo.RecurringCommand, commandInfo.CronSchedule));
+                    tasks.Add(ManageCommandAsync(commandInfo.RecurringCommand, commandInfo.RecurringSchedule));
                 await Task.WhenAll(tasks);
                 if (this.CancellationToken.IsCancellationRequested)
-                    this.logger.LogInformation("La gestion des commandes récurrentes dans le contexte '{Context}' a été interrompue.", this.Context.Name);
+                    this.logger.LogInformation("Recurring command management in the context '{Context}' has been stopped.", this.Context.Name);
                 else
-                    this.logger.LogInformation("La gestion des commandes récurrentes dans le contexte '{Context}' s'est terminée.", this.Context.Name);
+                    this.logger.LogInformation("Recurring command management in the context '{Context}' has finished.", this.Context.Name);
             }
             catch (OperationCanceledException)
             {
-                this.logger.LogInformation("La gestion des commandes récurrentes dans le contexte '{Context}' a été interrompue.", this.Context.Name);
+                this.logger.LogInformation("Recurring command management in the context '{Context}' has been stopped.", this.Context.Name);
             }
             catch (Exception exception)
             {
-                this.logger.LogError(default, exception, "Une erreur s'est produite durant le traitement des commandes récurrentes dans le contexte '{Context}'.", this.Context.Name);
+                this.logger.LogError(default, exception, "An error occurred during recurring command management in the context '{Context}'.", this.Context.Name);
             }
             finally
             {
@@ -169,60 +166,71 @@ namespace DDD.Core.Application
             }
         }
 
-        private async Task<IEnumerable<(RecurringCommand RecurringCommand, ICronSchedule CronSchedule)>> FindAllRecurringCommandsAsync()
+        private async Task<IEnumerable<(RecurringCommand RecurringCommand, IRecurringSchedule RecurringSchedule)>> FindAllRecurringCommandsAsync()
         {
-            var recurringCommands = await this.coreQueryProcessor.ProcessAsync(new FindRecurringCommands(), MessageContext.CancellableContext(this.CancellationToken));
-            var results = new List<(RecurringCommand, ICronSchedule)>();
+            var recurringCommands = await this.queryProcessor.In<TContext>().ProcessAsync(new FindRecurringCommands(), MessageContext.CancellableContext(this.CancellationToken));
+            var results = new List<(RecurringCommand, IRecurringSchedule)>();
             foreach (var recurringCommand in recurringCommands)
-                results.Add((recurringCommand, this.cronScheduleFactory.Create(recurringCommand.CronExpression)));
+                results.Add((recurringCommand, this.recurringScheduleFactory.Create(recurringCommand.RecurringExpression)));
             return results;
         }
 
-        private async Task ManageCommandAsync(RecurringCommand recurringCommand, ICronSchedule cronSchedule)
+        private async Task ManageCommandAsync(RecurringCommand recurringCommand, IRecurringSchedule recurringSchedule)
         {
             try
             {
-                this.logger.LogInformation("La gestion de la commande récurrente {CommandId} dans le contexte '{Context}' a commencé.", recurringCommand.CommandId, this.Context.Name);
+                this.logger.LogInformation("The management of the recurring command {CommandId} in the context '{Context}' has started.", recurringCommand.CommandId, this.Context.Name);
                 var command = this.DeserializeCommand(recurringCommand);
                 var now = SystemTime.Local();
-                var nextOccurrence = cronSchedule.GetNextOccurence(now);
+                var nextOccurrence = recurringSchedule.GetNextOccurrence(now);
                 while (nextOccurrence.HasValue)
                 {
                     this.CancellationToken.ThrowIfCancellationRequested();
-                    this.logger.LogDebug("Le prochain traitement de la commande récurrente {CommandId} dans le contexte '{Context}' a été planifié au {CommandExecutionTime}.", recurringCommand.CommandId, this.Context.Name, nextOccurrence);
+                    this.logger.LogDebug("The next processing of the recurring command {CommandId} in the context '{Context}' has been scheduled for {CommandExecutionTime}.", recurringCommand.CommandId, this.Context.Name, nextOccurrence);
                     bool success;
                     try
                     {
-                        await this.recurringCommandProcessor.ProcessWithDelayAsync(command, nextOccurrence.Value - now, MessageContext.CancellableContext(this.CancellationToken));
+                        await this.commandProcessor.ProcessWithDelayAsync(command, nextOccurrence.Value - now, MessageContext.CancellableContext(this.CancellationToken));
                         success = true;
                     }
                     catch (Exception exception) when (!(exception is OperationCanceledException))
                     {
                         success = false;
-                        this.logger.LogError(default, exception, "Une erreur s'est produite durant le traitement de la commande récurrente {CommandId} dans le contexte '{Context}'.", recurringCommand.CommandId, this.Context.Name);
-                        await this.coreCommandProcessor.ProcessAsync(new MarkRecurringCommandAsFailed { CommandId = recurringCommand.CommandId, ExecutionTime = nextOccurrence.Value, ExceptionInfo = exception.ToString() });
+                        this.logger.LogError(default, exception, "An error occurred during the processing of the recurring command {CommandId} in the context '{Context}'.", recurringCommand.CommandId, this.Context.Name);
+                        var failureCommand = new MarkRecurringCommandAsFailed
+                        {
+                            CommandId = recurringCommand.CommandId,
+                            ExecutionTime = nextOccurrence.Value,
+                            ExceptionInfo = exception.ToString()
+                        };
+                        await this.commandProcessor.In<TContext>().ProcessAsync(failureCommand);
                     }
                     if (success)
                     {
-                        this.logger.LogDebug("Le traitement de la commande récurrente {CommandId} dans le contexte '{Context}' s'est terminé avec succès.", recurringCommand.CommandId, this.Context.Name);
-                        await this.coreCommandProcessor.ProcessAsync(new MarkRecurringCommandAsSuccessful { CommandId = recurringCommand.CommandId, ExecutionTime = nextOccurrence.Value });
+                        this.logger.LogDebug("The processing of the recurring command {CommandId} in the context '{Context}' has successfully finished.", recurringCommand.CommandId, this.Context.Name);
+                        var successCommand = new MarkRecurringCommandAsSuccessful
+                        {
+                            CommandId = recurringCommand.CommandId,
+                            ExecutionTime = nextOccurrence.Value
+                        };
+                        await this.commandProcessor.In<TContext>().ProcessAsync(successCommand);
                     }
                     now = SystemTime.Local();
-                    nextOccurrence = cronSchedule.GetNextOccurence(now);
+                    nextOccurrence = recurringSchedule.GetNextOccurrence(now);
                 }
                 if (this.CancellationToken.IsCancellationRequested)
-                    this.logger.LogInformation("La gestion de la commande récurrente {CommandId} dans le contexte '{Context}' a été interrompue.", recurringCommand.CommandId, this.Context.Name);
+                    this.logger.LogInformation("The management of the recurring command {CommandId} in the context '{Context}' has been stopped.", recurringCommand.CommandId, this.Context.Name);
                 else
-                    this.logger.LogInformation("La gestion de la commande récurrente {CommandId} dans le contexte '{Context}' s'est terminée.", recurringCommand.CommandId, this.Context.Name);
+                    this.logger.LogInformation("The management of the recurring command {CommandId} in the context '{Context}' has finished.", recurringCommand.CommandId, this.Context.Name);
             }
             catch(OperationCanceledException)
             {
-                this.logger.LogInformation("La gestion de la commande récurrente {CommandId} dans le contexte '{Context}' a été interrompue.", recurringCommand.CommandId, this.Context.Name);
+                this.logger.LogInformation("The management of the recurring command {CommandId} in the context '{Context}' has been stopped.", recurringCommand.CommandId, this.Context.Name);
                 throw;
             }
             catch (Exception exception) 
             {
-                this.logger.LogError(default, exception, "Une erreur s'est produite durant la gestion de la commande récurrente {CommandId} dans le contexte '{Context}'.", recurringCommand.CommandId, this.Context.Name);
+                this.logger.LogError(default, exception, "An error occurred during the management of the recurring command {CommandId} in the context '{Context}'.", recurringCommand.CommandId, this.Context.Name);
             }
         }
 
@@ -234,17 +242,17 @@ namespace DDD.Core.Application
             return (ICommand)serializer.DeserializeFromString(recurringCommand.Body, type);
         }
 
-        private void ValidateCronExpression(string cronExpression)
+        private void ValidateRecurringExpression(string recurringExpression)
         {
             try
             {
-                this.cronScheduleFactory.Create(cronExpression);
+                this.recurringScheduleFactory.Create(recurringExpression);
             }
             catch (Exception ex) 
             {
                 throw new ArgumentException(
-                    "The cron expression is invalid. Please see the inner exception for details.",
-                    nameof(cronExpression),
+                    "The recurring expression is invalid. Please see the inner exception for details.",
+                    nameof(recurringExpression),
                     ex);
             }
         }

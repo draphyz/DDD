@@ -14,18 +14,19 @@ namespace DDD.Core.Application
     using Threading;
 
     public class EventConsumer<TContext> : IEventConsumer<TContext>, IDisposable
-        where TContext : class, IBoundedContext
+        where TContext : BoundedContext, new()
     {
 
         #region Fields
 
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        private readonly ICommandProcessor<TContext> coreCommandProcessor;
-        private readonly IQueryProcessor<TContext> coreQueryProcessor;
+        private readonly ICommandProcessor commandProcessor;
+        private readonly IQueryProcessor queryProcessor;
         private readonly IEventPublisher eventPublisher;
+        private readonly IEnumerable<BoundedContext> boundedContexts;
         private readonly IKeyedServiceProvider<SerializationFormat, ITextSerializer> eventSerializers;
         private readonly ILogger logger;
-        private readonly EventConsumerSettings settings;
+        private readonly EventConsumerSettings<TContext> settings;
         private long consumationCount;
         private bool disposed;
         private Task consumeEvents;
@@ -34,22 +35,25 @@ namespace DDD.Core.Application
 
         #region Constructors
 
-        public EventConsumer(ICommandProcessor<TContext> coreCommandProcessor,
-                             IQueryProcessor<TContext> coreQueryProcessor,
+        public EventConsumer(ICommandProcessor commandProcessor,
+                             IQueryProcessor queryProcessor,
                              IEventPublisher eventPublisher,
+                             IEnumerable<BoundedContext> boundedContexts,
                              IKeyedServiceProvider<SerializationFormat, ITextSerializer> eventSerializers,
                              ILogger logger,
-                             EventConsumerSettings settings)
+                             EventConsumerSettings<TContext> settings)
         {
-            Condition.Requires(coreCommandProcessor, nameof(coreCommandProcessor)).IsNotNull();
-            Condition.Requires(coreQueryProcessor, nameof(coreQueryProcessor)).IsNotNull();
+            Condition.Requires(commandProcessor, nameof(commandProcessor)).IsNotNull();
+            Condition.Requires(queryProcessor, nameof(queryProcessor)).IsNotNull();
             Condition.Requires(eventPublisher, nameof(eventPublisher)).IsNotNull();
+            Condition.Requires(boundedContexts, nameof(boundedContexts)).IsNotNull().IsNotEmpty();
             Condition.Requires(eventSerializers, nameof(eventSerializers)).IsNotNull();
             Condition.Requires(logger, nameof(logger)).IsNotNull();
             Condition.Requires(settings, nameof(settings)).IsNotNull();
-            this.coreCommandProcessor = coreCommandProcessor;
-            this.coreQueryProcessor = coreQueryProcessor;
+            this.commandProcessor = commandProcessor;
+            this.queryProcessor = queryProcessor;
             this.eventPublisher = eventPublisher;
+            this.boundedContexts = boundedContexts;
             this.eventSerializers = eventSerializers;
             this.logger = logger;
             this.settings = settings;
@@ -59,7 +63,7 @@ namespace DDD.Core.Application
 
         #region Properties
 
-        public TContext Context => this.coreCommandProcessor.Context;
+        public TContext Context => this.settings.Context;
 
         public bool IsRunning { get; private set; }
 
@@ -119,33 +123,33 @@ namespace DDD.Core.Application
 
         private async Task ConsumeEventsAsync()
         {
-            this.logger.LogInformation("Le traitement des évènements dans le contexte '{Context}' a commencé.", this.Context.Name);
-            this.logger.LogDebug("Les paramètres de configuration du traitement des évènements dans le contexte '{Context}' sont les suivants : {@Settings}", this.Context.Name, this.settings);
+            this.logger.LogInformation("Event handling in the context '{Context}' has started.", this.Context.Name);
+            this.logger.LogDebug("The configuration settings of event handling in the context '{Context}' are the following : {@Settings}", this.Context.Name, this.settings);
             try
             {
                 await new SynchronizationContextRemover();
                 while (!ConsumationMaxReached())
                 {
                     this.CancellationToken.ThrowIfCancellationRequested();
-                    this.logger.LogInformation("La consommation des évènements dans le contexte '{Context}' a commencé.", this.Context.Name);
+                    this.logger.LogInformation("Event stream consumption in the context '{Context}' has started.", this.Context.Name);
                     var allStreams = await this.FindAllStreamsAsync();
                     await this.ConsumeAllStreamsAsync(allStreams);
                     this.IncrementConsumationCountIfRequired();
-                    this.logger.LogInformation("La consommation des évènements dans le contexte '{Context}' s'est terminée.", this.Context.Name);
+                    this.logger.LogInformation("Event stream consumption in the context '{Context}' has finished.", this.Context.Name);
                     await Task.Delay(TimeSpan.FromSeconds(this.settings.ConsumationDelay), this.CancellationToken);
                 }
                 if (this.CancellationToken.IsCancellationRequested)
-                    this.logger.LogInformation("Le traitement des évènements dans le contexte '{Context}' a été interrompu.", this.Context.Name);
+                    this.logger.LogInformation("Event handling in the context '{Context}' has been stopped.", this.Context.Name);
                 else
-                    this.logger.LogInformation("Le traitement des évènements dans le contexte '{Context}' s'est terminé.", this.Context.Name);
+                    this.logger.LogInformation("Event handling in the context '{Context}' has finished.", this.Context.Name);
             }
             catch (OperationCanceledException)
             {
-                this.logger.LogInformation("Le traitement des évènements dans le contexte '{Context}' a été interrompu.", this.Context.Name);
+                this.logger.LogInformation("Event handling in the context '{Context}' has been stopped.", this.Context.Name);
             }
             catch (Exception exception)
             {
-                this.logger.LogError(default, exception, "Une erreur s'est produite durant le traitement des évènements dans le contexte '{Context}'.", this.Context.Name);
+                this.logger.LogError(default, exception, "An error occurred during event handling in the context '{Context}'.", this.Context.Name);
             }
             finally
             {
@@ -155,8 +159,8 @@ namespace DDD.Core.Application
 
         private async Task<(IEnumerable<EventStream>, IEnumerable<FailedEventStream>)> FindAllStreamsAsync()
         {
-            var findStreams = this.coreQueryProcessor.ProcessAsync(new FindEventStreams(), MessageContext.CancellableContext(this.CancellationToken));
-            var findFailedStreams = this.coreQueryProcessor.ProcessAsync(new FindFailedEventStreams(), MessageContext.CancellableContext(this.CancellationToken));
+            var findStreams = this.queryProcessor.In<TContext>().ProcessAsync(new FindEventStreams(), MessageContext.CancellableContext(this.CancellationToken));
+            var findFailedStreams = this.queryProcessor.In<TContext>().ProcessAsync(new FindFailedEventStreams(), MessageContext.CancellableContext(this.CancellationToken));
             await Task.WhenAll(findStreams, findFailedStreams);
             return (findStreams.Result, findFailedStreams.Result);
         }
@@ -164,7 +168,7 @@ namespace DDD.Core.Application
         private async Task ConsumeAllStreamsAsync((IEnumerable<EventStream> Streams, IEnumerable<FailedEventStream> FailedStreams) allStreams)
         {
             if (!allStreams.Streams.Any())
-                this.logger.LogInformation("Aucun flux n'est configuré pour le contexte '{Context}'.", this.Context.Name);
+                this.logger.LogInformation("No event stream is set up for the context '{Context}'.", this.Context.Name);
             var tasks = new List<Task>();
             foreach (var stream in allStreams.Streams)
             {
@@ -193,30 +197,30 @@ namespace DDD.Core.Application
 
         private async Task ConsumeStreamWithoutExcludedStreamsAsync(EventStream stream, List<FailedEventStream> excludedStreams)
         {
-            this.logger.LogInformation("La consommation du flux suivant dans le contexte '{Context}' a commencé : {Stream}", this.Context.Name, stream);
+            this.logger.LogInformation("The consumption of the following event stream in the context '{Context}' has started : {Stream}", this.Context.Name, stream);
             var query = new ReadEventStream
             {
                 Top = stream.BlockSize,
                 StreamPosition = stream.Position,
-                StreamSource = stream.Source,
                 StreamType = stream.Type,
                 ExcludedStreamIds = excludedStreams.Select(s => s.StreamId).ToArray()
             };
-            var notifiedEvents = await this.coreQueryProcessor.ProcessAsync(query, MessageContext.CancellableContext(this.CancellationToken));
+            var sourceContext = this.boundedContexts.Single(c => c.Code == stream.Source);
+            var notifiedEvents = await this.queryProcessor.In(sourceContext).ProcessAsync(query, MessageContext.CancellableContext(this.CancellationToken));
             foreach (var notifiedEvent in notifiedEvents)
             {
                 this.CancellationToken.ThrowIfCancellationRequested();
                 try
                 {
-                    this.logger.LogDebug("Le traitement de l'évènement {EventId} dans le contexte '{Context}' a commencé.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogDebug("The handling of the event {EventId} in the context '{Context}' has started.", notifiedEvent.EventId, this.Context.Name);
                     var @event = this.DeserializeEvent(notifiedEvent);
                     await this.eventPublisher.PublishAsync(@event, CreateContext(notifiedEvent, stream));
                     stream.Position = notifiedEvent.EventId;
-                    this.logger.LogDebug("Le traitement de l'évènement {EventId} dans le contexte '{Context}' s'est terminé.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogDebug("The handling of the event {EventId} in the context '{Context}' has finished.", notifiedEvent.EventId, this.Context.Name);
                 }
                 catch (Exception exception) when (!(exception is OperationCanceledException))
                 {
-                    this.logger.LogError(default, exception, "Une erreur s'est produite durant le traitement de l'évènement {EventId} dans le contexte '{Context}'.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogError(default, exception, "An error occurred during the handling of the event {EventId} in the context '{Context}'.", notifiedEvent.EventId, this.Context.Name);
                     var isTransientException = IsTransientException(exception);
                     var baseException = exception.GetBaseException();
                     var command = new ExcludeFailedEventStream
@@ -224,7 +228,7 @@ namespace DDD.Core.Application
                         StreamPosition = stream.Position,
                         StreamId = notifiedEvent.StreamId,
                         StreamType = notifiedEvent.StreamType,
-                        StreamSource = notifiedEvent.StreamSource,
+                        StreamSource = stream.Source,
                         EventId = notifiedEvent.EventId,
                         EventType = notifiedEvent.EventType,
                         ExceptionTime = SystemTime.Local(),
@@ -239,43 +243,42 @@ namespace DDD.Core.Application
                         RetryDelays = this.GetRetryDelays(isTransientException, stream),
                         BlockSize = stream.BlockSize
                     };
-                    await this.coreCommandProcessor.ProcessAsync(command);
+                    await this.commandProcessor.In<TContext>().ProcessAsync(command);
                     break;
                 }
             }
-            this.logger.LogInformation("La consommation du flux suivant dans le contexte '{Context}' s'est terminée : {Stream}", this.Context.Name, stream);
+            this.logger.LogInformation("The consumption of the following event stream in the context '{Context}' has finished : {Stream}", this.Context.Name, stream);
         }
 
         private async Task ConsumeExcludedStreamAsync(EventStream stream, FailedEventStream excludedStream, List<FailedEventStream> excludedStreams)
         {
-            this.logger.LogInformation("La consommation du flux en échec suivant dans le contexte '{Context}' a commencé : {FailedStream}", this.Context.Name, excludedStream);
+            this.logger.LogInformation("The consumption of the following failed event stream in the context '{Context}' has started : {FailedStream}", this.Context.Name, excludedStream);
             var query = new ReadFailedEventStream
             {
                 Top = excludedStream.BlockSize,
                 EventIdMin = excludedStream.EventId,
                 EventIdMax = stream.Position,
-                StreamSource = excludedStream.StreamSource,
                 StreamType = excludedStream.StreamType,
                 StreamId = excludedStream.StreamId
-            };
+            }; 
+            var sourceContext = this.boundedContexts.Single(c => c.Code == excludedStream.StreamSource);
+            var notifiedEvents = await this.queryProcessor.In(sourceContext).ProcessAsync(query, MessageContext.CancellableContext(this.CancellationToken));
             var success = true;
-            var notifiedEvents = await this.coreQueryProcessor.ProcessAsync(query, MessageContext.CancellableContext(this.CancellationToken));
             foreach (var notifiedEvent in notifiedEvents)
             {
                 this.CancellationToken.ThrowIfCancellationRequested();
                 try
                 {
-                    this.logger.LogDebug("Le traitement de l'évènement {EventId} dans le contexte '{Context}' a commencé.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogDebug("The handling of the event {EventId} in the context '{Context}' has started.", notifiedEvent.EventId, this.Context.Name);
                     var @event = this.DeserializeEvent(notifiedEvent);
-                    var context = CreateContext(notifiedEvent, excludedStream);
-                    await this.eventPublisher.PublishAsync(@event, context);
+                    await this.eventPublisher.PublishAsync(@event, CreateContext(notifiedEvent, excludedStream));
                     excludedStream.StreamPosition = notifiedEvent.EventId;
-                    this.logger.LogDebug("Le traitement de l'évènement {EventId} dans le contexte '{Context}' s'est terminé.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogDebug("The handling of the event {EventId} in the context '{Context}' has finished.", notifiedEvent.EventId, this.Context.Name);
                 }
                 catch (Exception exception) when (!(exception is OperationCanceledException))
                 {
                     success = false;
-                    this.logger.LogError(default, exception, "Une erreur s'est produite durant le traitement de l'évènement {EventId} dans le contexte '{Context}'.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogError(default, exception, "An error occurred during the handling of the event {EventId} in the context '{Context}'.", notifiedEvent.EventId, this.Context.Name);
                     var isTransientException = IsTransientException(exception);
                     var isNewEvent = notifiedEvent.EventId != excludedStream.EventId;
                     var baseException = exception.GetBaseException();
@@ -284,7 +287,7 @@ namespace DDD.Core.Application
                         StreamPosition = excludedStream.StreamPosition,
                         StreamId = notifiedEvent.StreamId,
                         StreamType = notifiedEvent.StreamType,
-                        StreamSource = notifiedEvent.StreamSource,
+                        StreamSource = excludedStream.StreamSource,
                         EventId = notifiedEvent.EventId,
                         EventType = notifiedEvent.EventType,
                         ExceptionTime = SystemTime.Local(),
@@ -298,7 +301,7 @@ namespace DDD.Core.Application
                         RetryMax = isNewEvent ? this.GetRetryMax(isTransientException, stream) : excludedStream.RetryMax,
                         RetryDelays = isNewEvent ? this.GetRetryDelays(isTransientException, stream) : excludedStream.RetryDelays
                     };
-                    await this.coreCommandProcessor.ProcessAsync(command);
+                    await this.commandProcessor.In<TContext>().ProcessAsync(command);
                     break;
                 }
             }
@@ -310,10 +313,10 @@ namespace DDD.Core.Application
                     Type = excludedStream.StreamType,
                     Source = excludedStream.StreamSource
                 };
-                await this.coreCommandProcessor.ProcessAsync(command, MessageContext.CancellableContext(this.CancellationToken));
+                await this.commandProcessor.In<TContext>().ProcessAsync(command);
                 excludedStreams.Remove(excludedStream);
             }
-            this.logger.LogInformation("La consommation du flux en échec suivant dans le contexte '{Context}' s'est terminée : {FailedStream}", this.Context.Name, excludedStream);
+            this.logger.LogInformation("The consumption of the following failed event stream in the context '{Context}' has finished : {FailedStream}", this.Context.Name, excludedStream);
         }
 
         private static bool IsTransientException(Exception exception)

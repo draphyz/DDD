@@ -1,5 +1,5 @@
 ﻿using Conditions;
-using System.Threading;
+using System;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -9,40 +9,72 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Core.Domain;
     using Domain.Prescriptions;
     using Mapping;
+    using Threading;
 
-    public class PharmaceuticalPrescriptionCreator
-        : AsyncDomainCommandHandler<CreatePharmaceuticalPrescription>
+    public class PharmaceuticalPrescriptionCreator : ICommandHandler<CreatePharmaceuticalPrescription>
     {
 
         #region Fields
 
-        private readonly IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository;
-        private readonly IObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription> translator;
+        private readonly IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository;
+        private readonly IObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription> commandTranslator;
+        private readonly CompositeTranslator<Exception, CommandException> exceptionTranslator;
 
         #endregion Fields
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionCreator(IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository,
-                                                 IObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription> translator)
+        public PharmaceuticalPrescriptionCreator(IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository,
+                                                 IObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription> commandTranslator)
         {
             Condition.Requires(repository, nameof(repository)).IsNotNull();
-            Condition.Requires(translator, nameof(translator)).IsNotNull();
+            Condition.Requires(commandTranslator, nameof(commandTranslator)).IsNotNull();
             this.repository = repository;
-            this.translator = translator;
+            this.commandTranslator = commandTranslator;
+            this.exceptionTranslator = new CompositeTranslator<Exception, CommandException>();
+            this.exceptionTranslator.Register(new DomainToCommandExceptionTranslator());
+            this.exceptionTranslator.RegisterFallback();
         }
 
         #endregion Constructors
 
         #region Methods
 
-        protected override async Task ExecuteAsync(CreatePharmaceuticalPrescription command, CancellationToken cancellationToken = default)
+        public void Handle(CreatePharmaceuticalPrescription command, IMessageContext context = null)
         {
-            var prescription = this.translator.Translate(command);
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            Condition.Requires(command, nameof(command)).IsNotNull();
+            try
             {
-                await this.repository.SaveAsync(prescription, cancellationToken);
-                scope.Complete();
+                var prescription = this.commandTranslator.Translate(command);
+                using (var scope = new TransactionScope())
+                {
+                    this.repository.Save(prescription);
+                    scope.Complete();
+                }
+            }
+            catch (Exception ex) when (ex.ShouldBeWrappedIn<CommandException>())
+            {
+                throw this.exceptionTranslator.Translate(ex, new { Command = command });
+            }
+        }
+
+        public async Task HandleAsync(CreatePharmaceuticalPrescription command, IMessageContext context = null)
+        {
+            Condition.Requires(command, nameof(command)).IsNotNull();
+            try
+            {
+                await new SynchronizationContextRemover();
+                var cancellationToken = context?.CancellationToken() ?? default;
+                var prescription = this.commandTranslator.Translate(command);
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    await this.repository.SaveAsync(prescription, cancellationToken);
+                    scope.Complete();
+                }
+            }
+            catch (Exception ex) when (ex.ShouldBeWrappedIn<CommandException>())
+            {
+                throw this.exceptionTranslator.Translate(ex, new { Command = command });
             }
         }
 

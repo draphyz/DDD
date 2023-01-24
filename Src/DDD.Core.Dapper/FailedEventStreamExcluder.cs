@@ -8,11 +8,12 @@ using Conditions;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using DDD.Core.Domain;
     using Mapping;
     using Threading;
 
     public class FailedEventStreamCreator<TContext> : ICommandHandler<ExcludeFailedEventStream, TContext>
-        where TContext : class, IBoundedContext
+        where TContext : BoundedContext
 
     {
 

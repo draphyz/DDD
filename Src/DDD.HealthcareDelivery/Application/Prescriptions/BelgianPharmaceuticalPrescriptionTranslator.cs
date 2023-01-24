@@ -14,13 +14,13 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Mapping;
 
     public class BelgianPharmaceuticalPrescriptionTranslator
-        : IObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription>
+        : ObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription>
     {
 
         #region Methods
 
-        public PharmaceuticalPrescription Translate(CreatePharmaceuticalPrescription command,
-                                                    IDictionary<string, object> options = null)
+        public override PharmaceuticalPrescription Translate(CreatePharmaceuticalPrescription command,
+                                                             IDictionary<string, object> context = null)
         {
             Condition.Requires(command, nameof(command)).IsNotNull();
             return PharmaceuticalPrescription.Create

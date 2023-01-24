@@ -40,7 +40,7 @@ namespace DDD.Core.Application
         /// Registers a recurring command asynchronously.
         /// </summary>
         /// <returns></returns>
-        Task RegisterAsync(ICommand command, string cronExpression, CancellationToken cancellationToken = default);
+        Task RegisterAsync(ICommand command, string recurringExpression, CancellationToken cancellationToken = default);
 
         #endregion Methods
 
