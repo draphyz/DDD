@@ -24,6 +24,7 @@
   <ItemGroup>
     <PackageReference Include="Conditions.NetStandard" Version="1.1.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
     <PackageReference Include="xunit.core">
       <Version>2.4.2</Version>
     </PackageReference>
