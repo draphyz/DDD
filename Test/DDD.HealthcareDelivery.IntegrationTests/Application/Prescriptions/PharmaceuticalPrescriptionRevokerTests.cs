@@ -8,7 +8,6 @@ using FluentAssertions;
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Domain;
-    using Core.Domain;
     using Core.Infrastructure.Data;
     using Domain.Prescriptions;
     using Infrastructure;
@@ -17,12 +16,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     public abstract class PharmaceuticalPrescriptionRevokerTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
     {
-
-        #region Fields
-
-        private DbHealthcareDeliveryContext context;
-
-        #endregion Fields
 
         #region Constructors
 
@@ -44,7 +37,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         protected PharmaceuticalPrescriptionRevoker Handler { get; }
 
-        protected IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> Repository { get; }
+        protected PharmaceuticalPrescriptionRepository Repository { get; }
 
         #endregion Properties
 
@@ -53,7 +46,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         public void Dispose()
         {
             this.ConnectionProvider.Dispose();
-            this.context.Dispose();
+            this.Repository.Dispose();
         }
 
         [Fact]
@@ -79,12 +72,11 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             };
         }
 
-        private IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
+        private PharmaceuticalPrescriptionRepository CreateRepository()
         {
-            this.context = this.Fixture.CreateDbContext(this.ConnectionProvider);
             return new PharmaceuticalPrescriptionRepository
             (
-                this.context,
+                this.Fixture.CreateDbContextFactory(this.ConnectionProvider),
                 new Domain.Prescriptions.BelgianPharmaceuticalPrescriptionTranslator(),
                 this.Fixture.CreateEventTranslator()
             );

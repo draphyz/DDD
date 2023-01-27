@@ -11,7 +11,8 @@
     {
         #region Methods
 
-        DbHealthcareDeliveryContext CreateDbContext(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider);
+        IDbContextFactory<DbHealthcareDeliveryContext> CreateDbContextFactory(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider);
+
         IObjectTranslator<IEvent, Event> CreateEventTranslator();
 
         #endregion Methods

@@ -7,7 +7,6 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Data.Common;
-using DDD.Data;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -16,9 +15,8 @@ namespace DDD.Core.Infrastructure.Data
     using Mapping;
     using Threading;
 
-    public abstract class EFRepository<TContext, TDomainEntity, TStateEntity, TIdentity>
-        : IRepository<TDomainEntity, TIdentity>
-        where TContext : BoundedContext
+    public abstract class EFRepository<TContext, TDomainEntity, TStateEntity, TIdentity> : IRepository<TDomainEntity, TIdentity>, IDisposable
+        where TContext : DbBoundedContext
         where TDomainEntity : DomainEntity, IStateObjectConvertible<TStateEntity>
         where TStateEntity : class, IStateEntity, new()
         where TIdentity : ComparableValueObject
@@ -26,36 +24,38 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Fields
 
-        private readonly DbBoundedContext<TContext> context;
+        private readonly IDbContextFactory<TContext> contextFactory;
         private readonly IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator;
         private readonly IObjectTranslator<IEvent, Event> eventTranslator;
         private readonly IObjectTranslator<Exception, RepositoryException> exceptionTranslator = new EFRepositoryExceptionTranslator();
+        private TContext context;
+        private bool disposed;
 
         #endregion Fields
 
         #region Constructors
 
-        protected EFRepository(DbBoundedContext<TContext> context,
+        protected EFRepository(IDbContextFactory<TContext> contextFactory,
                                IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator,
                                IObjectTranslator<IEvent, Event> eventTranslator)
         {
-            Condition.Requires(context, nameof(context)).IsNotNull();
+            Condition.Requires(contextFactory, nameof(contextFactory)).IsNotNull();
             Condition.Requires(entityTranslator, nameof(entityTranslator)).IsNotNull();
             Condition.Requires(eventTranslator, nameof(eventTranslator)).IsNotNull();
-            this.context = context;
+            this.contextFactory = contextFactory;
             this.entityTranslator = entityTranslator;
             this.eventTranslator = eventTranslator;
         }
 
         #endregion Constructors
 
-        #region Properties
-
-        protected DbConnection Connection() => this.context.Database.GetDbConnection();
-
-        #endregion Properties
-
         #region Methods
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
 
         public TDomainEntity Find(TIdentity identity)
         {
@@ -63,8 +63,6 @@ namespace DDD.Core.Infrastructure.Data
             try
             {
                 var keyValues = identity.PrimitiveEqualityComponents();
-                // To avoid a promotion to an MSDTC transaction
-                this.Connection().OpenIfClosed();
                 var stateEntity = this.Find(keyValues);
                 return this.TranslateEntity(stateEntity);
             }
@@ -81,8 +79,6 @@ namespace DDD.Core.Infrastructure.Data
             {
                 await new SynchronizationContextRemover();
                 var keyValues = identity.PrimitiveEqualityComponents();
-                // To avoid a promotion to an MSDTC transaction
-                await this.Connection().OpenIfClosedAsync(cancellationToken);
                 var stateEntity = await this.FindAsync(keyValues, cancellationToken);
                 return this.TranslateEntity(stateEntity);
             }
@@ -98,9 +94,8 @@ namespace DDD.Core.Infrastructure.Data
             try
             {
                 var stateEntity = aggregate.ToState();
-                var events = ToEvents(aggregate);
-                // To avoid a promotion to an MSDTC transaction
-                this.Connection().OpenIfClosed();
+                var guidGenerator = this.GetConnection().SequentialGuidGenerator();
+                var events = ToEvents(guidGenerator, aggregate);
                 this.Save(stateEntity, events);
             }
             catch (Exception ex) when (ex.ShouldBeWrappedIn<RepositoryException>())
@@ -116,9 +111,8 @@ namespace DDD.Core.Infrastructure.Data
             {
                 await new SynchronizationContextRemover();
                 var stateEntity = aggregate.ToState();
-                var events = ToEvents(aggregate);
-                // To avoid a promotion to an MSDTC transaction
-                await this.Connection().OpenIfClosedAsync(cancellationToken);
+                var guidGenerator = (await this.GetConnectionAsync(cancellationToken)).SequentialGuidGenerator();
+                var events = ToEvents(guidGenerator, aggregate);
                 await this.SaveAsync(stateEntity, events, cancellationToken);
             }
             catch (Exception ex) when (ex.ShouldBeWrappedIn<RepositoryException>())
@@ -127,27 +121,56 @@ namespace DDD.Core.Infrastructure.Data
             }
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                    this.context?.Dispose();
+                disposed = true;
+            }
+        }
+
         protected virtual TStateEntity Find(IEnumerable<object> keyValues)
         {
-            var keyNames = this.context.GetKeyNames<TStateEntity>();
+            var keyNames = this.GetContext().GetKeyNames<TStateEntity>();
             if (keyValues.Count() != keyNames.Count())
                 throw new InvalidOperationException($"You must specify {keyNames.Count()} identity components.");
             var expression = BuildFindExpression(keyNames, keyValues);
             return this.Query().FirstOrDefault(expression);
         }
 
-        protected virtual Task<TStateEntity> FindAsync(IEnumerable<object> keyValues, CancellationToken cancellationToken)
+        protected virtual async Task<TStateEntity> FindAsync(IEnumerable<object> keyValues, CancellationToken cancellationToken)
         {
-            var keyNames = this.context.GetKeyNames<TStateEntity>();
+            var keyNames = (await this.GetContextAsync(cancellationToken)).GetKeyNames<TStateEntity>();
             if (keyValues.Count() != keyNames.Count())
                 throw new InvalidOperationException($"You must specify {keyNames.Count()} identity components.");
             var expression = BuildFindExpression(keyNames, keyValues);
-            return this.Query().FirstOrDefaultAsync(expression, cancellationToken);
+            var query = await this.QueryAsync(cancellationToken);
+            return await query.FirstOrDefaultAsync(expression, cancellationToken);
+        }
+
+        protected DbConnection GetConnection()
+        {
+            return this.GetContext().Database.GetDbConnection();
+        }
+
+        protected async Task<DbConnection> GetConnectionAsync(CancellationToken cancellationToken)
+        {
+            return (await this.GetContextAsync(cancellationToken)).Database.GetDbConnection();
         }
 
         protected IQueryable<TStateEntity> Query()
         {
-            var query = this.context.Set<TStateEntity>().AsNoTracking().AsQueryable();
+            var query = this.GetContext().Set<TStateEntity>().AsNoTracking().AsQueryable();
+            foreach (var path in this.RelatedEntitiesPaths())
+                query = query.Include(path);
+            return query;
+        }
+
+        protected async Task<IQueryable<TStateEntity>> QueryAsync(CancellationToken cancellationToken)
+        {
+            var query = (await this.GetContextAsync(cancellationToken)).Set<TStateEntity>().AsNoTracking().AsQueryable();
             foreach (var path in this.RelatedEntitiesPaths())
                 query = query.Include(path);
             return query;
@@ -160,27 +183,29 @@ namespace DDD.Core.Infrastructure.Data
 
         protected virtual void Save(TStateEntity stateEntity, IEnumerable<Event> events)
         {
-            this.context.Set<TStateEntity>().Add(stateEntity);
-            this.context.Events.AddRange(events);
-            this.context.SaveChanges();
+            var context = this.GetContext();
+            context.Set<TStateEntity>().Add(stateEntity);
+            context.Events.AddRange(events);
+            context.SaveChanges();
         }
 
-        protected virtual Task SaveAsync(TStateEntity stateEntity, IEnumerable<Event> events, CancellationToken cancellationToken)
+        protected virtual async Task SaveAsync(TStateEntity stateEntity, IEnumerable<Event> events, CancellationToken cancellationToken)
         {
-            this.context.Set<TStateEntity>().Add(stateEntity);
-            this.context.Events.AddRange(events);
-            return this.context.SaveChangesAsync(cancellationToken);
-        }
-
-        protected RepositoryException TranslateException(Exception ex)
-        {
-            return this.exceptionTranslator.Translate(ex, new { EntityType = typeof(TDomainEntity) });
+            var context = await this.GetContextAsync(cancellationToken);
+            context.Set<TStateEntity>().Add(stateEntity);
+            context.Events.AddRange(events);
+            await context.SaveChangesAsync(cancellationToken);
         }
 
         protected TDomainEntity TranslateEntity(TStateEntity stateEntity)
         {
             if (stateEntity == null) return null;
             return this.entityTranslator.Translate(stateEntity);
+        }
+
+        protected RepositoryException TranslateException(Exception ex)
+        {
+            return this.exceptionTranslator.Translate(ex, new { EntityType = typeof(TDomainEntity) });
         }
 
         private static Expression<Func<TStateEntity, bool>> BuildFindExpression(IEnumerable<string> keyNames,
@@ -202,9 +227,21 @@ namespace DDD.Core.Infrastructure.Data
             return Expression.Lambda<Func<TStateEntity, bool>>(find, entity);
         }
 
-        private IEnumerable<Event> ToEvents(TDomainEntity aggregate)
+        private TContext GetContext()
         {
-            var guidGenerator = this.Connection().SequentialGuidGenerator();
+            if (this.context == null)
+                this.context = this.contextFactory.CreateDbContext();
+            return this.context;
+        }
+
+        private async Task<TContext> GetContextAsync(CancellationToken cancellationToken)
+        {
+            if (this.context == null)
+                this.context = await this.contextFactory.CreateDbContextAsync(cancellationToken);
+            return this.context;
+        }
+        private IEnumerable<Event> ToEvents(IValueGenerator<Guid> guidGenerator, TDomainEntity aggregate)
+        {
             var username = Thread.CurrentPrincipal?.Identity?.Name;
             return aggregate.AllEvents().Select(e =>
             {
@@ -213,7 +250,6 @@ namespace DDD.Core.Infrastructure.Data
                     EventId = guidGenerator.Generate(),
                     StreamId = aggregate.IdentityAsString(),
                     StreamType = aggregate.GetType().Name,
-                    StreamSource = this.context.Code,
                     IssuedBy = username
                 };
                 return this.eventTranslator.Translate(e, context);

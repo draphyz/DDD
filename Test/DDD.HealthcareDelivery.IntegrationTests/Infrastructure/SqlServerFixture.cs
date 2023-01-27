@@ -2,16 +2,17 @@
 using System.Data.Common;
 using System.Configuration;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Domain;
+    using Mapping;
     using Core.Infrastructure.Testing;
     using Core.Infrastructure.Data;
     using Core.Domain;
     using Core.Application;
     using Core.Infrastructure.Serialization;
-    using Mapping;
     
     public class SqlServerFixture : DbFixture<HealthcareDeliveryContext>, IPersistenceFixture
     {
@@ -26,9 +27,23 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Methods
 
-        public DbHealthcareDeliveryContext CreateDbContext(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider)
+        public IDbContextFactory<DbHealthcareDeliveryContext> CreateDbContextFactory(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider)
         {
-            return new SqlServerHealthcareDeliveryContext(connectionProvider);
+            return new DelegatingDbContextFactory<DbHealthcareDeliveryContext>
+            (
+                optionsBuilder =>
+                {
+                    var connection = connectionProvider.GetOpenConnection();
+                    optionsBuilder.UseSqlServer(connection);
+                    return new SqlServerHealthcareDeliveryContext(optionsBuilder.Options);
+                },
+                async (optionsBuilder, cancellationToken) =>
+                {
+                    var connection = await connectionProvider.GetOpenConnectionAsync(cancellationToken);
+                    optionsBuilder.UseSqlServer(connection);
+                    return new SqlServerHealthcareDeliveryContext(optionsBuilder.Options);
+                }
+            );
         }
 
         public IObjectTranslator<IEvent, Event> CreateEventTranslator()
@@ -66,5 +81,6 @@ namespace DDD.HealthcareDelivery.Infrastructure
         }
 
         #endregion Methods
+
     }
 }

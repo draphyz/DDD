@@ -9,18 +9,17 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
     using Core.Application;
     using Domain.Prescriptions;
     using Core.Infrastructure.Data;
-    using DDD.HealthcareDelivery.Domain;
 
     public class PharmaceuticalPrescriptionRepository
-        : EFRepository<HealthcareDeliveryContext, PharmaceuticalPrescription, PharmaceuticalPrescriptionState, PrescriptionIdentifier>
+        : EFRepository<DbHealthcareDeliveryContext, PharmaceuticalPrescription, PharmaceuticalPrescriptionState, PrescriptionIdentifier>
     {
 
         #region Constructors
 
-        public PharmaceuticalPrescriptionRepository(DbHealthcareDeliveryContext context,
+        public PharmaceuticalPrescriptionRepository(IDbContextFactory<DbHealthcareDeliveryContext> contextFactory,
                                                     IObjectTranslator<PharmaceuticalPrescriptionState, PharmaceuticalPrescription> prescriptionTranslator,
                                                     IObjectTranslator<IEvent, Event> eventTranslator)
-            : base(context, prescriptionTranslator, eventTranslator)
+            : base(contextFactory, prescriptionTranslator, eventTranslator)
         {
         }
 

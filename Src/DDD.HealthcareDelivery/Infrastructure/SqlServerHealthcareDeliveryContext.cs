@@ -2,7 +2,6 @@
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
-    using Domain;
     using Core.Infrastructure.Data;
     using Prescriptions;
 
@@ -11,8 +10,8 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Constructors
 
-        public SqlServerHealthcareDeliveryContext(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider) 
-            : base(connectionProvider)
+        public SqlServerHealthcareDeliveryContext(DbContextOptions<DbHealthcareDeliveryContext> options) 
+            : base(options)
         {
         }
 
@@ -20,15 +19,9 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Methods
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(this.Connection);
-        }
-
         protected override void ApplyConfigurations(ModelBuilder modelBuilder)
         {
             base.ApplyConfigurations(modelBuilder);
-            modelBuilder.HasDefaultSchema("dbo");
             modelBuilder.ApplyConfiguration(new SqlServerEventConfiguration());
             modelBuilder.ApplyConfiguration(new SqlServerPrescriptionStateConfiguration());
             modelBuilder.ApplyConfiguration(new SqlServerPrescribedMedicationStateConfiguration());

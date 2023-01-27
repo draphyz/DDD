@@ -1,5 +1,4 @@
-﻿using Conditions;
-using DDD.Core.Domain;
+﻿using DDD.Core.Domain;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
@@ -8,27 +7,18 @@ namespace DDD.Core.Infrastructure.Data
 {
     using Microsoft.EntityFrameworkCore;
     using Core.Application;
-    using System;
-    using System.Data.Common;
 
     /// <summary>
     /// Represents a <see cref="DbContext"/> used to store a domain model.
     /// </summary>
-    public abstract class DbBoundedContext<TContext> : DbContext
-        where TContext : BoundedContext
+    public abstract class DbBoundedContext: DbContext
     {
-        #region Fields
-
-        private readonly IDbConnectionProvider<TContext> connectionProvider;
-
-        #endregion Fields
 
         #region Constructors
 
-        protected DbBoundedContext(IDbConnectionProvider<TContext> connectionProvider)
+        protected DbBoundedContext(DbContextOptions options) : base(options)
         {
-            Condition.Requires(connectionProvider, nameof(connectionProvider)).IsNotNull();
-            this.connectionProvider = connectionProvider;
+            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             this.ChangeTracker.LazyLoadingEnabled = false;
             this.ChangeTracker.AutoDetectChangesEnabled = false;
         }
@@ -38,9 +28,6 @@ namespace DDD.Core.Infrastructure.Data
         #region Properties
 
         public DbSet<Event> Events { get; set; }
-        public string Name => this.connectionProvider.Context.Name;
-        public string Code => this.connectionProvider.Context.Code;
-        public DbConnection Connection => this.connectionProvider.Connection;
 
         #endregion Properties
 
@@ -48,7 +35,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public void FixEntityState()
         {
-            foreach (var entry in ChangeTracker.Entries<Domain.IStateEntity>().ToList())
+            foreach (var entry in ChangeTracker.Entries<IStateEntity>().ToList())
             {
                 IStateEntity entity = entry.Entity;
                 switch (entity.EntityState)

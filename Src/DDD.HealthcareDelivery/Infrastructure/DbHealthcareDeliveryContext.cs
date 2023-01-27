@@ -3,17 +3,16 @@
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Core.Infrastructure.Data;
-    using Domain;
     using Domain.Prescriptions;
     using Prescriptions;
 
-    public abstract class DbHealthcareDeliveryContext : DbBoundedContext<HealthcareDeliveryContext>
+    public abstract class DbHealthcareDeliveryContext : DbBoundedContext
     {
 
         #region Constructors
 
-        protected DbHealthcareDeliveryContext(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider) 
-            : base(connectionProvider)
+        protected DbHealthcareDeliveryContext(DbContextOptions options) 
+            : base(options)
         {
         }
 

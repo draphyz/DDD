@@ -1,19 +1,19 @@
 ﻿using System.Data;
+using System.Data.Common;
 using System.Configuration;
 using Oracle.ManagedDataAccess.Client;
+using Microsoft.EntityFrameworkCore;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
     using Domain;
+    using Mapping;
     using Core.Application;
     using Core.Infrastructure.Testing;
     using Core.Infrastructure.Data;
     using Core.Domain;
     using Core.Infrastructure.Serialization;
-    using Mapping;
-    using DDD.HealthcareDelivery;
-    using System.Data.Common;
-
+    
     public class OracleFixture : DbFixture<HealthcareDeliveryContext>, IPersistenceFixture
     {
 
@@ -27,9 +27,23 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Methods
 
-        public DbHealthcareDeliveryContext CreateDbContext(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider)
+        public IDbContextFactory<DbHealthcareDeliveryContext> CreateDbContextFactory(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider)
         {
-            return new OracleHealthcareDeliveryContext(connectionProvider);
+            return new DelegatingDbContextFactory<DbHealthcareDeliveryContext>
+            (
+                optionsBuilder =>
+                {
+                    var connection = connectionProvider.GetOpenConnection();
+                    optionsBuilder.UseOracle(connection, o => o.UseOracleSQLCompatibility("11"));
+                    return new OracleHealthcareDeliveryContext(optionsBuilder.Options);
+                },
+                async (optionsBuilder, cancellationToken) =>
+                {
+                    var connection = await connectionProvider.GetOpenConnectionAsync(cancellationToken);
+                    optionsBuilder.UseOracle(connection, o => o.UseOracleSQLCompatibility("11"));
+                    return new OracleHealthcareDeliveryContext(optionsBuilder.Options);
+                }
+            );
         }
 
         public IObjectTranslator<IEvent, Event> CreateEventTranslator()

@@ -23,7 +23,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
         {
             this.Fixture = fixture;
             this.ConnectionProvider = fixture.CreateConnectionProvider();
-            this.context = this.Fixture.CreateDbContext(this.ConnectionProvider);
+            this.context = this.Fixture.CreateDbContextFactory(this.ConnectionProvider).CreateDbContext();
         }
 
         #endregion Constructors

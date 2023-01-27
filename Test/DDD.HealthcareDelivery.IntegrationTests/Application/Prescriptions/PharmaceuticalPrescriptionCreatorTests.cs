@@ -8,7 +8,6 @@ using Xunit;
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
     using Common.Application;
-    using Core.Domain;
     using Practitioners;
     using Domain;
     using Domain.Prescriptions;
@@ -19,12 +18,6 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     public abstract class PharmaceuticalPrescriptionCreatorTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
     {
-
-        #region Fields
-
-        private DbHealthcareDeliveryContext context;
-
-        #endregion Fields
 
         #region Constructors
 
@@ -50,7 +43,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         protected PharmaceuticalPrescriptionCreator Handler { get; }
 
-        protected IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> Repository { get; }
+        protected PharmaceuticalPrescriptionRepository Repository { get; }
 
         #endregion Properties
 
@@ -59,7 +52,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         public void Dispose()
         {
             this.ConnectionProvider.Dispose();
-            this.context.Dispose();
+            this.Repository.Dispose();
         }
 
         [Fact]
@@ -119,12 +112,11 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             };
         }
 
-        private IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
+        private PharmaceuticalPrescriptionRepository CreateRepository()
         {
-            this.context = this.Fixture.CreateDbContext(this.ConnectionProvider);
             return new PharmaceuticalPrescriptionRepository
             (
-                this.context,
+                this.Fixture.CreateDbContextFactory(this.ConnectionProvider),
                 new Domain.Prescriptions.BelgianPharmaceuticalPrescriptionTranslator(),
                 this.Fixture.CreateEventTranslator()
             );
