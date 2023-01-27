@@ -19,7 +19,7 @@ namespace DDD.Core.Infrastructure.Data {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SqlServerScripts {
@@ -100,11 +100,10 @@ namespace DDD.Core.Infrastructure.Data {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[EventStream]([Type], [Source], [Position], [RetryMax], [RetryDelays], [BlockSize]) VALUES (&apos;Person&apos;, &apos;ID&apos;, &apos;36beb37d-1e01-bb7d-fb2a-3a0044745345&apos;, 5, &apos;10,60,120/80&apos;, 50)
-        ///GO																			   
         ///INSERT [dbo].[EventStream]([Type], [Source], [Position], [RetryMax], [RetryDelays], [BlockSize]) VALUES (&apos;Person&apos;, &apos;ID&apos;, &apos;f7df5bd0-8763-677e-7e6b-3a0044746810&apos;, 5, &apos;10,60,120/80&apos;, 50)
         ///GO																			   
-        ///INSERT [dbo].[EventStream]([Type], [Source], [Po [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[EventStream]([Type], [Source], [Position], [RetryMax], [RetryDelays], [BlockSize]) VALUES (&apos;MedicalProduct&apos;, &apos;OFR&apos;, &apos;00000000-0000-0000-0000-000000000000&apos;, 3, &apos;60&apos;, 100)
+        ///GO																			   .
         /// </summary>
         internal static string FindEventStreams {
             get {
@@ -117,7 +116,7 @@ namespace DDD.Core.Infrastructure.Data {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[FailedEventStream] ([StreamId], [StreamType], [StreamSource], [StreamPosition], [EventId], [EventType], [ExceptionTime], [ExceptionType], [ExceptionMessage], [ExceptionSource], [ExceptionInfo], [BaseExceptionType], [BaseExceptionMessage], [RetryCount], [RetryMax], [RetryDelays], [BlockSize]) VALUES (N&apos;2&apos;, N&apos;MessageBox&apos;, N&apos;COL&apos;, N&apos;0a77707a-c147-9e1b-883a-08da0e368663&apos;, N&apos;e10add4d-1851-7ede-883b-08da0e368663&apos;, N&apos;DDD.Collaboration.Domain.Messages.Mes [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[FailedEventStream] ([StreamId], [StreamType], [StreamSource], [StreamPosition], [EventId], [EventType], [ExceptionTime], [ExceptionType], [ExceptionMessage], [ExceptionSource], [ExceptionInfo], [BaseExceptionType], [BaseExceptionMessage], [RetryCount], [RetryMax], [RetryDelays], [BlockSize]) VALUES (N&apos;2&apos;, N&apos;MessageBox&apos;, N&apos;COL&apos;, N&apos;0a77707a-c147-9e1b-883a-08da0e368663&apos;, N&apos;e10add4d-1851-7ede-883b-08da0e368663&apos;, N&apos;DDD.Collaboration.Domain.Messages.MessageB [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string FindFailedEventStreams {
             get {
@@ -146,7 +145,7 @@ namespace DDD.Core.Infrastructure.Data {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[FailedEventStream] ([StreamId], [StreamType], [StreamSource], [StreamPosition], [EventId], [EventType], [ExceptionTime], [ExceptionType], [ExceptionMessage], [ExceptionSource], [ExceptionInfo], [BaseExceptionType], [BaseExceptionMessage], [RetryCount], [RetryMax], [RetryDelays], [BlockSize]) VALUES (N&apos;2&apos;, N&apos;MessageBox&apos;, N&apos;COL&apos;, N&apos;0a77707a-c147-9e1b-883a-08da0e368663&apos;, N&apos;e10add4d-1851-7ede-883b-08da0e368663&apos;, N&apos;DDD.Collaboration.Domain.Messages.Mes [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[FailedEventStream] ([StreamId], [StreamType], [StreamSource], [StreamPosition], [EventId], [EventType], [ExceptionTime], [ExceptionType], [ExceptionMessage], [ExceptionSource], [ExceptionInfo], [BaseExceptionType], [BaseExceptionMessage], [RetryCount], [RetryMax], [RetryDelays], [BlockSize]) VALUES (N&apos;2&apos;, N&apos;MessageBox&apos;, N&apos;COL&apos;, N&apos;0a77707a-c147-9e1b-883a-08da0e368663&apos;, N&apos;e10add4d-1851-7ede-883b-08da0e368663&apos;, N&apos;DDD.Collaboration.Domain.Messages.MessageB [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string IncludeFailedEventStream {
             get {
@@ -178,7 +177,7 @@ namespace DDD.Core.Infrastructure.Data {
         ///INSERT INTO [dbo].[Command] ([CommandId], [CommandType], [Body], [BodyFormat], [RecurringExpression], [LastExecutionTime], [LastExecutionStatus], [LastExceptionInfo])
         ///VALUES (N&apos;36beb37d-1e01-bb7d-fb2a-3a0044745345&apos;, N&apos;DDD.Core.Application.FakeCommand1, DDD.Core.Messages&apos;, &apos;{&quot;Property1&quot;:&quot;dummy&quot;,&quot;Property2&quot;:10}&apos;, N&apos;JSON&apos;, N&apos;* * * * *&apos;, CAST(N&apos;2022-01-01T00:00:00.0000000&apos; AS DateTime2), N&apos;F&apos;, N&apos;System.TimeoutException: The operation has timed-out.&apos;)
         ///GO
-        ///INSERT I [rest of string was truncated]&quot;;.
+        ///INSERT INTO [ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string MarkRecurringCommandAsSuccessful {
             get {
@@ -223,9 +222,9 @@ namespace DDD.Core.Infrastructure.Data {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[Event] ([EventId], [EventType], [OccurredOn], [Body], [BodyFormat], [StreamId], [StreamType], [StreamSource], [IssuedBy]) VALUES (N&apos;36beb37d-1e01-bb7d-fb2a-3a0044745345&apos;, N&apos;DDD.Collaboration.Domain.Messages.MessageBoxCreated, DDD.Collaboration.Messages&apos;, CAST(N&apos;2021-11-18T10:01:23.5280000&apos; AS DateTime2), N&apos;{&quot;boxId&quot;:2,&quot;occurredOn&quot;:&quot;2021-11-18T10:01:23.5277314+01:00&quot;}&apos;, N&apos;JSON&apos;, N&apos;2&apos;, N&apos;MessageBox&apos;, N&apos;COL&apos;, N&apos;Dr Maboul&apos;)
+        ///INSERT [dbo].[Event] ([EventId], [EventType], [OccurredOn], [Body], [BodyFormat], [StreamId], [StreamType], [IssuedBy]) VALUES (N&apos;36beb37d-1e01-bb7d-fb2a-3a0044745345&apos;, N&apos;DDD.Collaboration.Domain.Messages.MessageBoxCreated, DDD.Collaboration.Messages&apos;, CAST(N&apos;2021-11-18T10:01:23.5280000&apos; AS DateTime2), N&apos;{&quot;boxId&quot;:2,&quot;occurredOn&quot;:&quot;2021-11-18T10:01:23.5277314+01:00&quot;}&apos;, N&apos;JSON&apos;, N&apos;2&apos;, N&apos;MessageBox&apos;, N&apos;Dr Maboul&apos;)
         ///GO
-        ///INSERT [dbo].[Even [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[Event] ([EventId], [EventType], [Occur [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReadEventStream {
             get {
@@ -238,9 +237,9 @@ namespace DDD.Core.Infrastructure.Data {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[Event] ([EventId], [EventType], [OccurredOn], [Body], [BodyFormat], [StreamId], [StreamType], [StreamSource], [IssuedBy]) VALUES (N&apos;36beb37d-1e01-bb7d-fb2a-3a0044745345&apos;, N&apos;DDD.Collaboration.Domain.Messages.MessageBoxCreated, DDD.Collaboration.Messages&apos;, CAST(N&apos;2021-11-18T10:01:23.5280000&apos; AS DateTime2), N&apos;{&quot;boxId&quot;:2,&quot;occurredOn&quot;:&quot;2021-11-18T10:01:23.5277314+01:00&quot;}&apos;, N&apos;JSON&apos;, N&apos;2&apos;, N&apos;MessageBox&apos;, N&apos;COL&apos;, N&apos;Dr Maboul&apos;)
+        ///INSERT [dbo].[Event] ([EventId], [EventType], [OccurredOn], [Body], [BodyFormat], [StreamId], [StreamType], [IssuedBy]) VALUES (N&apos;36beb37d-1e01-bb7d-fb2a-3a0044745345&apos;, N&apos;DDD.Collaboration.Domain.Messages.MessageBoxCreated, DDD.Collaboration.Messages&apos;, CAST(N&apos;2021-11-18T10:01:23.5280000&apos; AS DateTime2), N&apos;{&quot;boxId&quot;:2,&quot;occurredOn&quot;:&quot;2021-11-18T10:01:23.5277314+01:00&quot;}&apos;, N&apos;JSON&apos;, N&apos;2&apos;, N&apos;MessageBox&apos;, N&apos;Dr Maboul&apos;)
         ///GO
-        ///INSERT [dbo].[Even [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[Event] ([EventId], [EventType], [Occur [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ReadFailedEventStream {
             get {
@@ -276,12 +275,11 @@ namespace DDD.Core.Infrastructure.Data {
         ///   Looks up a localized string similar to USE [Test]
         ///GO
         ///EXEC spClearDatabase
-        ///GO
-        ///INSERT [dbo].[EventStream]([Type], [Source], [Position], [RetryMax], [RetryDelays], [BlockSize]) VALUES (&apos;Person&apos;, &apos;ID&apos;, &apos;36beb37d-1e01-bb7d-fb2a-3a0044745345&apos;, 5, &apos;10,60,120/80&apos;, 50)
-        ///GO																			   
+        ///GO																		   
         ///INSERT [dbo].[EventStream]([Type], [Source], [Position], [RetryMax], [RetryDelays], [BlockSize]) VALUES (&apos;Person&apos;, &apos;ID&apos;, &apos;f7df5bd0-8763-677e-7e6b-3a0044746810&apos;, 5, &apos;10,60,120/80&apos;, 50)
         ///GO																			   
-        ///INSERT [dbo].[EventStream]([Type], [Source], [Po [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[EventStream]([Type], [Source], [Position], [RetryMax], [RetryDelays], [BlockSize]) VALUES (&apos;MedicalProduct&apos;, &apos;OFR&apos;, &apos;00000000-0000-0000-0000-000000000000&apos;, 3, &apos;60&apos;, 100)
+        ///GO																			   .
         /// </summary>
         internal static string UpdateEventStreamPosition {
             get {
@@ -294,23 +292,11 @@ namespace DDD.Core.Infrastructure.Data {
         ///GO
         ///EXEC spClearDatabase
         ///GO
-        ///INSERT [dbo].[FailedEventStream] ([StreamId], [StreamType], [StreamSource], [StreamPosition], [EventId], [EventType], [ExceptionTime], [ExceptionType], [ExceptionMessage], [ExceptionSource], [ExceptionInfo], [BaseExceptionType], [BaseExceptionMessage], [RetryCount], [RetryMax], [RetryDelays], [BlockSize]) VALUES (N&apos;2&apos;, N&apos;MessageBox&apos;, N&apos;COL&apos;, N&apos;0a77707a-c147-9e1b-883a-08da0e368663&apos;, N&apos;e10add4d-1851-7ede-883b-08da0e368663&apos;, N&apos;DDD.Collaboration.Domain.Messages.Mes [rest of string was truncated]&quot;;.
+        ///INSERT [dbo].[FailedEventStream] ([StreamId], [StreamType], [StreamSource], [StreamPosition], [EventId], [EventType], [ExceptionTime], [ExceptionType], [ExceptionMessage], [ExceptionSource], [ExceptionInfo], [BaseExceptionType], [BaseExceptionMessage], [RetryCount], [RetryMax], [RetryDelays], [BlockSize]) VALUES (N&apos;2&apos;, N&apos;MessageBox&apos;, N&apos;COL&apos;, N&apos;0a77707a-c147-9e1b-883a-08da0e368663&apos;, N&apos;e10add4d-1851-7ede-883b-08da0e368663&apos;, N&apos;DDD.Collaboration.Domain.Messages.MessageB [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string UpdateFailedEventStream {
             get {
                 return ResourceManager.GetString("UpdateFailedEventStream", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to USE [Test]
-        ///GO
-        ///EXEC spClearDatabase
-        ///GO.
-        /// </summary>
-        internal static string WriteEvents {
-            get {
-                return ResourceManager.GetString("WriteEvents", resourceCulture);
             }
         }
     }

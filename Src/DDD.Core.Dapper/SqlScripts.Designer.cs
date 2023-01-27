@@ -19,7 +19,7 @@ namespace DDD.Core.Infrastructure.Data {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class SqlScripts {
@@ -196,13 +196,11 @@ namespace DDD.Core.Infrastructure.Data {
         ///         BodyFormat,
         ///         StreamId,
         ///         StreamType,
-        ///         StreamSource,
         ///         IssuedBy
         ///FROM	 Event
         ///WHERE	 EventId &gt; @StreamPosition
         ///AND      StreamId NOT IN @ExcludedStreamIds
         ///AND		 StreamType = @StreamType
-        ///AND      StreamSource = @StreamSource
         ///ORDER BY EventId.
         /// </summary>
         internal static string ReadEventStream {
@@ -220,13 +218,11 @@ namespace DDD.Core.Infrastructure.Data {
         ///         BodyFormat,
         ///         StreamId,
         ///         StreamType,
-        ///         StreamSource,
         ///         IssuedBy
         ///FROM	 Event
         ///WHERE	 EventId BETWEEN @EventIdMin AND @EventIdMax
         ///AND		 StreamId = @StreamId
         ///AND		 StreamType = @StreamType
-        ///AND      StreamSource = @StreamSource
         ///ORDER BY EventId.
         /// </summary>
         internal static string ReadFailedEventStream {
@@ -314,34 +310,6 @@ namespace DDD.Core.Infrastructure.Data {
         internal static string UpdateRecurringCommandStatus {
             get {
                 return ResourceManager.GetString("UpdateRecurringCommandStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to INSERT INTO Event
-        ///           (EventId,
-        ///            EventType,
-        ///            OccurredOn,
-        ///            Body,
-        ///            BodyFormat,
-        ///            StreamId,
-        ///            StreamType,
-        ///            StreamSource,
-        ///            IssuedBy)
-        ///     VALUES
-        ///           (@EventId,
-        ///            @EventType,
-        ///            @OccurredOn,
-        ///            @Body,
-        ///            @BodyFormat,
-        ///            @StreamId,
-        ///            @StreamType,
-        ///            @StreamSource,
-        ///            @IssuedBy).
-        /// </summary>
-        internal static string WriteEvents {
-            get {
-                return ResourceManager.GetString("WriteEvents", resourceCulture);
             }
         }
     }

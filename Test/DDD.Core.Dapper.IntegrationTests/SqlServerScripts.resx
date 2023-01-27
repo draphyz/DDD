@@ -166,7 +166,4 @@
   <data name="UpdateFailedEventStream" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>scripts\sqlserver\updatefailedeventstream.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
   </data>
-  <data name="WriteEvents" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>scripts\sqlserver\writeevents.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
-  </data>
 </root>
