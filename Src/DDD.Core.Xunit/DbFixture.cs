@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Resources;
 using System.Linq;
@@ -28,8 +28,8 @@ namespace DDD.Core.Infrastructure.Testing
 
         protected DbFixture(string resourceFile, ConnectionStringSettings connectionSettings)
         {
-            Condition.Requires(resourceFile, nameof(resourceFile)).IsNotNullOrWhiteSpace();
-            Condition.Requires(connectionSettings, nameof(connectionSettings)).IsNotNull();
+            Ensure.That(resourceFile, nameof(resourceFile)).IsNotNullOrWhiteSpace();
+            Ensure.That(connectionSettings, nameof(connectionSettings)).IsNotNull();
             this.LoadConfiguration();
             var resourceType = GetResourceType(resourceFile);
             this.resourceManager = new ResourceManager(resourceType);
@@ -52,7 +52,7 @@ namespace DDD.Core.Infrastructure.Testing
 
         public int[] ExecuteScriptFromResources(string scriptName)
         {
-            Condition.Requires(scriptName, nameof(scriptName)).IsNotNullOrWhiteSpace();
+            Ensure.That(scriptName, nameof(scriptName)).IsNotNullOrWhiteSpace();
             var script = this.resourceManager.GetString(scriptName);
             return this.ExecuteScript(script);
         }

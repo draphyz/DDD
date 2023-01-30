@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 
 namespace DDD
@@ -19,7 +19,7 @@ namespace DDD
 
         public DelegatingTimestampProvider(Func<DateTime> timestamp)
         {
-            Condition.Requires(timestamp, nameof(timestamp)).IsNotNull();
+            Ensure.That(timestamp, nameof(timestamp)).IsNotNull();
             this.timestamp = timestamp;
         }
 

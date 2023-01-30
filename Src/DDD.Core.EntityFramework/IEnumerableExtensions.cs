@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -12,16 +12,16 @@ namespace DDD.Core.Infrastructure.Data
 
         public static void Configure(this IEnumerable<IMutableEntityType> entityTypes, Action<IMutableEntityType> buildAction)
         {
-            Condition.Requires(entityTypes, nameof(entityTypes)).IsNotNull();
-            Condition.Requires(buildAction, nameof(buildAction)).IsNotNull();
+            Ensure.That(entityTypes, nameof(entityTypes)).IsNotNull();
+            Ensure.That(buildAction, nameof(buildAction)).IsNotNull();
             foreach (var entityType in entityTypes)
                 buildAction(entityType);
         }
 
         public static void Configure(this IEnumerable<IMutableProperty> propertyTypes, Action<IMutableProperty> buildAction)
         {
-            Condition.Requires(propertyTypes, nameof(propertyTypes)).IsNotNull();
-            Condition.Requires(buildAction, nameof(buildAction)).IsNotNull();
+            Ensure.That(propertyTypes, nameof(propertyTypes)).IsNotNull();
+            Ensure.That(buildAction, nameof(buildAction)).IsNotNull();
             foreach (var propertyType in propertyTypes)
                 buildAction(propertyType);
         }

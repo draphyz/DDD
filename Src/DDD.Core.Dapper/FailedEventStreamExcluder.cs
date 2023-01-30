@@ -3,7 +3,7 @@ using System.Data;
 using System.Threading.Tasks;
 using System.Transactions;
 using Dapper;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -28,7 +28,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public FailedEventStreamCreator(IDbConnectionProvider<TContext> connectionProvider)
         {
-            Condition.Requires(connectionProvider, nameof(connectionProvider)).IsNotNull();
+            Ensure.That(connectionProvider, nameof(connectionProvider)).IsNotNull();
             this.connectionProvider = connectionProvider;
             this.exceptionTranslator = new CompositeTranslator<Exception, CommandException>();
             this.exceptionTranslator.Register(new DbToCommandExceptionTranslator());
@@ -47,7 +47,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Handle(ExcludeFailedEventStream command, IMessageContext context = null)
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             try
             {
                 using (var scope = new TransactionScope())
@@ -73,7 +73,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public async Task HandleAsync(ExcludeFailedEventStream command, IMessageContext context = null)
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();

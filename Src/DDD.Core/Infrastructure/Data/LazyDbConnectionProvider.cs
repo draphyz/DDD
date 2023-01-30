@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Data.Common;
 
 using System;
@@ -25,8 +25,8 @@ namespace DDD.Core.Infrastructure.Data
 
         public LazyDbConnectionProvider(string providerName, string connectionString)
         {
-            Condition.Requires(providerName, nameof(providerName)).IsNotNullOrWhiteSpace();
-            Condition.Requires(connectionString, nameof(connectionString)).IsNotNullOrWhiteSpace();
+            Ensure.That(providerName, nameof(providerName)).IsNotNullOrWhiteSpace();
+            Ensure.That(connectionString, nameof(connectionString)).IsNotNullOrWhiteSpace();
             this.providerName = providerName;
             this.connectionString = connectionString;
             this.Context = new TContext();

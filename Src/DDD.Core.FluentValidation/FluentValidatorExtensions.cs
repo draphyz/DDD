@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using FluentValidation;
 using System.Collections;
 
@@ -78,7 +78,7 @@ namespace DDD.Core.Infrastructure.Validation
         /// </summary>
         public static IRuleBuilderOptions<T, TProperty> WithCategory<T, TProperty>(this IRuleBuilderOptions<T, TProperty> rule, string category)
         {
-            Condition.Requires(category, nameof(category)).IsNotNullOrWhiteSpace();
+            Ensure.That(category, nameof(category)).IsNotNullOrWhiteSpace();
             return rule.WithState(x => $"category={category}");
         }
 

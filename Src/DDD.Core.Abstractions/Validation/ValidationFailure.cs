@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
@@ -21,8 +21,8 @@ namespace DDD.Validation
                                  object propertyValue = null,
                                  string category = null)
         {
-            Condition.Requires(message, nameof(message)).IsNotNullOrWhiteSpace();
-            Condition.Requires(code, nameof(code)).IsNotNullOrWhiteSpace();
+            Ensure.That(message, nameof(message)).IsNotNullOrWhiteSpace();
+            Ensure.That(code, nameof(code)).IsNotNullOrWhiteSpace();
             this.Message = message;
             this.Code = code;
             this.Level = level;

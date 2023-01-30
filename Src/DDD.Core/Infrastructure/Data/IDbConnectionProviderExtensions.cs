@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Data.Common;
 using DDD.Data;
 using System.Threading.Tasks;
@@ -18,7 +18,7 @@ namespace DDD.Core.Infrastructure.Data
         /// </summary>
         public static DbConnection GetOpenConnection(this IDbConnectionProvider connectionProvider)
         {
-            Condition.Requires(connectionProvider, nameof(connectionProvider)).IsNotNull();
+            Ensure.That(connectionProvider, nameof(connectionProvider)).IsNotNull();
             connectionProvider.Connection.OpenIfClosed();
             return connectionProvider.Connection;
         }
@@ -28,7 +28,7 @@ namespace DDD.Core.Infrastructure.Data
         /// </summary>
         public static void OpenConnectionIfClosed(this IDbConnectionProvider connectionProvider)
         {
-            Condition.Requires(connectionProvider, nameof(connectionProvider)).IsNotNull();
+            Ensure.That(connectionProvider, nameof(connectionProvider)).IsNotNull();
             connectionProvider.Connection.OpenIfClosed();
         }
 
@@ -38,7 +38,7 @@ namespace DDD.Core.Infrastructure.Data
         public static async Task OpenConnectionIfClosedAsync(this IDbConnectionProvider connectionProvider,
                                                              CancellationToken cancellationToken = default)
         {
-            Condition.Requires(connectionProvider, nameof(connectionProvider)).IsNotNull();
+            Ensure.That(connectionProvider, nameof(connectionProvider)).IsNotNull();
             await new SynchronizationContextRemover();
             await connectionProvider.Connection.OpenIfClosedAsync(cancellationToken);
         }
@@ -49,7 +49,7 @@ namespace DDD.Core.Infrastructure.Data
         public async static Task<DbConnection> GetOpenConnectionAsync(this IDbConnectionProvider connectionProvider,
                                                                       CancellationToken cancellationToken = default)
         {
-            Condition.Requires(connectionProvider, nameof(connectionProvider)).IsNotNull();
+            Ensure.That(connectionProvider, nameof(connectionProvider)).IsNotNull();
             await new SynchronizationContextRemover();
             await connectionProvider.Connection.OpenIfClosedAsync(cancellationToken);
             return connectionProvider.Connection;

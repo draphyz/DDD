@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Application
 {
@@ -12,13 +12,13 @@ namespace DDD.Core.Application
 
         public static bool IsActive(this FailedEventStream stream)
         {
-            Condition.Requires(stream, nameof(stream)).IsNotNull();
+            Ensure.That(stream, nameof(stream)).IsNotNull();
             return stream.RetryCount < stream.RetryMax && SystemTime.Local() >= stream.RetryTime();
         }
 
         public static short RetryDelay(this FailedEventStream stream)
         {
-            Condition.Requires(stream, nameof(stream)).IsNotNull();
+            Ensure.That(stream, nameof(stream)).IsNotNull();
             var retryDelays = stream.AllRetryDelays();
             if (stream.RetryCount >= retryDelays.Count())
                 return retryDelays.Last();
@@ -27,7 +27,7 @@ namespace DDD.Core.Application
 
         public static IEnumerable<short> AllRetryDelays(this FailedEventStream stream)
         {
-            Condition.Requires(stream, nameof(stream)).IsNotNull();
+            Ensure.That(stream, nameof(stream)).IsNotNull();
             if (stream.RetryDelays == null || stream.RetryDelays.Count == 0 || stream.RetryMax == 0)
                 return Array.Empty<short>();
             if (stream.RetryDelays.Count >= stream.RetryMax)
@@ -44,15 +44,14 @@ namespace DDD.Core.Application
 
         public static DateTime RetryTime(this FailedEventStream stream)
         {
-            Condition.Requires(stream, nameof(stream)).IsNotNull();
+            Ensure.That(stream, nameof(stream)).IsNotNull();
             return stream.ExceptionTime.AddMinutes(stream.RetryDelay());
         }
 
         private static IncrementalDelay Next(this IncrementalDelay delay)
         {
-            Condition.Requires(delay, nameof(delay))
-                     .IsNotNull()
-                     .Evaluate(delay.Increment >= 0);
+            Ensure.That(delay, nameof(delay)).IsNotNull();
+            Ensure.That(delay.Increment, $"{nameof(delay)}.{nameof(delay.Increment)}").IsGte((short)0);
             return new IncrementalDelay
             {
                 Delay = (short)(delay.Delay + delay.Increment),

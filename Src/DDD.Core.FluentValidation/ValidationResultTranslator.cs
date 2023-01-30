@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 using FluentValidation;
-using Conditions;
+using EnsureThat;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -16,10 +16,8 @@ namespace DDD.Core.Infrastructure.Validation
 
         public override DDD.Validation.ValidationResult Translate(ValidationResult result, IDictionary<string, object> context = null)
         {
-            Condition.Requires(result, nameof(result)).IsNotNull();
-            Condition.Requires(context, nameof(context))
-                     .IsNotNull()
-                     .Evaluate(context.ContainsKey("ObjectName"));
+            Ensure.That(result, nameof(result)).IsNotNull();
+            Ensure.That(context, nameof(context)).ContainsKey("ObjectName");
             var objectName = (string)context["ObjectName"];
             var isSuccessful = result.Errors.All(f => f.Severity == Severity.Info);
             var failures = result.Errors.Select(f => ToFailure(f)).ToArray();
@@ -38,7 +36,7 @@ namespace DDD.Core.Infrastructure.Validation
 
         private static DDD.Validation.ValidationFailure ToFailure(ValidationFailure failure)
         {
-            Condition.Requires(failure, nameof(failure)).IsNotNull();
+            Ensure.That(failure, nameof(failure)).IsNotNull();
             return new DDD.Validation.ValidationFailure
             (
                 failure.ErrorMessage,

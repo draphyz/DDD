@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +24,7 @@ namespace DDD.Core.Application
 
         public CommandProcessor(IServiceProvider serviceProvider)
         {
-            Condition.Requires(serviceProvider, nameof(serviceProvider)).IsNotNull();
+            Ensure.That(serviceProvider, nameof(serviceProvider)).IsNotNull();
             this.serviceProvider = serviceProvider;
         }
 
@@ -34,20 +34,20 @@ namespace DDD.Core.Application
 
         public IContextualCommandProcessor<TContext> In<TContext>(TContext context) where TContext : BoundedContext
         {
-            Condition.Requires(context, nameof(context)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             return new ContextualCommandProcessor<TContext>(this.serviceProvider, context);
         }
 
         public IContextualCommandProcessor In(BoundedContext context)
         {
-            Condition.Requires(context, nameof(context)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             var processorType = typeof(ContextualCommandProcessor<>).MakeGenericType(context.GetType());
             return (IContextualCommandProcessor)Activator.CreateInstance(processorType, this.serviceProvider, context);
         }
 
         public void Process<TCommand>(TCommand command, IMessageContext context = null) where TCommand : class, ICommand
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             var handler = this.serviceProvider.GetService<ISyncCommandHandler<TCommand>>();
             if (handler == null) throw new InvalidOperationException($"The command handler for type {typeof(ISyncCommandHandler<TCommand>)} could not be found.");
             handler.Handle(command, context);
@@ -55,7 +55,7 @@ namespace DDD.Core.Application
 
         public Task ProcessAsync<TCommand>(TCommand command, IMessageContext context = null) where TCommand : class, ICommand
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             var handler = this.serviceProvider.GetService<IAsyncCommandHandler<TCommand>>();
             if (handler == null) throw new InvalidOperationException($"The command handler for type {typeof(IAsyncCommandHandler<TCommand>)} could not be found.");
             return handler.HandleAsync(command, context);
@@ -63,7 +63,7 @@ namespace DDD.Core.Application
 
         public ValidationResult Validate<TCommand>(TCommand command, string ruleSet = null) where TCommand : class, ICommand
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             var validator = this.serviceProvider.GetService<ISyncCommandValidator<TCommand>>();
             if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(ISyncCommandValidator<TCommand>)} could not be found.");
             return validator.Validate(command, ruleSet);
@@ -71,7 +71,7 @@ namespace DDD.Core.Application
 
         public Task<ValidationResult> ValidateAsync<TCommand>(TCommand command, string ruleSet = null, CancellationToken cancellationToken = default) where TCommand : class, ICommand
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             var validator = this.serviceProvider.GetService<IAsyncCommandValidator<TCommand>>();
             if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(IAsyncCommandValidator<TCommand>)} could not be found.");
             return validator.ValidateAsync(command, ruleSet, cancellationToken);

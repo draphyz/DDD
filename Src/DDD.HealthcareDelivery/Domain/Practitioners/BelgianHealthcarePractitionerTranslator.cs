@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 
@@ -15,7 +15,7 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
         public override HealthcarePractitioner Translate(HealthcarePractitionerState state,
                                                 IDictionary<string, object> context = null)
         {
-            Condition.Requires(state, nameof(state)).IsNotNull();
+            Ensure.That(state, nameof(state)).IsNotNull();
             switch (state.PractitionerType)
             {
                 case "Physician":

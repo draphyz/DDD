@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +30,7 @@ namespace DDD.Mapping
         public void Register<TDerivedSource>(IObjectTranslator<TDerivedSource, TDestination> translator)
             where TDerivedSource : class, TSource
         {
-            Condition.Requires(translator, nameof(translator)).IsNotNull();
+            Ensure.That(translator, nameof(translator)).IsNotNull();
             this.translators.Add(translator);
         }
 
@@ -43,7 +43,7 @@ namespace DDD.Mapping
         public void Register<TDerivedSource>(Func<TDerivedSource, IDictionary<string, object>, TDestination> translator)
             where TDerivedSource : class, TSource
         {
-            Condition.Requires(translator, nameof(translator)).IsNotNull();
+            Ensure.That(translator, nameof(translator)).IsNotNull();
             this.translators.Add(new DelegatingTranslator<TDerivedSource, TDestination>(translator));
         }
 

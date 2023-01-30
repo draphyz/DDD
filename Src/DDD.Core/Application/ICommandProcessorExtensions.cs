@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Threading.Tasks;
 
@@ -14,7 +14,7 @@ namespace DDD.Core.Application
 
         public static IContextualCommandProcessor<TContext> In<TContext>(this ICommandProcessor processor) where TContext : BoundedContext, new()
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             return processor.In<TContext>(new TContext());
         }
 
@@ -23,7 +23,7 @@ namespace DDD.Core.Application
                                              object context)
             where TCommand : class, ICommand
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             processor.Process(command, MessageContext.FromObject(context));
         }
 
@@ -32,7 +32,7 @@ namespace DDD.Core.Application
                                                   object context)
             where TCommand : class, ICommand
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             return processor.ProcessAsync(command, MessageContext.FromObject(context));
         }
 
@@ -42,7 +42,7 @@ namespace DDD.Core.Application
                                                                  IMessageContext context = null)
             where TCommand : class, ICommand
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             await new SynchronizationContextRemover();
             var cancellationToken = context?.CancellationToken() ?? default;
             await Task.Delay(delay, cancellationToken);
@@ -55,7 +55,7 @@ namespace DDD.Core.Application
                                                            object context)
             where TCommand : class, ICommand
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             return processor.ProcessWithDelayAsync(command, delay, MessageContext.FromObject(context));
         }
 

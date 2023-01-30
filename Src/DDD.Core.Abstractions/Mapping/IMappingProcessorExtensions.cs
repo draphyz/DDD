@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Collections.Generic;
 
 namespace DDD.Mapping
@@ -17,7 +17,7 @@ namespace DDD.Mapping
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
             dictionary.AddObject(context);
             processor.Map(source, destination, dictionary);
@@ -28,7 +28,7 @@ namespace DDD.Mapping
                                                            object context)
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
             dictionary.AddObject(context);
             return processor.Translate<TDestination>(source, dictionary);
@@ -40,7 +40,7 @@ namespace DDD.Mapping
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
             dictionary.AddObject(context);
             return processor.Translate<TSource, TDestination>(source, dictionary);
@@ -52,7 +52,7 @@ namespace DDD.Mapping
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             foreach (var item in source)
                 yield return processor.Translate<TSource, TDestination>(item, context);
         }
@@ -62,7 +62,7 @@ namespace DDD.Mapping
                                                                                   IDictionary<string, object> context = null)
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             foreach (var item in source)
                 yield return processor.Translate<TDestination>(item, context);
         }
@@ -73,7 +73,7 @@ namespace DDD.Mapping
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
             dictionary.AddObject(context);
             return processor.TranslateCollection<TSource, TDestination>(source, dictionary);
@@ -84,7 +84,7 @@ namespace DDD.Mapping
                                                                                   object context)
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
             dictionary.AddObject(context);
             return processor.TranslateCollection<TDestination>(source, dictionary);

@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -17,7 +17,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public override CommandException Translate(DbException exception, IDictionary<string, object> context = null)
         {
-            Condition.Requires(exception, nameof(exception)).IsNotNull();
+            Ensure.That(exception, nameof(exception)).IsNotNull();
             ICommand command = null;
             context?.TryGetValue("Command", out command);
             dynamic oracleException = exception;

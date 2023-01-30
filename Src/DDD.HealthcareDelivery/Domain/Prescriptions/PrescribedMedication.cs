@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
@@ -25,13 +25,13 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                        int identifier = 0,
                                        EntityState entityState = EntityState.Added)
         {
-            Condition.Requires(nameOrDescription, nameof(nameOrDescription)).IsNotNullOrWhiteSpace();
-            Condition.Requires(identifier, nameof(identifier)).IsGreaterOrEqual(0);
+            Ensure.That(nameOrDescription, nameof(nameOrDescription)).IsNotNullOrWhiteSpace();
+            Ensure.That(identifier, nameof(identifier)).IsGte(0);
             this.NameOrDescription = nameOrDescription;
             this.Posology = posology;
             if (quantity.HasValue)
             {
-                Condition.Requires(quantity, nameof(quantity)).IsGreaterOrEqual(1);
+                Ensure.That(quantity.Value, nameof(quantity)).IsGte((byte)1);
                 this.Quantity = quantity;
             }
             this.Code = code;

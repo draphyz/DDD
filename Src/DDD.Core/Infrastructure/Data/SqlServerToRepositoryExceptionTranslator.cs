@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 using System;
 
 namespace DDD.Core.Infrastructure.Data
@@ -15,7 +15,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public override RepositoryException Translate(DbException exception, IDictionary<string, object> context = null)
         {
-            Condition.Requires(exception, nameof(exception)).IsNotNull();
+            Ensure.That(exception, nameof(exception)).IsNotNull();
             Type entityType = null;
             context?.TryGetValue("EntityType", out entityType);
             var outerException = context.ContainsKey("OuterException") ? (Exception)context["OuterException"] : exception;

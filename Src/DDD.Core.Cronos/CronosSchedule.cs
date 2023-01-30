@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using Cronos;
 
@@ -19,7 +19,7 @@ namespace DDD.Core.Infrastructure
 
         public CronosSchedule(CronExpression expression)
         {
-            Condition.Requires(expression, nameof(expression)).IsNotNull();
+            Ensure.That(expression, nameof(expression)).IsNotNull();
             this.expression = expression;
         }
 

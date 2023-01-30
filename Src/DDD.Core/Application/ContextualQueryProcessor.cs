@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,8 +25,8 @@ namespace DDD.Core.Application
 
         public ContextualQueryProcessor(IServiceProvider serviceProvider, TContext context)
         {
-            Condition.Requires(serviceProvider, nameof(serviceProvider)).IsNotNull();
-            Condition.Requires(context, nameof(context)).IsNotNull();
+            Ensure.That(serviceProvider, nameof(serviceProvider)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             this.serviceProvider = serviceProvider;
             this.Context = context;
         }
@@ -45,7 +45,7 @@ namespace DDD.Core.Application
 
         public TResult Process<TResult>(IQuery<TResult> query, IMessageContext context = null)
         {
-            Condition.Requires(query, nameof(query)).IsNotNull();
+            Ensure.That(query, nameof(query)).IsNotNull();
             var handlerType = typeof(ISyncQueryHandler<,,>).MakeGenericType(query.GetType(), typeof(TResult), typeof(TContext));
             dynamic handler = this.serviceProvider.GetService(handlerType);
             if (handler == null) throw new InvalidOperationException($"The query handler for type {handlerType} could not be found.");
@@ -54,7 +54,7 @@ namespace DDD.Core.Application
 
         public Task<TResult> ProcessAsync<TResult>(IQuery<TResult> query, IMessageContext context = null)
         {
-            Condition.Requires(query, nameof(query)).IsNotNull();
+            Ensure.That(query, nameof(query)).IsNotNull();
             var handlerType = typeof(IAsyncQueryHandler<,,>).MakeGenericType(query.GetType(), typeof(TResult), typeof(TContext));
             dynamic handler = this.serviceProvider.GetService(handlerType);
             if (handler == null) throw new InvalidOperationException($"The query handler for type {handlerType} could not be found.");

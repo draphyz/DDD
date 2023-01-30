@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 
 namespace DDD.Core.Domain
@@ -13,7 +13,7 @@ namespace DDD.Core.Domain
 
         public static void RegisterFallback(this CompositeTranslator<Exception, RepositoryException> translator)
         {
-            Condition.Requires(translator, nameof(translator)).IsNotNull();
+            Ensure.That(translator, nameof(translator)).IsNotNull();
             translator.Register<Exception>((exception, context) =>
             {
                 Type entityType = null;
@@ -24,7 +24,7 @@ namespace DDD.Core.Domain
 
         public static void RegisterFallback(this CompositeTranslator<Exception, DomainServiceException> translator)
         {
-            Condition.Requires(translator, nameof(translator)).IsNotNull();
+            Ensure.That(translator, nameof(translator)).IsNotNull();
             translator.Register<Exception>((exception, context) =>
             {
                 Type serviceType = null;

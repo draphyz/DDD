@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Validation
 {
@@ -21,7 +21,7 @@ namespace DDD.Core.Infrastructure.Validation
 
         public SyncFluentValidatorAdapter(IValidator<T> fluentValidator)
         {
-            Condition.Requires(fluentValidator, nameof(fluentValidator)).IsNotNull();
+            Ensure.That(fluentValidator, nameof(fluentValidator)).IsNotNull();
             this.fluentValidator = fluentValidator;
             this.resultTranslator = new ValidationResultTranslator();
         }

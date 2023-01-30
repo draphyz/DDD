@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using Conditions;
+using EnsureThat;
 
 namespace DDD
 {
@@ -11,7 +11,7 @@ namespace DDD
 
         public static string FullSource(this Exception exception)
         {
-            Condition.Requires(exception, nameof(exception)).IsNotNull();
+            Ensure.That(exception, nameof(exception)).IsNotNull();
             if (exception.TargetSite == null) return exception.Source;
             var sourceType = exception.TargetSite.ReflectedType;
             return $"{sourceType.Assembly.GetName().Name}, {sourceType.FullName}, {exception.TargetSite}";
@@ -22,7 +22,7 @@ namespace DDD
         /// </summary>
         public static bool IsContractError(this Exception exception)
         {
-            Condition.Requires(exception, nameof(exception)).IsNotNull();
+            Ensure.That(exception, nameof(exception)).IsNotNull();
             switch(exception)
             {
                 case ArgumentException _:
@@ -41,7 +41,7 @@ namespace DDD
         /// <typeparam name="TDestination">The type of the wrapped exception.</typeparam>
         public static bool ShouldBeWrappedIn<TDestination>(this Exception exception) where TDestination : Exception
         {
-            Condition.Requires(exception, nameof(exception)).IsNotNull();
+            Ensure.That(exception, nameof(exception)).IsNotNull();
             switch (exception)
             {
                 case TDestination _:

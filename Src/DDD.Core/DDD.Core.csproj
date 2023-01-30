@@ -23,7 +23,7 @@
     <ProjectReference Include="..\DDD.Core.Messages\DDD.Core.Messages.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Conditions.NetStandard" Version="1.1.0" />
+    <PackageReference Include="Ensure.That" Version="10.1.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions">
       <Version>7.0.0</Version>

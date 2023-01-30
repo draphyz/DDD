@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Polly;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.ErrorHandling
 {
@@ -24,8 +24,8 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         public AsyncPollyCommandHandler(IAsyncCommandHandler<TCommand> handler, IAsyncPolicy policy)
         {
-            Condition.Requires(handler, nameof(handler)).IsNotNull();
-            Condition.Requires(policy, nameof(policy)).IsNotNull();
+            Ensure.That(handler, nameof(handler)).IsNotNull();
+            Ensure.That(policy, nameof(policy)).IsNotNull();
             this.handler = handler;
             this.policy = policy;
         }

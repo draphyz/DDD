@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {

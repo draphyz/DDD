@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
@@ -12,9 +12,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public BelgianMedicationCode(string value) : base(value)
         {
-            Condition.Requires(value, nameof(value))
-                     .HasLength(7)
-                     .Evaluate(c => c.IsNumeric());
+            Ensure.That(value, nameof(value)).HasLength(7);
+            Ensure.That(value, nameof(value)).IsAllDigits();
         }
 
         #endregion Constructors
@@ -26,9 +25,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         /// </summary>
         public static int ComputeCheckDigit(string value)
         {
-            Condition.Requires(value, nameof(value))
-                     .IsLongerOrEqual(6)
-                     .Evaluate(c => c.IsNumeric());
+            Ensure.That(value, nameof(value)).HasMinLength(6);
+            Ensure.That(value, nameof(value)).IsAllDigits();
             var identifier = value.Substring(0, 6);
             var sum = 0;
             var alternate = true;

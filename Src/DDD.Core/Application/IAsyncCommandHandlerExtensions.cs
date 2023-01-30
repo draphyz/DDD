@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
@@ -14,13 +14,13 @@ namespace DDD.Core.Application
             where TCommand : class, ICommand
 
         {
-            Condition.Requires(handler, nameof(handler)).IsNotNull();
+            Ensure.That(handler, nameof(handler)).IsNotNull();
             return handler.HandleAsync(command, MessageContext.FromObject(context));
         }
 
         public static async Task UpdateStreamPositionIfDefinedAsync(this IAsyncCommandHandler<UpdateEventStreamPosition> handler, IMessageContext context)
         {
-            Condition.Requires(handler, nameof(handler)).IsNotNull();
+            Ensure.That(handler, nameof(handler)).IsNotNull();
             if (context != null)
             {
                 var @event = context.Event();

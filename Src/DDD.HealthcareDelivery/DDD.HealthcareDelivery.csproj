@@ -34,8 +34,8 @@
     <ProjectReference Include="..\DDD.HealthcareDelivery.Messages\DDD.HealthcareDelivery.Messages.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Conditions.NetStandard" Version="1.1.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Ensure.That" Version="10.1.0" />
     <PackageReference Include="FluentValidation">
       <Version>11.4.0</Version>
     </PackageReference>

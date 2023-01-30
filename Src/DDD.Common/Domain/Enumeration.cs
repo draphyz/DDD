@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -26,8 +26,8 @@ namespace DDD.Common.Domain
 
         protected Enumeration(int value, string code, string name)
         {
-            Condition.Requires(code, nameof(code)).IsNotNullOrWhiteSpace();
-            Condition.Requires(name, nameof(name)).IsNotNullOrWhiteSpace();
+            Ensure.That(code, nameof(code)).IsNotNullOrWhiteSpace();
+            Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
             this.Value = value;
             this.Code = code;
             this.Name = name;
@@ -47,7 +47,7 @@ namespace DDD.Common.Domain
 
         public static TEnum ParseCode<TEnum>(string code, bool ignoreCase = false) where TEnum : Enumeration
         {
-            Condition.Requires(code, nameof(code)).IsNotNullOrWhiteSpace();
+            Ensure.That(code, nameof(code)).IsNotNullOrWhiteSpace();
             if (TryParseCode<TEnum>(code, ignoreCase, out var result))
                 return result;
             throw new ArgumentOutOfRangeException("code", code, null);
@@ -55,7 +55,7 @@ namespace DDD.Common.Domain
 
         public static TEnum ParseName<TEnum>(string name, bool ignoreCase = false) where TEnum : Enumeration
         {
-            Condition.Requires(name, nameof(name)).IsNotNullOrWhiteSpace();
+            Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
             if (TryParseName<TEnum>(name, ignoreCase, out var result))
                 return result;
             throw new ArgumentOutOfRangeException("name", name, null);

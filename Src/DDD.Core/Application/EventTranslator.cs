@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using DDD.Serialization;
@@ -22,7 +22,7 @@ namespace DDD.Core.Application
 
         public EventTranslator(ITextSerializer eventSerializer)
         {
-            Condition.Requires(eventSerializer, nameof(eventSerializer)).IsNotNull();
+            Ensure.That(eventSerializer, nameof(eventSerializer)).IsNotNull();
             this.eventSerializer = eventSerializer;
         }
 
@@ -32,7 +32,7 @@ namespace DDD.Core.Application
 
         public override Event Translate(IEvent @event, IDictionary<string, object> context = null)
         {
-            Condition.Requires(@event, nameof(@event)).IsNotNull();
+            Ensure.That(@event, nameof(@event)).IsNotNull();
             Guid eventId = default;
             string streamId = null, streamType = null, issuedBy = null;
             if (context != null)

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Collections.Generic;
 
 namespace DDD.Core.Application
@@ -14,7 +14,7 @@ namespace DDD.Core.Application
 
         public override CommandException Translate(DomainException exception, IDictionary<string, object> context = null)
         {
-            Condition.Requires(exception).IsNotNull();
+            Ensure.That(exception).IsNotNull();
             ICommand command = null;
             context?.TryGetValue("Command", out command);
             switch (exception)

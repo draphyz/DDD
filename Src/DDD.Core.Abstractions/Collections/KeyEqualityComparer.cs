@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Collections
 {
@@ -22,7 +22,7 @@ namespace DDD.Collections
 
         public KeyEqualityComparer(Func<TSource, TKey> keySelector)
         {
-            Condition.Requires(keySelector, nameof(keySelector)).IsNotNull();
+            Ensure.That(keySelector, nameof(keySelector)).IsNotNull();
             this.keySelector = keySelector;
         }
 

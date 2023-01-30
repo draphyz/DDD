@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -15,9 +15,8 @@ namespace DDD.Common.Domain
 
         public EmailAddress(string value)
         {
-            Condition.Requires(value, nameof(value))
-                     .IsNotNullOrWhiteSpace()
-                     .Evaluate(a => Regex.IsMatch(a, "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"));
+            Ensure.That(value, nameof(value)).IsNotNullOrWhiteSpace();
+            Ensure.That(value, nameof(value)).Matches("\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
             this.Value = value;
         }
 
@@ -39,8 +38,8 @@ namespace DDD.Common.Domain
 
         public static EmailAddress FromParts(string username, string domain)
         {
-            Condition.Requires(username, nameof(username)).IsNotNullOrWhiteSpace();
-            Condition.Requires(domain, nameof(domain)).IsNotNullOrWhiteSpace();
+            Ensure.That(username, nameof(username)).IsNotNullOrWhiteSpace();
+            Ensure.That(domain, nameof(domain)).IsNotNullOrWhiteSpace();
             return new EmailAddress($"{username}@{domain}");
         }
 
@@ -64,13 +63,13 @@ namespace DDD.Common.Domain
 
         public EmailAddress WithDomain(string domain)
         {
-            Condition.Requires(domain, nameof(domain)).IsNotNullOrWhiteSpace();
+            Ensure.That(domain, nameof(domain)).IsNotNullOrWhiteSpace();
             return new EmailAddress($"{this.Username()}@{domain}");
         }
 
         public EmailAddress WithUsername(string username)
         {
-            Condition.Requires(username, nameof(username)).IsNotNullOrWhiteSpace();
+            Ensure.That(username, nameof(username)).IsNotNullOrWhiteSpace();
             return new EmailAddress($"{username}@{this.Domain()}");
         }
 

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 
@@ -20,7 +20,7 @@ namespace DDD.Mapping
 
         public MappingProcessor(IServiceProvider serviceProvider)
         {
-            Condition.Requires(serviceProvider, nameof(serviceProvider)).IsNotNull();
+            Ensure.That(serviceProvider, nameof(serviceProvider)).IsNotNull();
             this.serviceProvider = serviceProvider;
         }
 

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
@@ -26,8 +26,8 @@ namespace DDD.Core.Application
 
         public AsyncEventHandlerWithLogging(IAsyncEventHandler<TEvent> eventHandler, ILogger logger)
         {
-            Condition.Requires(eventHandler, nameof(eventHandler)).IsNotNull();
-            Condition.Requires(logger, nameof(logger)).IsNotNull();
+            Ensure.That(eventHandler, nameof(eventHandler)).IsNotNull();
+            Ensure.That(logger, nameof(logger)).IsNotNull();
             this.eventHandler = eventHandler;
             this.logger = logger;
         }

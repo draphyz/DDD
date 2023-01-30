@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Data.Common;
 
 namespace DDD.Data
@@ -13,8 +13,8 @@ namespace DDD.Data
 
         public static DbConnection CreateConnection(string providerName, string connectionString)
         {
-            Condition.Requires(providerName, nameof(providerName)).IsNotNullOrWhiteSpace();
-            Condition.Requires(connectionString, nameof(connectionString)).IsNotNullOrWhiteSpace();
+            Ensure.That(providerName, nameof(providerName)).IsNotNullOrWhiteSpace();
+            Ensure.That(connectionString, nameof(connectionString)).IsNotNullOrWhiteSpace();
             var providerFactory = DbProviderFactories.GetFactory(providerName);
             var connection = providerFactory.CreateConnection();
             connection.ConnectionString = connectionString;

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 
 namespace DDD.Common.Domain
@@ -13,9 +13,8 @@ namespace DDD.Common.Domain
 
         public BelgianSocialSecurityNumber(string value) : base(value)
         {
-            Condition.Requires(value, nameof(value))
-                     .HasLength(11)
-                     .Evaluate(c => c.IsNumeric());
+            Ensure.That(value, nameof(value)).HasLength(11);
+            Ensure.That(value, nameof(value)).IsAllDigits();
         }
 
         #endregion Constructors
@@ -37,7 +36,7 @@ namespace DDD.Common.Domain
         /// </summary>
         public static int ComputeCheckDigit(string value, bool bornBefore2000 = true)
         {
-            Condition.Requires(value, nameof(value)).IsLongerOrEqual(9);
+            Ensure.That(value, nameof(value)).HasMinLength(9);
             long identifier;
             if (bornBefore2000)
                 identifier = long.Parse(value.Substring(0, 9));

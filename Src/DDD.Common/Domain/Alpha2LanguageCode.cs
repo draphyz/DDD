@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 
 namespace DDD.Common.Domain
 {
@@ -12,9 +12,8 @@ namespace DDD.Common.Domain
 
         public Alpha2LanguageCode(string value) : base(value)
         {
-            Condition.Requires(value, nameof(value))
-                     .HasLength(2)
-                     .Evaluate(c => c.IsAlphabetic());
+            Ensure.That(value, nameof(value)).HasLength(2);
+            Ensure.That(value, nameof(value)).IsAllLetters();
         }
 
         #endregion Constructors

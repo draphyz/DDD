@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +16,8 @@ namespace DDD.Core.Infrastructure.Data
 
         public IEnumerable<string> Split(string script, string batchSeparator = "GO", bool removeComments = true)
         {
-            Condition.Requires(nameof(script), script).IsNotNullOrWhiteSpace();
-            Condition.Requires(nameof(batchSeparator), batchSeparator).IsNotNullOrWhiteSpace();
+            Ensure.That(nameof(script), script).IsNotNullOrWhiteSpace();
+            Ensure.That(nameof(batchSeparator), batchSeparator).IsNotNullOrWhiteSpace();
             if (removeComments)
                 script = RemoveComments(script);
             var commands = Regex.Split(script,

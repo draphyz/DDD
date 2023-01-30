@@ -1,5 +1,5 @@
 ﻿using System;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Application
 {
@@ -13,7 +13,7 @@ namespace DDD.Core.Application
 
         public static void RegisterFallback(this CompositeTranslator<Exception, CommandException> translator)
         {
-            Condition.Requires(translator, nameof(translator)).IsNotNull();
+            Ensure.That(translator, nameof(translator)).IsNotNull();
             translator.Register<Exception>((exception, context) =>
             {
                 ICommand command = null;
@@ -24,7 +24,7 @@ namespace DDD.Core.Application
 
         public static void RegisterFallback(this CompositeTranslator<Exception, QueryException> translator)
         {
-            Condition.Requires(translator, nameof(translator)).IsNotNull();
+            Ensure.That(translator, nameof(translator)).IsNotNull();
             translator.Register<Exception>((exception, context) =>
             {
                 IQuery query = null;

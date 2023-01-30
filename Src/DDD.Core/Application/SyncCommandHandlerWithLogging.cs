@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
@@ -23,8 +23,8 @@ namespace DDD.Core.Application
 
         public SyncCommandHandlerWithLogging(ISyncCommandHandler<TCommand> commandHandler, ILogger logger)
         {
-            Condition.Requires(commandHandler, nameof(commandHandler)).IsNotNull();
-            Condition.Requires(logger, nameof(logger)).IsNotNull();
+            Ensure.That(commandHandler, nameof(commandHandler)).IsNotNull();
+            Ensure.That(logger, nameof(logger)).IsNotNull();
             this.commandHandler = commandHandler;
             this.logger = logger;
         }

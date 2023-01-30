@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         public PrescribedMedicationsByPrescriptionFinder(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider)
         {
-            Condition.Requires(connectionProvider, nameof(connectionProvider)).IsNotNull();
+            Ensure.That(connectionProvider, nameof(connectionProvider)).IsNotNull();
             this.connectionProvider = connectionProvider;
             this.exceptionTranslator = new CompositeTranslator<Exception, QueryException>();
             this.exceptionTranslator.Register(new DbToQueryExceptionTranslator());
@@ -41,7 +41,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         public IEnumerable<PrescribedMedicationDetails> Handle(FindPrescribedMedicationsByPrescription query, IMessageContext context = null)
         {
-            Condition.Requires(query, nameof(query)).IsNotNull();
+            Ensure.That(query, nameof(query)).IsNotNull();
             try
             {
                 var connection = this.connectionProvider.GetOpenConnection();
@@ -57,7 +57,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         public async Task<IEnumerable<PrescribedMedicationDetails>> HandleAsync(FindPrescribedMedicationsByPrescription query, IMessageContext context = null)
         {
-            Condition.Requires(query, nameof(query)).IsNotNull();
+            Ensure.That(query, nameof(query)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();

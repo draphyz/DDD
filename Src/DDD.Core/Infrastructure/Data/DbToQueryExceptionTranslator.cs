@@ -1,6 +1,6 @@
 ﻿using System.Data.Common;
 using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -32,7 +32,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public override QueryException Translate(DbException exception, IDictionary<string, object> context = null)
         {
-            Condition.Requires(exception, nameof(exception)).IsNotNull();
+            Ensure.That(exception, nameof(exception)).IsNotNull();
             var exceptionType = exception.GetType().FullName;
             if (this.translators.TryGetValue(exceptionType, out var translator))
                 return translator.Translate(exception, context);

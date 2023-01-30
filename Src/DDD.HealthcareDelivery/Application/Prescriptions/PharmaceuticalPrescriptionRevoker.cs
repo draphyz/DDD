@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -27,7 +27,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public PharmaceuticalPrescriptionRevoker(IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository)
         {
-            Condition.Requires(repository, nameof(repository)).IsNotNull();
+            Ensure.That(repository, nameof(repository)).IsNotNull();
             this.repository = repository;
             this.exceptionTranslator = new CompositeTranslator<Exception, CommandException>();
             this.exceptionTranslator.Register(new DomainToCommandExceptionTranslator());
@@ -40,7 +40,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public void Handle(RevokePharmaceuticalPrescription command, IMessageContext context = null)
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             try
             {
                 using (var scope = new TransactionScope())
@@ -59,7 +59,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public async Task HandleAsync(RevokePharmaceuticalPrescription command, IMessageContext context = null)
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();

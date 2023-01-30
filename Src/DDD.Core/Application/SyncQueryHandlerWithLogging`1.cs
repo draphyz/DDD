@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using DDD.Core.Domain;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
@@ -24,8 +24,8 @@ namespace DDD.Core.Application
 
         public SyncQueryHandlerWithLogging(ISyncQueryHandler<TQuery, TResult, TContext> queryHandler, ILogger logger)
         {
-            Condition.Requires(queryHandler, nameof(queryHandler)).IsNotNull();
-            Condition.Requires(logger, nameof(logger)).IsNotNull();
+            Ensure.That(queryHandler, nameof(queryHandler)).IsNotNull();
+            Ensure.That(logger, nameof(logger)).IsNotNull();
             this.queryHandler = queryHandler;
             this.logger = logger;
         }

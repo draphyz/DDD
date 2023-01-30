@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Conditions;
+using EnsureThat;
 using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
@@ -38,7 +38,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         public override PharmaceuticalPrescription Translate(PharmaceuticalPrescriptionState state,
                                                              IDictionary<string, object> context = null)
         {
-            Condition.Requires(state, nameof(state)).IsNotNull();
+            Ensure.That(state, nameof(state)).IsNotNull();
             return new PharmaceuticalPrescription
             (
                 new PrescriptionIdentifier(state.Identifier),

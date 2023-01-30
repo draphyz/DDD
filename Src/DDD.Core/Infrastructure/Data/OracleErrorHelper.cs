@@ -11,7 +11,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public static bool IsUnavailableError(dynamic error)
         {
-            // Condition.Requires(error, nameof(error)).IsNotNull() does not work with dynamic
+            // Ensure.That(error, nameof(error)).IsNotNull() does not work with dynamic
             if (error == null) throw new ArgumentNullException(nameof(error));
             return (dynamic)error.Number switch
             {

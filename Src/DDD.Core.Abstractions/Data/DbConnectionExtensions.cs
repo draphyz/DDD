@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Data;
 using System.Data.Common;
 using System.Threading;
@@ -15,14 +15,14 @@ namespace DDD.Data
 
         public static void OpenIfClosed(this DbConnection connection)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
             if (connection.State == ConnectionState.Closed)
                 connection.Open();
         }
 
         public static async Task OpenIfClosedAsync(this DbConnection connection, CancellationToken cancellationToken = default)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
             await new SynchronizationContextRemover();
             if (connection.State == ConnectionState.Closed)
                 await connection.OpenAsync(cancellationToken);

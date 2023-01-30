@@ -1,5 +1,5 @@
 ﻿using Cronos;
-using Conditions;
+using EnsureThat;
 using System;
 
 namespace DDD.Core.Infrastructure
@@ -13,7 +13,7 @@ namespace DDD.Core.Infrastructure
 
         public IRecurringSchedule Create(string recurringExpression)
         {
-            Condition.Requires(recurringExpression, nameof(recurringExpression)).IsNotNull();
+            Ensure.That(recurringExpression, nameof(recurringExpression)).IsNotNull();
             var parts = recurringExpression.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
             var format = CronFormat.Standard;
             if (parts.Length == 6)

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,7 +77,7 @@ namespace DDD.Core.Domain
 
         protected void AddEvent(IDomainEvent @event)
         {
-            Condition.Requires(@event, nameof(@event)).IsNotNull();
+            Ensure.That(@event, nameof(@event)).IsNotNull();
             this.events.Add(@event);
         }
 

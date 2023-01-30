@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.IO;
 
@@ -11,14 +11,14 @@ namespace DDD.Serialization
 
         public static T DeserializeFromString<T>(this ITextSerializer serializer, string input)
         {
-            Condition.Requires(serializer, nameof(serializer)).IsNotNull();
+            Ensure.That(serializer, nameof(serializer)).IsNotNull();
             return (T)serializer.DeserializeFromString(input, typeof(T));
         }
 
         public static object DeserializeFromString(this ITextSerializer serializer, string input, Type type)
         {
-            Condition.Requires(serializer, nameof(serializer)).IsNotNull();
-            Condition.Requires(type, nameof(type)).IsNotNull();
+            Ensure.That(serializer, nameof(serializer)).IsNotNull();
+            Ensure.That(type, nameof(type)).IsNotNull();
             var bytes = serializer.Encoding.GetBytes(input);
             using (var stream = new MemoryStream(bytes))
             {
@@ -28,7 +28,7 @@ namespace DDD.Serialization
 
         public static string SerializeToString(this ITextSerializer serializer, object obj)
         {
-            Condition.Requires(serializer, nameof(serializer)).IsNotNull();
+            Ensure.That(serializer, nameof(serializer)).IsNotNull();
             using (var stream = new MemoryStream())
             {
                 serializer.Serialize(stream, obj);

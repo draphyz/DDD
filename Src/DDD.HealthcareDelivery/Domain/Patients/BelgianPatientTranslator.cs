@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Patients
@@ -13,7 +13,7 @@ namespace DDD.HealthcareDelivery.Domain.Patients
         public override Patient Translate(PatientState state,
                                           IDictionary<string, object> context = null)
         {
-            Condition.Requires(state, nameof(state)).IsNotNull();
+            Ensure.That(state, nameof(state)).IsNotNull();
             return new Patient
             (
                 state.Identifier,

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Collections.Generic;
 
 namespace DDD.Mapping
@@ -17,7 +17,7 @@ namespace DDD.Mapping
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(mapper, nameof(mapper)).IsNotNull();
+            Ensure.That(mapper, nameof(mapper)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
             dictionary.AddObject(context);
             mapper.Map(source, destination, dictionary);

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.HealthcareDelivery.Domain.Practitioners
 {
@@ -23,9 +23,9 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
                                          string speciality = null,
                                          string displayName = null)
         {
-            Condition.Requires(identifier, nameof(identifier)).IsGreaterThan(0);
-            Condition.Requires(fullName, nameof(fullName)).IsNotNull();
-            Condition.Requires(licenseNumber, nameof(licenseNumber)).IsNotNull();
+            Ensure.That(identifier, nameof(identifier)).IsGt(0);
+            Ensure.That(fullName, nameof(fullName)).IsNotNull();
+            Ensure.That(licenseNumber, nameof(licenseNumber)).IsNotNull();
             this.Identifier = identifier;
             this.FullName = fullName;
             this.LicenseNumber = licenseNumber;

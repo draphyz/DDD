@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 
@@ -14,8 +14,8 @@ namespace DDD.Core.Domain
 
         protected BoundedContext(string code, string name) 
         {
-            Condition.Requires(code, nameof(code)).IsNotNullOrWhiteSpace();
-            Condition.Requires(name, nameof(name)).IsNotNullOrWhiteSpace();
+            Ensure.That(code, nameof(code)).IsNotNullOrWhiteSpace();
+            Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
             Code = code;
             Name = name;
         }
@@ -60,7 +60,7 @@ namespace DDD.Core.Domain
 
         private static int CombineHashCodes(params object[] collection)
         {
-            Condition.Requires(collection, nameof(collection)).IsNotNull();
+            Ensure.That(collection, nameof(collection)).IsNotNull();
             unchecked
             {
                 var hash = 17;

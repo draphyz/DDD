@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -27,8 +27,8 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         public PharmaceuticalPrescriptionCreator(IRepository<PharmaceuticalPrescription, PrescriptionIdentifier> repository,
                                                  IObjectTranslator<CreatePharmaceuticalPrescription, PharmaceuticalPrescription> commandTranslator)
         {
-            Condition.Requires(repository, nameof(repository)).IsNotNull();
-            Condition.Requires(commandTranslator, nameof(commandTranslator)).IsNotNull();
+            Ensure.That(repository, nameof(repository)).IsNotNull();
+            Ensure.That(commandTranslator, nameof(commandTranslator)).IsNotNull();
             this.repository = repository;
             this.commandTranslator = commandTranslator;
             this.exceptionTranslator = new CompositeTranslator<Exception, CommandException>();
@@ -42,7 +42,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public void Handle(CreatePharmaceuticalPrescription command, IMessageContext context = null)
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             try
             {
                 var prescription = this.commandTranslator.Translate(command);
@@ -60,7 +60,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public async Task HandleAsync(CreatePharmaceuticalPrescription command, IMessageContext context = null)
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
@@ -12,7 +12,7 @@ namespace DDD.Core.Application
 
         public static IContextualQueryProcessor<TContext> In<TContext>(this IQueryProcessor processor) where TContext : BoundedContext, new()
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             return processor.In<TContext>(new TContext());
         }
 
@@ -20,7 +20,7 @@ namespace DDD.Core.Application
                                                IQuery<TResult> query,
                                                object context)
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             return processor.Process(query, MessageContext.FromObject(context));
         }
 
@@ -28,7 +28,7 @@ namespace DDD.Core.Application
                                                           IQuery<TResult> query,
                                                           object context)
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             return processor.ProcessAsync(query, MessageContext.FromObject(context));
         }
 

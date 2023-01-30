@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Linq;
 
 namespace DDD.Validation
@@ -13,8 +13,8 @@ namespace DDD.Validation
 
         public ValidationResult(bool isSuccessful, string objectName, ValidationFailure[] failures)
         {
-            Condition.Requires(objectName, nameof(objectName)).IsNotNullOrWhiteSpace();
-            Condition.Requires(failures, nameof(failures)).IsNotNull();
+            Ensure.That(objectName, nameof(objectName)).IsNotNullOrWhiteSpace();
+            Ensure.That(failures, nameof(failures)).IsNotNull();
             this.IsSuccessful = isSuccessful;
             this.ObjectName = objectName;
             this.Failures = failures;

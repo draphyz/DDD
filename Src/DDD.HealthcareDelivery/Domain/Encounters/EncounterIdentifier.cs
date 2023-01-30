@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 
 namespace DDD.HealthcareDelivery.Domain.Encounters
 {
@@ -11,7 +11,7 @@ namespace DDD.HealthcareDelivery.Domain.Encounters
 
         public EncounterIdentifier(int value) : base(value)
         {
-            Condition.Requires(value, nameof(value)).IsGreaterThan(0);
+            Ensure.That(value, nameof(value)).IsGt(0);
         }
 
         #endregion Constructors

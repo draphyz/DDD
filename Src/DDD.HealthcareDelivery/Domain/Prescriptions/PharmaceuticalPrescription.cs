@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -40,10 +40,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                           IEnumerable<IDomainEvent> events = null)
             : base(identifier, prescriber, patient, languageCode, status, createdOn, encounterIdentifier, delivrableAt, entityState, events)
         {
-            Condition.Requires(prescribedMedications, nameof(prescribedMedications))
-                     .IsNotNull()
-                     .IsNotEmpty()
-                     .DoesNotContain(null);
+            Ensure.That(prescribedMedications, nameof(prescribedMedications)).IsNotNull();
+            Ensure.Enumerable.HasItems(prescribedMedications, nameof(prescribedMedications));
             this.prescribedMedications.AddRange(prescribedMedications);
         }
 

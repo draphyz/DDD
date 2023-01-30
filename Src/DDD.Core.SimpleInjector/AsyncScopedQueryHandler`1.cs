@@ -1,6 +1,6 @@
 ﻿using SimpleInjector;
 using SimpleInjector.Lifestyles;
-using Conditions;
+using EnsureThat;
 using System;
 using System.Threading.Tasks;
 
@@ -30,8 +30,8 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         public AsyncScopedQueryHandler(Func<IAsyncQueryHandler<TQuery, TResult, TContext>> handlerProvider, Container container)
         {
-            Condition.Requires(handlerProvider, nameof(handlerProvider)).IsNotNull();
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(handlerProvider, nameof(handlerProvider)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             this.handlerProvider = handlerProvider;
             this.container = container;
             this.context = new TContext();

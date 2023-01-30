@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using Dapper;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -28,7 +28,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public EventStreamReader(IDbConnectionProvider<TContext> connectionProvider)
         {
-            Condition.Requires(connectionProvider, nameof(connectionProvider)).IsNotNull();
+            Ensure.That(connectionProvider, nameof(connectionProvider)).IsNotNull();
             this.connectionProvider = connectionProvider;
             this.exceptionTranslator = new CompositeTranslator<Exception, QueryException>();
             this.exceptionTranslator.Register(new DbToQueryExceptionTranslator());
@@ -47,7 +47,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public IEnumerable<Event> Handle(ReadEventStream query, IMessageContext context = null)
         {
-            Condition.Requires(query, nameof(query)).IsNotNull();
+            Ensure.That(query, nameof(query)).IsNotNull();
             try
             {
                 var connection = this.connectionProvider.GetOpenConnection();
@@ -68,7 +68,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public async Task<IEnumerable<Event>> HandleAsync(ReadEventStream query, IMessageContext context = null)
         {
-            Condition.Requires(query, nameof(query)).IsNotNull();
+            Ensure.That(query, nameof(query)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();

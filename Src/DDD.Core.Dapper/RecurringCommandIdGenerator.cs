@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 
 namespace DDD.Core.Infrastructure.Data
@@ -22,7 +22,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public RecurringCommandIdGenerator(IDbConnectionProvider<TContext> connectionProvider)
         {
-            Condition.Requires(connectionProvider, nameof(connectionProvider)).IsNotNull();
+            Ensure.That(connectionProvider, nameof(connectionProvider)).IsNotNull();
             this.connectionProvider = connectionProvider;
             this.exceptionTranslator = new CompositeTranslator<Exception, QueryException>();
             this.exceptionTranslator.Register(new DbToQueryExceptionTranslator());
@@ -41,7 +41,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public Guid Handle(GenerateRecurringCommandId query, IMessageContext context = null)
         {
-            Condition.Requires(query, nameof(query)).IsNotNull();
+            Ensure.That(query, nameof(query)).IsNotNull();
             try
             {
                 var connection = this.connectionProvider.GetOpenConnection();

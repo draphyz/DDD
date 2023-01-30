@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Data;
 
@@ -14,7 +14,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public static IDbStandardExpressions Expressions(this IDbConnection connection)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
             switch (connection.GetType().ToString())
             {
                 case "System.Data.SqlClient.SqlConnection":
@@ -30,7 +30,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public static bool HasOracleProvider(this IDbConnection connection)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
             switch (connection.GetType().ToString())
             {
                 case "Oracle.ManagedDataAccess.Client.OracleConnection":
@@ -42,7 +42,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public static bool HasSqlServerProvider(this IDbConnection connection)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
             switch (connection.GetType().ToString())
             {
                 case "System.Data.SqlClient.SqlConnection":
@@ -54,7 +54,7 @@ namespace DDD.Core.Infrastructure.Data
         }
         public static IValueGenerator<Guid> SequentialGuidGenerator(this IDbConnection connection)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
             if (connection.HasSqlServerProvider()) return new SequentialSqlServerGuidGenerator();
             return new SequentialBinaryGuidGenerator();
         }

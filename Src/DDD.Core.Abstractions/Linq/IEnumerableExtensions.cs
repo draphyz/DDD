@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Linq
 {
@@ -19,9 +19,9 @@ namespace DDD.Linq
                                                                         IEnumerable<TSource> source2,
                                                                         Func<TSource, TComparable> keySelector)
         {
-            Condition.Requires(source1, nameof(source1)).IsNotNull();
-            Condition.Requires(source2, nameof(source2)).IsNotNull();
-            Condition.Requires(keySelector, nameof(keySelector)).IsNotNull();
+            Ensure.That(source1, nameof(source1)).IsNotNull();
+            Ensure.That(source2, nameof(source2)).IsNotNull();
+            Ensure.That(keySelector, nameof(keySelector)).IsNotNull();
             return source1.Except(source2, new KeyEqualityComparer<TSource, TComparable>(keySelector));
         }
 
@@ -29,9 +29,9 @@ namespace DDD.Linq
                                                                        IEnumerable<TSource> source2,
                                                                        Func<TSource, TComparable> keySelector)
         {
-            Condition.Requires(source1, nameof(source1)).IsNotNull();
-            Condition.Requires(source2, nameof(source2)).IsNotNull();
-            Condition.Requires(keySelector, nameof(keySelector)).IsNotNull();
+            Ensure.That(source1, nameof(source1)).IsNotNull();
+            Ensure.That(source2, nameof(source2)).IsNotNull();
+            Ensure.That(keySelector, nameof(keySelector)).IsNotNull();
             return source1.Union(source2, new KeyEqualityComparer<TSource, TComparable>(keySelector));
         }
 
@@ -43,7 +43,7 @@ namespace DDD.Linq
         /// </remarks>
         public static IEnumerable<TSource> SkipLast<TSource>(this IEnumerable<TSource> source, int count)
         {
-            Condition.Requires(source, nameof(source)).IsNotNull();
+            Ensure.That(source, nameof(source)).IsNotNull();
             if (count <= 0)
             {
                 foreach (var item in source)

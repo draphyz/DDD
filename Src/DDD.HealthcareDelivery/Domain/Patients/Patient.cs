@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 
@@ -19,9 +19,9 @@ namespace DDD.HealthcareDelivery.Domain.Patients
                        ContactInformation contactInformation = null,
                        DateTime? birthdate = null)
         {
-            Condition.Requires(identifier, nameof(identifier)).IsGreaterThan(0);
-            Condition.Requires(fullName, nameof(fullName)).IsNotNull();
-            Condition.Requires(sex, nameof(sex)).IsNotNull();
+            Ensure.That(identifier, nameof(identifier)).IsGt(0);
+            Ensure.That(fullName, nameof(fullName)).IsNotNull();
+            Ensure.That(sex, nameof(sex)).IsNotNull();
             this.Identifier = identifier;
             this.FullName = fullName;
             this.Sex = sex;

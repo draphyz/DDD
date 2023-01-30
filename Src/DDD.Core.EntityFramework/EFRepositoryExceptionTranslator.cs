@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Data.Common;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -23,7 +23,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public override RepositoryException Translate(Exception exception, IDictionary<string, object> context = null)
         {
-            Condition.Requires(exception, nameof(exception)).IsNotNull();
+            Ensure.That(exception, nameof(exception)).IsNotNull();
             Type entityType = null;
             context?.TryGetValue("EntityType", out entityType);
             switch (exception)

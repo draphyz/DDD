@@ -2,7 +2,7 @@
 using System.Collections;
 using FluentValidation;
 using FluentValidation.Validators;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Validation.Validators
 {
@@ -13,9 +13,9 @@ namespace DDD.Core.Infrastructure.Validation.Validators
 
         public CountValidator(int min, int? max)
         {
-            Condition.Requires(min, nameof(min)).IsGreaterOrEqual(0);
+            Ensure.That(min, nameof(min)).IsGte(0);
             if (max.HasValue)
-                Condition.Requires(max, nameof(max)).IsGreaterOrEqual(min);
+                Ensure.That(max.Value, nameof(max)).IsGte(min);
             this.Min = min;
             this.Max = max;
         }

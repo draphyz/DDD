@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
@@ -39,9 +39,9 @@ namespace DDD.Core.Infrastructure.Data
                                IObjectTranslator<TStateEntity, TDomainEntity> entityTranslator,
                                IObjectTranslator<IEvent, Event> eventTranslator)
         {
-            Condition.Requires(contextFactory, nameof(contextFactory)).IsNotNull();
-            Condition.Requires(entityTranslator, nameof(entityTranslator)).IsNotNull();
-            Condition.Requires(eventTranslator, nameof(eventTranslator)).IsNotNull();
+            Ensure.That(contextFactory, nameof(contextFactory)).IsNotNull();
+            Ensure.That(entityTranslator, nameof(entityTranslator)).IsNotNull();
+            Ensure.That(eventTranslator, nameof(eventTranslator)).IsNotNull();
             this.contextFactory = contextFactory;
             this.entityTranslator = entityTranslator;
             this.eventTranslator = eventTranslator;
@@ -59,7 +59,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public TDomainEntity Find(TIdentity identity)
         {
-            Condition.Requires(identity, nameof(identity)).IsNotNull();
+            Ensure.That(identity, nameof(identity)).IsNotNull();
             try
             {
                 var keyValues = identity.PrimitiveEqualityComponents();
@@ -74,7 +74,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public async Task<TDomainEntity> FindAsync(TIdentity identity, CancellationToken cancellationToken = default)
         {
-            Condition.Requires(identity, nameof(identity)).IsNotNull();
+            Ensure.That(identity, nameof(identity)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();
@@ -90,7 +90,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Save(TDomainEntity aggregate)
         {
-            Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
+            Ensure.That(aggregate, nameof(aggregate)).IsNotNull();
             try
             {
                 var stateEntity = aggregate.ToState();
@@ -106,7 +106,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public async Task SaveAsync(TDomainEntity aggregate, CancellationToken cancellationToken = default)
         {
-            Condition.Requires(aggregate, nameof(aggregate)).IsNotNull();
+            Ensure.That(aggregate, nameof(aggregate)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();

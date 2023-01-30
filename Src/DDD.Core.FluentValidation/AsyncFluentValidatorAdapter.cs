@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using Conditions;
+using EnsureThat;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,7 +24,7 @@ namespace DDD.Core.Infrastructure.Validation
 
         public AsyncFluentValidatorAdapter(IValidator<T> fluentValidator)
         {
-            Condition.Requires(fluentValidator, nameof(fluentValidator)).IsNotNull();
+            Ensure.That(fluentValidator, nameof(fluentValidator)).IsNotNull();
             this.fluentValidator = fluentValidator;
             this.resultTranslator = new ValidationResultTranslator();
         }

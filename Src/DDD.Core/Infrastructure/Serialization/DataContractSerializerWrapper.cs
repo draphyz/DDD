@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.IO;
 using System.Runtime.Serialization;
@@ -30,8 +30,8 @@ namespace DDD.Core.Infrastructure.Serialization
         public DataContractSerializerWrapper(XmlWriterSettings writerSettings,
                                              XmlReaderSettings readerSettings)
         {
-            Condition.Requires(writerSettings, nameof(writerSettings)).IsNotNull();
-            Condition.Requires(readerSettings, nameof(readerSettings)).IsNotNull();
+            Ensure.That(writerSettings, nameof(writerSettings)).IsNotNull();
+            Ensure.That(readerSettings, nameof(readerSettings)).IsNotNull();
             this.writerSettings = writerSettings;
             this.readerSettings = readerSettings;
         }
@@ -52,7 +52,7 @@ namespace DDD.Core.Infrastructure.Serialization
 
         public static DataContractSerializerWrapper Create(Encoding encoding, bool indent = true)
         {
-            Condition.Requires(encoding, nameof(encoding)).IsNotNull();
+            Ensure.That(encoding, nameof(encoding)).IsNotNull();
             var writerSettings = DefaultWriterSettings();
             writerSettings.Encoding = encoding;
             writerSettings.Indent = indent;
@@ -64,8 +64,8 @@ namespace DDD.Core.Infrastructure.Serialization
 
         public object Deserialize(Stream stream, Type type)
         {
-            Condition.Requires(stream, nameof(stream)).IsNotNull();
-            Condition.Requires(type, nameof(type)).IsNotNull();
+            Ensure.That(stream, nameof(stream)).IsNotNull();
+            Ensure.That(type, nameof(type)).IsNotNull();
             using (var reader = XmlReader.Create(stream, this.readerSettings))
             {
                 var serializer = new DataContractSerializer(type);
@@ -82,8 +82,8 @@ namespace DDD.Core.Infrastructure.Serialization
 
         public void Serialize(Stream stream, object obj)
         {
-            Condition.Requires(stream, nameof(stream)).IsNotNull();
-            Condition.Requires(obj, nameof(obj)).IsNotNull();
+            Ensure.That(stream, nameof(stream)).IsNotNull();
+            Ensure.That(obj, nameof(obj)).IsNotNull();
             using (var writer = XmlWriter.Create(stream, this.writerSettings))
             {
                 var serializer = new DataContractSerializer(obj.GetType());

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         public override PharmaceuticalPrescription Translate(CreatePharmaceuticalPrescription command,
                                                              IDictionary<string, object> context = null)
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             return PharmaceuticalPrescription.Create
                 (
                     new PrescriptionIdentifier(command.PrescriptionIdentifier),

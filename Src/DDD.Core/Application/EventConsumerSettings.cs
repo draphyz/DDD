@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using DDD.Core.Domain;
 using System.Runtime.Serialization;
 
@@ -19,9 +19,9 @@ namespace DDD.Core.Application
         public EventConsumerSettings(short consumationDelay,
                                      long? consumationMax = null)
         {
-            Condition.Requires(consumationDelay, nameof(consumationDelay)).IsGreaterOrEqual(0);
+            Ensure.That(consumationDelay, nameof(consumationDelay)).IsGte((short)0);
             if (consumationMax != null)
-                Condition.Requires(consumationMax, nameof(consumationMax)).IsGreaterThan(0);
+                Ensure.That(consumationMax.Value, nameof(consumationMax)).IsGte(0);
             this.ConsumationDelay = consumationDelay;
             this.ConsumationMax = consumationMax;
             this.context = new TContext();

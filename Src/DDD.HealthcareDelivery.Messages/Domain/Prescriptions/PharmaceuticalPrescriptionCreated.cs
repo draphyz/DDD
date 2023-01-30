@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Runtime.Serialization;
 
@@ -14,7 +14,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public PharmaceuticalPrescriptionCreated(int prescriptionIdentifier, DateTime occurredOn)
         {
-            Condition.Requires(prescriptionIdentifier, nameof(prescriptionIdentifier)).IsGreaterThan(0);
+            Ensure.That(prescriptionIdentifier, nameof(prescriptionIdentifier)).IsGt(0);
             this.PrescriptionIdentifier = prescriptionIdentifier;
             this.OccurredOn = occurredOn;
         }

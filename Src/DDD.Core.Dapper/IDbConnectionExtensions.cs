@@ -1,6 +1,6 @@
 ﻿using System.Data;
 using Dapper;
-using Conditions;
+using EnsureThat;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -26,9 +26,9 @@ namespace DDD.Core.Infrastructure.Data
                                           string batchSeparator = "GO",
                                           bool removeComments = false)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
-            Condition.Requires(script, nameof(script)).IsNotNullOrEmpty();
-            Condition.Requires(nameof(batchSeparator), batchSeparator).IsNotNullOrWhiteSpace();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
+            Ensure.That(script, nameof(script)).IsNotNullOrEmpty();
+            Ensure.That(nameof(batchSeparator), batchSeparator).IsNotNullOrWhiteSpace();
             var scriptSplitter = new DbScriptSplitter();
             var commands = scriptSplitter.Split(script, batchSeparator, removeComments);
             var result = new List<int>();
@@ -49,9 +49,9 @@ namespace DDD.Core.Infrastructure.Data
                                                            bool removeComments = false,
                                                            CancellationToken cancellationToken = default)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
-            Condition.Requires(script, nameof(script)).IsNotNullOrEmpty();
-            Condition.Requires(nameof(batchSeparator), batchSeparator).IsNotNullOrWhiteSpace();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
+            Ensure.That(script, nameof(script)).IsNotNullOrEmpty();
+            Ensure.That(nameof(batchSeparator), batchSeparator).IsNotNullOrWhiteSpace();
             await new SynchronizationContextRemover();
             var scriptSplitter = new DbScriptSplitter();
             var commands = scriptSplitter.Split(script, batchSeparator, removeComments);
@@ -68,9 +68,9 @@ namespace DDD.Core.Infrastructure.Data
 
         public static int NextId(this IDbConnection connection, string table, string primaryKey, int startRangeId = 0)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
-            Condition.Requires(table, nameof(table)).IsNotNullOrEmpty();
-            Condition.Requires(primaryKey, nameof(primaryKey)).IsNotNullOrEmpty();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
+            Ensure.That(table, nameof(table)).IsNotNullOrEmpty();
+            Ensure.That(primaryKey, nameof(primaryKey)).IsNotNullOrEmpty();
             var expressions = connection.Expressions();
             var sql = $"SELECT MAX({primaryKey}) FROM {table} WHERE {primaryKey} >= @StartRangeId".Replace("@", expressions.ParameterPrefix());
             var result = connection.QuerySingleOrDefault<int?>(sql, new { StartRangeId = startRangeId });
@@ -80,9 +80,9 @@ namespace DDD.Core.Infrastructure.Data
 
         public static async Task<int> NextIdAsync(this IDbConnection connection, string table, string primaryKey, int startRangeId = 0, CancellationToken cancellationToken = default)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
-            Condition.Requires(table, nameof(table)).IsNotNullOrEmpty();
-            Condition.Requires(primaryKey, nameof(primaryKey)).IsNotNullOrEmpty();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
+            Ensure.That(table, nameof(table)).IsNotNullOrEmpty();
+            Ensure.That(primaryKey, nameof(primaryKey)).IsNotNullOrEmpty();
             await new SynchronizationContextRemover();
             var expressions = connection.Expressions();
             var command = $"SELECT MAX({primaryKey}) FROM {table} WHERE {primaryKey} >= @StartRangeId".Replace("@", expressions.ParameterPrefix());
@@ -94,8 +94,8 @@ namespace DDD.Core.Infrastructure.Data
 
         public static TValue NextValue<TValue>(this IDbConnection connection, string sequence, string schema = null)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
-            Condition.Requires(sequence, nameof(sequence)).IsNotNullOrEmpty();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
+            Ensure.That(sequence, nameof(sequence)).IsNotNullOrEmpty();
             var expressions = connection.Expressions();
             var command = $"SELECT {expressions.NextValue(sequence, schema)} {expressions.FromDummy()}";
             return connection.QuerySingle<TValue>(command);
@@ -103,8 +103,8 @@ namespace DDD.Core.Infrastructure.Data
 
         public static async Task<TValue> NextValueAsync<TValue>(this IDbConnection connection, string sequence, string schema = null, CancellationToken cancellationToken = default)
         {
-            Condition.Requires(connection, nameof(connection)).IsNotNull();
-            Condition.Requires(sequence, nameof(sequence)).IsNotNullOrEmpty();
+            Ensure.That(connection, nameof(connection)).IsNotNull();
+            Ensure.That(sequence, nameof(sequence)).IsNotNullOrEmpty();
             await new SynchronizationContextRemover();
             var expressions = connection.Expressions();
             var command = $"SELECT {expressions.NextValue(sequence, schema)} {expressions.FromDummy()}";

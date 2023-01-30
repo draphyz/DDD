@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -18,8 +18,8 @@ namespace DDD.Core.Application
 
         public AsyncQueryHandlerWithLogging(IAsyncQueryHandler<TQuery, TResult> queryHandler, ILogger logger)
         {
-            Condition.Requires(queryHandler, nameof(queryHandler)).IsNotNull();
-            Condition.Requires(logger, nameof(logger)).IsNotNull();
+            Ensure.That(queryHandler, nameof(queryHandler)).IsNotNull();
+            Ensure.That(logger, nameof(logger)).IsNotNull();
             this.queryHandler = queryHandler;
             this.logger = logger;
         }

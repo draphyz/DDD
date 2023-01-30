@@ -23,7 +23,7 @@
     <ProjectReference Include="..\DDD.Core\DDD.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Conditions.NetStandard" Version="1.1.0" />
+    <PackageReference Include="Ensure.That" Version="10.1.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Polly">
       <Version>7.2.3</Version>

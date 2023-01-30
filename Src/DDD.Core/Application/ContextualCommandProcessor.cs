@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,8 +24,8 @@ namespace DDD.Core.Application
 
         public ContextualCommandProcessor(IServiceProvider serviceProvider, TContext context)
         {
-            Condition.Requires(serviceProvider, nameof(serviceProvider)).IsNotNull();
-            Condition.Requires(context, nameof(context)).IsNotNull();
+            Ensure.That(serviceProvider, nameof(serviceProvider)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             this.serviceProvider = serviceProvider;
             this.Context = context;
         }
@@ -44,7 +44,7 @@ namespace DDD.Core.Application
 
         public void Process<TCommand>(TCommand command, IMessageContext context = null) where TCommand : class, ICommand
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             var handler = this.serviceProvider.GetService<ISyncCommandHandler<TCommand, TContext>>();
             if (handler == null) throw new InvalidOperationException($"The command handler for type {typeof(ISyncCommandHandler<TCommand, TContext>)} could not be found.");
             handler.Handle(command, context);
@@ -52,7 +52,7 @@ namespace DDD.Core.Application
 
         public Task ProcessAsync<TCommand>(TCommand command, IMessageContext context = null) where TCommand : class, ICommand
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
             var handler = this.serviceProvider.GetService<IAsyncCommandHandler<TCommand, TContext>>();
             if (handler == null) throw new InvalidOperationException($"The command handler for type {typeof(IAsyncCommandHandler<TCommand, TContext>)} could not be found.");
             return handler.HandleAsync(command, context);

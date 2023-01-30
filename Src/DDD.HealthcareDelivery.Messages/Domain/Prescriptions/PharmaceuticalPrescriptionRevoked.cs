@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Runtime.Serialization;
 
@@ -14,8 +14,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public PharmaceuticalPrescriptionRevoked(int prescriptionIdentifier, DateTime occurredOn, string reason = null)
         {
-            Condition.Requires(prescriptionIdentifier, nameof(prescriptionIdentifier)).IsGreaterThan(0);
-            Condition.Requires(reason, nameof(reason)).IsNotNullOrWhiteSpace();
+            Ensure.That(prescriptionIdentifier, nameof(prescriptionIdentifier)).IsGt(0);
+            Ensure.That(reason, nameof(reason)).IsNotNullOrWhiteSpace();
             this.PrescriptionIdentifier = prescriptionIdentifier;
             this.Reason = reason;
             this.OccurredOn = occurredOn;

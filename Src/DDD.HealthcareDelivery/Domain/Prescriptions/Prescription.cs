@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
@@ -32,11 +32,11 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                IEnumerable<IDomainEvent> events = null)
             : base(entityState, events)
         {
-            Condition.Requires(identifier, nameof(identifier)).IsNotNull();
-            Condition.Requires(prescriber, nameof(prescriber)).IsNotNull();
-            Condition.Requires(patient, nameof(patient)).IsNotNull();
-            Condition.Requires(status, nameof(status)).IsNotNull();
-            Condition.Requires(languageCode, nameof(languageCode)).IsNotNull();
+            Ensure.That(identifier, nameof(identifier)).IsNotNull();
+            Ensure.That(prescriber, nameof(prescriber)).IsNotNull();
+            Ensure.That(patient, nameof(patient)).IsNotNull();
+            Ensure.That(status, nameof(status)).IsNotNull();
+            Ensure.That(languageCode, nameof(languageCode)).IsNotNull();
             this.Identifier = identifier;
             this.Prescriber = prescriber;
             this.Patient = patient;
@@ -75,7 +75,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public void Revoke(string reason)
         {
-            Condition.Requires(reason, nameof(reason)).IsNotNullOrWhiteSpace();
+            Ensure.That(reason, nameof(reason)).IsNotNullOrWhiteSpace();
             if (this.IsRevocable())
             {
                 this.Status = PrescriptionStatus.Revoked;

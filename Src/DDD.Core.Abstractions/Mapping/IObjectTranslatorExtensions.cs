@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Collections.Generic;
 
 namespace DDD.Mapping
@@ -16,7 +16,7 @@ namespace DDD.Mapping
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(translator, nameof(translator)).IsNotNull();
+            Ensure.That(translator, nameof(translator)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
             dictionary.AddObject(context);
             return translator.Translate(source, dictionary);
@@ -28,7 +28,7 @@ namespace DDD.Mapping
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(translator, nameof(translator)).IsNotNull();
+            Ensure.That(translator, nameof(translator)).IsNotNull();
             foreach (var item in source)
                 yield return translator.Translate(item, context);
         }
@@ -39,7 +39,7 @@ namespace DDD.Mapping
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(translator, nameof(translator)).IsNotNull();
+            Ensure.That(translator, nameof(translator)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
             dictionary.AddObject(context);
             return translator.TranslateCollection(source, dictionary);

@@ -1,5 +1,5 @@
 ﻿using System;
-using Conditions;
+using EnsureThat;
 
 namespace DDD
 {
@@ -9,7 +9,7 @@ namespace DDD
 
         public static string ShortAssemblyQualifiedName(this Type type)
         {
-            Condition.Requires(type, nameof(type)).IsNotNull();
+            Ensure.That(type, nameof(type)).IsNotNull();
             return $"{type.FullName}, {type.Assembly.GetName().Name}";
         }
 

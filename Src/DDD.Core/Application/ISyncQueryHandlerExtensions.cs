@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 
 namespace DDD.Core.Application
 {
@@ -13,7 +13,7 @@ namespace DDD.Core.Application
             where TQuery : class, IQuery<TResult>
 
         {
-            Condition.Requires(handler, nameof(handler)).IsNotNull();
+            Ensure.That(handler, nameof(handler)).IsNotNull();
             return handler.Handle(query, MessageContext.FromObject(context));
         }
 

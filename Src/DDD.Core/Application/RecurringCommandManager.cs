@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -39,12 +39,12 @@ namespace DDD.Core.Application
                                        ILogger logger,
                                        RecurringCommandManagerSettings<TContext> settings)
         {
-            Condition.Requires(commandProcessor, nameof(commandProcessor)).IsNotNull();
-            Condition.Requires(queryProcessor, nameof(queryProcessor)).IsNotNull();
-            Condition.Requires(commandSerializers, nameof(commandSerializers)).IsNotNull();
-            Condition.Requires(recurringScheduleFactory, nameof(recurringScheduleFactory)).IsNotNull();
-            Condition.Requires(logger, nameof(logger)).IsNotNull();
-            Condition.Requires(settings, nameof(settings)).IsNotNull();
+            Ensure.That(commandProcessor, nameof(commandProcessor)).IsNotNull();
+            Ensure.That(queryProcessor, nameof(queryProcessor)).IsNotNull();
+            Ensure.That(commandSerializers, nameof(commandSerializers)).IsNotNull();
+            Ensure.That(recurringScheduleFactory, nameof(recurringScheduleFactory)).IsNotNull();
+            Ensure.That(logger, nameof(logger)).IsNotNull();
+            Ensure.That(settings, nameof(settings)).IsNotNull();
             this.commandProcessor = commandProcessor;
             this.queryProcessor = queryProcessor;
             this.commandSerializers = commandSerializers;
@@ -69,8 +69,8 @@ namespace DDD.Core.Application
 
         public async Task RegisterAsync(ICommand command, string recurringExpression, CancellationToken cancellationToken = default)
         {
-            Condition.Requires(command, nameof(command)).IsNotNull();
-            Condition.Requires(recurringExpression, nameof(recurringExpression)).IsNotNull();
+            Ensure.That(command, nameof(command)).IsNotNull();
+            Ensure.That(recurringExpression, nameof(recurringExpression)).IsNotNull();
             this.ValidateRecurringExpression(recurringExpression);
             await new SynchronizationContextRemover();
             var commandSerializer = this.commandSerializers.GetService(this.settings.CurrentSerializationFormat);

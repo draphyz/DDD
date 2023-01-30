@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Mapping
 {
@@ -22,7 +22,7 @@ namespace DDD.Mapping
 
         public DelegatingTranslator(Func<TSource, IDictionary<string, object>, TDestination> translator)
         {
-            Condition.Requires(translator).IsNotNull();
+            Ensure.That(translator).IsNotNull();
             this.translator = translator;
         }
 
@@ -32,7 +32,7 @@ namespace DDD.Mapping
 
         public override TDestination Translate(TSource source, IDictionary<string, object> context = null)
         {
-            Condition.Requires(source).IsNotNull();
+            Ensure.That(source).IsNotNull();
             return this.translator(source, context);
         }
 

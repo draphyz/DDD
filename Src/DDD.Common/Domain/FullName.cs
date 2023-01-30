@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 
@@ -13,8 +13,8 @@ namespace DDD.Common.Domain
 
         public FullName(string lastName, string firstName)
         {
-            Condition.Requires(lastName, nameof(lastName)).IsNotNullOrWhiteSpace();
-            Condition.Requires(firstName, nameof(firstName)).IsNotNullOrWhiteSpace();
+            Ensure.That(lastName, nameof(lastName)).IsNotNullOrWhiteSpace();
+            Ensure.That(firstName, nameof(firstName)).IsNotNullOrWhiteSpace();
             this.LastName = lastName.ToTitleCase();
             this.FirstName = firstName.ToTitleCase();
         }
@@ -71,13 +71,13 @@ namespace DDD.Common.Domain
 
         public FullName WithFirstName(string firstName)
         {
-            Condition.Requires(firstName, nameof(firstName)).IsNotNullOrWhiteSpace();
+            Ensure.That(firstName, nameof(firstName)).IsNotNullOrWhiteSpace();
             return new FullName(this.LastName, firstName);
         }
 
         public FullName WithLastName(string lastName)
         {
-            Condition.Requires(lastName, nameof(lastName)).IsNotNullOrWhiteSpace();
+            Ensure.That(lastName, nameof(lastName)).IsNotNullOrWhiteSpace();
             return new FullName(lastName, this.FirstName);
         }
 

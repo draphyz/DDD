@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Conditions;
+using EnsureThat;
 using DDD.DependencyInjection;
 
 namespace DDD.Core.Infrastructure.DependencyInjection
@@ -19,21 +19,21 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         public static TService GetNamedInstance<TService>(this Container container, string name) where TService : class
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             var provider = container.GetInstance<IKeyedServiceProvider<string, TService>>();
             return provider.GetService(name);
         }
 
         public static void RegisterCommandProcessors(this Container container)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             container.RegisterSingleton(typeof(IContextualCommandProcessor<>), typeof(ContextualCommandProcessor<>));
             container.RegisterSingleton<ICommandProcessor, CommandProcessor>();
         }
 
         public static void RegisterCommandHandlers(this Container container, IEnumerable<Assembly> assemblies, Func<Type, bool> predicate)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             var context = new TypesToRegisterOptions { IncludeGenericTypeDefinitions = true };
             container.RegisterConditional(typeof(ISyncCommandHandler<,>), assemblies, predicate, context);
             container.RegisterConditional(typeof(IAsyncCommandHandler<,>), assemblies, predicate, context);
@@ -59,14 +59,14 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         public static void RegisterQueryProcessors(this Container container)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             container.RegisterSingleton(typeof(IContextualQueryProcessor<>), typeof(ContextualQueryProcessor<>));
             container.RegisterSingleton<IQueryProcessor, QueryProcessor>();
         }
 
         public static void RegisterQueryHandlers(this Container container, IEnumerable<Assembly> assemblies, Func<Type, bool> predicate)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             var context = new TypesToRegisterOptions { IncludeGenericTypeDefinitions = true };
             container.RegisterConditional(typeof(ISyncQueryHandler<,,>), assemblies, predicate, context);
             container.RegisterConditional(typeof(IAsyncQueryHandler<,,>), assemblies, predicate, context);
@@ -84,13 +84,13 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         public static void RegisterEventPublisher(this Container container)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             container.RegisterSingleton<IEventPublisher, EventPublisher>();
         }
 
         public static void RegisterEventHandlers(this Container container, IEnumerable<Assembly> assemblies, Func<Type, bool> predicate)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             var context = new TypesToRegisterOptions { IncludeGenericTypeDefinitions = true, IncludeComposites = false };
             var syncHandlerTypes = container.GetTypesToRegister(typeof(ISyncEventHandler<>), assemblies, context)
                                             .Where(predicate);
@@ -112,20 +112,20 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         public static void RegisterMappingProcessor(this Container container)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             container.RegisterSingleton<IMappingProcessor, MappingProcessor>();
         }
 
         public static void RegisterMappersAndTranslators(this Container container, IEnumerable<Assembly> assemblies, Func<Type, bool> predicate)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             container.RegisterConditional(typeof(IObjectMapper<,>), assemblies, predicate);
             container.RegisterConditional(typeof(IObjectTranslator<,>), assemblies, predicate);
         }
 
         public static void RegisterRepositories(this Container container, IEnumerable<Assembly> assemblies, Func<Type, bool> predicate)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             container.RegisterConditional(typeof(ISyncRepository<,>), assemblies, predicate);
             container.RegisterConditional(typeof(IAsyncRepository<,>), assemblies, predicate);
         }
@@ -133,7 +133,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         public static void RegisterConditional<TService>(this Container container, Func<TService> instanceCreator, Lifestyle lifestyle, Predicate<PredicateContext> predicate)
                             where TService : class
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             var registration = lifestyle.CreateRegistration(instanceCreator, container);
             container.RegisterConditional<TService>(registration, predicate);
         }
@@ -141,7 +141,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         public static void RegisterConditional<TService>(this Container container, Func<TService> instanceCreator, Predicate<PredicateContext> predicate)
                     where TService : class
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             container.RegisterConditional(instanceCreator, Lifestyle.Transient, predicate);
         }
 
@@ -152,7 +152,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                                                Func<Type, bool> predicate,
                                                TypesToRegisterOptions context)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             var implementationTypes = container.GetTypesToRegister(openGenericServiceType, assemblies, context)
                                                .Where(predicate);
             foreach (var implementationType in implementationTypes)
@@ -165,7 +165,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                                                Lifestyle lifestyle,
                                                Func<Type, bool> predicate)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             container.RegisterConditional(openGenericServiceType, assemblies, lifestyle, predicate, new TypesToRegisterOptions());
         }
 
@@ -174,7 +174,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                                                IEnumerable<Assembly> assemblies,
                                                Func<Type, bool> predicate)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             container.RegisterConditional(openGenericServiceType, assemblies, Lifestyle.Transient, predicate);
         }
 
@@ -184,7 +184,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                                                Func<Type, bool> predicate,
                                                TypesToRegisterOptions context)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             container.RegisterConditional(openGenericServiceType, assemblies, Lifestyle.Transient, predicate, context);
         }
 

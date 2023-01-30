@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Conditions;
+using EnsureThat;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,8 +21,8 @@ namespace DDD.Core.Infrastructure.Data
 
         public DelegatingDbContextFactory(Func<DbContextOptionsBuilder<TContext>, TContext> factory, Func<DbContextOptionsBuilder<TContext>, CancellationToken, Task<TContext>> asyncFactory)
         {
-            Condition.Requires(factory, nameof(factory)).IsNotNull();
-            Condition.Requires(asyncFactory, nameof(asyncFactory)).IsNotNull();
+            Ensure.That(factory, nameof(factory)).IsNotNull();
+            Ensure.That(asyncFactory, nameof(asyncFactory)).IsNotNull();
             this.factory = factory;
             this.asyncFactory = asyncFactory;
         }
@@ -33,7 +33,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public static IDbContextFactory<TContext> Create(Func<DbContextOptionsBuilder<TContext>, TContext> factory)
         {
-            Condition.Requires(factory, nameof(factory)).IsNotNull();
+            Ensure.That(factory, nameof(factory)).IsNotNull();
             Func<DbContextOptionsBuilder<TContext>, CancellationToken, Task<TContext>> asyncFactory = (b, t) => Task.FromResult(factory(b));
             return new DelegatingDbContextFactory<TContext>(factory, asyncFactory);
         }

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace DDD.Core.Application
 
         public EventPublisher(IServiceProvider serviceProvider)
         {
-            Condition.Requires(serviceProvider, nameof(serviceProvider)).IsNotNull();
+            Ensure.That(serviceProvider, nameof(serviceProvider)).IsNotNull();
             this.serviceProvider = serviceProvider;
         }
 
@@ -32,7 +32,7 @@ namespace DDD.Core.Application
 
         public async Task PublishAsync<TEvent>(TEvent @event, IMessageContext context = null) where TEvent : class, IEvent
         {
-            Condition.Requires(@event, nameof(@event)).IsNotNull();
+            Ensure.That(@event, nameof(@event)).IsNotNull();
             await new SynchronizationContextRemover();
             var syncHandlers = this.GetSyncEventHandlers(@event);
             foreach (var handler in syncHandlers)

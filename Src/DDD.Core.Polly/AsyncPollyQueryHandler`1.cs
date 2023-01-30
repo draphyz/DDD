@@ -1,5 +1,5 @@
 ﻿using Polly;
-using Conditions;
+using EnsureThat;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Infrastructure.ErrorHandling
@@ -26,8 +26,8 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         public AsyncPollyQueryHandler(IAsyncQueryHandler<TQuery, TResult, TContext> handler, IAsyncPolicy policy)
         {
-            Condition.Requires(handler, nameof(handler)).IsNotNull();
-            Condition.Requires(policy, nameof(policy)).IsNotNull();
+            Ensure.That(handler, nameof(handler)).IsNotNull();
+            Ensure.That(policy, nameof(policy)).IsNotNull();
             this.handler = handler;
             this.policy = policy;
         }

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 
 namespace DDD.Core.Application
 {
@@ -15,7 +15,7 @@ namespace DDD.Core.Application
             where TCommand : class, ICommand
 
         {
-            Condition.Requires(handler, nameof(handler)).IsNotNull();
+            Ensure.That(handler, nameof(handler)).IsNotNull();
             handler.Handle(command, MessageContext.FromObject(context));
         }
 

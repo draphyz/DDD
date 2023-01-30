@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,13 +43,14 @@ namespace DDD.Core.Application
                              ILogger logger,
                              EventConsumerSettings<TContext> settings)
         {
-            Condition.Requires(commandProcessor, nameof(commandProcessor)).IsNotNull();
-            Condition.Requires(queryProcessor, nameof(queryProcessor)).IsNotNull();
-            Condition.Requires(eventPublisher, nameof(eventPublisher)).IsNotNull();
-            Condition.Requires(boundedContexts, nameof(boundedContexts)).IsNotNull().IsNotEmpty();
-            Condition.Requires(eventSerializers, nameof(eventSerializers)).IsNotNull();
-            Condition.Requires(logger, nameof(logger)).IsNotNull();
-            Condition.Requires(settings, nameof(settings)).IsNotNull();
+            Ensure.That(commandProcessor, nameof(commandProcessor)).IsNotNull();
+            Ensure.That(queryProcessor, nameof(queryProcessor)).IsNotNull();
+            Ensure.That(eventPublisher, nameof(eventPublisher)).IsNotNull();
+            Ensure.That(boundedContexts, nameof(boundedContexts)).IsNotNull();
+            Ensure.Enumerable.HasItems(boundedContexts, nameof(boundedContexts));
+            Ensure.That(eventSerializers, nameof(eventSerializers)).IsNotNull();
+            Ensure.That(logger, nameof(logger)).IsNotNull();
+            Ensure.That(settings, nameof(settings)).IsNotNull();
             this.commandProcessor = commandProcessor;
             this.queryProcessor = queryProcessor;
             this.eventPublisher = eventPublisher;
