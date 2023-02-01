@@ -1,23 +1,22 @@
 ﻿using System.Data.Common;
 using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
     using Application;
+    using Collections;
 
-    internal class SqlServerToCommandExceptionTranslator : IObjectTranslator<DbException, CommandException>
+    internal class SqlServerToCommandExceptionTranslator : ObjectTranslator<DbException, CommandException>
     {
         #region Methods
 
-        public CommandException Translate(DbException exception, IDictionary<string, object> options = null)
+        public override CommandException Translate(DbException exception, IDictionary<string, object> context = null)
         {
-            Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("Command"));
-            var command = (ICommand)options["Command"];
+            Ensure.That(exception, nameof(exception)).IsNotNull();
+            ICommand command = null;
+            context?.TryGetValue("Command", out command);
             dynamic sqlServerException = exception;
             foreach (dynamic error in sqlServerException.Errors)
             {
@@ -29,6 +28,9 @@ namespace DDD.Core.Infrastructure.Data
 
                 if (SqlServerErrorHelper.IsTimeoutError(error))
                     return new CommandTimeoutException(command, exception);
+
+                if (SqlServerErrorHelper.IsConflictError(error))
+                    return new CommandConflictException(command, exception);
             }
             return new CommandException(isTransient: false, command, exception);
         }

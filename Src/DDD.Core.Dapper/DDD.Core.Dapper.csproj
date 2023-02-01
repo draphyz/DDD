@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net48;netstandard2.1;net5.0</TargetFrameworks>
+    <TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
     <OutputType>Library</OutputType>
     <RootNamespace>DDD.Core.Infrastructure.Data</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -23,10 +23,33 @@
     <ProjectReference Include="..\DDD.Core\DDD.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Conditions.NetStandard" Version="1.1.0" />
-    <PackageReference Include="Dapper.SqlBuilder">
-      <Version>2.0.78</Version>
-    </PackageReference>
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Ensure.That" Version="10.1.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <Reference Include="System.Transactions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="OracleScripts.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OracleScripts.resx</DependentUpon>
+    </Compile>
+    <Compile Update="SqlScripts.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SqlScripts.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="OracleScripts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>OracleScripts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="SqlScripts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SqlScripts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

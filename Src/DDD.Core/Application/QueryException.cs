@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace DDD.Core.Application
 {
@@ -39,9 +40,17 @@ namespace DDD.Core.Application
             return $"The query '{query.GetType().Name}' failed.";
         }
 
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            if (this.Query != null)
+                info.AddValue("Query", this.Query);
+        }
+
         public override string ToString()
         {
             var s = $"{this.GetType()}: {this.Message} ";
+            s += $"{Environment.NewLine}Timestamp: {this.Timestamp}";
             s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
             if (this.Query != null)
                 s += $"{Environment.NewLine}Query: {this.Query}";

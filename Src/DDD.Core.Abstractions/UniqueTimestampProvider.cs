@@ -1,5 +1,5 @@
 ﻿using System;
-using Conditions;
+using EnsureThat;
 
 namespace DDD
 {
@@ -21,7 +21,7 @@ namespace DDD
 
         public UniqueTimestampProvider(ITimestampProvider provider, TimeSpan resolution)
         {
-            Condition.Requires(provider, nameof(provider)).IsNotNull();
+            Ensure.That(provider, nameof(provider)).IsNotNull();
             this.provider = provider;
             this.Resolution = resolution;
         }

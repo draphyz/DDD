@@ -1,18 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DDD.Mapping
 {
     /// <summary>
-    /// Defines a method that translates an input object of one type into an output object of another type.
+    /// Defines a method that translates an input object of one type into an output object of a different type.
     /// </summary>
-    public interface IObjectTranslator<in TSource, out TDestination>
-        where TSource : class
-        where TDestination : class
+    public interface IObjectTranslator
     {
+
+        #region Properties
+
+        Type SourceType { get; }
+
+        Type DestinationType { get; }
+        
+
+        #endregion Properties
+
         #region Methods
 
-        TDestination Translate(TSource source, IDictionary<string, object> options = null);
+        object Translate(object source, IDictionary<string, object> context = null);
 
         #endregion Methods
+
     }
 }

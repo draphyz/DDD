@@ -1,6 +1,6 @@
 ﻿using DDD.DependencyInjection;
 using SimpleInjector;
-using Conditions;
+using EnsureThat;
 using System.Collections.Generic;
 using System;
 
@@ -21,7 +21,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         public KeyedServiceProvider(Container container, IEqualityComparer<TKey> keyComparer = null)
         {
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             this.container = container;
             this.producers = new Dictionary<TKey, InstanceProducer<TService>>(keyComparer);
         }
@@ -40,16 +40,16 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         public void Register<TImplementation>(TKey key, Lifestyle lifestyle)
             where TImplementation : class, TService
         {
-            Condition.Requires(lifestyle, nameof(lifestyle)).IsNotNull();
+            Ensure.That(lifestyle, nameof(lifestyle)).IsNotNull();
             var producer = lifestyle.CreateProducer<TService, TImplementation>(container);
             this.producers.Add(key, producer);
         }
 
         public void Register(TKey key, Func<TService> instanceCreator, Lifestyle lifestyle)
         {
-            Condition.Requires(instanceCreator, nameof(instanceCreator)).IsNotNull();
-            Condition.Requires(lifestyle, nameof(lifestyle)).IsNotNull();
-            var producer = lifestyle.CreateProducer(instanceCreator, container);
+            Ensure.That(instanceCreator, nameof(instanceCreator)).IsNotNull();
+            Ensure.That(lifestyle, nameof(lifestyle)).IsNotNull();
+            var producer = lifestyle.CreateProducer<TService>(instanceCreator, container);
             this.producers.Add(key, producer);
         }
 

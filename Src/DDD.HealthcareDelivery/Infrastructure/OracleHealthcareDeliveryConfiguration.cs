@@ -1,6 +1,4 @@
-﻿using NHibernate.Dialect;
-using NHibernate.Driver;
-using NHibernate.Mapping.ByCode;
+﻿using NHibernate.Mapping.ByCode;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
@@ -11,13 +9,8 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Constructors
 
-        protected OracleHealthcareDeliveryConfiguration(string connectionString) : base(connectionString)
+        protected OracleHealthcareDeliveryConfiguration()
         {
-            this.DataBaseIntegration(db =>
-            {
-                db.Dialect<Oracle10gDialect>();
-                db.Driver<OracleManagedDataClientDriver>();
-            });
             this.SetNamingStrategy(UpperCaseNamingStrategy.Instance);
         }
 
@@ -28,7 +21,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
         protected override void AddMappings(ModelMapper modelMapper)
         {
             base.AddMappings(modelMapper);
-            modelMapper.AddMapping<OracleStoredEventMapping>();
+            modelMapper.AddMapping<OracleEventMapping>();
         }
 
         #endregion Methods

@@ -19,7 +19,7 @@ namespace DDD.HealthcareDelivery {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class OracleScripts {
@@ -69,6 +69,18 @@ namespace DDD.HealthcareDelivery {
         internal static string ClearDatabase {
             get {
                 return ResourceManager.GetString("ClearDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BEGIN
+        ///  SPCLEARSCHEMA();
+        ///END;
+        ////.
+        /// </summary>
+        internal static string CreatePharmaceuticalPrescription {
+            get {
+                return ResourceManager.GetString("CreatePharmaceuticalPrescription", resourceCulture);
             }
         }
         

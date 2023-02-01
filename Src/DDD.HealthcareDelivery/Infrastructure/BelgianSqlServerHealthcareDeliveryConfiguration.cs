@@ -10,14 +10,6 @@ namespace DDD.HealthcareDelivery.Infrastructure
     public class BelgianSqlServerHealthcareDeliveryConfiguration : SqlServerHealthcareDeliveryConfiguration
     {
 
-        #region Constructors
-
-        public BelgianSqlServerHealthcareDeliveryConfiguration(string connectionString) : base(connectionString)
-        {
-        }
-
-        #endregion Constructors
-
         #region Methods
 
         protected override void AddMappings(ModelMapper modelMapper)

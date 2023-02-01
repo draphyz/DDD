@@ -1,13 +1,13 @@
 ﻿using SimpleInjector;
 using SimpleInjector.Lifestyles;
-using Conditions;
-using System.Threading;
-using System.Threading.Tasks;
+using EnsureThat;
 using System;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Infrastructure.DependencyInjection
 {
     using Application;
+    using Threading;
 
     /// <summary>
     /// A decorator that defines a scope around the asynchronous execution of a command.
@@ -27,8 +27,8 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         public AsyncScopedCommandHandler(Func<IAsyncCommandHandler<TCommand>> handlerProvider, Container container)
         {
-            Condition.Requires(handlerProvider, nameof(handlerProvider)).IsNotNull();
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(handlerProvider, nameof(handlerProvider)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             this.handlerProvider = handlerProvider;
             this.container = container;
         }
@@ -37,12 +37,13 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Methods
 
-        public async Task HandleAsync(TCommand command, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(TCommand command, IMessageContext context = null)
         {
             using (AsyncScopedLifestyle.BeginScope(container))
             {
+                await new SynchronizationContextRemover();
                 var handler = this.handlerProvider();
-                await handler.HandleAsync(command, cancellationToken);
+                await handler.HandleAsync(command, context);
             }
         }
 

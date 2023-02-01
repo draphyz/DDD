@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Collections.Generic;
 
 namespace DDD.Mapping
@@ -13,80 +13,80 @@ namespace DDD.Mapping
         public static void Map<TSource, TDestination>(this IMappingProcessor processor,
                                                       TSource source,
                                                       TDestination destination,
-                                                      object options)
+                                                      object context)
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(options);
+            dictionary.AddObject(context);
             processor.Map(source, destination, dictionary);
         }
 
         public static TDestination Translate<TDestination>(this IMappingProcessor processor,
                                                            object source,
-                                                           object options)
+                                                           object context)
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(options);
+            dictionary.AddObject(context);
             return processor.Translate<TDestination>(source, dictionary);
         }
 
         public static TDestination Translate<TSource, TDestination>(this IMappingProcessor processor,
                                                                     TSource source,
-                                                                    object options)
+                                                                    object context)
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(options);
+            dictionary.AddObject(context);
             return processor.Translate<TSource, TDestination>(source, dictionary);
         }
 
         public static IEnumerable<TDestination> TranslateCollection<TSource, TDestination>(this IMappingProcessor processor,
                                                                                            IEnumerable<TSource> source,
-                                                                                           IDictionary<string, object> options = null)
+                                                                                           IDictionary<string, object> context = null)
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             foreach (var item in source)
-                yield return processor.Translate<TSource, TDestination>(item, options);
+                yield return processor.Translate<TSource, TDestination>(item, context);
         }
 
         public static IEnumerable<TDestination> TranslateCollection<TDestination>(this IMappingProcessor processor,
                                                                                   IEnumerable<object> source,
-                                                                                  IDictionary<string, object> options = null)
+                                                                                  IDictionary<string, object> context = null)
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             foreach (var item in source)
-                yield return processor.Translate<TDestination>(item, options);
+                yield return processor.Translate<TDestination>(item, context);
         }
 
         public static IEnumerable<TDestination> TranslateCollection<TSource, TDestination>(this IMappingProcessor processor,
                                                                                            IEnumerable<TSource> source,
-                                                                                           object options)
+                                                                                           object context)
             where TSource : class
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(options);
+            dictionary.AddObject(context);
             return processor.TranslateCollection<TSource, TDestination>(source, dictionary);
         }
 
         public static IEnumerable<TDestination> TranslateCollection<TDestination>(this IMappingProcessor processor,
                                                                                   IEnumerable<object> source,
-                                                                                  object options)
+                                                                                  object context)
             where TDestination : class
         {
-            Condition.Requires(processor, nameof(processor)).IsNotNull();
+            Ensure.That(processor, nameof(processor)).IsNotNull();
             var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(options);
+            dictionary.AddObject(context);
             return processor.TranslateCollection<TDestination>(source, dictionary);
         }
 

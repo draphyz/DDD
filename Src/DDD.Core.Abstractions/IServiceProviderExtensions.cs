@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace DDD
         /// <returns>A service object of type <typeparamref name="T"/> or null if there is no such service.</returns>
         public static T GetService<T>(this IServiceProvider provider)
         {
-            Condition.Requires(provider, nameof(provider)).IsNotNull();
+            Ensure.That(provider, nameof(provider)).IsNotNull();
             return (T)provider.GetService(typeof(T));
         }
 
@@ -33,7 +33,7 @@ namespace DDD
         /// <returns>An enumeration of services of type <typeparamref name="T"/>.</returns>
         public static IEnumerable<T> GetServices<T>(this IServiceProvider provider)
         {
-            Condition.Requires(provider, nameof(provider)).IsNotNull();
+            Ensure.That(provider, nameof(provider)).IsNotNull();
             return provider.GetService<IEnumerable<T>>() ?? Enumerable.Empty<T>();
         }
 
@@ -45,8 +45,8 @@ namespace DDD
         /// <returns>An enumeration of services of type <paramref name="serviceType"/>.</returns>
         public static IEnumerable<object> GetServices(this IServiceProvider provider, Type serviceType)
         {
-            Condition.Requires(provider, nameof(provider)).IsNotNull();
-            Condition.Requires(serviceType, nameof(serviceType)).IsNotNull();
+            Ensure.That(provider, nameof(provider)).IsNotNull();
+            Ensure.That(serviceType, nameof(serviceType)).IsNotNull();
             var enumerableServiceType = typeof(IEnumerable<>).MakeGenericType(serviceType);
             return (IEnumerable<object>)provider.GetService(enumerableServiceType) ?? Enumerable.Empty<object>();
         }

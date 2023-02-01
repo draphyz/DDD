@@ -10,14 +10,6 @@ namespace DDD.HealthcareDelivery.Infrastructure
     public class BelgianOracleHealthcareDeliveryConfiguration : OracleHealthcareDeliveryConfiguration
     {
 
-        #region Constructors
-
-        public BelgianOracleHealthcareDeliveryConfiguration(string connectionString) : base(connectionString)
-        {
-        }
-
-        #endregion Constructors
-
         #region Methods
 
         protected override void AddMappings(ModelMapper modelMapper)

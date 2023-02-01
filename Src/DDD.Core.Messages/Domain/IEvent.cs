@@ -7,10 +7,12 @@ namespace DDD.Core.Domain
     /// </summary>
     public interface IEvent : IMessage
     {
+
         #region Properties
 
         DateTime OccurredOn { get; }
 
         #endregion Properties
+
     }
 }

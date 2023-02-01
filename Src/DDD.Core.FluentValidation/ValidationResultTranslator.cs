@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 using FluentValidation;
-using Conditions;
+using EnsureThat;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -9,18 +9,16 @@ namespace DDD.Core.Infrastructure.Validation
     using Mapping;
 
     internal class ValidationResultTranslator
-        : IObjectTranslator<ValidationResult, DDD.Validation.ValidationResult>
+        : ObjectTranslator<ValidationResult, DDD.Validation.ValidationResult>
     {
 
         #region Methods
 
-        public DDD.Validation.ValidationResult Translate(ValidationResult result, IDictionary<string, object> options = null)
+        public override DDD.Validation.ValidationResult Translate(ValidationResult result, IDictionary<string, object> context = null)
         {
-            Condition.Requires(result, nameof(result)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("ObjectName"));
-            var objectName = (string)options["ObjectName"];
+            Ensure.That(result, nameof(result)).IsNotNull();
+            Ensure.That(context, nameof(context)).ContainsKey("ObjectName");
+            var objectName = (string)context["ObjectName"];
             var isSuccessful = result.Errors.All(f => f.Severity == Severity.Info);
             var failures = result.Errors.Select(f => ToFailure(f)).ToArray();
             return new DDD.Validation.ValidationResult(isSuccessful, objectName, failures);
@@ -38,14 +36,14 @@ namespace DDD.Core.Infrastructure.Validation
 
         private static DDD.Validation.ValidationFailure ToFailure(ValidationFailure failure)
         {
-            Condition.Requires(failure, nameof(failure)).IsNotNull();
+            Ensure.That(failure, nameof(failure)).IsNotNull();
             return new DDD.Validation.ValidationFailure
             (
                 failure.ErrorMessage,
                 failure.ErrorCode,
                 failure.Severity.ToString().ToEnum<DDD.Validation.FailureLevel>(),
                 failure.PropertyName,
-                failure.AttemptedValue?.ToString(),
+                failure.AttemptedValue,
                 GetCustomStateInfo(failure.CustomState, "category")
             );
         }

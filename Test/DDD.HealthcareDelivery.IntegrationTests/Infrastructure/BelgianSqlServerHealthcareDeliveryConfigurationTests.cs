@@ -1,4 +1,6 @@
-﻿using Xunit;
+﻿using NHibernate.Dialect;
+using NHibernate.Driver;
+using Xunit;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
@@ -17,7 +19,13 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         protected override HealthcareDeliveryConfiguration CreateConfiguration()
         {
-            return new BelgianSqlServerHealthcareDeliveryConfiguration(SqlServerConnectionFactory.ConnectionString);
+            var configuration = new BelgianSqlServerHealthcareDeliveryConfiguration().DataBaseIntegration(db =>
+            {
+                db.Dialect<MsSql2012Dialect>();
+                db.Driver<MicrosoftDataSqlClientDriver>();
+                db.ConnectionStringName = "SqlServer";
+            });
+            return (HealthcareDeliveryConfiguration)configuration;
         }
 
         #endregion Methods

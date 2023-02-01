@@ -6,19 +6,20 @@ using Xunit;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
+    using Core.Application;
     using Common.Domain;
-    using Core.Infrastructure.Data;
     using Domain.Patients;
     using Domain.Practitioners;
     using Domain.Prescriptions;
 
     public abstract class HealthcareDeliveryConfigurationTests<TFixture> : IDisposable
-        where TFixture : IPersistenceFixture<IHealthcareDeliveryConnectionFactory>
+        where TFixture : IPersistenceFixture
     {
 
         #region Fields
 
         private readonly HealthcareDeliveryConfiguration configuration;
+        private readonly ISessionFactory sessionFactory;
         private readonly ISession session;
 
         #endregion Fields
@@ -29,8 +30,8 @@ namespace DDD.HealthcareDelivery.Infrastructure
         {
             this.Fixture = fixture;
             this.configuration = this.CreateConfiguration();
-            var sessionfactory = this.configuration.BuildSessionFactory();
-            this.session = sessionfactory.OpenSession();
+            this.sessionFactory = this.configuration.BuildSessionFactory();
+            this.session = this.sessionFactory.OpenSession();
         }
 
         #endregion Constructors
@@ -60,7 +61,8 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         public void Dispose()
         {
-            this.session?.Dispose();
+            this.session.Dispose();
+            this.sessionFactory.Dispose();
         }
 
         [Fact]
@@ -76,10 +78,10 @@ namespace DDD.HealthcareDelivery.Infrastructure
                 transaction.Commit();
             }
             this.session.Clear();
-            StoredEvent event2;
+            Event event2;
             using (var transaction = this.session.BeginTransaction())
             {
-                event2 = this.session.Get<StoredEvent>(event1.Id);
+                event2 = this.session.Get<Event>(event1.EventId);
                 transaction.Commit();
             }
             // Assert
@@ -110,15 +112,15 @@ namespace DDD.HealthcareDelivery.Infrastructure
         }
         protected abstract HealthcareDeliveryConfiguration CreateConfiguration();
 
-        private static StoredEvent CreateEvent()
+        private static Event CreateEvent()
         {
-            return new StoredEvent
+            return new Event
             {
-                Id = 1,
+                EventId = new Guid("d9fdd908-9e0a-c80f-e72d-e94a0f7d4902"),
                 EventType = "DDD.HealthcareDelivery.Domain.Prescriptions.PharmaceuticalPrescriptionCreated, DDD.HealthcareDelivery.Messages",
-                Version = 1,
                 OccurredOn = new DateTime(2018, 1, 1),
                 Body = "{\"prescriptionId\":1,\"occurredOn\":\"2018 - 01 - 01T10:06:00\"}",
+                BodyFormat = "JSON",
                 StreamId = "1",
                 StreamType = "PharmaceuticalPrescription",
                 IssuedBy = "draphyz"

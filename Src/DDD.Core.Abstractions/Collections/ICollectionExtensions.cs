@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Collections
 {
@@ -13,8 +13,8 @@ namespace DDD.Collections
 
         public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
         {
-            Condition.Requires(collection, nameof(collection)).IsNotNull();
-            Condition.Requires(items, nameof(items)).IsNotNull();
+            Ensure.That(collection, nameof(collection)).IsNotNull();
+            Ensure.That(items, nameof(items)).IsNotNull();
             foreach(var item in items)
                 collection.Add(item);
         }

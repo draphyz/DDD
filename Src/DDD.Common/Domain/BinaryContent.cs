@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Collections.Generic;
 
 namespace DDD.Common.Domain
@@ -21,7 +21,7 @@ namespace DDD.Common.Domain
 
         public BinaryContent(byte[] data)
         {
-            Condition.Requires(data, nameof(data)).IsNotNull();
+            Ensure.That(data, nameof(data)).IsNotNull();
             this.Data = data;
         }
 

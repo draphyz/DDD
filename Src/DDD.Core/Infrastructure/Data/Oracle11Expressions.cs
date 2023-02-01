@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Data
 {
@@ -18,7 +18,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public override string NextValue(string sequence, string schema = null)
         {
-            Condition.Requires(sequence, nameof(sequence)).IsNotNullOrWhiteSpace();
+            Ensure.That(sequence, nameof(sequence)).IsNotNullOrWhiteSpace();
             string expression = string.Empty;
             if (!string.IsNullOrWhiteSpace(schema))
                 expression += $"{schema}.";

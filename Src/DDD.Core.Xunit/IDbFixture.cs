@@ -1,18 +1,20 @@
-﻿namespace DDD.Core.Infrastructure.Testing
+﻿using System.Data.Common;
+
+namespace DDD.Core.Infrastructure.Testing
 {
     using Data;
+    using Application;
+    using DDD.Core.Domain;
 
-    public interface IDbFixture<out TConnectionFactory> 
-        where TConnectionFactory : class, IDbConnectionFactory
+    public interface IDbFixture<TContext>
+        where TContext : BoundedContext
     {
 
-        #region Properties
-
-        TConnectionFactory ConnectionFactory { get; }
-
-        #endregion Properties
-
         #region Methods
+
+        IDbConnectionProvider<TContext> CreateConnectionProvider(bool pooling = true);
+
+        DbConnection CreateConnection(bool pooling = true);
 
         int[] ExecuteScript(string script);
 

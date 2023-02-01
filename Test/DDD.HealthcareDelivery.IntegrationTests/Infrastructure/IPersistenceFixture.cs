@@ -1,22 +1,22 @@
-﻿using NHibernate;
-
-namespace DDD.HealthcareDelivery.Infrastructure
+﻿namespace DDD.HealthcareDelivery.Infrastructure
 {
+    using Domain;
     using Core.Domain;
-    using Core.Infrastructure.Data;
+    using Core.Application;
     using Core.Infrastructure.Testing;
+    using Core.Infrastructure.Data;
     using Mapping;
 
-    public interface IPersistenceFixture<out TConnectionFactory> : IDbFixture<TConnectionFactory>
-        where TConnectionFactory : class, IHealthcareDeliveryConnectionFactory
+    public interface IPersistenceFixture : IDbFixture<HealthcareDeliveryContext>
     {
 
         #region Methods
 
-        IObjectTranslator<IEvent, StoredEvent> CreateEventTranslator();
+        IObjectTranslator<IEvent, Event> CreateEventTranslator();
 
-        ISessionFactory CreateSessionFactory();
+        DelegatingSessionFactory<HealthcareDeliveryContext> CreateSessionFactory(IDbConnectionProvider<HealthcareDeliveryContext> connectionProvider);
 
         #endregion Methods
+
     }
 }

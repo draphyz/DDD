@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -28,8 +28,8 @@ namespace DDD.Core.Infrastructure.Serialization
 
         public JsonSerializerWrapper(JsonSerializerSettings settings, Encoding encoding)
         {
-            Condition.Requires(settings, nameof(settings)).IsNotNull();
-            Condition.Requires(encoding, nameof(encoding)).IsNotNull();
+            Ensure.That(settings, nameof(settings)).IsNotNull();
+            Ensure.That(encoding, nameof(encoding)).IsNotNull();
             this.settings = settings;
             this.Encoding = encoding;
         }
@@ -50,7 +50,7 @@ namespace DDD.Core.Infrastructure.Serialization
 
         public static JsonSerializerWrapper Create(Encoding encoding, bool indent = true)
         {
-            Condition.Requires(encoding, nameof(encoding)).IsNotNull();
+            Ensure.That(encoding, nameof(encoding)).IsNotNull();
             var settings = DefaultSettings();
             settings.Formatting = indent ? Formatting.Indented : Formatting.None;
             return new JsonSerializerWrapper(settings, encoding);
@@ -61,8 +61,8 @@ namespace DDD.Core.Infrastructure.Serialization
         public object Deserialize(Stream stream, Type type)
         {
 
-            Condition.Requires(stream, nameof(stream)).IsNotNull();
-            Condition.Requires(type, nameof(type)).IsNotNull();
+            Ensure.That(stream, nameof(stream)).IsNotNull();
+            Ensure.That(type, nameof(type)).IsNotNull();
             using (var streamReader = new StreamReader(stream, this.Encoding, true, 1024, true))
             using (var jsonReader = new JsonTextReader(streamReader))
             {
@@ -80,7 +80,7 @@ namespace DDD.Core.Infrastructure.Serialization
 
         public void Serialize(Stream stream, object obj)
         {
-            Condition.Requires(stream, nameof(stream)).IsNotNull();
+            Ensure.That(stream, nameof(stream)).IsNotNull();
             using (var streamWriter = new StreamWriter(stream, this.Encoding, 1024, true))
             using (var jsonWriter = new JsonTextWriter(streamWriter))
             {

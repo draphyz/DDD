@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net48;net6.0</TargetFrameworks>
+	<OutputType>Library</OutputType>
+    <RootNamespace>DDD.Core.Infrastructure.Data</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="6.9.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.180" />
+    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <Version>2.4.5</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Src\DDD.Core.Dapper.Oracle\DDD.Core.Dapper.Oracle.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core\DDD.Core.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core.Abstractions\DDD.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core.Dapper\DDD.Core.Dapper.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core.Messages\DDD.Core.Messages.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core.Newtonsoft\DDD.Core.Newtonsoft.csproj" />
+    <ProjectReference Include="..\..\Src\DDD.Core.Xunit\DDD.Core.Xunit.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="OracleScripts.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>OracleScripts.resx</DependentUpon>
+    </Compile>
+    <Compile Update="SqlServerScripts.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SqlServerScripts.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="OracleScripts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>OracleScripts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="SqlServerScripts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SqlServerScripts.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="testhost.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

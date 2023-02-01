@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace DDD.Common.Domain
 
         #region Fields
 
-        private static readonly ConcurrentDictionary<Type, Lazy<Enumeration[]>> cache = new ConcurrentDictionary<Type, Lazy<Enumeration[]>>();
+        private static readonly ConcurrentDictionary<Type, Lazy<IEnumerable<Enumeration>>> cache = new ConcurrentDictionary<Type, Lazy<IEnumerable<Enumeration>>>();
 
         #endregion Fields
 
@@ -26,11 +26,11 @@ namespace DDD.Common.Domain
 
         protected Enumeration(int value, string code, string name)
         {
-            Condition.Requires(code, nameof(code)).IsNotNullOrWhiteSpace();
-            Condition.Requires(name, nameof(name)).IsNotNullOrWhiteSpace();
+            Ensure.That(code, nameof(code)).IsNotNullOrWhiteSpace();
+            Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
             this.Value = value;
-            this.Code = code.ToUpper();
-            this.Name = name.ToTitleCase();
+            this.Code = code;
+            this.Name = name;
         }
 
         #endregion Constructors
@@ -45,15 +45,9 @@ namespace DDD.Common.Domain
 
         #region Methods
 
-        public static IEnumerable<TEnum> All<TEnum>() where TEnum : Enumeration
-        {
-            var constants = cache.GetOrAdd(typeof(TEnum), t => new Lazy<Enumeration[]>(GetAll<TEnum>)).Value;
-            return (IEnumerable<TEnum>)constants;
-        }
-
         public static TEnum ParseCode<TEnum>(string code, bool ignoreCase = false) where TEnum : Enumeration
         {
-            Condition.Requires(code, nameof(code)).IsNotNullOrWhiteSpace();
+            Ensure.That(code, nameof(code)).IsNotNullOrWhiteSpace();
             if (TryParseCode<TEnum>(code, ignoreCase, out var result))
                 return result;
             throw new ArgumentOutOfRangeException("code", code, null);
@@ -61,7 +55,7 @@ namespace DDD.Common.Domain
 
         public static TEnum ParseName<TEnum>(string name, bool ignoreCase = false) where TEnum : Enumeration
         {
-            Condition.Requires(name, nameof(name)).IsNotNullOrWhiteSpace();
+            Ensure.That(name, nameof(name)).IsNotNullOrWhiteSpace();
             if (TryParseName<TEnum>(name, ignoreCase, out var result))
                 return result;
             throw new ArgumentOutOfRangeException("name", name, null);
@@ -78,7 +72,7 @@ namespace DDD.Common.Domain
         {
             if (string.IsNullOrWhiteSpace(code))
             {
-                result = default(TEnum);
+                result = default;
                 return false;
             }
             return TryParse(c => string.Compare(c.Code, code, ignoreCase) == 0, out result);
@@ -88,7 +82,7 @@ namespace DDD.Common.Domain
         {
             if (string.IsNullOrWhiteSpace(name))
             {
-                result = default(TEnum);
+                result = default;
                 return false;
             }
             return TryParse(c => string.Compare(c.Name, name, ignoreCase) == 0, out result);
@@ -98,6 +92,18 @@ namespace DDD.Common.Domain
         {
             return TryParse(c => c.Value == value, out result);
         }
+
+        public static IEnumerable<TEnum> AllInstances<TEnum>() where TEnum : Enumeration
+        {
+            var instances = cache.GetOrAdd(typeof(TEnum), t => new Lazy<IEnumerable<Enumeration>>(GetAllInstances<TEnum>)).Value;
+            return (IEnumerable<TEnum>)instances;
+        }
+
+        public static IEnumerable<int> AllValues<TEnum>() where TEnum : Enumeration => AllInstances<TEnum>().Select(i => i.Value); 
+
+        public static int MinValue<TEnum>() where TEnum : Enumeration => AllInstances<TEnum>().First().Value;
+
+        public static int MaxValue<TEnum>() where TEnum : Enumeration => AllInstances<TEnum>().Last().Value;
 
         public override IEnumerable<IComparable> ComparableComponents()
         {
@@ -113,19 +119,18 @@ namespace DDD.Common.Domain
         {
             return $"{this.GetType().Name} [value={this.Value}, code={this.Code}, name={this.Name}]";
         }
-
-        private static TEnum[] GetAll<TEnum>() where TEnum : Enumeration
+        private static IEnumerable<TEnum> GetAllInstances<TEnum>() where TEnum : Enumeration
         {
             var enumType = typeof(TEnum);
             return enumType.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
                            .Where(f => enumType.IsAssignableFrom(f.FieldType))
                            .Select(f => (TEnum)f.GetValue(null))
-                           .ToArray();
+                           .OrderBy(e => e.Value);
         }
 
         private static bool TryParse<TEnum>(Func<TEnum, bool> predicate, out TEnum result) where TEnum : Enumeration
         {
-            result = All<TEnum>().FirstOrDefault(predicate);
+            result = AllInstances<TEnum>().FirstOrDefault(predicate);
             return result != null;
         }
 

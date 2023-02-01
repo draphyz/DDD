@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System.Collections.Generic;
 
 namespace DDD.Common.Domain
@@ -17,8 +17,8 @@ namespace DDD.Common.Domain
                              string houseNumber = null,
                              string boxNumber = null)
         {
-            Condition.Requires(street, nameof(street)).IsNotNullOrWhiteSpace();
-            Condition.Requires(city, nameof(city)).IsNotNullOrWhiteSpace();
+            Ensure.That(street, nameof(street)).IsNotNullOrWhiteSpace();
+            Ensure.That(city, nameof(city)).IsNotNullOrWhiteSpace();
             this.Street = street.ToTitleCase();
             this.City = city.ToTitleCase();
             if (!string.IsNullOrWhiteSpace(postalCode))

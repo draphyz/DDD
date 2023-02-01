@@ -1,18 +1,17 @@
 ﻿using System.Data.Common;
 using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
+    using Collections;
     using Application;
 
-    public class DbToCommandExceptionTranslator : IObjectTranslator<DbException, CommandException>
+    public class DbToCommandExceptionTranslator : ObjectTranslator<DbException, CommandException>
     {
 
         #region Fields
-
-        public static readonly IObjectTranslator<DbException, CommandException> Default = new DbToCommandExceptionTranslator();
 
         private readonly Dictionary<string, IObjectTranslator<DbException, CommandException>> translators = new Dictionary<string, IObjectTranslator<DbException, CommandException>>();
 
@@ -23,25 +22,24 @@ namespace DDD.Core.Infrastructure.Data
         public DbToCommandExceptionTranslator()
         {
             this.translators.Add("System.Data.SqlClient.SqlException", new SqlServerToCommandExceptionTranslator());
-            this.translators.Add("Oracle.DataAccess.Client.OracleException", new OracleToCommandExceptionTranslator());
+            this.translators.Add("Microsoft.Data.SqlClient.SqlException", new SqlServerToCommandExceptionTranslator());
+            this.translators.Add("Oracle.ManagedDataAccess.Client.OracleException", new OracleToCommandExceptionTranslator());
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public CommandException Translate(DbException exception, IDictionary<string, object> options = null)
+        public override CommandException Translate(DbException exception, IDictionary<string, object> context = null)
         {
-            Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("Command"));
+            Ensure.That(exception, nameof(exception)).IsNotNull();
             var exceptionType = exception.GetType().FullName;
             if (this.translators.TryGetValue(exceptionType, out var translator))
-                return translator.Translate(exception, options);
+                return translator.Translate(exception, context);
             else
             {
-                var command = (ICommand)options["Command"];
+                ICommand command = null;
+                context?.TryGetValue("Command", out command);
                 return new CommandException(isTransient: false, command, exception);
             }
         }

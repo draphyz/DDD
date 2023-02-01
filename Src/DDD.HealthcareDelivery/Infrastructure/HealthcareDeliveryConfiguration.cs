@@ -1,5 +1,4 @@
-﻿using Conditions;
-using NHibernate.Cfg;
+﻿using NHibernate.Cfg;
 using NHibernate.Mapping.ByCode;
 
 namespace DDD.HealthcareDelivery.Infrastructure
@@ -11,13 +10,8 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         #region Constructors
 
-        protected HealthcareDeliveryConfiguration(string connectionString)
+        protected HealthcareDeliveryConfiguration()
         {
-            Condition.Requires(connectionString, nameof(connectionString)).IsNotNullOrWhiteSpace();
-            this.DataBaseIntegration(db =>
-            {
-                db.ConnectionString = connectionString;
-            });
             var modelMapper = new ModelMapper();
             this.AddMappings(modelMapper);
             this.AddMapping(modelMapper.CompileMappingForAllExplicitlyAddedEntities());

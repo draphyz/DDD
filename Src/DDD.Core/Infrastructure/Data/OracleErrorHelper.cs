@@ -1,9 +1,9 @@
-﻿using Conditions;
+﻿using System;
 
 namespace DDD.Core.Infrastructure.Data
 {
     /// <remarks>
-    /// To Improve.
+    /// To Improve. Use dynamic type to avoid to add a dependency on the Oracle library.
     /// </remarks>
     internal class OracleErrorHelper
     {
@@ -11,44 +11,48 @@ namespace DDD.Core.Infrastructure.Data
 
         public static bool IsUnavailableError(dynamic error)
         {
-            Condition.Requires(error, nameof(error)).IsNotNull();
-            switch (error.Number)
+            // Ensure.That(error, nameof(error)).IsNotNull() does not work with dynamic
+            if (error == null) throw new ArgumentNullException(nameof(error));
+            return (dynamic)error.Number switch
             {
                 // Oracle Error Code: 3114
                 // not connected to ORACLE
-                case 3114:
-                    return true;
-                default:
-                    return false;
-            }
+                3114 => true,
+                _ => false,
+            };
         }
 
         public static bool IsUnauthorizedError(dynamic error)
         {
-            Condition.Requires(error, nameof(error)).IsNotNull();
-            switch (error.Number)
+            if (error == null) throw new ArgumentNullException(nameof(error));
+            return (dynamic)error.Number switch
             {
                 // Oracle Error Code: 1017
                 // invalid username/password; logon denied
-                case 4060:
-                    return true;
-                default:
-                    return false;
-            }
+                4060 => true,
+                _ => false,
+            };
         }
 
         public static bool IsTimeoutError(dynamic error)
         {
-            Condition.Requires(error, nameof(error)).IsNotNull();
-            switch (error.Number)
+            if (error == null) throw new ArgumentNullException(nameof(error));
+            return (dynamic)error.Number switch
             {
                 // Oracle Error Code: 1013
                 // user requested cancel of current operation
-                case 1013:
-                    return true;
-                default:
-                    return false;
-            }
+                1013 => true,
+                _ => false,
+            };
+        }
+
+        public static bool IsConflictError(dynamic error)
+        {
+            if (error == null) throw new ArgumentNullException(nameof(error));
+            return (dynamic)error.Number switch
+            {
+                _ => false,
+            };
         }
 
         #endregion Methods

@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 
@@ -18,7 +18,7 @@ namespace DDD.Common.Domain
 
         protected IdentificationCode(string value)
         {
-            Condition.Requires(value, nameof(value)).IsNotNullOrWhiteSpace();
+            Ensure.That(value, nameof(value)).IsNotNullOrWhiteSpace();
             this.Value = value.ToUpper();
         }
 

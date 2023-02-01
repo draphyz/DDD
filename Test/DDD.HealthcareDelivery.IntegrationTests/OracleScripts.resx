@@ -121,6 +121,9 @@
   <data name="ClearDatabase" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>scripts\oracle\cleardatabase.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="CreatePharmaceuticalPrescription" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>scripts\oracle\createpharmaceuticalprescription.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="CreateSchema" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>scripts\oracle\createschema.sql;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>

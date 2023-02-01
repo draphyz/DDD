@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
@@ -10,8 +9,9 @@ namespace DDD.Core.Application
     /// Base class for handling asynchronously events.
     /// </summary>
     public abstract class AsyncEventHandler<TEvent> : IAsyncEventHandler<TEvent>
-        where TEvent : class, IEvent 
+        where TEvent : class, IEvent
     {
+
         #region Properties
 
         Type IAsyncEventHandler.EventType => typeof(TEvent);
@@ -20,10 +20,11 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public abstract Task HandleAsync(TEvent @event, CancellationToken cancellationToken = default);
+        public abstract Task HandleAsync(TEvent @event, IMessageContext context = null);
 
-        Task IAsyncEventHandler.HandleAsync(IEvent @event, CancellationToken cancellationToken) => this.HandleAsync((TEvent)@event, cancellationToken);
+        Task IAsyncEventHandler.HandleAsync(IEvent @event, IMessageContext context) => this.HandleAsync((TEvent)@event, context);
 
         #endregion Methods
+
     }
 }

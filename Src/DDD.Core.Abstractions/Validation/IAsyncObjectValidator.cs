@@ -11,6 +11,9 @@ namespace DDD.Validation
 
         #region Methods
 
+        /// <summary>
+        /// Validates asynchronously an object of a specified type.
+        /// </summary>
         Task<ValidationResult> ValidateAsync(T obj, string ruleSet = null, CancellationToken cancellationToken = default);
 
         #endregion Methods

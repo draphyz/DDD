@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Conditions;
-using System.Linq;
+using EnsureThat;
 
 namespace DDD.Collections
 {
@@ -15,7 +14,7 @@ namespace DDD.Collections
 
         public static int CombineHashCodes(this IEnumerable<object> collection)
         {
-            Condition.Requires(collection, nameof(collection)).IsNotNull();
+            Ensure.That(collection, nameof(collection)).IsNotNull();
             unchecked
             {
                 var hash = 17;
@@ -27,8 +26,8 @@ namespace DDD.Collections
 
         public static IEnumerable<T> ForEach<T>(this IEnumerable<T> collection, Action<T> action)
         {
-            Condition.Requires(collection, nameof(collection)).IsNotNull();
-            Condition.Requires(action, nameof(action)).IsNotNull();
+            Ensure.That(collection, nameof(collection)).IsNotNull();
+            Ensure.That(action, nameof(action)).IsNotNull();
             foreach (var item in collection)
                 action(item);
             return collection;
@@ -36,8 +35,8 @@ namespace DDD.Collections
 
         public static IEnumerable<T> ForEach<T>(this IEnumerable<T> collection, Action<int, T> action)
         {
-            Condition.Requires(collection, nameof(collection)).IsNotNull();
-            Condition.Requires(action, nameof(action)).IsNotNull();
+            Ensure.That(collection, nameof(collection)).IsNotNull();
+            Ensure.That(action, nameof(action)).IsNotNull();
             var i = 0;
             foreach (var item in collection)
             {
@@ -49,7 +48,7 @@ namespace DDD.Collections
 
         public static HashSet<T> ToHashSet<T>(this IEnumerable<T> collection)
         {
-            Condition.Requires(collection, nameof(collection)).IsNotNull();
+            Ensure.That(collection, nameof(collection)).IsNotNull();
             return new HashSet<T>(collection);
         }
 

@@ -19,7 +19,7 @@
 
         #region Methods
 
-        protected override string GetDefaultMessageTemplate(string errorCode) 
+        protected override string GetDefaultMessageTemplate(string errorCode)
             => "'{PropertyName}' must contain {Max} item(s). '{PropertyName}' has {Count} item(s).";
 
         #endregion Methods

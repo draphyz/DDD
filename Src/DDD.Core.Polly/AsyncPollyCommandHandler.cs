@@ -1,7 +1,6 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Polly;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.ErrorHandling
 {
@@ -25,8 +24,8 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         public AsyncPollyCommandHandler(IAsyncCommandHandler<TCommand> handler, IAsyncPolicy policy)
         {
-            Condition.Requires(handler, nameof(handler)).IsNotNull();
-            Condition.Requires(policy, nameof(policy)).IsNotNull();
+            Ensure.That(handler, nameof(handler)).IsNotNull();
+            Ensure.That(policy, nameof(policy)).IsNotNull();
             this.handler = handler;
             this.policy = policy;
         }
@@ -35,9 +34,9 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         #region Methods
 
-        public async Task HandleAsync(TCommand command, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(TCommand command, IMessageContext context = null)
         {
-            await policy.ExecuteAsync(() => this.handler.HandleAsync(command, cancellationToken));
+            await policy.ExecuteAsync(() => this.handler.HandleAsync(command, context));
         }
 
         #endregion Methods

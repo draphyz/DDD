@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 
 namespace DDD.HealthcareDelivery.Domain.Practitioners
 {
@@ -12,9 +12,8 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
 
         public BelgianHealthcarePractitionerLicenseNumber(string value) : base(value)
         {
-            Condition.Requires(value, nameof(value))
-                     .HasLength(11)
-                     .Evaluate(n => n.IsNumeric());
+            Ensure.That(value, nameof(value)).HasLength(11);
+            Ensure.That(value, nameof(value)).IsAllDigits();
         }
 
         protected BelgianHealthcarePractitionerLicenseNumber() { }
@@ -64,7 +63,7 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
         /// </summary>
         public static int ComputeCheckDigit(string value, Modulus modulus = Modulus.Mod97)
         {
-            Condition.Requires(value, nameof(value)).IsLongerOrEqual(6);
+            Ensure.That(value, nameof(value)).HasMinLength(6);
             var identifier = int.Parse(value.Substring(0, 6)); // old unique practitioner identifier
             var imodulus = (int)modulus;
             return imodulus - (identifier % imodulus);

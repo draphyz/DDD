@@ -1,15 +1,17 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DDD.Core.Domain
 {
+    using Collections;
+
     /// <summary>
     /// Base class for entities of the Domain Model.
     /// </summary>
     public abstract class DomainEntity : IEquatable<DomainEntity>
     {
-
         #region Fields
 
         private readonly List<IDomainEvent> events = new List<IDomainEvent>();
@@ -18,13 +20,20 @@ namespace DDD.Core.Domain
 
         #region Constructors
 
-        protected DomainEntity(IEnumerable<IDomainEvent> events = null)
+        protected DomainEntity(EntityState entityState = EntityState.Added, IEnumerable<IDomainEvent> events = null)
         {
+            this.EntityState = entityState;
             if (events != null)
                 this.events.AddRange(events);
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        protected EntityState EntityState { get; private set; }
+
+        #endregion Properties
 
         #region Methods
 
@@ -59,19 +68,25 @@ namespace DDD.Core.Domain
 
         public override int GetHashCode() => this.Identity().GetHashCode();
 
-        public abstract ComparableValueObject Identity();
-
         public virtual string IdentityAsString()
         {
             return string.Join("/", this.Identity().PrimitiveEqualityComponents());
         }
+
+        public abstract ComparableValueObject Identity();
+
         protected void AddEvent(IDomainEvent @event)
         {
-            Condition.Requires(@event, nameof(@event)).IsNotNull();
+            Ensure.That(@event, nameof(@event)).IsNotNull();
             this.events.Add(@event);
         }
 
-        #endregion Methods
+        protected void MarkAsModified()
+        {
+            if (this.EntityState != EntityState.Added)
+                this.EntityState = EntityState.Modified;
+        }
 
+        #endregion Methods
     }
 }

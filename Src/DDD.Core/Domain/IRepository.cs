@@ -1,15 +1,9 @@
 ﻿namespace DDD.Core.Domain
 {
-    public interface IRepository<TDomainEntity, in TIdentity>
+    public interface IRepository<TDomainEntity, in TIdentity> 
+        : ISyncRepository<TDomainEntity, TIdentity>, IAsyncRepository<TDomainEntity, TIdentity>
         where TDomainEntity : DomainEntity
         where TIdentity : ComparableValueObject
     {
-        #region Methods
-
-        TDomainEntity Find(TIdentity identity);
-
-        void Save(TDomainEntity aggregate);
-
-        #endregion Methods
     }
 }

@@ -1,13 +1,13 @@
 ﻿using SimpleInjector;
 using SimpleInjector.Lifestyles;
-using Conditions;
-using System.Threading;
-using System.Threading.Tasks;
+using EnsureThat;
 using System;
+using System.Threading.Tasks;
 
 namespace DDD.Core.Infrastructure.DependencyInjection
 {
     using Application;
+    using Threading;
 
     /// <summary>
     /// A decorator that defines a scope around the asynchronous execution of a query.
@@ -27,8 +27,8 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         public AsyncScopedQueryHandler(Func<IAsyncQueryHandler<TQuery, TResult>> handlerProvider, Container container)
         {
-            Condition.Requires(handlerProvider, nameof(handlerProvider)).IsNotNull();
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(handlerProvider, nameof(handlerProvider)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             this.handlerProvider = handlerProvider;
             this.container = container;
         }
@@ -37,12 +37,13 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Methods
 
-        public async Task<TResult> HandleAsync(TQuery query, CancellationToken cancellationToken = default)
+        public async Task<TResult> HandleAsync(TQuery query, IMessageContext context = null)
         {
             using (AsyncScopedLifestyle.BeginScope(container))
             {
+                await new SynchronizationContextRemover();
                 var handler = this.handlerProvider();
-                return await handler.HandleAsync(query, cancellationToken);
+                return await handler.HandleAsync(query, context);
             }
         }
 

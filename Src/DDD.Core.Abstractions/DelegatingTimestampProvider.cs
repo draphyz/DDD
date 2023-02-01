@@ -1,10 +1,10 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 
 namespace DDD
 {
     /// <summary>
-    /// Provides timestamps based on a delegate.
+    /// Adapter that converts a delegate into an object that implements ITimestampProvider.
     /// </summary>
     public class DelegatingTimestampProvider : ITimestampProvider
     {
@@ -19,7 +19,7 @@ namespace DDD
 
         public DelegatingTimestampProvider(Func<DateTime> timestamp)
         {
-            Condition.Requires(timestamp, nameof(timestamp)).IsNotNull();
+            Ensure.That(timestamp, nameof(timestamp)).IsNotNull();
             this.timestamp = timestamp;
         }
 

@@ -1,41 +1,31 @@
 ﻿using Xunit;
-using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Security.Principal;
-using FluentAssertions;
-using NHibernate;
 using System;
+using FluentAssertions;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
-    using Core.Domain;
+    using Domain;
     using Core.Infrastructure.Data;
     using Domain.Prescriptions;
     using Infrastructure;
+    using Infrastructure.Prescriptions;
 
     public abstract class PharmaceuticalPrescriptionRevokerTests<TFixture> : IDisposable
-        where TFixture : IPersistenceFixture<IHealthcareDeliveryConnectionFactory>
+        where TFixture : IPersistenceFixture
     {
-
-        #region Fields
-
-        private ISessionFactory sessionFactory;
-        private ISession session;
-        private DbConnection connection;
-
-        #endregion Fields
 
         #region Constructors
 
         protected PharmaceuticalPrescriptionRevokerTests(TFixture fixture)
         {
             this.Fixture = fixture;
+            this.ConnectionProvider = fixture.CreateConnectionProvider(pooling: false); // To check transaction escalation (MSDTC)
+            this.SessionFactory = this.Fixture.CreateSessionFactory(this.ConnectionProvider);
             this.Repository = this.CreateRepository();
-            this.Handler = new PharmaceuticalPrescriptionRevoker
-            (
-                Repository
-            );
+            this.Handler = new PharmaceuticalPrescriptionRevoker(Repository);
         }
 
         #endregion Constructors
@@ -43,8 +33,14 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         #region Properties
 
         protected TFixture Fixture { get; }
+
+        protected IDbConnectionProvider<HealthcareDeliveryContext> ConnectionProvider { get; }
+
         protected PharmaceuticalPrescriptionRevoker Handler { get; }
-        protected IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> Repository { get; }
+
+        protected PharmaceuticalPrescriptionRepository Repository { get; }
+
+        protected DelegatingSessionFactory<HealthcareDeliveryContext> SessionFactory { get; }
 
         #endregion Properties
 
@@ -52,9 +48,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         public void Dispose()
         {
-            this.session.Dispose();
-            this.connection.Dispose();
-            this.sessionFactory.Dispose();
+            this.ConnectionProvider.Dispose();
+            this.Repository.Dispose();
+            this.SessionFactory.Dispose();
         }
 
         [Fact]
@@ -80,18 +76,11 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             };
         }
 
-        private IAsyncRepository<PharmaceuticalPrescription, PrescriptionIdentifier> CreateRepository()
+        private PharmaceuticalPrescriptionRepository CreateRepository()
         {
-            this.sessionFactory = this.Fixture.CreateSessionFactory();
-            this.connection = this.Fixture.ConnectionFactory.CreateOpenConnection();
-            this.session = this.sessionFactory
-                .WithOptions()
-                // To avoid transaction promotion from local to distributed
-                .Connection(this.connection)
-                .OpenSession();
-            return new NHibernateRepository<PharmaceuticalPrescription, PrescriptionIdentifier>
-             (
-                this.session,
+            return new PharmaceuticalPrescriptionRepository
+            (
+                this.SessionFactory,
                 this.Fixture.CreateEventTranslator()
             );
         }

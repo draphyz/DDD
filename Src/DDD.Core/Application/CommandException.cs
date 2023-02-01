@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace DDD.Core.Application
 {
@@ -32,16 +33,17 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public static string DefaultMessage(ICommand command = null)
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            if (command == null)
-                return "A command failed.";
-            return $"The command '{command.GetType().Name}' failed.";
+            base.GetObjectData(info, context);
+            if (this.Command != null)
+                info.AddValue("Command", this.Command);
         }
 
         public override string ToString()
         {
             var s = $"{this.GetType()}: {this.Message} ";
+            s += $"{Environment.NewLine}Timestamp: {this.Timestamp}";
             s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
             if (this.Command != null)
                 s += $"{Environment.NewLine}Command: {this.Command}";
@@ -50,6 +52,13 @@ namespace DDD.Core.Application
             if (this.StackTrace != null)
                 s += $"{Environment.NewLine}{this.StackTrace}";
             return s;
+        }
+
+        public static string DefaultMessage(ICommand command = null)
+        {
+            if (command == null)
+                return "A command failed.";
+            return $"The command '{command.GetType().Name}' failed.";
         }
 
         #endregion Methods

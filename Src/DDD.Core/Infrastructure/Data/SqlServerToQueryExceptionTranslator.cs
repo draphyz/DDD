@@ -1,23 +1,22 @@
 ﻿using System.Data.Common;
 using System.Collections.Generic;
-using Conditions;
+using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Data
 {
     using Mapping;
+    using Collections;
     using Application;
 
-    internal class SqlServerToQueryExceptionTranslator : IObjectTranslator<DbException, QueryException>
+    internal class SqlServerToQueryExceptionTranslator : ObjectTranslator<DbException, QueryException>
     {
         #region Methods
 
-        public QueryException Translate(DbException exception, IDictionary<string, object> options = null)
+        public override QueryException Translate(DbException exception, IDictionary<string, object> context = null)
         {
-            Condition.Requires(exception, nameof(exception)).IsNotNull();
-            Condition.Requires(options, nameof(options))
-                     .IsNotNull()
-                     .Evaluate(options.ContainsKey("Query"));
-            var query = (IQuery)options["Query"];
+            Ensure.That(exception, nameof(exception)).IsNotNull();
+            IQuery query = null;
+            context?.TryGetValue("Query", out query);
             dynamic sqlServerException = exception;
             foreach (dynamic error in sqlServerException.Errors)
             {
@@ -29,6 +28,9 @@ namespace DDD.Core.Infrastructure.Data
 
                 if (SqlServerErrorHelper.IsTimeoutError(error))
                     return new QueryTimeoutException(query, exception);
+
+                if (SqlServerErrorHelper.IsConflictError(error))
+                    return new QueryConflictException(query, exception);
             }
             return new QueryException(isTransient: false, query, exception);
         }

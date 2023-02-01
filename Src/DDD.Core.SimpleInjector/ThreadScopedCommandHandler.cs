@@ -1,6 +1,6 @@
 ﻿using SimpleInjector;
 using SimpleInjector.Lifestyles;
-using Conditions;
+using EnsureThat;
 using System;
 
 namespace DDD.Core.Infrastructure.DependencyInjection
@@ -10,23 +10,23 @@ namespace DDD.Core.Infrastructure.DependencyInjection
     /// <summary>
     /// A decorator that defines a scope around the synchronous execution of a command.
     /// </summary>
-    public class ThreadScopedCommandHandler<TCommand> : ICommandHandler<TCommand>
+    public class ThreadScopedCommandHandler<TCommand> : ISyncCommandHandler<TCommand>
         where TCommand : class, ICommand
     {
 
         #region Fields
 
         private readonly Container container;
-        private readonly Func<ICommandHandler<TCommand>> handlerProvider;
+        private readonly Func<ISyncCommandHandler<TCommand>> handlerProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public ThreadScopedCommandHandler(Func<ICommandHandler<TCommand>> handlerProvider, Container container)
+        public ThreadScopedCommandHandler(Func<ISyncCommandHandler<TCommand>> handlerProvider, Container container)
         {
-            Condition.Requires(handlerProvider, nameof(handlerProvider)).IsNotNull();
-            Condition.Requires(container, nameof(container)).IsNotNull();
+            Ensure.That(handlerProvider, nameof(handlerProvider)).IsNotNull();
+            Ensure.That(container, nameof(container)).IsNotNull();
             this.handlerProvider = handlerProvider;
             this.container = container;
         }
@@ -35,12 +35,12 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Methods
 
-        public void Handle(TCommand command)
+        public void Handle(TCommand command, IMessageContext context = null)
         {
             using (ThreadScopedLifestyle.BeginScope(container))
             {
                 var handler = this.handlerProvider();
-                handler.Handle(command);
+                handler.Handle(command, context);
             }
         }
 

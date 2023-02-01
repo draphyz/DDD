@@ -1,4 +1,6 @@
-﻿using Xunit;
+﻿using NHibernate.Dialect;
+using NHibernate.Driver;
+using Xunit;
 
 namespace DDD.HealthcareDelivery.Infrastructure
 {
@@ -17,7 +19,13 @@ namespace DDD.HealthcareDelivery.Infrastructure
 
         protected override HealthcareDeliveryConfiguration CreateConfiguration()
         {
-            return new BelgianOracleHealthcareDeliveryConfiguration(OracleConnectionFactory.ConnectionString);
+            var configuration = new BelgianOracleHealthcareDeliveryConfiguration().DataBaseIntegration(db =>
+            {
+                db.Dialect<Oracle10gDialect>();
+                db.Driver<OracleManagedDataClientDriver>();
+                db.ConnectionStringName = "Oracle";
+            });
+            return (HealthcareDeliveryConfiguration)configuration;
         }
 
         #endregion Methods

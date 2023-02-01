@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -35,13 +35,12 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                           DateTime createdOn,
                                           EncounterIdentifier encounterIdentifier = null,
                                           DateTime? delivrableAt = null,
+                                          EntityState entityState = EntityState.Added,
                                           IEnumerable<IDomainEvent> events = null)
-            : base(identifier, prescriber, patient, languageCode, status, createdOn, encounterIdentifier, delivrableAt, events)
+            : base(identifier, prescriber, patient, languageCode, status, createdOn, encounterIdentifier, delivrableAt, entityState, events)
         {
-            Condition.Requires(prescribedMedications, nameof(prescribedMedications))
-                     .IsNotNull()
-                     .IsNotEmpty()
-                     .DoesNotContain(null);
+            Ensure.That(prescribedMedications, nameof(prescribedMedications)).IsNotNull();
+            Ensure.Enumerable.HasItems(prescribedMedications, nameof(prescribedMedications));
             this.prescribedMedications.AddRange(prescribedMedications);
         }
 

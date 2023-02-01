@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Conditions;
+using EnsureThat;
 using System.Linq;
 using System.Text;
 
@@ -20,7 +20,7 @@ namespace DDD
         /// </summary>
         public static bool IsAlphabetic(this string instance)
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
+            Ensure.That(instance, nameof(instance)).IsNotNull();
             return instance.ToCharArray().All(char.IsLetter);
         }
 
@@ -29,7 +29,7 @@ namespace DDD
         /// </summary>
         public static bool IsAlphanumeric(this string instance)
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
+            Ensure.That(instance, nameof(instance)).IsNotNull();
             return instance.ToCharArray().All(char.IsLetterOrDigit);
         }
 
@@ -39,7 +39,7 @@ namespace DDD
         /// <param name="instance">The current instance.</param>
         public static bool IsFrenchShortDateString(this string instance)
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
+            Ensure.That(instance, nameof(instance)).IsNotNull();
             return IsShortDateString(instance, CultureInfo.CreateSpecificCulture("fr"));
         }
 
@@ -48,7 +48,7 @@ namespace DDD
         /// </summary>
         public static bool IsNumeric(this string instance)
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
+            Ensure.That(instance, nameof(instance)).IsNotNull();
             return instance.ToCharArray().All(char.IsDigit);
         }
 
@@ -59,10 +59,10 @@ namespace DDD
         /// <param name="provider">An object that supplies culture-specific formatting information.</param>
         public static bool IsShortDateString(this string instance, IFormatProvider provider)
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
-            DateTime result;
-            return DateTime.TryParseExact(instance, "d", provider, DateTimeStyles.None, out result);
+            Ensure.That(instance, nameof(instance)).IsNotNull();
+            return DateTime.TryParseExact(instance, "d", provider, DateTimeStyles.None, out _);
         }
+
         /// <summary>
         /// Returns a string containing a specified number of characters from the left side of a string.
         /// </summary>
@@ -75,11 +75,29 @@ namespace DDD
         /// <exception cref="ArgumentException">Throws an exception when the specified length is less than zero.</exception>
         public static string Left(this string instance, int length)
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
-            Condition.Requires(length, nameof(length)).IsGreaterOrEqual(0);
+            Ensure.That(instance, nameof(instance)).IsNotNull();
+            Ensure.That(length, nameof(length)).IsGte(0);
             if (length == 0) return string.Empty;
             if (length >= instance.Length) return instance;
             return instance.Substring(0, length);
+        }
+
+        /// <summary>
+        /// Returns a new string in which all occurrences of specified characters in this instance are removed.
+        /// </summary>
+        /// <param name="instance">The current instance.</param>
+        /// <param name="oldChars">The characters to be removed.</param>
+        public static string Remove(this string instance, params char[] oldChars)
+        {
+            Ensure.That(instance, nameof(instance)).IsNotNull();
+            Ensure.That(oldChars, nameof(oldChars)).IsNotNull();
+            var index = instance.IndexOfAny(oldChars);
+            while (index >= 0)
+            {
+                instance = instance.Remove(index, 1);
+                index = instance.IndexOfAny(oldChars);
+            }
+            return instance;
         }
 
         /// <summary>
@@ -92,7 +110,7 @@ namespace DDD
         /// <returns>A string that is equivalent to the current string except that all instances of oldValue are replaced with newValue.</returns>
         public static string Replace(this string instance, string oldValue, string newValue, bool ignoreCase)
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
+            Ensure.That(instance, nameof(instance)).IsNotNull();
             if (ignoreCase) return Regex.Replace(instance, Regex.Escape(oldValue), Regex.Escape(newValue), RegexOptions.IgnoreCase);
             return instance.Replace(oldValue, newValue);
         }
@@ -102,7 +120,7 @@ namespace DDD
         /// </summary>
         public static string Reverse(this string instance)
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
+            Ensure.That(instance, nameof(instance)).IsNotNull();
             if (instance.Length <= 1) return instance;
             var sb = new StringBuilder(instance.Length);
             for (var i = instance.Length - 1; i >= 0; i--)
@@ -122,8 +140,8 @@ namespace DDD
         /// <exception cref="ArgumentException">Throws an exception when the specified length is less than zero.</exception>
         public static string Right(this string instance, int length)
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
-            Condition.Requires(length, nameof(length)).IsGreaterOrEqual(0);
+            Ensure.That(instance, nameof(instance)).IsNotNull();
+            Ensure.That(length, nameof(length)).IsGte(0);
             if (length == 0) return string.Empty;
             if (length >= instance.Length) return instance;
             return instance.Substring(instance.Length - length);
@@ -139,7 +157,7 @@ namespace DDD
         /// <returns>An object of type TEnum whose value is represented by value.</returns>
         public static TEnum ToEnum<TEnum>(this string instance, bool ignoreCase = true) where TEnum : struct
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
+            Ensure.That(instance, nameof(instance)).IsNotNull();
             return (TEnum)Enum.Parse(typeof(TEnum), instance, ignoreCase);
         }
 
@@ -150,7 +168,7 @@ namespace DDD
         /// <returns>The specified string converted to snake case.</returns>
         public static string ToSnakeCase(this string instance)
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
+            Ensure.That(instance, nameof(instance)).IsNotNull();
             return Regex.Replace(instance, "((?<=[a-z])(?=[A-Z]))|((?<=[A-Z])(?=[A-Z][a-z]))", "_");
         }
 
@@ -162,11 +180,10 @@ namespace DDD
         /// <remarks>The current implementation of the ToTitleCase method provides an arbitrary casing behavior which is not necessarily linguistically correct.</remarks>
         public static string ToTitleCase(this string instance)
         {
-            Condition.Requires(instance, nameof(instance)).IsNotNull();
+            Ensure.That(instance, nameof(instance)).IsNotNull();
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(instance.ToLower());
         }
 
         #endregion Methods
-
     }
 }

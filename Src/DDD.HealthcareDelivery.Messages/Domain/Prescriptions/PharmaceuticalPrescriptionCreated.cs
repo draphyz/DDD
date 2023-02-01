@@ -1,4 +1,4 @@
-﻿using Conditions;
+﻿using EnsureThat;
 using System;
 using System.Runtime.Serialization;
 
@@ -14,7 +14,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         public PharmaceuticalPrescriptionCreated(int prescriptionIdentifier, DateTime occurredOn)
         {
-            Condition.Requires(prescriptionIdentifier, nameof(prescriptionIdentifier)).IsGreaterThan(0);
+            Ensure.That(prescriptionIdentifier, nameof(prescriptionIdentifier)).IsGt(0);
             this.PrescriptionIdentifier = prescriptionIdentifier;
             this.OccurredOn = occurredOn;
         }
@@ -26,12 +26,13 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
 
         #region Properties
 
-        [DataMember(Name = "OccurredOn", Order = 2)]
-        public DateTime OccurredOn { get; private set; }
-
-        [DataMember(Name = "PrescriptionId", Order = 1)]
+        [DataMember(Name = "PrescriptionId")]
         public int PrescriptionIdentifier { get; private set; }
 
+        [DataMember(Name = "OccurredOn")]
+        public DateTime OccurredOn { get; private set; }
+
         #endregion Properties
+
     }
 }
