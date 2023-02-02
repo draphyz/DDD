@@ -1,12 +1,12 @@
-﻿using DDD.Core.Domain;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Threading;
 using System.Linq;
+using DDD.Core.Domain;
 
 namespace DDD.Core.Infrastructure.Data
 {
     using Microsoft.EntityFrameworkCore;
-    using Core.Application;
+    using Application;
 
     /// <summary>
     /// Represents a <see cref="DbContext"/> used to store a domain model.

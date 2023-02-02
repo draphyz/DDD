@@ -1,7 +1,6 @@
 ﻿namespace DDD.Core.Infrastructure.Data
 {
-    using Application;
-    using DDD.Core.Domain;
+    using Domain;
 
     /// <summary>
     /// Provides and shares a database connection for a specific context between different components.

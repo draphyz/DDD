@@ -1,7 +1,6 @@
 ﻿using EnsureThat;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System;
 
 namespace DDD.Common.Domain

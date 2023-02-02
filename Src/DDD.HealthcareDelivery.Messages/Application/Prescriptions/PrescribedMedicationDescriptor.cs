@@ -1,7 +1,5 @@
 ﻿namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
-    using Domain.Prescriptions;
-
     /// <summary>
     /// Encapsulates all information needed to describe a prescribed medication.
     /// </summary>

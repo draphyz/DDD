@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DDD.Core.Infrastructure.DependencyInjection
 {
     using Application;
-    using DDD.Core.Domain;
+    using Domain;
     using Threading;
 
     /// <summary>

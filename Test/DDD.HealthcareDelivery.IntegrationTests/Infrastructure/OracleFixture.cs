@@ -13,7 +13,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
     using Core.Infrastructure.Data;
     using Core.Domain;
     using Core.Infrastructure.Serialization;
-    
+
     public class OracleFixture : DbFixture<HealthcareDeliveryContext>, IPersistenceFixture
     {
 

@@ -3,8 +3,6 @@ using System.Data.Common;
 
 namespace DDD.Core.Infrastructure.Data
 {
-    using Domain;
-
     /// <summary>
     /// Provides and shares a database connection between different components.
     /// This component owns the connection and is responsible for disposing the connection.

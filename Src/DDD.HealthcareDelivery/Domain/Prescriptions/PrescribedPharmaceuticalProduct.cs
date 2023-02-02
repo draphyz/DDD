@@ -1,6 +1,4 @@
-﻿using EnsureThat;
-
-namespace DDD.HealthcareDelivery.Domain.Prescriptions
+﻿namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
     using Core.Domain;
 

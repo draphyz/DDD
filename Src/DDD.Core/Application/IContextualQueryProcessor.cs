@@ -1,8 +1,9 @@
-﻿using DDD.Core.Domain;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
+    using Domain;
+
     /// <summary>
     /// Defines a component that processes generic queries in a specific bounded context.
     /// </summary>

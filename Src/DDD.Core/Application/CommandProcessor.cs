@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
-    using DDD.Core.Domain;
+    using Domain;
     using Validation;
 
     /// <summary>

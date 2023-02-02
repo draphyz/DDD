@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DDD.Core.Infrastructure.Data
+﻿namespace DDD.Core.Infrastructure.Data
 {
     /// <summary>
     /// Generates sequential Guids for the Microsoft Sql Server uniqueidentifier data type by combining a sequential time-based part with a random part.

@@ -13,7 +13,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
     using Core.Domain;
     using Core.Application;
     using Core.Infrastructure.Serialization;
-    
+
     public class SqlServerFixture : DbFixture<HealthcareDeliveryContext>, IPersistenceFixture
     {
 

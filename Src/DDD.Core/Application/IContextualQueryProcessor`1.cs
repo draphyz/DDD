@@ -1,7 +1,7 @@
-﻿using DDD.Core.Domain;
-
-namespace DDD.Core.Application
+﻿namespace DDD.Core.Application
 {
+    using Domain;
+
     /// <summary>
     /// Defines a component that processes generic queries in a specific bounded context.
     /// </summary>

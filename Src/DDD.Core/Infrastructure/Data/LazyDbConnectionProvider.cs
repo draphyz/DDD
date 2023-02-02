@@ -5,8 +5,7 @@ using System;
 
 namespace DDD.Core.Infrastructure.Data
 {
-    using Application;
-    using DDD.Core.Domain;
+    using Domain;
 
     public class LazyDbConnectionProvider<TContext>
         : IDbConnectionProvider<TContext> where TContext : BoundedContext, new()

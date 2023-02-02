@@ -6,7 +6,7 @@ using System;
 namespace DDD.Core.Infrastructure.DependencyInjection
 {
     using Application;
-    using DDD.Core.Domain;
+    using Domain;
 
     /// <summary>
     /// A decorator that defines a scope around the synchronous execution of a command.

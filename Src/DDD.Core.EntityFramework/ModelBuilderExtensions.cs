@@ -8,7 +8,6 @@ using System.Linq;
 namespace DDD.Core.Infrastructure.Data
 {
     using Domain;
-    using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
     public static class ModelBuilderExtensions
     {

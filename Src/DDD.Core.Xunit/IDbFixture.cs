@@ -3,8 +3,7 @@
 namespace DDD.Core.Infrastructure.Testing
 {
     using Data;
-    using Application;
-    using DDD.Core.Domain;
+    using Domain;
 
     public interface IDbFixture<TContext>
         where TContext : BoundedContext

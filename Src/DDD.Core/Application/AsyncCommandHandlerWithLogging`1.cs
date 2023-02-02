@@ -1,11 +1,12 @@
 ﻿using EnsureThat;
-using DDD.Core.Domain;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
+    using Domain;
+
     /// <summary>
     /// A decorator that logs information about commands.
     /// </summary>
