@@ -7,14 +7,15 @@ using Xunit;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using Domain;
 
-    [Collection("SqlServer")]
-    public class SqlServerFailedEventStreamReaderTests : EventsByStreamIdFinderTests<SqlServerFixture>
+    [Collection("Oracle")]
+    public class OracleFailedEventStreamReaderTests : EventsByStreamIdFinderTests<OracleFixture>
     {
 
         #region Constructors
 
-        public SqlServerFailedEventStreamReaderTests(SqlServerFixture fixture) : base(fixture)
+        public OracleFailedEventStreamReaderTests(OracleFixture fixture) : base(fixture)
         {
         }
 
@@ -22,7 +23,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public static IEnumerable<object[]> QueriesAndResults()
+        public static IEnumerable<object[]> QueriesAndResults_2()
         {
             yield return new object[]
             {
@@ -30,8 +31,8 @@ namespace DDD.Core.Infrastructure.Data
                 {
                     StreamType = "Message",
                     StreamId = "5",
-                    EventIdMin = new Guid("321ea720-affd-6c91-3782-3a0189c0f051"),
-                    EventIdMax = new Guid("0096f748-41f4-2e2b-87f3-3a0189c1505f")
+                    EventIdMin = new Guid("d9fdd908-9e0a-c80f-e72d-e94a0f7d4902"),
+                    EventIdMax = new Guid("d9fdd908-9e0a-ca0f-7c1b-78288db70ee6")
                 },
                 new []
                 {
@@ -39,10 +40,10 @@ namespace DDD.Core.Infrastructure.Data
                     {
                         Body = "{\"messageId\":5,\"occurredOn\":\"2022-01-20T14:01:41.3251974+01:00\"}",
                         BodyFormat = "JSON",
-                        EventId = new Guid("321ea720-affd-6c91-3782-3a0189c0f051"),
+                        EventId = new Guid("d9fdd908-9e0a-c80f-e72d-e94a0f7d4902"),
                         EventType = "DDD.Collaboration.Domain.Messages.MessageRead, DDD.Collaboration.Messages",
                         OccurredOn = new DateTime(2022, 1, 20, 14, 1, 41, 325),
-                        StreamId = "5",  
+                        StreamId = "5",
                         StreamType = "Message",
                         IssuedBy = "Dr Folamour"
                     },
@@ -50,7 +51,7 @@ namespace DDD.Core.Infrastructure.Data
                     {
                         Body = "{\"messageId\":5,\"source\":\"Inbox\",\"destination\":\"Binbox\",\"occurredOn\":\"2022-01-20T14:01:48.6157105+01:00\"}",
                         BodyFormat = "JSON",
-                        EventId = new Guid("a224a074-c1d9-6c6f-0adc-3a0189c10ccc"),
+                        EventId = new Guid("d9fdd908-9e0a-c90f-3cfe-09c19f22f068"),
                         EventType = "DDD.Collaboration.Domain.Messages.MessageSentToBin, DDD.Collaboration.Messages",
                         OccurredOn = new DateTime(2022, 1, 20, 14, 1, 48, 616),
                         StreamId = "5",
@@ -61,7 +62,7 @@ namespace DDD.Core.Infrastructure.Data
                     {
                         Body = "{\"messageId\":5,\"occurredOn\":\"2022-01-20T14:02:05.9149942+01:00\"}",
                         BodyFormat = "JSON",
-                        EventId = new Guid("0096f748-41f4-2e2b-87f3-3a0189c1505f"),
+                        EventId = new Guid("d9fdd908-9e0a-ca0f-7c1b-78288db70ee6"),
                         EventType = "DDD.Collaboration.Domain.Messages.MessageDeleted, DDD.Collaboration.Messages",
                         OccurredOn = new DateTime(2022, 1, 20, 14, 2, 5, 915),
                         StreamId = "5",
@@ -73,12 +74,12 @@ namespace DDD.Core.Infrastructure.Data
         }
 
         [Theory]
-        [MemberData(nameof(QueriesAndResults))]
-        public void Handle_WhenCalled_ReturnsExpectedResults(ReadFailedEventStream query, IEnumerable<Event> expectedResults)
+        [MemberData(nameof(QueriesAndResults_2))]
+        public void Handle_WhenCalled_ReturnsExpectedResults_2(ReadFailedEventStream query, IEnumerable<Event> expectedResults)
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("ReadFailedEventStream");
-            var handler = new FailedEventStreamReader<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("ReadFailedEventStream");
+            var handler = new FailedEventStreamReader<TestContext>(ConnectionProvider);
             // Act
             var results = handler.Handle(query);
             // Assert
@@ -86,12 +87,12 @@ namespace DDD.Core.Infrastructure.Data
         }
 
         [Theory]
-        [MemberData(nameof(QueriesAndResults))]
-        public async Task HandleAsync_WhenCalled_ReturnsExpectedResults(ReadFailedEventStream query, IEnumerable<Event> expectedResults)
+        [MemberData(nameof(QueriesAndResults_2))]
+        public async Task HandleAsync_WhenCalled_ReturnsExpectedResults_2(ReadFailedEventStream query, IEnumerable<Event> expectedResults)
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("ReadFailedEventStream");
-            var handler = new FailedEventStreamReader<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("ReadFailedEventStream");
+            var handler = new FailedEventStreamReader<TestContext>(ConnectionProvider);
             // Act
             var results = await handler.HandleAsync(query);
             // Assert

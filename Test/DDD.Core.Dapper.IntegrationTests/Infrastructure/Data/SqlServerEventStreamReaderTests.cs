@@ -7,14 +7,15 @@ using Xunit;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using Domain;
 
-    [Collection("Oracle")]
-    public class OracleEventStreamReaderTests : EventStreamReaderTests<OracleFixture>
+    [Collection("SqlServer")]
+    public class SqlServerEventStreamReaderTests : EventStreamReaderTests<SqlServerFixture>
     {
 
         #region Constructors
 
-        public OracleEventStreamReaderTests(OracleFixture fixture) : base(fixture)
+        public SqlServerEventStreamReaderTests(SqlServerFixture fixture) : base(fixture)
         {
         }
 
@@ -29,7 +30,7 @@ namespace DDD.Core.Infrastructure.Data
                 new ReadEventStream
                 {
                     StreamType = "MessageBox",
-                    StreamPosition = new Guid("d9fdd908-9d0a-b6e8-0802-5680bf57bb60")
+                    StreamPosition = new Guid("36beb37d-1e01-bb7d-fb2a-3a0044745345")
                 },
                 new []
                 {
@@ -37,7 +38,7 @@ namespace DDD.Core.Infrastructure.Data
                     {
                         Body = "{\"boxId\":3,\"occurredOn\":\"2022-01-19T14:22:00.3683143+01:00\"}",
                         BodyFormat = "JSON",
-                        EventId = new Guid("d9fdd908-9e0a-c30f-fe28-f1dd2406a828"),
+                        EventId = new Guid("097d449e-539e-bdf1-b50d-3a0184ad3555"),
                         EventType = "DDD.Collaboration.Domain.Messages.MessageBoxCreated, DDD.Collaboration.Messages",
                         OccurredOn = new DateTime(2022, 1, 19, 14, 22, 0, 368),
                         StreamId = "3",
@@ -53,8 +54,8 @@ namespace DDD.Core.Infrastructure.Data
         public void Handle_WhenCalled_ReturnsExpectedResults_2(ReadEventStream query, IEnumerable<Event> expectedResults)
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("ReadEventStream");
-            var handler = new EventStreamReader<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("ReadEventStream");
+            var handler = new EventStreamReader<TestContext>(ConnectionProvider);
             // Act
             var results = handler.Handle(query);
             // Assert
@@ -66,8 +67,8 @@ namespace DDD.Core.Infrastructure.Data
         public async Task HandleAsync_WhenCalled_ReturnsExpectedResults_2(ReadEventStream query, IEnumerable<Event> expectedResults)
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("ReadEventStream");
-            var handler = new EventStreamReader<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("ReadEventStream");
+            var handler = new EventStreamReader<TestContext>(ConnectionProvider);
             // Act
             var results = await handler.HandleAsync(query);
             // Assert

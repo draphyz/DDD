@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net48;net6.0</TargetFrameworks>
 	<OutputType>Library</OutputType>
-    <RootNamespace>DDD.Core.Infrastructure.Data</RootNamespace>
+    <RootNamespace>DDD.Core</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.9.0" />
@@ -25,23 +25,23 @@
     <ProjectReference Include="..\..\Src\DDD.Core.Xunit\DDD.Core.Xunit.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="OracleScripts.Designer.cs">
+    <Compile Update="Infrastructure\Data\OracleScripts.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>OracleScripts.resx</DependentUpon>
     </Compile>
-    <Compile Update="SqlServerScripts.Designer.cs">
+    <Compile Update="Infrastructure\Data\SqlServerScripts.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>SqlServerScripts.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="OracleScripts.resx">
+    <EmbeddedResource Update="Infrastructure\Data\OracleScripts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>OracleScripts.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="SqlServerScripts.resx">
+    <EmbeddedResource Update="Infrastructure\Data\SqlServerScripts.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SqlServerScripts.Designer.cs</LastGenOutput>
     </EmbeddedResource>

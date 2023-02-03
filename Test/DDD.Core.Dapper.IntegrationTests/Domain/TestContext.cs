@@ -1,7 +1,5 @@
-﻿namespace DDD.Core.Infrastructure.Data
+﻿namespace DDD.Core.Domain
 {
-    using Domain;
-
     public class TestContext : BoundedContext
     {
         #region Constructors

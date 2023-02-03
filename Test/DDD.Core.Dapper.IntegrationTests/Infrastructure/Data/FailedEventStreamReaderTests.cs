@@ -2,6 +2,8 @@
 
 namespace DDD.Core.Infrastructure.Data
 {
+    using Domain;
+
     public abstract class EventsByStreamIdFinderTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
     {
@@ -10,8 +12,8 @@ namespace DDD.Core.Infrastructure.Data
 
         protected EventsByStreamIdFinderTests(TFixture fixture)
         {
-            this.Fixture = fixture;
-            this.ConnectionProvider = fixture.CreateConnectionProvider();
+            Fixture = fixture;
+            ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
@@ -28,7 +30,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Dispose()
         {
-            this.ConnectionProvider.Dispose();
+            ConnectionProvider.Dispose();
         }
 
         #endregion Methods

@@ -6,6 +6,7 @@ using Xunit;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using Domain;
 
     public abstract class FailedEventStreamExcluderTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
@@ -15,8 +16,8 @@ namespace DDD.Core.Infrastructure.Data
 
         protected FailedEventStreamExcluderTests(TFixture fixture)
         {
-            this.Fixture = fixture;
-            this.ConnectionProvider = fixture.CreateConnectionProvider();
+            Fixture = fixture;
+            ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
@@ -35,8 +36,8 @@ namespace DDD.Core.Infrastructure.Data
         public void Handle_WhenCalled_DoesNotThrowException()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("ExcludeFailedEventStream");
-            var handler = new FailedEventStreamCreator<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("ExcludeFailedEventStream");
+            var handler = new FailedEventStreamCreator<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             // Act
             Action handle = () => handler.Handle(command);
@@ -48,8 +49,8 @@ namespace DDD.Core.Infrastructure.Data
         public async Task HandleAsync_WhenCalled_DoesNotThrowException()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("ExcludeFailedEventStream");
-            var handler = new FailedEventStreamCreator<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("ExcludeFailedEventStream");
+            var handler = new FailedEventStreamCreator<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             // Act
             Func<Task> handle = async () => await handler.HandleAsync(command);
@@ -59,7 +60,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Dispose()
         {
-            this.ConnectionProvider.Dispose();
+            ConnectionProvider.Dispose();
         }
 
         private static ExcludeFailedEventStream CreateCommand()
@@ -68,7 +69,7 @@ namespace DDD.Core.Infrastructure.Data
             {
                 StreamId = "2",
                 StreamType = "MessageBox",
-                StreamSource = "COL",                                                                    
+                StreamSource = "COL",
                 StreamPosition = new Guid("0a77707a-c147-9e1b-883a-08da0e368663"),
                 EventId = new Guid("e10add4d-1851-7ede-883b-08da0e368663"),
                 EventType = "DDD.Collaboration.Domain.Messages.MessageBoxCreated, DDD.Collaboration.Messages",
@@ -81,7 +82,7 @@ namespace DDD.Core.Infrastructure.Data
                 BaseExceptionMessage = "Format not supported.",
                 RetryCount = 0,
                 RetryMax = 5,
-                RetryDelays = new []
+                RetryDelays = new[]
                 {
                     new IncrementalDelay{ Delay = 10 },
                     new IncrementalDelay{ Delay = 60 },

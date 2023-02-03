@@ -6,17 +6,18 @@ using Xunit;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using Domain;
 
-    public abstract class EventStreamSubscriberTests<TFixture> : IDisposable
+    public abstract class FailedEventStreamIncluderTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
     {
 
         #region Constructors
 
-        protected EventStreamSubscriberTests(TFixture fixture)
+        protected FailedEventStreamIncluderTests(TFixture fixture)
         {
-            this.Fixture = fixture;
-            this.ConnectionProvider = fixture.CreateConnectionProvider();
+            Fixture = fixture;
+            ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
@@ -35,8 +36,8 @@ namespace DDD.Core.Infrastructure.Data
         public void Handle_WhenCalled_DoesNotThrowException()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("SubscribeToEventStream");
-            var handler = new EventStreamSubscriber<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("IncludeFailedEventStream");
+            var handler = new FailedEventStreamDeleter<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             // Act
             Action handle = () => handler.Handle(command);
@@ -48,8 +49,8 @@ namespace DDD.Core.Infrastructure.Data
         public async Task HandleAsync_WhenCalled_DoesNotThrowException()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("SubscribeToEventStream");
-            var handler = new EventStreamSubscriber<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("IncludeFailedEventStream");
+            var handler = new FailedEventStreamDeleter<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             // Act
             Func<Task> handle = async () => await handler.HandleAsync(command);
@@ -59,22 +60,20 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Dispose()
         {
-            this.ConnectionProvider.Dispose();
+            ConnectionProvider.Dispose();
         }
 
-        private static SubscribeToEventStream CreateCommand()
+        private static IncludeFailedEventStream CreateCommand()
         {
-            return new SubscribeToEventStream
+            return new IncludeFailedEventStream
             {
-                Type = "Message",
-                Source = "COL",
-                Position = Guid.Empty, 
-                RetryMax = 3,
-                RetryDelays = new [] { new IncrementalDelay { Delay = 60, Increment = 30 } },
-                BlockSize = 100
+                Id = "2",
+                Type = "MessageBox",
+                Source = "COL"
             };
         }
 
         #endregion Methods
+
     }
 }

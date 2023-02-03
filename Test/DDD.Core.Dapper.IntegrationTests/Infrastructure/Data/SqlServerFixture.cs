@@ -1,26 +1,27 @@
 ﻿using Dapper;
-using Oracle.ManagedDataAccess.Client;
 using System.Data;
+#if (NET6_0)
 using System.Data.Common;
+#endif
+using Microsoft.Data.SqlClient;
 using System.Configuration;
 
 namespace DDD.Core.Infrastructure.Data
 {
-    using Core.Application;
-    using Core.Domain;
-    using Core.Infrastructure.Serialization;
+    using Application;
+    using Domain;
+    using Serialization;
     using Mapping;
     using Testing;
 
-    public class OracleFixture : DbFixture<TestContext>, IPersistenceFixture
+    public class SqlServerFixture : DbFixture<TestContext>, IPersistenceFixture
     {
 
         #region Constructors
 
-        public OracleFixture() : base("OracleScripts", ConfigurationManager.ConnectionStrings["Oracle"])
+        public SqlServerFixture() : base("SqlServerScripts", ConfigurationManager.ConnectionStrings["SqlServer"])
         {
             SqlMapper.ResetTypeHandlers();
-            SqlMapper.AddTypeHandler(new OracleGuidTypeHandler());
             SqlMapper.AddTypeHandler(new IncrementalDelaysTypeMapper());
         }
 
@@ -35,31 +36,30 @@ namespace DDD.Core.Infrastructure.Data
 
         protected override void CreateDatabase()
         {
-            using (var connection = this.CreateConnection())
+            using (var connection = CreateConnection())
             {
-                var builder = new OracleConnectionStringBuilder(connection.ConnectionString) { UserID = "SYS", DBAPrivilege = "SYSDBA" };
+                var builder = new SqlConnectionStringBuilder(connection.ConnectionString) { InitialCatalog = "master" };
                 connection.ConnectionString = builder.ConnectionString;
                 connection.Open();
-                this.ExecuteScript(OracleScripts.CreateSchema, connection);
+                ExecuteScript(SqlServerScripts.CreateDatabase, connection);
             }
-            this.ExecuteScript(OracleScripts.FillSchema);
         }
 
         protected override int[] ExecuteScript(string script, IDbConnection connection)
         {
-            return connection.ExecuteScript(script, batchSeparator: "/");
+            return connection.ExecuteScript(script);
         }
 
         protected override void LoadConfiguration()
         {
 #if (NET6_0)
-            DbProviderFactories.RegisterFactory("Oracle.ManagedDataAccess.Client", OracleClientFactory.Instance);
+            DbProviderFactories.RegisterFactory("Microsoft.Data.SqlClient", SqlClientFactory.Instance);
 #endif
         }
 
         protected override string SetPooling(string connectionString, bool pooling)
         {
-            var builder = new OracleConnectionStringBuilder(connectionString) { Pooling = pooling };
+            var builder = new SqlConnectionStringBuilder(connectionString) { Pooling = pooling };
             return builder.ConnectionString;
         }
 
