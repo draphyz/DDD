@@ -5,6 +5,8 @@ using Xunit;
 
 namespace DDD.Core.Infrastructure.Data
 {
+    using Domain;
+
     public abstract class IDbConnectionExtensionsTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
     {
@@ -13,8 +15,8 @@ namespace DDD.Core.Infrastructure.Data
 
         protected IDbConnectionExtensionsTests(TFixture fixture)
         {
-            this.Fixture = fixture;
-            this.ConnectionProvider = fixture.CreateConnectionProvider();
+            Fixture = fixture;
+            ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
@@ -31,15 +33,15 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Dispose()
         {
-            this.ConnectionProvider.Dispose();
+            ConnectionProvider.Dispose();
         }
 
         [Fact]
         public void NextId_WhenExistingRows_ReturnsExpectedId()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("NextId_ExistingRows");
-            var connection = this.ConnectionProvider.GetOpenConnection();
+            Fixture.ExecuteScriptFromResources("NextId_ExistingRows");
+            var connection = ConnectionProvider.GetOpenConnection();
             // Act
             var id = connection.NextId("TableWithId", "Id");
             // Assert
@@ -50,8 +52,8 @@ namespace DDD.Core.Infrastructure.Data
         public void NextId_WhenNoRow_ReturnsExpectedId()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("NextId_NoRow");
-            var connection = this.ConnectionProvider.GetOpenConnection();
+            Fixture.ExecuteScriptFromResources("NextId_NoRow");
+            var connection = ConnectionProvider.GetOpenConnection();
             // Act
             var id = connection.NextId("TableWithId", "Id");
             // Assert
@@ -62,8 +64,8 @@ namespace DDD.Core.Infrastructure.Data
         public async Task NextIdAsync_WhenExistingRows_ReturnsExpectedId()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("NextId_ExistingRows");
-            var connection = await this.ConnectionProvider.GetOpenConnectionAsync();
+            Fixture.ExecuteScriptFromResources("NextId_ExistingRows");
+            var connection = await ConnectionProvider.GetOpenConnectionAsync();
             // Act
             var id = await connection.NextIdAsync("TableWithId", "Id");
             // Assert
@@ -74,8 +76,8 @@ namespace DDD.Core.Infrastructure.Data
         public async Task NextIdAsync_WhenNoRow_ReturnsExpectedId()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("NextId_NoRow");
-            var connection = await this.ConnectionProvider.GetOpenConnectionAsync();
+            Fixture.ExecuteScriptFromResources("NextId_NoRow");
+            var connection = await ConnectionProvider.GetOpenConnectionAsync();
             // Act
             var id = await connection.NextIdAsync("TableWithId", "Id");
             // Assert

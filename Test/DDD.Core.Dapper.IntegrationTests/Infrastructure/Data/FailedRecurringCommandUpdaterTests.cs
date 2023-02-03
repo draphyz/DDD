@@ -2,12 +2,13 @@
 using Dapper;
 using System;
 using System.Threading.Tasks;
+using System.Data.Common;
 using Xunit;
 
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
-    using System.Data.Common;
+    using Domain;
 
     public abstract class FailedRecurringCommandUpdaterTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
@@ -17,8 +18,8 @@ namespace DDD.Core.Infrastructure.Data
 
         protected FailedRecurringCommandUpdaterTests(TFixture fixture)
         {
-            this.Fixture = fixture;
-            this.ConnectionProvider = fixture.CreateConnectionProvider();
+            Fixture = fixture;
+            ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
@@ -37,8 +38,8 @@ namespace DDD.Core.Infrastructure.Data
         public void Handle_WhenCalled_UpdatesCommand()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("MarkRecurringCommandAsFailed");
-            var handler = new FailedRecurringCommandUpdater<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("MarkRecurringCommandAsFailed");
+            var handler = new FailedRecurringCommandUpdater<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             var expectedCommand = ExpectedCommand();
             // Act
@@ -51,8 +52,8 @@ namespace DDD.Core.Infrastructure.Data
         public async Task HandleAsync_WhenCalled_UpdatesCommand()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("MarkRecurringCommandAsFailed");
-            var handler = new FailedRecurringCommandUpdater<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("MarkRecurringCommandAsFailed");
+            var handler = new FailedRecurringCommandUpdater<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             var expectedCommand = ExpectedCommand();
             // Act
@@ -64,7 +65,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Dispose()
         {
-            this.ConnectionProvider.Dispose();
+            ConnectionProvider.Dispose();
         }
 
         private static MarkRecurringCommandAsFailed CreateCommand()
@@ -79,7 +80,7 @@ namespace DDD.Core.Infrastructure.Data
 
         private RecurringCommandDetail UpdatedCommand()
         {
-            using (var connection = this.Fixture.CreateConnection())
+            using (var connection = Fixture.CreateConnection())
             {
                 connection.Open();
                 var sql = "SELECT CommandId, CommandType, Body, BodyFormat, RecurringExpression, LastExecutionTime, CASE LastExecutionStatus WHEN 'F' THEN 'Failed' WHEN 'S' THEN 'Successful' END LastExecutionStatus, LastExceptionInfo FROM Command WHERE CommandId = @CommandId";
@@ -104,7 +105,7 @@ namespace DDD.Core.Infrastructure.Data
                 CommandType = "DDD.Core.Application.FakeCommand1, DDD.Core.Messages",
                 Body = "{\"Property1\":\"dummy\",\"Property2\":10}",
                 BodyFormat = "JSON",
-                RecurringExpression = "* * * * *", 
+                RecurringExpression = "* * * * *",
                 LastExecutionTime = new DateTime(2022, 1, 1),
                 LastExecutionStatus = CommandExecutionStatus.Failed,
                 LastExceptionInfo = "System.TimeoutException: The operation has timed-out."

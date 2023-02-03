@@ -7,6 +7,7 @@ using Xunit;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using Domain;
 
     public abstract class RecurringCommandsFinderTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
@@ -16,8 +17,8 @@ namespace DDD.Core.Infrastructure.Data
 
         protected RecurringCommandsFinderTests(TFixture fixture)
         {
-            this.Fixture = fixture;
-            this.ConnectionProvider = fixture.CreateConnectionProvider();
+            Fixture = fixture;
+            ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
@@ -36,10 +37,10 @@ namespace DDD.Core.Infrastructure.Data
         public void Handle_WhenCalled_ReturnsExpectedResults()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("FindRecurringCommands");
+            Fixture.ExecuteScriptFromResources("FindRecurringCommands");
             var query = new FindRecurringCommands();
             var expectedResults = ExpectedResults();
-            var handler = new RecurringCommandsFinder<TestContext>(this.ConnectionProvider);
+            var handler = new RecurringCommandsFinder<TestContext>(ConnectionProvider);
             // Act
             var results = handler.Handle(query);
             // Assert
@@ -50,10 +51,10 @@ namespace DDD.Core.Infrastructure.Data
         public async Task HandleAsync_WhenCalled_ReturnsExpectedResults()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("FindRecurringCommands");
+            Fixture.ExecuteScriptFromResources("FindRecurringCommands");
             var query = new FindRecurringCommands();
             var expectedResults = ExpectedResults();
-            var handler = new RecurringCommandsFinder<TestContext>(this.ConnectionProvider);
+            var handler = new RecurringCommandsFinder<TestContext>(ConnectionProvider);
             // Act
             var results = await handler.HandleAsync(query);
             // Assert
@@ -62,7 +63,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Dispose()
         {
-            this.ConnectionProvider.Dispose();
+            ConnectionProvider.Dispose();
         }
 
         protected abstract IEnumerable<RecurringCommand> ExpectedResults();

@@ -7,6 +7,7 @@ using Xunit;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using Domain;
 
     public abstract class EventStreamsFinderTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
@@ -16,8 +17,8 @@ namespace DDD.Core.Infrastructure.Data
 
         protected EventStreamsFinderTests(TFixture fixture)
         {
-            this.Fixture = fixture;
-            this.ConnectionProvider = fixture.CreateConnectionProvider();
+            Fixture = fixture;
+            ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
@@ -38,8 +39,8 @@ namespace DDD.Core.Infrastructure.Data
             // Arrange
             var query = new FindEventStreams();
             var expectedResults = ExpectedResults();
-            this.Fixture.ExecuteScriptFromResources("FindEventStreams");
-            var handler = new EventStreamsFinder<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("FindEventStreams");
+            var handler = new EventStreamsFinder<TestContext>(ConnectionProvider);
             // Act
             var results = handler.Handle(query);
             // Assert
@@ -52,8 +53,8 @@ namespace DDD.Core.Infrastructure.Data
             // Arrange
             var query = new FindEventStreams();
             var expectedResults = ExpectedResults();
-            this.Fixture.ExecuteScriptFromResources("FindEventStreams");
-            var handler = new EventStreamsFinder<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("FindEventStreams");
+            var handler = new EventStreamsFinder<TestContext>(ConnectionProvider);
             // Act
             var results = await handler.HandleAsync(query);
             // Assert
@@ -62,7 +63,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Dispose()
         {
-            this.ConnectionProvider.Dispose();
+            ConnectionProvider.Dispose();
         }
 
         private static IEnumerable<EventStream> ExpectedResults()

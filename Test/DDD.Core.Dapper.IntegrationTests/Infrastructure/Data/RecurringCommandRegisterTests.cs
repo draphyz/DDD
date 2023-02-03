@@ -8,6 +8,7 @@ using Xunit;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using Domain;
 
     public abstract class RecurringCommandRegisterTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
@@ -17,8 +18,8 @@ namespace DDD.Core.Infrastructure.Data
 
         protected RecurringCommandRegisterTests(TFixture fixture)
         {
-            this.Fixture = fixture;
-            this.ConnectionProvider = fixture.CreateConnectionProvider();
+            Fixture = fixture;
+            ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
@@ -37,8 +38,8 @@ namespace DDD.Core.Infrastructure.Data
         public void Handle_WhenCalled_RegistersCommand()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("RegisterRecurringCommand");
-            var handler = new RecurringCommandRegister<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("RegisterRecurringCommand");
+            var handler = new RecurringCommandRegister<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             var expectedCommands = ExpectedCommands();
             // Act
@@ -51,8 +52,8 @@ namespace DDD.Core.Infrastructure.Data
         public async Task HandleAsync_WhenCalled_RegistersCommand()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("RegisterRecurringCommand");
-            var handler = new RecurringCommandRegister<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("RegisterRecurringCommand");
+            var handler = new RecurringCommandRegister<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             var expectedCommands = ExpectedCommands();
             // Act
@@ -63,7 +64,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Dispose()
         {
-            this.ConnectionProvider.Dispose();
+            ConnectionProvider.Dispose();
         }
 
         private static RegisterRecurringCommand CreateCommand()
@@ -80,7 +81,7 @@ namespace DDD.Core.Infrastructure.Data
 
         private IEnumerable<RecurringCommand> RegistredCommands()
         {
-            using (var connection = this.Fixture.CreateConnection())
+            using (var connection = Fixture.CreateConnection())
             {
                 connection.Open();
                 return connection.Query<RecurringCommand>("SELECT CommandId, CommandType, Body, BodyFormat, RecurringExpression FROM Command");

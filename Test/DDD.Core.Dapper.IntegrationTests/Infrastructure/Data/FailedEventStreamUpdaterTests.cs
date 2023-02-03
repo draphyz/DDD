@@ -6,6 +6,7 @@ using Xunit;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using Domain;
 
     public abstract class FailedEventStreamUpdaterTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
@@ -15,8 +16,8 @@ namespace DDD.Core.Infrastructure.Data
 
         protected FailedEventStreamUpdaterTests(TFixture fixture)
         {
-            this.Fixture = fixture;
-            this.ConnectionProvider = fixture.CreateConnectionProvider();
+            Fixture = fixture;
+            ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
@@ -35,8 +36,8 @@ namespace DDD.Core.Infrastructure.Data
         public void Handle_WhenCalled_DoesNotThrowException()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("UpdateFailedEventStream");
-            var handler = new FailedEventStreamUpdater<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("UpdateFailedEventStream");
+            var handler = new FailedEventStreamUpdater<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             // Act
             Action handle = () => handler.Handle(command);
@@ -48,8 +49,8 @@ namespace DDD.Core.Infrastructure.Data
         public async Task HandleAsync_WhenCalled_DoesNotThrowException()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("UpdateFailedEventStream");
-            var handler = new FailedEventStreamUpdater<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("UpdateFailedEventStream");
+            var handler = new FailedEventStreamUpdater<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             // Act
             Func<Task> handle = async () => await handler.HandleAsync(command);
@@ -59,7 +60,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Dispose()
         {
-            this.ConnectionProvider.Dispose();
+            ConnectionProvider.Dispose();
         }
 
         private static UpdateFailedEventStream CreateCommand()
@@ -81,7 +82,7 @@ namespace DDD.Core.Infrastructure.Data
                 BaseExceptionMessage = "The method or operation is not implemented.",
                 RetryCount = 1,
                 RetryMax = 5,
-                RetryDelays = new []
+                RetryDelays = new[]
                 {
                     new IncrementalDelay{ Delay = 10 },
                     new IncrementalDelay{ Delay = 60 },

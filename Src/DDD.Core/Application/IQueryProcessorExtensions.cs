@@ -13,7 +13,7 @@ namespace DDD.Core.Application
         public static IContextualQueryProcessor<TContext> In<TContext>(this IQueryProcessor processor) where TContext : BoundedContext, new()
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
-            return processor.In<TContext>(new TContext());
+            return processor.In(new TContext());
         }
 
         public static TResult Process<TResult>(this IQueryProcessor processor,

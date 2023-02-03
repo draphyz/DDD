@@ -15,7 +15,7 @@ namespace DDD.Core.Application
         public static IContextualCommandProcessor<TContext> In<TContext>(this ICommandProcessor processor) where TContext : BoundedContext, new()
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
-            return processor.In<TContext>(new TContext());
+            return processor.In(new TContext());
         }
 
         public static void Process<TCommand>(this ICommandProcessor processor,

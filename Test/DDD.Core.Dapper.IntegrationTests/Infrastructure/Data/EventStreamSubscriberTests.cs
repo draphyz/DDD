@@ -6,17 +6,18 @@ using Xunit;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using Domain;
 
-    public abstract class EventStreamPositionUpdaterTests<TFixture> : IDisposable
+    public abstract class EventStreamSubscriberTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
     {
 
         #region Constructors
 
-        protected EventStreamPositionUpdaterTests(TFixture fixture)
+        protected EventStreamSubscriberTests(TFixture fixture)
         {
-            this.Fixture = fixture;
-            this.ConnectionProvider = fixture.CreateConnectionProvider();
+            Fixture = fixture;
+            ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
@@ -31,17 +32,12 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public void Dispose()
-        {
-            this.ConnectionProvider.Dispose();
-        }
-
         [Fact]
         public void Handle_WhenCalled_DoesNotThrowException()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("UpdateEventStreamPosition");
-            var handler = new EventStreamPositionUpdater<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("SubscribeToEventStream");
+            var handler = new EventStreamSubscriber<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             // Act
             Action handle = () => handler.Handle(command);
@@ -53,8 +49,8 @@ namespace DDD.Core.Infrastructure.Data
         public async Task HandleAsync_WhenCalled_DoesNotThrowException()
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("UpdateEventStreamPosition");
-            var handler = new EventStreamPositionUpdater<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("SubscribeToEventStream");
+            var handler = new EventStreamSubscriber<TestContext>(ConnectionProvider);
             var command = CreateCommand();
             // Act
             Func<Task> handle = async () => await handler.HandleAsync(command);
@@ -62,17 +58,24 @@ namespace DDD.Core.Infrastructure.Data
             await handle.Should().NotThrowAsync();
         }
 
-        private static UpdateEventStreamPosition CreateCommand()
+        public void Dispose()
         {
-            return new UpdateEventStreamPosition
+            ConnectionProvider.Dispose();
+        }
+
+        private static SubscribeToEventStream CreateCommand()
+        {
+            return new SubscribeToEventStream
             {
-                Type = "Person",
-                Source = "ID",
-                Position = new Guid("f7df5bd0-8763-677e-7e6b-3a0044746810")
+                Type = "Message",
+                Source = "COL",
+                Position = Guid.Empty,
+                RetryMax = 3,
+                RetryDelays = new[] { new IncrementalDelay { Delay = 60, Increment = 30 } },
+                BlockSize = 100
             };
         }
 
         #endregion Methods
-
     }
 }

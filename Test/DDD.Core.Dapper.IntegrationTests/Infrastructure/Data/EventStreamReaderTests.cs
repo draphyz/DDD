@@ -7,6 +7,7 @@ using Xunit;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
+    using Domain;
 
     public abstract class EventStreamReaderTests<TFixture> : IDisposable
         where TFixture : IPersistenceFixture
@@ -16,8 +17,8 @@ namespace DDD.Core.Infrastructure.Data
 
         protected EventStreamReaderTests(TFixture fixture)
         {
-            this.Fixture = fixture;
-            this.ConnectionProvider = fixture.CreateConnectionProvider();
+            Fixture = fixture;
+            ConnectionProvider = fixture.CreateConnectionProvider();
         }
 
         #endregion Constructors
@@ -163,8 +164,8 @@ namespace DDD.Core.Infrastructure.Data
         public void Handle_WhenCalled_ReturnsExpectedResults_1(ReadEventStream query, IEnumerable<Event> expectedResults)
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("ReadEventStream");
-            var handler = new EventStreamReader<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("ReadEventStream");
+            var handler = new EventStreamReader<TestContext>(ConnectionProvider);
             // Act
             var results = handler.Handle(query);
             // Assert
@@ -177,8 +178,8 @@ namespace DDD.Core.Infrastructure.Data
         public async Task HandleAsync_WhenCalled_ReturnsExpectedResults_1(ReadEventStream query, IEnumerable<Event> expectedResults)
         {
             // Arrange
-            this.Fixture.ExecuteScriptFromResources("ReadEventStream");
-            var handler = new EventStreamReader<TestContext>(this.ConnectionProvider);
+            Fixture.ExecuteScriptFromResources("ReadEventStream");
+            var handler = new EventStreamReader<TestContext>(ConnectionProvider);
             // Act
             var results = await handler.HandleAsync(query);
             // Assert
@@ -188,7 +189,7 @@ namespace DDD.Core.Infrastructure.Data
 
         public void Dispose()
         {
-            this.ConnectionProvider.Dispose();
+            ConnectionProvider.Dispose();
         }
 
         #endregion Methods

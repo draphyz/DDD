@@ -1,7 +1,5 @@
-﻿namespace DDD.Core.Application
+﻿namespace DDD.Core.Domain
 {
-    using Domain;
-
     public class FakeSourceContext : BoundedContext
     {
         #region Constructors
@@ -9,7 +7,6 @@
         public FakeSourceContext() : base("FKS", "FakeSource") { }
 
         #endregion Constructors
-
 
     }
 }

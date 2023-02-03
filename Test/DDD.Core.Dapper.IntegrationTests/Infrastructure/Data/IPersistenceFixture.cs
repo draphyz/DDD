@@ -3,6 +3,7 @@
     using Core.Application;
     using Core.Domain;
     using Core.Infrastructure.Testing;
+    using Domain;
     using Mapping;
 
     public interface IPersistenceFixture : IDbFixture<TestContext>
