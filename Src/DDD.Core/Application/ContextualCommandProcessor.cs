@@ -1,11 +1,10 @@
 ﻿using EnsureThat;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
-    using DDD.Core.Domain;
+    using Domain;
 
     /// <summary>
     /// The command processor for processing generic commands in a specific bounded context. 

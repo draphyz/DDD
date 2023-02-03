@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-
-namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
+﻿namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
     using Mapping;
     using Core.Domain;

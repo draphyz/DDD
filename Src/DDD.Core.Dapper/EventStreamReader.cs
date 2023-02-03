@@ -9,7 +9,7 @@ using EnsureThat;
 namespace DDD.Core.Infrastructure.Data
 {
     using Application;
-    using DDD.Core.Domain;
+    using Domain;
     using Mapping;
     using Threading;
 

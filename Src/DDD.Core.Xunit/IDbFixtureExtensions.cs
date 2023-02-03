@@ -5,8 +5,7 @@ using System.Threading;
 
 namespace DDD.Core.Infrastructure.Testing
 {
-    using Application;
-    using DDD.Core.Domain;
+    using Domain;
 
     public static class IDbFixtureExtensions
     {

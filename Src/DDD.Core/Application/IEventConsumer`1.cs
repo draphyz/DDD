@@ -1,7 +1,7 @@
-﻿using DDD.Core.Domain;
-
-namespace DDD.Core.Application
+﻿namespace DDD.Core.Application
 {
+    using Domain;
+
     public interface IEventConsumer<out TContext> : IEventConsumer
         where TContext : BoundedContext
     {

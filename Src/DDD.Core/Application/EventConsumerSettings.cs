@@ -1,9 +1,10 @@
 ﻿using EnsureThat;
-using DDD.Core.Domain;
 using System.Runtime.Serialization;
 
 namespace DDD.Core.Application
 {
+    using Domain;
+
     [DataContract()]
     public class EventConsumerSettings<TContext>
         where TContext : BoundedContext, new()

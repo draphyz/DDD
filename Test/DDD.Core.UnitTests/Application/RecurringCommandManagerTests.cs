@@ -12,7 +12,7 @@ namespace DDD.Core.Application
     using DependencyInjection;
     using Serialization;
     using Infrastructure.Testing;
-    using DDD.Core.Domain;
+    using Domain;
 
     public class RecurringCommandManagerTests : IDisposable
     {

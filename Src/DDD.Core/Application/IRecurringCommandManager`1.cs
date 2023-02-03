@@ -1,7 +1,7 @@
-﻿using DDD.Core.Domain;
-
-namespace DDD.Core.Application
+﻿namespace DDD.Core.Application
 {
+    using Domain;
+
     /// <summary>
     /// Represents a component that registers, schedules and processes recurring commands in a specific bounded context.
     /// </summary>

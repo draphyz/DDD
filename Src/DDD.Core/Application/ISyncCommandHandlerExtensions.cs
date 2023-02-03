@@ -2,8 +2,6 @@
 
 namespace DDD.Core.Application
 {
-    using Collections;
-
     public static class ISyncCommandHandlerExtensions
     {
 

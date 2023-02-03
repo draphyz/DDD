@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace DDD.Core.Infrastructure.ErrorHandling
 {
     using Application;
-    using DDD.Core.Domain;
+    using Domain;
 
     /// <summary>
     /// A decorator that applies a resilience policy to the asynchronous execution of a query.

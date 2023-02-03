@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DDD.Core.Domain
+﻿namespace DDD.Core.Domain
 {
     /// <summary>
     /// Defines a component to find and save synchronously an aggregate.

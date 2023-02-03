@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using NHibernate;
-using System.Linq;
 
 namespace DDD.Core.Infrastructure.Data
 {

@@ -1,5 +1,4 @@
-﻿using DDD.Common.Domain;
-using FluentAssertions;
+﻿using FluentAssertions;
 using System;
 using System.Collections.Generic;
 using Xunit;

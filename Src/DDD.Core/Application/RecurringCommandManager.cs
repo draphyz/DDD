@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DDD.Core.Application
 {
-    using DDD.Core.Domain;
+    using Domain;
     using DependencyInjection;
     using Serialization;
     using Threading;

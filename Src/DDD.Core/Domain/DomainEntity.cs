@@ -1,12 +1,9 @@
 ﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DDD.Core.Domain
 {
-    using Collections;
-
     /// <summary>
     /// Base class for entities of the Domain Model.
     /// </summary>

@@ -1,12 +1,10 @@
 ﻿using EnsureThat;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
-    using DDD.Core.Domain;
-    using Validation;
+    using Domain;
 
     /// <summary>
     /// The query processor for processing and validating generic queries in a specific bounded context.  

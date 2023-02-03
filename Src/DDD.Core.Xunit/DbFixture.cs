@@ -10,8 +10,7 @@ using System.Data.Common;
 namespace DDD.Core.Infrastructure.Testing
 {
     using Data;
-    using Application;
-    using DDD.Core.Domain;
+    using Domain;
 
     public abstract class DbFixture<TContext> : IDbFixture<TContext>
         where TContext : BoundedContext, new()

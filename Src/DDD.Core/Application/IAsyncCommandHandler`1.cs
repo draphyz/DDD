@@ -1,7 +1,7 @@
-﻿using DDD.Core.Domain;
-
-namespace DDD.Core.Application
+﻿namespace DDD.Core.Application
 {
+    using Domain;
+
     /// <summary>
     /// Defines a method that handles asynchronously a command of a specified type in a specific bounded context.
     /// </summary>

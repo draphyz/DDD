@@ -1,8 +1,5 @@
 ﻿using NHibernate;
 using NHibernate.Mapping.ByCode.Conformist;
-using NHibernate.Mapping.ByCode;
-using DDD.Serialization;
-using NHibernate.Type;
 
 namespace DDD.Core.Infrastructure.Data
 {

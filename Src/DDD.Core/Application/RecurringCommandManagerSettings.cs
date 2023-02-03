@@ -2,7 +2,7 @@
 
 namespace DDD.Core.Application
 {
-    using DDD.Core.Domain;
+    using Domain;
     using Serialization;
 
     [DataContract()]
