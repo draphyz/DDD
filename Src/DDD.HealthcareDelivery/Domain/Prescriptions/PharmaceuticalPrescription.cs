@@ -42,6 +42,7 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         {
             Ensure.That(prescribedMedications, nameof(prescribedMedications)).IsNotNull();
             Ensure.Enumerable.HasItems(prescribedMedications, nameof(prescribedMedications));
+            Ensure.Enumerable.HasNoNull(prescribedMedications, nameof(prescribedMedications));
             this.prescribedMedications.AddRange(prescribedMedications);
         }
 
