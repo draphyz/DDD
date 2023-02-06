@@ -3,11 +3,14 @@ using EnsureThat.Enforcers;
 
 namespace DDD
 {
-    public static partial class StringArgExtensions
+    public static class StringArgExtensions
     {
 
         #region Methods
 
+        /// <summary>
+        /// Ensures that the string has a minimum length.
+        /// </summary>
         public static string HasMinLength(this StringArg _, string value, int minLength, string paramName = null, OptsFn optsFn = null)
         {
             Ensure.Any.IsNotNull(value, paramName, optsFn);
@@ -21,6 +24,9 @@ namespace DDD
             return value;
         }
 
+        /// <summary>
+        /// Ensures that the string contains only digits.
+        /// </summary>
         public static string IsAllDigits(this StringArg _, string value, string paramName = null, OptsFn optsFn = null)
         {
             Ensure.Any.IsNotNull(value, paramName, optsFn);
@@ -35,6 +41,9 @@ namespace DDD
             return value;
         }
 
+        /// <summary>
+        /// Ensures that the string contains only letters.
+        /// </summary>
         public static string IsAllLetters(this StringArg _, string value, string paramName = null, OptsFn optsFn = null)
         {
             Ensure.Any.IsNotNull(value, paramName, optsFn);
