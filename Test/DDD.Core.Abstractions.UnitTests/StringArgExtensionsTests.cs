@@ -115,6 +115,42 @@ namespace DDD
             isAllLetters.Should().NotThrow();
         }
 
+        [Fact]
+        public void Satisfy_WhenConditionNotSatisfied_ThrowsArgumentException()
+        {
+            // Arrange
+            var value = "BE115";
+            Func<string, bool> predicate = s => s.StartsWith("BE") && s.EndsWith("16");
+            // Act
+            Action satisfy = () => Ensure.String.Satisfy(value, predicate, nameof(value));
+            // Assert
+            satisfy.Should().ThrowExactly<ArgumentException>();
+        }
+
+        [Fact]
+        public void Satisfy_WhenConditionNull_DoesNotThrow()
+        {
+            // Arrange
+            var value = "BE115";
+            Func<string, bool> predicate = null;
+            // Act
+            Action satisfy = () => Ensure.String.Satisfy(value, predicate, nameof(value));
+            // Assert
+            satisfy.Should().NotThrow();
+        }
+
+        [Fact]
+        public void Satisfy_WhenConditionSatisfied_DoesNotThrow()
+        {
+            // Arrange
+            var value = "BE116";
+            Func<string, bool> predicate = s => s.StartsWith("BE") && s.EndsWith("16");
+            // Act
+            Action satisfy = () => Ensure.String.Satisfy(value, predicate, nameof(value));
+            // Assert
+            satisfy.Should().NotThrow();
+        }
+
         #endregion Methods
 
     }

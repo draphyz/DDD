@@ -1,5 +1,6 @@
 ﻿using EnsureThat;
 using EnsureThat.Enforcers;
+using System;
 
 namespace DDD
 {
@@ -58,8 +59,16 @@ namespace DDD
             return value;
         }
 
-        #endregion Methods
+        /// <summary>
+        /// Ensures that the string satisfies the specified condition.
+        /// </summary>
+        public static string Satisfy(this StringArg _, string value, Func<string, bool> predicate, string paramName = null, OptsFn optsFn = null)
+        {
+            Ensure.Any.Satisfy(value, predicate, paramName, optsFn);
+            return value;
+        }
 
+        #endregion Methods
 
     }
 }
