@@ -24,6 +24,11 @@ namespace DDD.Core.Infrastructure.DependencyInjection
             return provider.GetService(name);
         }
 
+        public static void RegisterBoundedContexts(this Container container, IEnumerable<Assembly> assemblies)
+        {
+            container.Collection.Register<BoundedContext>(assemblies, Lifestyle.Singleton);
+        }
+
         public static void RegisterCommandProcessors(this Container container)
         {
             Ensure.That(container, nameof(container)).IsNotNull();
@@ -126,8 +131,8 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         public static void RegisterRepositories(this Container container, IEnumerable<Assembly> assemblies, Func<Type, bool> predicate)
         {
             Ensure.That(container, nameof(container)).IsNotNull();
-            container.RegisterConditional(typeof(ISyncRepository<,>), assemblies, predicate);
-            container.RegisterConditional(typeof(IAsyncRepository<,>), assemblies, predicate);
+            container.RegisterConditional(typeof(ISyncRepository<,>), assemblies, Lifestyle.Scoped, predicate);
+            container.RegisterConditional(typeof(IAsyncRepository<,>), assemblies, Lifestyle.Scoped, predicate);
         }
 
         public static void RegisterConditional<TService>(this Container container, Func<TService> instanceCreator, Lifestyle lifestyle, Predicate<PredicateContext> predicate)
