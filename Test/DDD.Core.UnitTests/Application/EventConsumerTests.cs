@@ -385,7 +385,7 @@ namespace DDD.Core.Application
             var eventSerializers = FakeEventSerializers();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            consumer = new EventConsumer<FakeContext>(commandProcessor, queryProcessor, eventPublisher,boundedContexts, eventSerializers, logger, settings);
+            consumer = new EventConsumer<FakeContext>(commandProcessor, queryProcessor, eventPublisher, boundedContexts, eventSerializers, logger, settings);
             // Act
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
@@ -466,11 +466,11 @@ namespace DDD.Core.Application
             };
         }
 
-        private static IEventPublisher FakeEventPublisher() => Substitute.For<IEventPublisher>();
+        private static IEventPublisher<FakeContext> FakeEventPublisher() => Substitute.For<IEventPublisher<FakeContext>>();
 
-        private static IEventPublisher FakeEventPublisherThrowingException(Exception exception)
+        private static IEventPublisher<FakeContext> FakeEventPublisherThrowingException(Exception exception)
         {
-            var eventPublisher = Substitute.For<IEventPublisher>();
+            var eventPublisher = Substitute.For<IEventPublisher<FakeContext>>();
             eventPublisher.When(p => p.PublishAsync(Arg.Any<IEvent>(), Arg.Any<IMessageContext>()))
                           .Throw(exception);
             return eventPublisher;

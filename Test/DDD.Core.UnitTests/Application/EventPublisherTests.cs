@@ -14,17 +14,17 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public static IEnumerable<object[]> HandlersOfOtherEventsThanThisEvent()
+        public static IEnumerable<object[]> HandlersOfOtherEventsOrContexts()
         {
-            var fakeHandler1 = FakeHandler<FakeEvent1>();
-            var fakeHandler2 = FakeHandler<FakeEvent2>();
-            var fakeHandler3 = FakeHandler<FakeEvent3>();
-            var fakeHandler4 = FakeHandler<FakeEvent3>();
+            var fakeHandler1 = FakeHandler<FakeEvent1, FakeContext>();
+            var fakeHandler2 = FakeHandler<FakeEvent2, FakeContext>();
+            var fakeHandler3 = FakeHandler<FakeEvent3, FakeContext>();
+            var fakeHandler4 = FakeHandler<FakeEvent1, FakeSourceContext>();
             var container = new Container();
-            container.Collection.Register(fakeHandler1);
-            container.Collection.Register(fakeHandler2);
-            container.Collection.Register(fakeHandler3, fakeHandler4);
-            var publisher = new EventPublisher(container);
+            container.RegisterInstance(fakeHandler1);
+            container.RegisterInstance(fakeHandler2);
+            container.RegisterInstance(fakeHandler3);
+            var publisher = new EventPublisher<FakeContext>(container);
             yield return new object[]
             {
                 publisher,
@@ -35,68 +35,68 @@ namespace DDD.Core.Application
             {
                 publisher,
                 new FakeEvent2(),
-                new IAsyncEventHandler[] { fakeHandler3, fakeHandler4 }
+                new IAsyncEventHandler[] { fakeHandler1, fakeHandler3, fakeHandler4 }
             };
             yield return new object[]
             {
                 publisher,
                 new FakeEvent3(),
-                new IAsyncEventHandler[] { fakeHandler1, fakeHandler2 }
+                new IAsyncEventHandler[] { fakeHandler1, fakeHandler2, fakeHandler4 }
             };
         }
 
-        public static IEnumerable<object[]> HandlersOfThisEvent()
+        public static IEnumerable<object[]> HandlerOfThisEventAndThisContext()
         {
-            var fakeHandler1 = FakeHandler<FakeEvent1>();
-            var fakeHandler2 = FakeHandler<FakeEvent2>();
-            var fakeHandler3 = FakeHandler<FakeEvent3>();
-            var fakeHandler4 = FakeHandler<FakeEvent3>();
+            var fakeHandler1 = FakeHandler<FakeEvent1, FakeContext>();
+            var fakeHandler2 = FakeHandler<FakeEvent2, FakeContext>();
+            var fakeHandler3 = FakeHandler<FakeEvent3, FakeContext>();
+            var fakeHandler4 = FakeHandler<FakeEvent1, FakeSourceContext>();
             var container = new Container();
-            container.Collection.Register(fakeHandler1);
-            container.Collection.Register(fakeHandler2);
-            container.Collection.Register(fakeHandler3, fakeHandler4);
-            var publisher = new EventPublisher(container);
+            container.RegisterInstance(fakeHandler1);
+            container.RegisterInstance(fakeHandler2);
+            container.RegisterInstance(fakeHandler3);
+            var publisher = new EventPublisher<FakeContext>(container);
             yield return new object[]
             {
                 publisher,
                 new FakeEvent1(),
-                new IAsyncEventHandler[] { fakeHandler1 }
+                fakeHandler1
             };
             yield return new object[]
             {
                 publisher,
                 new FakeEvent2(),
-                new IAsyncEventHandler[] { fakeHandler1, fakeHandler2 }
+                fakeHandler2
             };
             yield return new object[]
             {
                 publisher,
                 new FakeEvent3(),
-                new IAsyncEventHandler[] { fakeHandler3, fakeHandler4 }
+                fakeHandler3
             };
         }
 
 
         [Theory]
-        [MemberData(nameof(HandlersOfThisEvent))]
-        public async Task PublishAsync_WhenCalled_CallsHandlersOfThisEvent(EventPublisher publisher,
-                                                                           IEvent @event,
-                                                                           IEnumerable<IAsyncEventHandler> handlersOfThisEvent)
+        [MemberData(nameof(HandlerOfThisEventAndThisContext))]
+        public async Task PublishAsync_WhenCalled_CallsHandlerOfThisEventAndThisContext(EventPublisher<FakeContext> publisher,
+                                                                                        IEvent @event,
+                                                                                        IAsyncEventHandler handlerOfThisEvent)
         {
             // Arrange
-            handlersOfThisEvent.ForEach(s => s.ClearReceivedCalls());
+            handlerOfThisEvent.ClearReceivedCalls();
             // Act
             await publisher.PublishAsync(@event);
             // Assert
-            Assert.All(handlersOfThisEvent, s => s.Received(1).HandleAsync(@event));
+            await handlerOfThisEvent.Received(1).HandleAsync(@event);
         }
 
 
         [Theory]
-        [MemberData(nameof(HandlersOfOtherEventsThanThisEvent))]
-        public async Task PublishAsync_WhenCalled_DoesNotCallHandlersOfOtherEvents(EventPublisher publisher,
-                                                                                   IEvent @event,
-                                                                                   IEnumerable<IAsyncEventHandler> handlersOfOtherEvents)
+        [MemberData(nameof(HandlersOfOtherEventsOrContexts))]
+        public async Task PublishAsync_WhenCalled_DoesNotCallHandlersOfOtherEventsOrContexts(EventPublisher<FakeContext> publisher,
+                                                                                             IEvent @event,
+                                                                                             IEnumerable<IAsyncEventHandler> handlersOfOtherEvents)
         {
             // Arrange
             handlersOfOtherEvents.ForEach(s => s.ClearReceivedCalls());
@@ -106,10 +106,13 @@ namespace DDD.Core.Application
             Assert.All(handlersOfOtherEvents, s => s.DidNotReceive().HandleAsync(Arg.Any<IEvent>()));
         }
 
-        private static IAsyncEventHandler<TEvent> FakeHandler<TEvent>() where TEvent : class, IEvent
+        private static IAsyncEventHandler<TEvent, TContext> FakeHandler<TEvent, TContext>()
+            where TEvent : class, IEvent
+            where TContext : BoundedContext, new()
         {
-            var fakeHandler = Substitute.For<IAsyncEventHandler<TEvent>>();
+            var fakeHandler = Substitute.For<IAsyncEventHandler<TEvent, TContext>>();
             fakeHandler.EventType.Returns(typeof(TEvent));
+            fakeHandler.Context.Returns(new TContext());
             return fakeHandler;
         }
 

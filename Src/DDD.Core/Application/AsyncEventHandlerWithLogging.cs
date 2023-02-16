@@ -11,20 +11,21 @@ namespace DDD.Core.Application
     /// <summary>
     /// A decorator that logs information about events.
     /// </summary>
-    public class AsyncEventHandlerWithLogging<TEvent> : IAsyncEventHandler<TEvent>
+    public class AsyncEventHandlerWithLogging<TEvent, TContext> : IAsyncEventHandler<TEvent, TContext>
         where TEvent : class, IEvent
+        where TContext : BoundedContext
     {
 
         #region Fields
 
-        private readonly IAsyncEventHandler<TEvent> eventHandler;
+        private readonly IAsyncEventHandler<TEvent, TContext> eventHandler;
         private readonly ILogger logger;
 
         #endregion Fields
 
         #region Constructors
 
-        public AsyncEventHandlerWithLogging(IAsyncEventHandler<TEvent> eventHandler, ILogger logger)
+        public AsyncEventHandlerWithLogging(IAsyncEventHandler<TEvent, TContext> eventHandler, ILogger logger)
         {
             Ensure.That(eventHandler, nameof(eventHandler)).IsNotNull();
             Ensure.That(logger, nameof(logger)).IsNotNull();
@@ -35,6 +36,10 @@ namespace DDD.Core.Application
         #endregion Constructors
 
         #region Properties
+
+        public TContext Context => eventHandler.Context;
+
+        BoundedContext IAsyncEventHandler.Context => this.Context;
 
         Type IAsyncEventHandler.EventType => this.eventHandler.EventType;
 

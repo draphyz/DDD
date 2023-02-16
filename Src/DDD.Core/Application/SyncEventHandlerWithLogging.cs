@@ -10,20 +10,21 @@ namespace DDD.Core.Application
     /// <summary>
     /// A decorator that logs information about events.
     /// </summary>
-    public class SyncEventHandlerWithLogging<TEvent> : ISyncEventHandler<TEvent>
+    public class SyncEventHandlerWithLogging<TEvent, TContext> : ISyncEventHandler<TEvent, TContext>
         where TEvent : class, IEvent
+        where TContext : BoundedContext
     {
 
         #region Fields
 
-        private readonly ISyncEventHandler<TEvent> eventHandler;
+        private readonly ISyncEventHandler<TEvent, TContext> eventHandler;
         private readonly ILogger logger;
 
         #endregion Fields
 
         #region Constructors
 
-        public SyncEventHandlerWithLogging(ISyncEventHandler<TEvent> eventHandler, ILogger logger)
+        public SyncEventHandlerWithLogging(ISyncEventHandler<TEvent, TContext> eventHandler, ILogger logger)
         {
             Ensure.That(eventHandler, nameof(eventHandler)).IsNotNull();
             Ensure.That(logger, nameof(logger)).IsNotNull();
@@ -34,6 +35,10 @@ namespace DDD.Core.Application
         #endregion Constructors
 
         #region Properties
+
+        public TContext Context => eventHandler.Context;
+
+        BoundedContext ISyncEventHandler.Context => this.Context;
 
         Type ISyncEventHandler.EventType => this.eventHandler.EventType;
 

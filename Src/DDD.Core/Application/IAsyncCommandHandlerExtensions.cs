@@ -18,27 +18,6 @@ namespace DDD.Core.Application
             return handler.HandleAsync(command, MessageContext.FromObject(context));
         }
 
-        public static async Task UpdateStreamPositionIfDefinedAsync(this IAsyncCommandHandler<UpdateEventStreamPosition> handler, IMessageContext context)
-        {
-            Ensure.That(handler, nameof(handler)).IsNotNull();
-            if (context != null)
-            {
-                var @event = context.Event();
-                var stream = context.Stream();
-                if (@event != null && stream != null)
-                {
-                    var command = new UpdateEventStreamPosition
-                    {
-                        Position = @event.EventId,
-                        Type = stream.Type, 
-                        Source = stream.Source
-                    };
-                    await handler.HandleAsync(command, context);
-                    stream.Position = @event.EventId;
-                }
-            }
-        }
-
         #endregion Methods
 
     }

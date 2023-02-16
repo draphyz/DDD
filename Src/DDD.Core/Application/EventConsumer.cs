@@ -22,7 +22,7 @@ namespace DDD.Core.Application
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         private readonly ICommandProcessor commandProcessor;
         private readonly IQueryProcessor queryProcessor;
-        private readonly IEventPublisher eventPublisher;
+        private readonly IEventPublisher<TContext> eventPublisher;
         private readonly IEnumerable<BoundedContext> boundedContexts;
         private readonly IKeyedServiceProvider<SerializationFormat, ITextSerializer> eventSerializers;
         private readonly ILogger logger;
@@ -37,7 +37,7 @@ namespace DDD.Core.Application
 
         public EventConsumer(ICommandProcessor commandProcessor,
                              IQueryProcessor queryProcessor,
-                             IEventPublisher eventPublisher,
+                             IEventPublisher<TContext> eventPublisher,
                              IEnumerable<BoundedContext> boundedContexts,
                              IKeyedServiceProvider<SerializationFormat, ITextSerializer> eventSerializers,
                              ILogger logger,
@@ -69,6 +69,8 @@ namespace DDD.Core.Application
         public bool IsRunning { get; private set; }
 
         protected CancellationToken CancellationToken => this.cancellationTokenSource.Token;
+
+        BoundedContext IEventConsumer.Context => this.Context;
 
         #endregion Properties
 

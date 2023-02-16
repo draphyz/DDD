@@ -4,11 +4,19 @@ using System.Threading;
 namespace DDD.Core.Application
 {
     using Collections;
+    using Domain;
 
     public static class IMessageContextExtensions
     {
 
         #region Methods
+
+        public static void AddBoundedContext(this IMessageContext context, BoundedContext boundedContext)
+        {
+            Ensure.That(context, nameof(context)).IsNotNull();
+            Ensure.That(boundedContext, nameof(boundedContext)).IsNotNull();
+            context.Add(MessageContextInfo.BoundedContext, boundedContext);
+        }
 
         public static void AddCancellationToken(this IMessageContext context, CancellationToken cancellationToken)
         {
@@ -37,6 +45,13 @@ namespace DDD.Core.Application
             context.Add(MessageContextInfo.Stream, stream);
         }
 
+        public static BoundedContext BoundedContext(this IMessageContext context)
+        {
+            Ensure.That(context, nameof(context)).IsNotNull();
+            context.TryGetValue(MessageContextInfo.BoundedContext, out BoundedContext boundedContext);
+            return boundedContext;
+        }
+
         public static CancellationToken CancellationToken(this IMessageContext context)
         {
             Ensure.That(context, nameof(context)).IsNotNull();
@@ -58,6 +73,12 @@ namespace DDD.Core.Application
             return stream;
         }
 
+        public static bool IsEventHandling(this IMessageContext context)
+        {
+            Ensure.That(context, nameof(context)).IsNotNull();
+            return context.ContainsKey(MessageContextInfo.Event);
+        }
+
         public static EventStream Stream(this IMessageContext context)
         {
             Ensure.That(context, nameof(context)).IsNotNull();
@@ -66,6 +87,5 @@ namespace DDD.Core.Application
         }
 
         #endregion Methods
-
     }
 }

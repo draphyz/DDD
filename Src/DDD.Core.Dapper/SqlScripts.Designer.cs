@@ -288,6 +288,19 @@ namespace DDD.Core.Infrastructure.Data {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to UPDATE FailedEventStream
+        ///SET    StreamPosition = @Position
+        ///WHERE  StreamId = @Id
+        ///AND    StreamType = @Type
+        ///AND    StreamSource = @Source.
+        /// </summary>
+        internal static string UpdateFailedEventStreamPosition {
+            get {
+                return ResourceManager.GetString("UpdateFailedEventStreamPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UPDATE Command
         ///SET Body = @Body,
         ///    BodyFormat = @BodyFormat,

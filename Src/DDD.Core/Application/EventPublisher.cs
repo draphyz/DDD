@@ -1,7 +1,5 @@
 ﻿using EnsureThat;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
@@ -9,7 +7,8 @@ namespace DDD.Core.Application
     using Domain;
     using Threading;
 
-    public class EventPublisher : IEventPublisher
+    public class EventPublisher<TContext> : IEventPublisher<TContext>
+        where TContext : BoundedContext, new()
     {
 
         #region Fields
@@ -24,9 +23,18 @@ namespace DDD.Core.Application
         {
             Ensure.That(serviceProvider, nameof(serviceProvider)).IsNotNull();
             this.serviceProvider = serviceProvider;
+            this.Context = new TContext();
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        public TContext Context { get; }
+
+        BoundedContext IEventPublisher.Context => this.Context;
+
+        #endregion Properties
 
         #region Methods
 
@@ -34,32 +42,35 @@ namespace DDD.Core.Application
         {
             Ensure.That(@event, nameof(@event)).IsNotNull();
             await new SynchronizationContextRemover();
-            var syncHandlers = this.GetSyncEventHandlers(@event);
-            foreach (var handler in syncHandlers)
-                handler.Handle(@event, context);
-            var asyncHandlers = this.GetAsyncEventHandlers(@event);
-            foreach (var handler in asyncHandlers)
-                await handler.HandleAsync(@event, context);
+            var asyncHandler = this.GetAsyncEventHandler(@event);
+            if (asyncHandler != null)
+                await asyncHandler.HandleAsync(@event, context);
+            else
+            {
+                var syncHandler = this.GetSyncEventHandler(@event);
+                if (syncHandler != null)
+                    syncHandler.Handle(@event, context);
+            }
         }
 
-        private IEnumerable<IAsyncEventHandler> GetAsyncEventHandlers<TEvent>(TEvent @event) where TEvent : class, IEvent
+        private IAsyncEventHandler GetAsyncEventHandler<TEvent>(TEvent @event) where TEvent : class, IEvent
         {
             if (typeof(TEvent) == typeof(IEvent))
             {
-                var handlerType = typeof(IAsyncEventHandler<>).MakeGenericType(@event.GetType());
-                return this.serviceProvider.GetServices(handlerType).Cast<IAsyncEventHandler>();
+                var handlerType = typeof(IAsyncEventHandler<,>).MakeGenericType(@event.GetType(), typeof(TContext));
+                return (IAsyncEventHandler)this.serviceProvider.GetService(handlerType);
             }
-            return this.serviceProvider.GetServices<IAsyncEventHandler<TEvent>>();
+            return this.serviceProvider.GetService<IAsyncEventHandler<TEvent, TContext>>();
         }
 
-        private IEnumerable<ISyncEventHandler> GetSyncEventHandlers<TEvent>(TEvent @event) where TEvent : class, IEvent
+        private ISyncEventHandler GetSyncEventHandler<TEvent>(TEvent @event) where TEvent : class, IEvent
         {
             if (typeof(TEvent) == typeof(IEvent))
             {
-                var handlerType = typeof(ISyncEventHandler<>).MakeGenericType(@event.GetType());
-                return this.serviceProvider.GetServices(handlerType).Cast<ISyncEventHandler>();
+                var handlerType = typeof(ISyncEventHandler<,>).MakeGenericType(@event.GetType(), typeof(TContext));
+                return (ISyncEventHandler)this.serviceProvider.GetService(handlerType);
             }
-            return this.serviceProvider.GetServices<ISyncEventHandler<TEvent>>();
+            return this.serviceProvider.GetService<ISyncEventHandler<TEvent, TContext>>();
         }
 
         #endregion Methods
