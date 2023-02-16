@@ -2,16 +2,23 @@
 
 namespace DDD.Core.Application
 {
+    using Domain;
+
     /// <summary>
-    /// Defines a method that consumes events.
+    /// Defines methods for consuming events in a specific bounded context.
     /// </summary>
     /// <remarks>
-    /// This component is used to read external event streams and to publish those events inside a bounded context.
+    /// This component is used to read external event streams and to publish those events in a bounded context.
     /// </remarks>
     public interface IEventConsumer
     {
 
         #region Properties
+
+        /// <summary>
+        /// The bounded context in which events are consumed.
+        /// </summary>
+        BoundedContext Context { get; }
 
         /// <summary>
         /// Determines whether the consumer is running.
@@ -23,12 +30,12 @@ namespace DDD.Core.Application
         #region Methods
 
         /// <summary>
-        ///  Starts consuming events.
+        ///  Starts consuming events in a specific bounded context.
         /// </summary>
         public void Start();
 
         /// <summary>
-        /// Stops consuming events.
+        /// Stops consuming events in a specific bounded context.
         /// </summary>
         public void Stop();
 

@@ -7,10 +7,11 @@
     {
         #region Fields
 
-        public const string Event = "Event",
-                            CancellationToken = "CancellationToken",
-                            Stream = "Stream",
-                            FailedStream = "FailedStream";
+        public const string Event = nameof(Event),
+                            CancellationToken = nameof(CancellationToken),
+                            Stream = nameof(Stream),
+                            FailedStream = nameof(FailedStream),
+                            BoundedContext = nameof(BoundedContext);
 
         #endregion Fields
     }

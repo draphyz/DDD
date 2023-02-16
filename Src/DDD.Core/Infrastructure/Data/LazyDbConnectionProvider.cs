@@ -37,7 +37,10 @@ namespace DDD.Core.Infrastructure.Data
         #region Properties
 
         public DbConnection Connection => this.lazyConnection.Value;
+
         public TContext Context { get; }
+
+        BoundedContext IDbConnectionProvider.Context => this.Context;
 
         #endregion Properties
 

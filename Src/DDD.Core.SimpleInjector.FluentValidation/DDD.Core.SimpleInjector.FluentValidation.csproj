@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DDD.Core.Infrastructure.DependencyInjection</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DocumentationFile>bin\Debug\DDD.Core.SimpleInjector.FluentValidation.xml</DocumentationFile>
+    <NoWarn>1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <NoWarn>1591</NoWarn>
+    <DocumentationFile>bin\Release\DDD.Core.SimpleInjector.FluentValidation.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Build\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DDD.Core.FluentValidation\DDD.Core.FluentValidation.csproj" />
+    <ProjectReference Include="..\DDD.Core.SimpleInjector\DDD.Core.SimpleInjector.csproj" />
+  </ItemGroup>
+</Project>

@@ -30,4 +30,7 @@
       <Version>5.4.1</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <Reference Include="System.Transactions" />
+  </ItemGroup>
 </Project>

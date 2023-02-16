@@ -3,8 +3,10 @@ using System.Data.Common;
 
 namespace DDD.Core.Infrastructure.Data
 {
+    using Domain;
+
     /// <summary>
-    /// Provides and shares a database connection between different components.
+    /// Provides and shares a database connection for a specific bounded context between different components.
     /// This component owns the connection and is responsible for disposing the connection.
     /// </summary>
     /// <remarks>
@@ -16,6 +18,14 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Properties
 
+        /// <summary>
+        /// The bounded context associated with the database connection.
+        /// </summary>
+        BoundedContext Context { get; }
+
+        /// <summary>
+        /// The shared connection.
+        /// </summary>
         DbConnection Connection { get; }
 
         #endregion Properties

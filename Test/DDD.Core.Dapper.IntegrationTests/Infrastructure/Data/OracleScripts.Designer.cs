@@ -314,5 +314,18 @@ namespace DDD.Core.Infrastructure.Data {
                 return ResourceManager.GetString("UpdateFailedEventStream", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BEGIN
+        ///  SPCLEARSCHEMA();
+        ///END;
+        ////
+        ///Insert into TEST.FAILEDEVENTSTREAM (STREAMID,STREAMTYPE,STREAMSOURCE,STREAMPOSITION,EVENTID,EVENTTYPE,EXCEPTIONTIME,EXCEPTIONTYPE,EXCEPTIONMESSAGE,EXCEPTIONSOURCE,EXCEPTIONINFO,BASEEXCEPTIONTYPE,BASEEXCEPTIONMESSAGE,RETRYCOUNT,RETRYMAX,RETRYDELAYS,BLOCKSIZE) values (&apos;2&apos;,&apos;MessageBox&apos;,&apos;COL&apos;,&apos;7A70770A47C11B9E883A08DA0E368663&apos;,&apos;4DDD0AE15118DE7E883B08DA0E368663&apos;,&apos;Xperthis.Collaboration.Domain.Messages.MessageBoxCreated, Xperthis.Collaboration.Messages&apos;,to_date(&apos;19/11/21&apos;,&apos;DD/M [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string UpdateFailedEventStreamPosition {
+            get {
+                return ResourceManager.GetString("UpdateFailedEventStreamPosition", resourceCulture);
+            }
+        }
     }
 }

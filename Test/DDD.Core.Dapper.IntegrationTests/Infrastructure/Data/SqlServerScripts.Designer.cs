@@ -299,5 +299,18 @@ namespace DDD.Core.Infrastructure.Data {
                 return ResourceManager.GetString("UpdateFailedEventStream", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to USE [Test]
+        ///GO
+        ///EXEC spClearDatabase
+        ///GO
+        ///INSERT [dbo].[FailedEventStream] ([StreamId], [StreamType], [StreamSource], [StreamPosition], [EventId], [EventType], [ExceptionTime], [ExceptionType], [ExceptionMessage], [ExceptionSource], [ExceptionInfo], [BaseExceptionType], [BaseExceptionMessage], [RetryCount], [RetryMax], [RetryDelays], [BlockSize]) VALUES (N&apos;2&apos;, N&apos;MessageBox&apos;, N&apos;COL&apos;, N&apos;0a77707a-c147-9e1b-883a-08da0e368663&apos;, N&apos;e10add4d-1851-7ede-883b-08da0e368663&apos;, N&apos;Xperthis.Collaboration.Domain.Messages.Mes [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string UpdateFailedEventStreamPosition {
+            get {
+                return ResourceManager.GetString("UpdateFailedEventStreamPosition", resourceCulture);
+            }
+        }
     }
 }
