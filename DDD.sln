@@ -36,10 +36,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{862B0E9C-B685-4C40-ACFB-83A193C82254}"
 	ProjectSection(SolutionItems) = preProject
 		Doc\CommandComponents.png = Doc\CommandComponents.png
+		Doc\CommandSide.png = Doc\CommandSide.png
 		Doc\EntityFrameworkMapping.png = Doc\EntityFrameworkMapping.png
 		Doc\NHibernateMapping.png = Doc\NHibernateMapping.png
 		Doc\PrescriptionLifecycle.png = Doc\PrescriptionLifecycle.png
 		Doc\QueryComponents.png = Doc\QueryComponents.png
+		Doc\QuerySide.png = Doc\QuerySide.png
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Newtonsoft", "Src\DDD.Core.Newtonsoft\DDD.Core.Newtonsoft.csproj", "{8BF8E0BD-B92C-4FC1-BE17-7C10036A2FE2}"
