@@ -31,6 +31,10 @@ The architecture of the project is based on the Hexagonal Architecture. The main
 -	the small interfaces defining the input and output ports can be easily decorated to implement cross-cutting concerns like logging or error handling. It is particularly relevant to apply resilient policies (retry strategies, …) around the execution of a command or a query because they represent a whole (holistic abstraction) : you can retry a command or a query, but not a part of it.
 -	It is easy to establish a mechanism to perform background recurring tasks : recurring commands can be stored in a database and processed on a recurring basis
 
+![Alt Architecture on command side](https://github.com/draphyz/DDD/blob/entityframework/Doc/CommandSide.png)
+
+![Alt Architecture on query side](https://github.com/draphyz/DDD/blob/entityframework/Doc/QuerySide.png)
+
 **Model**
 
 The model considered is a simplified model reflecting the life cycle of a medical prescription and, in particular, of a pharmaceutical prescription. This life cycle can be summarized by the following diagram.
