@@ -22,6 +22,14 @@ The main components are developed from technologies commonly used by .NET develo
 -	an ORM framework
 -	an Ioc container
 
+**Architecture**
+
+The architecture of the project is based on the Hexagonal Architecture. The main concepts of the Hexagonal Architecture are clearly explained in the article [Hexagonal Architecture, there are always two sides to every story](https://medium.com/ssense-tech/hexagonal-architecture-there-are-always-two-sides-to-every-story-bc0780ed7d9c). Applying the architectural pattern CQRS in this architecture offers many benefits :
+-	the input ports (driving ports) of the application are represented by two generic fine-grained interfaces (ICommandHandler and IQueryHandler) defining the command and query handlers 
+-	on the query side, the architecture is simplified as shown in the diagrams below : the input and output ports are represented by the same interface (IQueryHandler) defining the query handlers, the application layer is reduced to a few objects (queries and results) participating to the definition of this interface 
+-	by separating command and query sides, the output ports (driven ports) used by the application to persist aggregates on the command side can also be represented by a generic fine-grained interface (IRepository)
+-	the small interfaces defining the input and output ports can be easily decorated to implement cross-cutting concerns like logging or error handling. It is particularly relevant to apply resilient policies (retry strategies, …) around the execution of a command or a query because they represent a whole (holistic abstraction) : you can retry a command or a query, but not a part of it.
+-	It is easy to establish a mechanism to perform background recurring tasks : recurring commands can be stored in a database and processed on a recurring basis
 
 **Model**
 
@@ -62,7 +70,7 @@ As mentioned above, the command and query data stores are not differentiated but
 
 ![Alt Query Components](https://github.com/draphyz/DDD/blob/entityframework/Doc/QueryComponents.png)
 
-**Projects**
+**Organization of code**
 
 The libraries are distributed by component (bounded context) :
 
