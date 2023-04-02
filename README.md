@@ -35,6 +35,16 @@ The architecture of the project is based on the Hexagonal Architecture. The main
 
 ![Alt Architecture on query side](https://github.com/draphyz/DDD/blob/entityframework/Doc/QuerySide.png)
 
+**Message handling**
+
+In a message-based application, 3 types of messages can be handled :
+
+-	a command : a message that carries data about an operation that changes the state of the application
+-	a query : a message that carries data about an operation that reads the state of the application
+-	an event : a message that carries data about something that happened in the application
+
+Commands and queries are usually handled synchronously and events asynchronously. Some events called "domain events" capture an occurrence of something that happened in the domain and that is considered important by business experts. These events generally register a change in the state of the application (more precisely the change of an aggregate) and occur during the processing of a command. It is important to transactionally record this change and the associated event(s). A simple way is to record them in the same database. 
+
 **Model**
 
 The model considered is a simplified model reflecting the life cycle of a medical prescription and, in particular, of a pharmaceutical prescription. This life cycle can be summarized by the following diagram.
