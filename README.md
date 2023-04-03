@@ -43,7 +43,7 @@ In a message-based application, 3 types of messages can be handled :
 -	a query : a message that carries data about an operation that reads the state of the application
 -	an event : a message that carries data about something that has happened in the application
 
-Commands and queries are usually handled synchronously and events asynchronously. Some events called "domain events" capture an occurrence of something that happened in the domain and that is considered important by business experts. These events generally register that the state of the application (more precisely the state of an aggregate) has changed and they occur during the processing of a command. It is important to transactionally record this change and the associated event(s). A simple way to do this is to record them in the same database. This is the way taken by the project : events and aggregates are saved in the same database. 
+Commands and queries are usually handled synchronously and events asynchronously. Some events called "domain events" capture an occurrence of something that has happened in the domain and that is considered important by business experts. These events generally register that the state of the application (more precisely the state of an aggregate) has changed and they occur during the processing of a command. It is important to transactionally record this change and the associated event(s). A simple way to do this is to record them in the same database. This is the way taken by the project : events and aggregates are saved in the same database. 
 
 **Model**
 
