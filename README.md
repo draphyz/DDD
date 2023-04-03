@@ -41,9 +41,19 @@ In a message-based application, 3 types of messages can be handled :
 
 -	a command : a message that carries data about an operation that changes the state of the application
 -	a query : a message that carries data about an operation that reads the state of the application
--	an event : a message that carries data about something that has happened in the application
+-	an event : a message that carries data about something that happened in the application
 
-Commands and queries are usually handled synchronously and events asynchronously. Some events called "domain events" capture an occurrence of something that has happened in the domain and that is considered important by business experts. These events generally register that the state of the application (more precisely the state of an aggregate) has changed and they occur during the processing of a command. It is important to transactionally record this change and the associated event(s). A simple way to do this is to record them in the same database. This is the way taken by the project : events and aggregates are saved in the same database. 
+Commands and queries are usually handled synchronously and events asynchronously. Some events called "domain events" capture an occurrence of something that happened in the domain and that is considered important by business experts. These events generally register that the state of the application (more precisely the state of an aggregate) has changed and they occur during the processing of a command. It is important to transactionally record this change and the associated event(s). A simple way to do this is to record them in the same database. This is the way taken by the project : events and aggregates are saved in the same database.
+
+Domain events are mainly used to decouple the different parts (bounded contexts) of the application. Each part of the application can be interested in events that happened in the other parts. When you plan to set up a delivery mechanism of events, you must take into account various concerns :
+
+-	ease of deployment and management
+-	system scalability
+-	event ordering : in order, out of order
+-	delivery guarantees : at most once, at least once, exactly once
+-	error handling strategies : stop on error, dead letter queue, retry, maintain order
+
+From a consumer's perspective, we all want a scalable and easy-to-use mechanism that guarantees that events will be delivered exactly once and in order, but it is not technically possible : guarantee an ordered delivery of all events makes the solution non-scalable. However, we can divide the whole stream of events (from a bounded context to another) into smaller streams and ensure the order of events within these streams (under normal conditions). We can also ensure that events are processed exactly once in a bounded context : it is possible by storing the current position in the stream in the database associated with the consuming context.
 
 **Model**
 
