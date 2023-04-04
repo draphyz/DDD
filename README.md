@@ -45,7 +45,7 @@ In a message-based application, 3 types of messages can be handled :
 
 Commands and queries are usually handled synchronously and events asynchronously. Some events called "domain events" capture an occurrence of something that happened in the domain and that is considered important by business experts. These events generally register that the state of the application (more precisely the state of an aggregate) has changed and they occur during the processing of a command. It is important to transactionally record this change and the associated event(s). A simple way to do this is to record them in the same database. This is the way taken by the project : events and aggregates are saved in the same database.
 
-Domain events are mainly used to decouple the different parts (bounded contexts) of the application. Each part of the application can be interested in events that happened in the other parts. When you plan to set up a delivery mechanism of events, you must take into account various concerns :
+Domain events are mainly used to decouple the different parts (bounded contexts) of the application. Each part of the application can be interested in events that happened in the other parts. When you set up a delivery mechanism of events, you must take into account various concerns :
 
 -	ease of deployment and management
 -	system scalability
