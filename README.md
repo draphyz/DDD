@@ -55,6 +55,8 @@ Domain events are mainly used to decouple the different parts (bounded contexts)
 
 From a consumer's perspective, we all want a scalable and easy-to-use mechanism that guarantees that events will be delivered exactly once and in order, but it is not technically possible : guarantee an ordered delivery of all events makes the solution non-scalable. However, we can divide the whole stream of events (from a bounded context to another) into smaller streams and ensure the order of events within these streams (under normal conditions). We can also ensure that events are processed exactly once in a bounded context : it is possible by storing the current position in the stream in the database associated with the consuming context.
 
+In this project, each bounded context is responsible for recording its own events in its own database as well as associating them with a stream type (usually an aggregate type) and a stream identifier (usually an aggregate identifier). Each context is also responsible for registering the subscriptions to these streams, reading the streams to which they have subscribed, handling the associated events and updating the current position within these streams. 
+
 **Model**
 
 The model considered is a simplified model reflecting the life cycle of a medical prescription and, in particular, of a pharmaceutical prescription. This life cycle can be summarized by the following diagram.
