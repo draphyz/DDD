@@ -31,6 +31,32 @@ The architecture of the project is based on the Hexagonal Architecture. The main
 -	the small interfaces defining the input and output ports can be easily decorated to implement cross-cutting concerns like logging or error handling. It is particularly relevant to apply resilient policies (retry strategies, …) around the execution of a command or a query because they represent a whole (holistic abstraction) : you can retry a command or a query, but not a part of it.
 -	It is easy to establish a mechanism to perform background recurring tasks : recurring commands can be stored in a database and processed on a recurring basis
 
+![Alt Architecture on command side](https://github.com/draphyz/DDD/blob/entityframework/Doc/CommandSide.png)
+
+![Alt Architecture on query side](https://github.com/draphyz/DDD/blob/entityframework/Doc/QuerySide.png)
+
+**Message handling**
+
+In a message-based application, 3 types of messages can be handled :
+
+-	a command : a message that carries data about an operation that changes the state of the application
+-	a query : a message that carries data about an operation that reads the state of the application
+-	an event : a message that carries data about something that happened in the application
+
+Commands and queries are usually handled synchronously and events asynchronously. Some events called "domain events" capture an occurrence of something that happened in the domain and that is considered important by business experts. These events generally register that the state of the application (more precisely the state of an aggregate) has changed and they occur during the processing of a command. It is important to transactionally record this change and the associated event(s). A simple way to do this is to record them in the same database. This is the way taken by the project : events and aggregates are saved in the same database.
+
+Domain events are mainly used to decouple the different parts (bounded contexts) of the application. Each part of the application can be interested in events that happened in the other parts. When you set up a delivery mechanism of events, you must take into account various concerns :
+
+-	ease of deployment and management
+-	system scalability
+-	event ordering : in order, out of order
+-	delivery guarantees : at most once, at least once, exactly once
+-	error handling strategies : stop on error, dead letter queue, retry, maintain order
+
+From a consumer's perspective, we all want a scalable and easy-to-use mechanism that guarantees that events will be delivered exactly once and in order, but it is not technically possible : guarantee an ordered delivery of all events makes the solution non-scalable. However, we can divide the whole stream of events (from a bounded context to another) into smaller streams and ensure the order of events within these streams (under normal conditions). We can also ensure that events are processed exactly once in a bounded context : it is possible by storing the current position in the stream in the database associated with the consuming context.
+
+In this project, each bounded context is responsible for recording its own events in its own database as well as associating them with a stream type (usually an aggregate type) and a stream identifier (usually an aggregate identifier). Each context is also responsible for registering subscriptions to event streams, reading the streams to which they have subscribed, handling the associated events and updating the current position within these streams. 
+
 **Model**
 
 The model considered is a simplified model reflecting the life cycle of a medical prescription and, in particular, of a pharmaceutical prescription. This life cycle can be summarized by the following diagram.
