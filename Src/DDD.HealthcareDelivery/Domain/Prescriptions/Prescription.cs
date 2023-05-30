@@ -28,9 +28,8 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
                                DateTime createdOn,
                                EncounterIdentifier encounterIdentifier = null,
                                DateTime? delivrableAt = null,
-                               EntityState entityState = EntityState.Added,
                                IEnumerable<IDomainEvent> events = null)
-            : base(entityState, events)
+            : base(events)
         {
             Ensure.That(identifier, nameof(identifier)).IsNotNull();
             Ensure.That(prescriber, nameof(prescriber)).IsNotNull();

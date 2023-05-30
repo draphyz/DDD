@@ -17,20 +17,13 @@ namespace DDD.Core.Domain
 
         #region Constructors
 
-        protected DomainEntity(EntityState entityState = EntityState.Added, IEnumerable<IDomainEvent> events = null)
+        protected DomainEntity(IEnumerable<IDomainEvent> events = null)
         {
-            this.EntityState = entityState;
             if (events != null)
                 this.events.AddRange(events);
         }
 
         #endregion Constructors
-
-        #region Properties
-
-        protected EntityState EntityState { get; private set; }
-
-        #endregion Properties
 
         #region Methods
 
@@ -76,12 +69,6 @@ namespace DDD.Core.Domain
         {
             Ensure.That(@event, nameof(@event)).IsNotNull();
             this.events.Add(@event);
-        }
-
-        protected void MarkAsModified()
-        {
-            if (this.EntityState != EntityState.Added)
-                this.EntityState = EntityState.Modified;
         }
 
         #endregion Methods
