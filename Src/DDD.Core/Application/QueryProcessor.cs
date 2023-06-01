@@ -66,16 +66,16 @@ namespace DDD.Core.Application
         public ValidationResult Validate<TQuery>(TQuery query, string ruleSet = null) where TQuery : class, IQuery
         {
             Ensure.That(query, nameof(query)).IsNotNull();
-            var validator = this.serviceProvider.GetService<ISyncQueryValidator<TQuery>>();
-            if (validator == null) throw new InvalidOperationException($"The query validator for type {typeof(ISyncQueryValidator<TQuery>)} could not be found.");
+            var validator = this.serviceProvider.GetService<ISyncObjectValidator<TQuery>>();
+            if (validator == null) throw new InvalidOperationException($"The query validator for type {typeof(ISyncObjectValidator<TQuery>)} could not be found.");
             return validator.Validate(query, ruleSet);
         }
 
         public Task<ValidationResult> ValidateAsync<TQuery>(TQuery query, string ruleSet = null, CancellationToken cancellationToken = default) where TQuery : class, IQuery
         {
             Ensure.That(query, nameof(query)).IsNotNull();
-            var validator = this.serviceProvider.GetService<IAsyncQueryValidator<TQuery>>();
-            if (validator == null) throw new InvalidOperationException($"The query validator for type {typeof(IAsyncQueryValidator<TQuery>)} could not be found.");
+            var validator = this.serviceProvider.GetService<IAsyncObjectValidator<TQuery>>();
+            if (validator == null) throw new InvalidOperationException($"The query validator for type {typeof(IAsyncObjectValidator<TQuery>)} could not be found.");
             return validator.ValidateAsync(query, ruleSet, cancellationToken);
         }
 

@@ -1,6 +1,7 @@
 ﻿using NSubstitute;
 using System;
 using Xunit;
+using DDD.Validation;
 
 namespace DDD.Core.Application
 {
@@ -10,8 +11,8 @@ namespace DDD.Core.Application
 
         private readonly ISyncQueryHandler<FakeQuery1, FakeResult> handlerOfQuery1;
         private readonly ISyncQueryHandler<FakeQuery2, FakeResult> handlerOfQuery2;
-        private readonly ISyncQueryValidator<FakeQuery1> validatorOfQuery1;
-        private readonly ISyncQueryValidator<FakeQuery2> validatorOfQuery2;
+        private readonly ISyncObjectValidator<FakeQuery1> validatorOfQuery1;
+        private readonly ISyncObjectValidator<FakeQuery2> validatorOfQuery2;
         private readonly QueryProcessor processor;
 
         #endregion Fields
@@ -22,16 +23,16 @@ namespace DDD.Core.Application
         {
             this.handlerOfQuery1 = Substitute.For<ISyncQueryHandler<FakeQuery1, FakeResult>>();
             this.handlerOfQuery2 = Substitute.For<ISyncQueryHandler<FakeQuery2, FakeResult>>();
-            this.validatorOfQuery1 = Substitute.For<ISyncQueryValidator<FakeQuery1>>();
-            this.validatorOfQuery2 = Substitute.For<ISyncQueryValidator<FakeQuery2>>();
+            this.validatorOfQuery1 = Substitute.For<ISyncObjectValidator<FakeQuery1>>();
+            this.validatorOfQuery2 = Substitute.For<ISyncObjectValidator<FakeQuery2>>();
             var serviceProvider = Substitute.For<IServiceProvider>();
             serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncQueryHandler<FakeQuery1, FakeResult>))))
                            .Returns(this.handlerOfQuery1);
             serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncQueryHandler<FakeQuery2, FakeResult>))))
                            .Returns(this.handlerOfQuery2);
-            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncQueryValidator<FakeQuery1>))))
+            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncObjectValidator<FakeQuery1>))))
                            .Returns(this.validatorOfQuery1);
-            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncQueryValidator<FakeQuery2>))))
+            serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncObjectValidator<FakeQuery2>))))
                            .Returns(this.validatorOfQuery2);
             processor = new QueryProcessor(serviceProvider);
         }

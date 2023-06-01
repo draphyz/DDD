@@ -64,16 +64,16 @@ namespace DDD.Core.Application
         public ValidationResult Validate<TCommand>(TCommand command, string ruleSet = null) where TCommand : class, ICommand
         {
             Ensure.That(command, nameof(command)).IsNotNull();
-            var validator = this.serviceProvider.GetService<ISyncCommandValidator<TCommand>>();
-            if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(ISyncCommandValidator<TCommand>)} could not be found.");
+            var validator = this.serviceProvider.GetService<ISyncObjectValidator<TCommand>>();
+            if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(ISyncObjectValidator<TCommand>)} could not be found.");
             return validator.Validate(command, ruleSet);
         }
 
         public Task<ValidationResult> ValidateAsync<TCommand>(TCommand command, string ruleSet = null, CancellationToken cancellationToken = default) where TCommand : class, ICommand
         {
             Ensure.That(command, nameof(command)).IsNotNull();
-            var validator = this.serviceProvider.GetService<IAsyncCommandValidator<TCommand>>();
-            if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(IAsyncCommandValidator<TCommand>)} could not be found.");
+            var validator = this.serviceProvider.GetService<IAsyncObjectValidator<TCommand>>();
+            if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(IAsyncObjectValidator<TCommand>)} could not be found.");
             return validator.ValidateAsync(command, ruleSet, cancellationToken);
         }
 
