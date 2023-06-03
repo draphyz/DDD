@@ -13,13 +13,12 @@ namespace DDD.Core.Infrastructure.DependencyInjection
     /// </summary>
     public class ThreadScopedQueryHandler<TQuery, TResult, TContext> : ISyncQueryHandler<TQuery, TResult, TContext>
         where TQuery : class, IQuery<TResult>
-        where TContext : BoundedContext, new()
+        where TContext : BoundedContext
     {
 
         #region Fields
 
         private readonly Container container;
-        private readonly TContext context;
         private readonly Func<ISyncQueryHandler<TQuery, TResult, TContext>> handlerProvider;
 
         #endregion Fields
@@ -32,14 +31,13 @@ namespace DDD.Core.Infrastructure.DependencyInjection
             Ensure.That(container, nameof(container)).IsNotNull();
             this.handlerProvider = handlerProvider;
             this.container = container;
-            this.context = new TContext();
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public TContext Context => this.context;
+        public TContext Context => this.handlerProvider().Context;
 
         #endregion Properties
 

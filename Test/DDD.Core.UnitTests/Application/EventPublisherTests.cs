@@ -24,7 +24,7 @@ namespace DDD.Core.Application
             container.RegisterInstance(fakeHandler1);
             container.RegisterInstance(fakeHandler2);
             container.RegisterInstance(fakeHandler3);
-            var publisher = new EventPublisher<FakeContext>(container);
+            var publisher = new EventPublisher<FakeContext>(new FakeContext(), container);
             yield return new object[]
             {
                 publisher,
@@ -54,7 +54,7 @@ namespace DDD.Core.Application
             container.RegisterInstance(fakeHandler1);
             container.RegisterInstance(fakeHandler2);
             container.RegisterInstance(fakeHandler3);
-            var publisher = new EventPublisher<FakeContext>(container);
+            var publisher = new EventPublisher<FakeContext>(new FakeContext(), container);
             yield return new object[]
             {
                 publisher,

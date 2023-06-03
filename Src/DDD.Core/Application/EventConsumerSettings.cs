@@ -7,25 +7,22 @@ namespace DDD.Core.Application
 
     [DataContract()]
     public class EventConsumerSettings<TContext>
-        where TContext : BoundedContext, new()
+        where TContext : BoundedContext
     {
-        #region Fields
-
-        private readonly TContext context;
-
-        #endregion Fields
 
         #region Constructors
 
-        public EventConsumerSettings(short consumationDelay,
+        public EventConsumerSettings(TContext context,
+                                     short consumationDelay,
                                      long? consumationMax = null)
         {
+            Ensure.That(context, nameof(context)).IsNotNull();
             Ensure.That(consumationDelay, nameof(consumationDelay)).IsGte((short)0);
             if (consumationMax != null)
                 Ensure.That(consumationMax.Value, nameof(consumationMax)).IsGte(0);
+            this.Context = context;
             this.ConsumationDelay = consumationDelay;
             this.ConsumationMax = consumationMax;
-            this.context = new TContext();
         }
 
         #endregion Constructors
@@ -47,8 +44,9 @@ namespace DDD.Core.Application
         /// <summary>
         /// Gets the associated context.
         /// </summary>
-        public TContext Context => this.context;
+        public TContext Context { get; }
 
         #endregion Properties
+
     }
 }

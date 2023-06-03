@@ -8,7 +8,7 @@ namespace DDD.Core.Application
     using Threading;
 
     public class EventPublisher<TContext> : IEventPublisher<TContext>
-        where TContext : BoundedContext, new()
+        where TContext : BoundedContext
     {
 
         #region Fields
@@ -19,11 +19,12 @@ namespace DDD.Core.Application
 
         #region Constructors
 
-        public EventPublisher(IServiceProvider serviceProvider)
+        public EventPublisher(TContext context, IServiceProvider serviceProvider)
         {
+            Ensure.That(context, nameof(context)).IsNotNull();
             Ensure.That(serviceProvider, nameof(serviceProvider)).IsNotNull();
+            this.Context = context;
             this.serviceProvider = serviceProvider;
-            this.Context = new TContext();
         }
 
         #endregion Constructors

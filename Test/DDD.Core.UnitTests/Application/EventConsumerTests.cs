@@ -585,7 +585,7 @@ namespace DDD.Core.Application
             return queryProcessor;
         }
 
-        private static EventConsumerSettings<FakeContext> FakeSettings() => new EventConsumerSettings<FakeContext>(1, 1);
+        private static EventConsumerSettings<FakeContext> FakeSettings() => new EventConsumerSettings<FakeContext>(new FakeContext(), 1, 1);
 
         private static IEnumerable<BoundedContext> FakeBoundedContexts()
         {

@@ -13,7 +13,7 @@ namespace DDD.Core.Application
     using Threading;
 
     public class RecurringCommandManager<TContext> : IRecurringCommandManager<TContext>, IDisposable 
-        where TContext : BoundedContext, new()
+        where TContext : BoundedContext
     {
 
         #region Fields

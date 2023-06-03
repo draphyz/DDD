@@ -14,7 +14,7 @@ namespace DDD.Core.Application
     using Threading;
 
     public class EventConsumer<TContext> : IEventConsumer<TContext>, IDisposable
-        where TContext : BoundedContext, new()
+        where TContext : BoundedContext
     {
 
         #region Fields

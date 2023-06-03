@@ -7,7 +7,7 @@ namespace DDD.Core.Domain
     /// <summary>
     /// Represents a bounded context.
     /// </summary>
-    public class BoundedContext : IEquatable<BoundedContext>
+    public abstract class BoundedContext : IEquatable<BoundedContext>
     {
 
         #region Constructors

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using EnsureThat;
 
 namespace DDD.Core.Application
 {
@@ -7,20 +8,17 @@ namespace DDD.Core.Application
 
     [DataContract()]
     public class RecurringCommandManagerSettings<TContext>
-        where TContext : BoundedContext, new()
+        where TContext : BoundedContext
     {
-        #region Fields
-
-        private readonly TContext context;
-
-        #endregion Fields
 
         #region Constructors
 
-        public RecurringCommandManagerSettings(SerializationFormat currentSerializationFormat)
+        public RecurringCommandManagerSettings(TContext context,
+                                               SerializationFormat currentSerializationFormat)
         {
+            Ensure.That(context, nameof(context)).IsNotNull();
+            this.Context= context;
             this.CurrentSerializationFormat = currentSerializationFormat;
-            this.context = new TContext();
         }
 
         #endregion Constructors
@@ -30,7 +28,7 @@ namespace DDD.Core.Application
         /// <summary>
         /// Gets the associated context.
         /// </summary>
-        public TContext Context => this.context;
+        public TContext Context { get; }
 
         /// <summary>
         /// Gets the current serialization format of the recurring commands.

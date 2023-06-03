@@ -536,7 +536,7 @@ namespace DDD.Core.Application
 
         private static ILogger FakeLogger() => Substitute.For<ILogger>();
 
-        private static RecurringCommandManagerSettings<FakeContext> FakeSettings() => new RecurringCommandManagerSettings<FakeContext>(SerializationFormat.Json);
+        private static RecurringCommandManagerSettings<FakeContext> FakeSettings() => new RecurringCommandManagerSettings<FakeContext>(new FakeContext(), SerializationFormat.Json);
 
         private static string InvalidRecurringExpression() => "* * * * * * * *";
 

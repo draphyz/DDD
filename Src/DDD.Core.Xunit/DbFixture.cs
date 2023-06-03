@@ -59,7 +59,7 @@ namespace DDD.Core.Infrastructure.Testing
         public IDbConnectionProvider<TContext> CreateConnectionProvider(bool pooling = true)
         {
             var connectionString = this.SetPooling(connectionSettings.ConnectionString, pooling);
-            return new LazyDbConnectionProvider<TContext>(connectionSettings.ProviderName, connectionString);
+            return new LazyDbConnectionProvider<TContext>(new TContext(), connectionSettings.ProviderName, connectionString);
         }
 
         public DbConnection CreateConnection(bool pooling = true)
