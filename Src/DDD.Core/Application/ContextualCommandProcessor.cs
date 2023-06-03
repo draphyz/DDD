@@ -41,7 +41,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public void Process<TCommand>(TCommand command, IMessageContext context = null) where TCommand : class, ICommand
+        public void Process<TCommand>(TCommand command, IMessageContext context) where TCommand : class, ICommand
         {
             Ensure.That(command, nameof(command)).IsNotNull();
             var handler = this.serviceProvider.GetService<ISyncCommandHandler<TCommand, TContext>>();
@@ -49,7 +49,7 @@ namespace DDD.Core.Application
             handler.Handle(command, context);
         }
 
-        public Task ProcessAsync<TCommand>(TCommand command, IMessageContext context = null) where TCommand : class, ICommand
+        public Task ProcessAsync<TCommand>(TCommand command, IMessageContext context) where TCommand : class, ICommand
         {
             Ensure.That(command, nameof(command)).IsNotNull();
             var handler = this.serviceProvider.GetService<IAsyncCommandHandler<TCommand, TContext>>();

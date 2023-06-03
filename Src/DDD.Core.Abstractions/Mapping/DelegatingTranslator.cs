@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using EnsureThat;
 
 namespace DDD.Mapping
@@ -14,13 +13,13 @@ namespace DDD.Mapping
 
         #region Fields
 
-        private readonly Func<TSource, IDictionary<string, object>, TDestination> translator;
+        private readonly Func<TSource, IMappingContext, TDestination> translator;
 
         #endregion Fields
 
         #region Constructors
 
-        public DelegatingTranslator(Func<TSource, IDictionary<string, object>, TDestination> translator)
+        public DelegatingTranslator(Func<TSource, IMappingContext, TDestination> translator)
         {
             Ensure.That(translator).IsNotNull();
             this.translator = translator;
@@ -30,9 +29,10 @@ namespace DDD.Mapping
 
         #region Methods
 
-        public override TDestination Translate(TSource source, IDictionary<string, object> context = null)
+        public override TDestination Translate(TSource source, IMappingContext context)
         {
             Ensure.That(source).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             return this.translator(source, context);
         }
 

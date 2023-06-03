@@ -1,6 +1,5 @@
 ﻿using EnsureThat;
 using System;
-using System.Collections.Generic;
 
 namespace DDD.Mapping
 {
@@ -28,7 +27,7 @@ namespace DDD.Mapping
 
         #region Methods
 
-        public void Map<TSource, TDestination>(TSource source, TDestination destination, IDictionary<string, object> context = null)
+        public void Map<TSource, TDestination>(TSource source, TDestination destination, IMappingContext context)
             where TSource : class
             where TDestination : class
         {
@@ -37,7 +36,7 @@ namespace DDD.Mapping
             mapper.Map(source, destination, context);
         }
 
-        public TDestination Translate<TDestination>(object source, IDictionary<string, object> context = null)
+        public TDestination Translate<TDestination>(object source, IMappingContext context)
             where TDestination : class
         {
             if (source == null) return null;
@@ -47,7 +46,7 @@ namespace DDD.Mapping
             return translator.Translate((dynamic)source, context);
         }
 
-        public TDestination Translate<TSource, TDestination>(TSource source, IDictionary<string, object> context = null)
+        public TDestination Translate<TSource, TDestination>(TSource source, IMappingContext context)
             where TSource : class
             where TDestination : class
         {

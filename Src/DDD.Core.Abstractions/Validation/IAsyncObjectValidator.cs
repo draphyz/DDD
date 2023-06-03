@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace DDD.Validation
 {
@@ -14,7 +13,7 @@ namespace DDD.Validation
         /// <summary>
         /// Validates asynchronously an object of a specified type.
         /// </summary>
-        Task<ValidationResult> ValidateAsync(T obj, string ruleSet = null, CancellationToken cancellationToken = default);
+        Task<ValidationResult> ValidateAsync(T obj, IValidationContext context);
 
         #endregion Methods
 

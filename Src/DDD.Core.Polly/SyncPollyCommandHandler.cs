@@ -33,7 +33,7 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         #region Methods
 
-        public void Handle(TCommand command, IMessageContext context = null)
+        public void Handle(TCommand command, IMessageContext context)
         {
             policy.Execute(() => this.handler.Handle(command, context));
         }

@@ -7,6 +7,15 @@ namespace DDD.Core.Application
 
         #region Methods
 
+        public static TResult Handle<TQuery, TResult>(this ISyncQueryHandler<TQuery, TResult> handler,
+                                                      TQuery query)
+            where TQuery : class, IQuery<TResult>
+
+        {
+            Ensure.That(handler, nameof(handler)).IsNotNull();
+            return handler.Handle(query, new MessageContext());
+        }
+
         public static TResult Handle<TQuery, TResult>(this ISyncQueryHandler<TQuery, TResult> handler, 
                                                       TQuery query, 
                                                       object context)

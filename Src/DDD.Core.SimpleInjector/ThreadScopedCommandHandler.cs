@@ -38,15 +38,16 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Methods<
 
-        public void Handle(TCommand command, IMessageContext context = null)
+        public void Handle(TCommand command, IMessageContext context)
         {
+            Ensure.That(context, nameof(context)).IsNotNull();
             using (ThreadScopedLifestyle.BeginScope(container))
             {
                 using (var scope = new TransactionScope())
                 {
                     var handler = this.handlerProvider();
                     handler.Handle(command, context);
-                    if (context?.IsEventHandling() == true) // Exception to the rule "One transaction per command" to avoid to handle the same event more than once
+                    if (context.IsEventHandling()) // Exception to the rule "One transaction per command" to avoid to handle the same event more than once
                         UpdateEventStreamPosition(context);
                     scope.Complete();
                 }

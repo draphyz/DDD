@@ -7,6 +7,15 @@ namespace DDD.Core.Application
 
         #region Methods
 
+        public static void Handle<TCommand>(this ISyncCommandHandler<TCommand> handler,
+                                            TCommand command)
+            where TCommand : class, ICommand
+
+        {
+            Ensure.That(handler, nameof(handler)).IsNotNull();
+            handler.Handle(command, new MessageContext());
+        }
+
         public static void Handle<TCommand>(this ISyncCommandHandler<TCommand> handler, 
                                             TCommand command, 
                                             object context)

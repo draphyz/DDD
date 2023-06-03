@@ -24,7 +24,7 @@ namespace DDD.Core.Application
         /// <summary>
         /// Publishes an event in a specific bounded context.
         /// </summary>
-        Task PublishAsync<TEvent>(TEvent @event, IMessageContext context = null) where TEvent : class, IEvent;
+        Task PublishAsync<TEvent>(TEvent @event, IMessageContext context) where TEvent : class, IEvent;
 
         #endregion Methods
 

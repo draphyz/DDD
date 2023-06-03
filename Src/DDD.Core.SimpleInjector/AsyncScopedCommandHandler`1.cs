@@ -47,7 +47,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Methods
 
-        public async Task HandleAsync(TCommand command, IMessageContext context = null)
+        public async Task HandleAsync(TCommand command, IMessageContext context)
         {
             using (AsyncScopedLifestyle.BeginScope(container))
             {

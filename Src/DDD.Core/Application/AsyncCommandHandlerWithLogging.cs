@@ -34,7 +34,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public async Task HandleAsync(TCommand command, IMessageContext context = null)
+        public async Task HandleAsync(TCommand command, IMessageContext context)
         {
             if (this.logger.IsEnabled(LogLevel.Debug))
             {

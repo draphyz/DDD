@@ -21,11 +21,11 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public override RepositoryException Translate(Exception exception, IDictionary<string, object> context = null)
+        public override RepositoryException Translate(Exception exception, IMappingContext context)
         {
             Ensure.That(exception, nameof(exception)).IsNotNull();
-            Type entityType = null;
-            context?.TryGetValue("EntityType", out entityType);
+            Ensure.That(context, nameof(context)).IsNotNull();
+            context.TryGetValue("EntityType", out Type entityType);
             switch (exception)
             {
                 case DbUpdateConcurrencyException _:

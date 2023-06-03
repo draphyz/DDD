@@ -38,7 +38,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public async Task PublishAsync<TEvent>(TEvent @event, IMessageContext context = null) where TEvent : class, IEvent
+        public async Task PublishAsync<TEvent>(TEvent @event, IMessageContext context) where TEvent : class, IEvent
         {
             Ensure.That(@event, nameof(@event)).IsNotNull();
             await new SynchronizationContextRemover();

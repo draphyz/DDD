@@ -6,6 +6,7 @@ using Xunit;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
+    using Core.Application;
     using Domain;
     using Application.Prescriptions;
     using Core.Infrastructure.Testing;
@@ -89,8 +90,9 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             // Arrange
             this.Fixture.ExecuteScriptFromResources("FindPrescribedMedicationsByPrescription");
             var handler = new PrescribedMedicationsByPrescriptionFinder(this.ConnectionProvider);
+            var context = new MessageContext();
             // Act
-            var results = await handler.HandleAsync(query);
+            var results = await handler.HandleAsync(query, context);
             // Assert
             results.Should().BeEquivalentTo(expectedResults);
         }

@@ -45,7 +45,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Methods
 
-        public TResult Handle(TQuery query, IMessageContext context = null)
+        public TResult Handle(TQuery query, IMessageContext context)
         {
             using (ThreadScopedLifestyle.BeginScope(container))
             {

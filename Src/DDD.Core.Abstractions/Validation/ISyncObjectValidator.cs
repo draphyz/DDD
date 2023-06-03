@@ -11,7 +11,7 @@
         /// <summary>
         /// Validates synchronously an object of a specified type.
         /// </summary>
-        ValidationResult Validate(T obj, string ruleSet = null);
+        ValidationResult Validate(T obj, IValidationContext context);
 
         #endregion Methods
 

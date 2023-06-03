@@ -24,7 +24,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public abstract void Handle(TEvent @event, IMessageContext context = null);
+        public abstract void Handle(TEvent @event, IMessageContext context);
 
         void ISyncEventHandler.Handle(IEvent @event, IMessageContext context) => this.Handle((TEvent)@event, context);
 

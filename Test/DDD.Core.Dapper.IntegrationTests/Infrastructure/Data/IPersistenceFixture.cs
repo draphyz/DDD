@@ -1,9 +1,8 @@
 ﻿namespace DDD.Core.Infrastructure.Data
 {
-    using Core.Application;
-    using Core.Domain;
-    using Core.Infrastructure.Testing;
+    using Application;
     using Domain;
+    using Testing;
     using Mapping;
 
     public interface IPersistenceFixture : IDbFixture<TestContext>

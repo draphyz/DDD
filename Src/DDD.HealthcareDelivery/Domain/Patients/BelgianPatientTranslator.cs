@@ -1,5 +1,4 @@
 ﻿using EnsureThat;
-using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Patients
 {
@@ -11,9 +10,10 @@ namespace DDD.HealthcareDelivery.Domain.Patients
         #region Methods
 
         public override Patient Translate(PatientState state,
-                                          IDictionary<string, object> context = null)
+                                          IMappingContext context)
         {
             Ensure.That(state, nameof(state)).IsNotNull();
+            Ensure.That(context, nameof(context));
             return new Patient
             (
                 state.Identifier,

@@ -1,6 +1,5 @@
 ﻿using EnsureThat;
 using System;
-using System.Collections.Generic;
 using DDD.Serialization;
 
 namespace DDD.Core.Application
@@ -30,9 +29,10 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public override Event Translate(IEvent @event, IDictionary<string, object> context = null)
+        public override Event Translate(IEvent @event, IMappingContext context)
         {
             Ensure.That(@event, nameof(@event)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             Guid eventId = default;
             string streamId = null, streamType = null, issuedBy = null;
             if (context != null)

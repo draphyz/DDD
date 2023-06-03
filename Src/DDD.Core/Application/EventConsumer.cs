@@ -162,8 +162,8 @@ namespace DDD.Core.Application
 
         private async Task<(IEnumerable<EventStream>, IEnumerable<FailedEventStream>)> FindAllStreamsAsync()
         {
-            var findStreams = this.queryProcessor.In<TContext>().ProcessAsync(new FindEventStreams(), MessageContext.CancellableContext(this.CancellationToken));
-            var findFailedStreams = this.queryProcessor.In<TContext>().ProcessAsync(new FindFailedEventStreams(), MessageContext.CancellableContext(this.CancellationToken));
+            var findStreams = this.queryProcessor.InGeneric(Context).ProcessAsync(new FindEventStreams(), MessageContext.CancellableContext(this.CancellationToken));
+            var findFailedStreams = this.queryProcessor.InGeneric(Context).ProcessAsync(new FindFailedEventStreams(), MessageContext.CancellableContext(this.CancellationToken));
             await Task.WhenAll(findStreams, findFailedStreams);
             return (findStreams.Result, findFailedStreams.Result);
         }
@@ -209,7 +209,7 @@ namespace DDD.Core.Application
                 ExcludedStreamIds = excludedStreams.Select(s => s.StreamId).ToArray()
             };
             var sourceContext = this.boundedContexts.Single(c => c.Code == stream.Source);
-            var notifiedEvents = await this.queryProcessor.In(sourceContext).ProcessAsync(query, MessageContext.CancellableContext(this.CancellationToken));
+            var notifiedEvents = await this.queryProcessor.InSpecific(sourceContext).ProcessAsync(query, MessageContext.CancellableContext(this.CancellationToken));
             foreach (var notifiedEvent in notifiedEvents)
             {
                 this.CancellationToken.ThrowIfCancellationRequested();
@@ -246,7 +246,7 @@ namespace DDD.Core.Application
                         RetryDelays = this.GetRetryDelays(isTransientException, stream),
                         BlockSize = stream.BlockSize
                     };
-                    await this.commandProcessor.In<TContext>().ProcessAsync(command);
+                    await this.commandProcessor.InGeneric(Context).ProcessAsync(command);
                     break;
                 }
             }
@@ -265,7 +265,7 @@ namespace DDD.Core.Application
                 StreamId = excludedStream.StreamId
             }; 
             var sourceContext = this.boundedContexts.Single(c => c.Code == excludedStream.StreamSource);
-            var notifiedEvents = await this.queryProcessor.In(sourceContext).ProcessAsync(query, MessageContext.CancellableContext(this.CancellationToken));
+            var notifiedEvents = await this.queryProcessor.InSpecific(sourceContext).ProcessAsync(query, MessageContext.CancellableContext(this.CancellationToken));
             var success = true;
             foreach (var notifiedEvent in notifiedEvents)
             {
@@ -304,7 +304,7 @@ namespace DDD.Core.Application
                         RetryMax = isNewEvent ? this.GetRetryMax(isTransientException, stream) : excludedStream.RetryMax,
                         RetryDelays = isNewEvent ? this.GetRetryDelays(isTransientException, stream) : excludedStream.RetryDelays
                     };
-                    await this.commandProcessor.In<TContext>().ProcessAsync(command);
+                    await this.commandProcessor.InGeneric(Context).ProcessAsync(command);
                     break;
                 }
             }
@@ -316,7 +316,7 @@ namespace DDD.Core.Application
                     Type = excludedStream.StreamType,
                     Source = excludedStream.StreamSource
                 };
-                await this.commandProcessor.In<TContext>().ProcessAsync(command);
+                await this.commandProcessor.InGeneric(Context).ProcessAsync(command);
                 excludedStreams.Remove(excludedStream);
             }
             this.logger.LogInformation("The consumption of the following failed event stream in the context '{Context}' has finished : {FailedStream}", this.Context.Name, excludedStream);

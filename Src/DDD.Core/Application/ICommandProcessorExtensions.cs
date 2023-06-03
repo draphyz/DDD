@@ -1,10 +1,10 @@
 ﻿using EnsureThat;
 using System;
 using System.Threading.Tasks;
+using DDD.Validation;
 
 namespace DDD.Core.Application
 {
-    using Domain;
     using Threading;
 
     public static class ICommandProcessorExtensions
@@ -12,10 +12,12 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public static IContextualCommandProcessor<TContext> In<TContext>(this ICommandProcessor processor) where TContext : BoundedContext, new()
+        public static void Process<TCommand>(this ICommandProcessor processor,
+                                             TCommand command)
+            where TCommand : class, ICommand
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
-            return processor.In(new TContext());
+            processor.Process(command, new MessageContext());
         }
 
         public static void Process<TCommand>(this ICommandProcessor processor,
@@ -28,6 +30,14 @@ namespace DDD.Core.Application
         }
 
         public static Task ProcessAsync<TCommand>(this ICommandProcessor processor,
+                                                  TCommand command)
+            where TCommand : class, ICommand
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.ProcessAsync(command, new MessageContext());
+        }
+
+        public static Task ProcessAsync<TCommand>(this ICommandProcessor processor,
                                                   TCommand command,
                                                   object context)
             where TCommand : class, ICommand
@@ -36,15 +46,25 @@ namespace DDD.Core.Application
             return processor.ProcessAsync(command, MessageContext.FromObject(context));
         }
 
-        public static async Task ProcessWithDelayAsync<TCommand>(this ICommandProcessor processor,
-                                                                 TCommand command,
-                                                                 TimeSpan delay,
-                                                                 IMessageContext context = null)
+        public static Task ProcessWithDelayAsync<TCommand>(this ICommandProcessor processor,
+                                                           TCommand command,
+                                                           TimeSpan delay)
             where TCommand : class, ICommand
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.ProcessWithDelayAsync(command, delay, new MessageContext());
+        }
+
+        public static async Task ProcessWithDelayAsync<TCommand>(this ICommandProcessor processor,
+                                                                 TCommand command,
+                                                                 TimeSpan delay,
+                                                                 IMessageContext context)
+            where TCommand : class, ICommand
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             await new SynchronizationContextRemover();
-            var cancellationToken = context?.CancellationToken() ?? default;
+            var cancellationToken = context.CancellationToken();
             await Task.Delay(delay, cancellationToken);
             await processor.ProcessAsync(command, context);
         }
@@ -58,6 +78,41 @@ namespace DDD.Core.Application
             Ensure.That(processor, nameof(processor)).IsNotNull();
             return processor.ProcessWithDelayAsync(command, delay, MessageContext.FromObject(context));
         }
+
+        public static ValidationResult Validate<TCommand>(this ICommandProcessor processor,
+                                                          TCommand command)
+            where TCommand : class, ICommand
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.Validate(command, new ValidationContext());
+        }
+
+        public static ValidationResult Validate<TCommand>(this ICommandProcessor processor, 
+                                                          TCommand command, 
+                                                          object context) 
+            where TCommand : class, ICommand
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.Validate(command, ValidationContext.FromObject(context));
+        }
+
+        public static Task<ValidationResult> ValidateAsync<TCommand>(this ICommandProcessor processor,
+                                                                     TCommand command)
+            where TCommand : class, ICommand
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.ValidateAsync(command, new ValidationContext());
+        }
+
+        public static Task<ValidationResult> ValidateAsync<TCommand>(this ICommandProcessor processor, 
+                                                                     TCommand command, 
+                                                                     object context) 
+            where TCommand : class, ICommand
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.ValidateAsync(command, ValidationContext.FromObject(context));
+        }
+
 
         #endregion Methods
 

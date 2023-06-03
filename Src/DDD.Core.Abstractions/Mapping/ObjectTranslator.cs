@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace DDD.Mapping
 {
@@ -20,9 +19,9 @@ namespace DDD.Mapping
 
         #region Methods
 
-        public abstract TDestination Translate(TSource source, IDictionary<string, object> context);
+        public abstract TDestination Translate(TSource source, IMappingContext context);
 
-        object IObjectTranslator.Translate(object source, IDictionary<string, object> context) => this.Translate((TSource)source, context);
+        object IObjectTranslator.Translate(object source, IMappingContext context) => this.Translate((TSource)source, context);
 
         #endregion Methods
     }

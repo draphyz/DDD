@@ -1,6 +1,5 @@
 ﻿using System;
 using EnsureThat;
-using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Prescriptions
 {
@@ -12,9 +11,10 @@ namespace DDD.HealthcareDelivery.Domain.Prescriptions
         #region Methods
 
         public override PrescribedMedication Translate(PrescribedMedicationState state,
-                                                       IDictionary<string, object> context = null)
+                                                       IMappingContext context)
         {
             Ensure.That(state, nameof(state)).IsNotNull();
+            Ensure.That(context, nameof(context));
             switch (state.MedicationType)
             {
                 case "Product":

@@ -25,7 +25,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public abstract Task HandleAsync(TEvent @event, IMessageContext context = null);
+        public abstract Task HandleAsync(TEvent @event, IMessageContext context);
 
         Task IAsyncEventHandler.HandleAsync(IEvent @event, IMessageContext context) => this.HandleAsync((TEvent)@event, context);
 

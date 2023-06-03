@@ -7,6 +7,7 @@ using Xunit;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
 {
+    using Core.Application;
     using Common.Application;
     using Practitioners;
     using Domain;
@@ -62,8 +63,9 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             this.Fixture.ExecuteScriptFromResources("CreatePharmaceuticalPrescription");
             Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity("d.duck"), new string[] { "User" });
             var command = CreateCommand();
+            var context = new MessageContext();
             // Act
-            await this.Handler.HandleAsync(command);
+            await this.Handler.HandleAsync(command, context);
             // Assert
             var prescription = await this.Repository.FindAsync(new PrescriptionIdentifier(command.PrescriptionIdentifier));
             prescription.Should().NotBeNull();

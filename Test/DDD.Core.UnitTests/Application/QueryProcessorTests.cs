@@ -46,10 +46,11 @@ namespace DDD.Core.Application
         {
             // Arrange
             var query = new FakeQuery1();
+            var context = new MessageContext();
             // Act
-            this.processor.Process(query);
+            this.processor.Process(query, context);
             // Assert
-            this.handlerOfQuery1.Received(1).Handle(query);
+            this.handlerOfQuery1.Received(1).Handle(query, context);
         }
 
         [Fact]
@@ -57,10 +58,11 @@ namespace DDD.Core.Application
         {
             // Arrange
             var query = new FakeQuery1();
+            var context = new ValidationContext();
             // Act
-            this.processor.Validate(query);
+            this.processor.Validate(query, context);
             // Assert
-            this.validatorOfQuery1.Received(1).Validate(query);
+            this.validatorOfQuery1.Received(1).Validate(query, context);
         }
 
         #endregion Methods

@@ -1,6 +1,5 @@
 ﻿using EnsureThat;
 using System;
-using System.Collections.Generic;
 
 namespace DDD.HealthcareDelivery.Domain.Practitioners
 {
@@ -13,9 +12,10 @@ namespace DDD.HealthcareDelivery.Domain.Practitioners
         #region Methods
 
         public override HealthcarePractitioner Translate(HealthcarePractitionerState state,
-                                                IDictionary<string, object> context = null)
+                                                         IMappingContext context)
         {
             Ensure.That(state, nameof(state)).IsNotNull();
+            Ensure.That(context, nameof(context));
             switch (state.PractitionerType)
             {
                 case "Physician":

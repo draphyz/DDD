@@ -8,8 +8,7 @@ namespace DDD.Core.Application
     /// <summary>
     /// Provides access to the execution context of a message.
     /// </summary>
-    public class MessageContext
-        : Dictionary<string, object>, IMessageContext
+    public class MessageContext : Dictionary<string, object>, IMessageContext
     {
 
         #region Constructors
@@ -35,14 +34,9 @@ namespace DDD.Core.Application
 
         public static IMessageContext FromObject(object context)
         {
-            MessageContext messageContext;
-            if (context == null)
-                messageContext = null;
-            else
-            {
-                messageContext = new MessageContext();
+            var messageContext = new MessageContext(); 
+            if (context != null)
                 messageContext.AddObject(context);
-            }
             return messageContext;
         }
 

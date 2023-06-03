@@ -46,7 +46,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public void Handle(TEvent @event, IMessageContext context = null)
+        public void Handle(TEvent @event, IMessageContext context)
         {
             if (this.logger.IsEnabled(LogLevel.Debug))
             {

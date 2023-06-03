@@ -31,16 +31,16 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public override RepositoryException Translate(DbException exception, IDictionary<string, object> context = null)
+        public override RepositoryException Translate(DbException exception, IMappingContext context)
         {
             Ensure.That(exception, nameof(exception)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             var exceptionType = exception.GetType().FullName;
             if (this.translators.TryGetValue(exceptionType, out var translator))
                 return translator.Translate(exception, context);
             else
             {
-                Type entityType = null;
-                context?.TryGetValue("EntityType", out entityType);
+                context.TryGetValue("EntityType", out Type entityType);
                 var outerException = context.ContainsKey("OuterException") ? (Exception)context["OuterException"] : exception;
                 return new RepositoryException(isTransient: false, entityType, outerException);
             }

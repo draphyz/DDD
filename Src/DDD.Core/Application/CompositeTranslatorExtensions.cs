@@ -16,8 +16,7 @@ namespace DDD.Core.Application
             Ensure.That(translator, nameof(translator)).IsNotNull();
             translator.Register<Exception>((exception, context) =>
             {
-                ICommand command = null;
-                context?.TryGetValue("Command", out command);
+                context.TryGetValue("Command", out ICommand command);
                 return new CommandException(isTransient: false, command, exception);
             });
         }
@@ -27,8 +26,7 @@ namespace DDD.Core.Application
             Ensure.That(translator, nameof(translator)).IsNotNull();
             translator.Register<Exception>((exception, context) =>
             {
-                IQuery query = null;
-                context?.TryGetValue("Query", out query);
+                context.TryGetValue("Query", out IQuery query);
                 return new QueryException(isTransient: false, query, exception);
             });
         }

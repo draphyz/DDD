@@ -45,7 +45,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Methods
 
-        public void Handle(TCommand command, IMessageContext context = null)
+        public void Handle(TCommand command, IMessageContext context)
         {
             using (ThreadScopedLifestyle.BeginScope(container))
             {
