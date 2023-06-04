@@ -1,5 +1,6 @@
 ﻿using NSubstitute;
 using System;
+using System.Threading.Tasks;
 using Xunit;
 using DDD.Validation;
 
@@ -46,10 +47,11 @@ namespace DDD.Core.Application
         {
             // Arrange
             var command = new FakeCommand1();
+            var context = new MessageContext();
             // Act
-            this.processor.Process(command);
+            this.processor.Process(command, context);
             // Assert
-            this.handlerOfCommand1.Received(1).Handle(command);
+            this.handlerOfCommand1.Received(1).Handle(command, context);
         }
 
         [Fact]
@@ -57,10 +59,11 @@ namespace DDD.Core.Application
         {
             // Arrange
             var command = new FakeCommand1();
+            var context = new ValidationContext();
             // Act
-            this.processor.Validate(command);
+            this.processor.Validate(command, context);
             // Assert
-            this.validatorOfCommand1.Received(1).Validate(command);
+            this.validatorOfCommand1.Received(1).Validate(command, context);
         }
 
         #endregion Methods

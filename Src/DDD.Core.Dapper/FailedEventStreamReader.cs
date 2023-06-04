@@ -44,7 +44,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public IEnumerable<Event> Handle(ReadFailedEventStream query, IMessageContext context = null)
+        public IEnumerable<Event> Handle(ReadFailedEventStream query, IMessageContext context)
         {
             Ensure.That(query, nameof(query)).IsNotNull();
             try
@@ -65,13 +65,14 @@ namespace DDD.Core.Infrastructure.Data
             }
         }
 
-        public async Task<IEnumerable<Event>> HandleAsync(ReadFailedEventStream query, IMessageContext context = null)
+        public async Task<IEnumerable<Event>> HandleAsync(ReadFailedEventStream query, IMessageContext context)
         {
             Ensure.That(query, nameof(query)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();
-                var cancellationToken = context?.CancellationToken() ?? default;
+                var cancellationToken = context.CancellationToken();
                 var connection = await this.connectionProvider.GetOpenConnectionAsync(cancellationToken);
                 return await connection.QueryAsync<Event>
                 (

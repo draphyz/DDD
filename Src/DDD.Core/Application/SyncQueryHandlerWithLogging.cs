@@ -27,7 +27,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public TResult Handle(TQuery query, IMessageContext context = null)
+        public TResult Handle(TQuery query, IMessageContext context)
         {
             if (this.logger.IsEnabled(LogLevel.Debug))
             {

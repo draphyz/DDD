@@ -42,7 +42,7 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         #region Methods
 
-        public async Task HandleAsync(TCommand command, IMessageContext context = null)
+        public async Task HandleAsync(TCommand command, IMessageContext context)
         {
             await policy.ExecuteAsync(() => this.handler.HandleAsync(command, context));
         }

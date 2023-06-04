@@ -1,14 +1,21 @@
 ﻿using EnsureThat;
-using System.Collections.Generic;
 
 namespace DDD.Mapping
 {
-    using Collections;
-
     public static class IObjectMapperExtensions
     {
 
         #region Methods
+
+        public static void Map<TSource, TDestination>(this IObjectMapper<TSource, TDestination> mapper,
+                                                      TSource source,
+                                                      TDestination destination)
+            where TSource : class
+            where TDestination : class
+        {
+            Ensure.That(mapper, nameof(mapper)).IsNotNull();
+            mapper.Map(source, destination, new MappingContext());
+        }
 
         public static void Map<TSource, TDestination>(this IObjectMapper<TSource, TDestination> mapper,
                                                       TSource source,
@@ -18,9 +25,7 @@ namespace DDD.Mapping
             where TDestination : class
         {
             Ensure.That(mapper, nameof(mapper)).IsNotNull();
-            var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(context);
-            mapper.Map(source, destination, dictionary);
+            mapper.Map(source, destination, MappingContext.FromObject(context));
         }
 
         #endregion Methods

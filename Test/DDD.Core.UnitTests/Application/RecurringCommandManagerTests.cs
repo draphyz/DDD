@@ -238,12 +238,13 @@ namespace DDD.Core.Application
             var recurringScheduleFactory = FakeRecurringScheduleFactory();
             var logger = FakeLogger();
             var settings = FakeSettings();
+            var fakeContext = new FakeContext();
             manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            await commandProcessor.In<FakeContext>()
+            await commandProcessor.InGeneric(fakeContext)
                                   .Received(1)
                                   .ProcessAsync(Arg.Is<MarkRecurringCommandAsFailed>(c => c.CommandId == recurringCommand.CommandId && c.ExceptionInfo == exception.ToString()), Arg.Any<IMessageContext>());
         }
@@ -303,12 +304,13 @@ namespace DDD.Core.Application
             var recurringScheduleFactory = FakeRecurringScheduleFactory();
             var logger = FakeLogger();
             var settings = FakeSettings();
+            var fakeContext = new FakeContext();
             manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            await commandProcessor.In<FakeContext>()
+            await commandProcessor.InGeneric(fakeContext)
                                   .Received(1)
                                   .ProcessAsync(Arg.Is<MarkRecurringCommandAsSuccessful>(c => c.CommandId == recurringCommand.CommandId), Arg.Any<IMessageContext>());
         }
@@ -416,7 +418,7 @@ namespace DDD.Core.Application
         {
             var contextualProcessor = Substitute.For<IContextualCommandProcessor<FakeContext>>();
             var commandProcessor = Substitute.For<ICommandProcessor>();
-            commandProcessor.In<FakeContext>().Returns(contextualProcessor);
+            commandProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return commandProcessor;
         }
 
@@ -428,7 +430,7 @@ namespace DDD.Core.Application
             var commandProcessor = Substitute.For<ICommandProcessor>();
             commandProcessor.When(p => p.ProcessAsync(Arg.Any<ICommand>(), Arg.Any<IMessageContext>()))
                             .Throw(FakeException());
-            commandProcessor.In<FakeContext>().Returns(contextualProcessor);
+            commandProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return commandProcessor;
         }
 
@@ -438,7 +440,7 @@ namespace DDD.Core.Application
             contextualProcessor.When(p => p.ProcessAsync(Arg.Any<MarkRecurringCommandAsSuccessful>(), Arg.Any<IMessageContext>()))
                                .Throw(exception);
             var commandProcessor = Substitute.For<ICommandProcessor>();
-            commandProcessor.In<FakeContext>().Returns(contextualProcessor);
+            commandProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return commandProcessor;
         }
 
@@ -448,7 +450,7 @@ namespace DDD.Core.Application
             var commandProcessor = Substitute.For<ICommandProcessor>();
             commandProcessor.When(p => p.ProcessAsync(Arg.Any<ICommand>(), Arg.Any<IMessageContext>()))
                             .Throw(exception);
-            commandProcessor.In<FakeContext>().Returns(contextualProcessor);
+            commandProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return commandProcessor;
         }
 
@@ -458,7 +460,7 @@ namespace DDD.Core.Application
             var commandProcessor = Substitute.For<ICommandProcessor>();
             commandProcessor.When(p => p.ProcessAsync(Arg.Any<FakeCommand1>(), Arg.Any<IMessageContext>()))
                             .Throw(exception);
-            commandProcessor.In<FakeContext>().Returns(contextualProcessor);
+            commandProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return commandProcessor;
         }
 
@@ -470,7 +472,7 @@ namespace DDD.Core.Application
             contextualProcessor.ProcessAsync(Arg.Any<GenerateRecurringCommandId>(), Arg.Any<IMessageContext>())
                                .Returns(FakeCommandId());
             var queryProcessor = Substitute.For<IQueryProcessor>();
-            queryProcessor.In<FakeContext>().Returns(contextualProcessor);
+            queryProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return queryProcessor;
         }
 
@@ -482,7 +484,7 @@ namespace DDD.Core.Application
             contextualProcessor.ProcessAsync(Arg.Any<GenerateRecurringCommandId>(), Arg.Any<IMessageContext>())
                                .Returns(FakeCommandId());
             var queryProcessor = Substitute.For<IQueryProcessor>();
-            queryProcessor.In<FakeContext>().Returns(contextualProcessor);
+            queryProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return queryProcessor;
         }
 
@@ -534,7 +536,7 @@ namespace DDD.Core.Application
 
         private static ILogger FakeLogger() => Substitute.For<ILogger>();
 
-        private static RecurringCommandManagerSettings<FakeContext> FakeSettings() => new RecurringCommandManagerSettings<FakeContext>(SerializationFormat.Json);
+        private static RecurringCommandManagerSettings<FakeContext> FakeSettings() => new RecurringCommandManagerSettings<FakeContext>(new FakeContext(), SerializationFormat.Json);
 
         private static string InvalidRecurringExpression() => "* * * * * * * *";
 

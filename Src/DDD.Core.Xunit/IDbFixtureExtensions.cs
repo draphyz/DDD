@@ -13,7 +13,7 @@ namespace DDD.Core.Infrastructure.Testing
         #region Methods
 
         public static DbConnection CreateOpenConnection<TContext>(this IDbFixture<TContext> fixture, bool pooling = true)
-            where TContext : BoundedContext
+            where TContext : BoundedContext, new()
         {
             Ensure.That(fixture, nameof(fixture)).IsNotNull();
             var connection = fixture.CreateConnection(pooling);
@@ -24,7 +24,7 @@ namespace DDD.Core.Infrastructure.Testing
         public static async Task<DbConnection> CreateOpenConnectionAsync<TContext>(this IDbFixture<TContext> fixture,
                                                                                    CancellationToken cancellationToken = default,
                                                                                    bool pooling = true)
-            where TContext : BoundedContext
+            where TContext : BoundedContext, new()
         {
             Ensure.That(fixture, nameof(fixture)).IsNotNull();
             var connection = fixture.CreateConnection(pooling);

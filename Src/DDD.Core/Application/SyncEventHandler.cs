@@ -1,4 +1,5 @@
 ﻿using System;
+using EnsureThat;
 
 namespace DDD.Core.Application
 {
@@ -9,12 +10,22 @@ namespace DDD.Core.Application
     /// </summary>
     public abstract class SyncEventHandler<TEvent, TContext> : ISyncEventHandler<TEvent, TContext>
         where TEvent : class, IEvent
-        where TContext : BoundedContext, new()
+        where TContext : BoundedContext
     {
+
+        #region Constructors
+
+        protected SyncEventHandler(TContext context) 
+        {
+            Ensure.That(context, nameof(context)).IsNotNull();
+            this.Context = context;
+        }
+
+        #endregion Constructors
 
         #region Properties
 
-        public TContext Context { get; } = new TContext();
+        public TContext Context { get; }
 
         BoundedContext ISyncEventHandler.Context => this.Context;
 
@@ -24,7 +35,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public abstract void Handle(TEvent @event, IMessageContext context = null);
+        public abstract void Handle(TEvent @event, IMessageContext context);
 
         void ISyncEventHandler.Handle(IEvent @event, IMessageContext context) => this.Handle((TEvent)@event, context);
 

@@ -13,7 +13,7 @@
         /// <summary>
         /// Handles synchronously a query of a specified type and provides a result of a specified type.
         /// </summary>
-        TResult Handle(TQuery query, IMessageContext context = null);
+        TResult Handle(TQuery query, IMessageContext context);
 
         #endregion Methods
     }

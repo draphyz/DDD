@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DDD.Mapping
+﻿namespace DDD.Mapping
 {
     /// <summary>
     /// Defines a component that processes object-object mappings.
@@ -10,14 +8,14 @@ namespace DDD.Mapping
 
         #region Methods
 
-        void Map<TSource, TDestination>(TSource source, TDestination destination, IDictionary<string, object> context = null) 
+        void Map<TSource, TDestination>(TSource source, TDestination destination, IMappingContext context) 
             where TSource : class
             where TDestination : class;
 
-        TDestination Translate<TDestination>(object source, IDictionary<string, object> context = null) 
+        TDestination Translate<TDestination>(object source, IMappingContext context) 
             where TDestination : class;
 
-        TDestination Translate<TSource, TDestination>(TSource source, IDictionary<string, object> context = null) 
+        TDestination Translate<TSource, TDestination>(TSource source, IMappingContext context) 
             where TSource : class
             where TDestination : class;
 

@@ -79,6 +79,7 @@ namespace DDD.Core.Application
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorReadingEventStream(@event);
             var eventPublisher = FakeEventPublisher();
+            var fakeContext = new FakeContext();
             var boundedContexts = FakeBoundedContexts();
             var eventSerializers = FakeEventSerializersThrowingException(exception);
             var logger = FakeLogger();
@@ -88,7 +89,7 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            await commandProcessor.In<FakeContext>()
+            await commandProcessor.InGeneric(fakeContext)
                                   .Received(1)
                                   .ProcessAsync(Arg.Is<ExcludeFailedEventStream>(c => c.EventId == @event.EventId && c.ExceptionMessage == exception.Message), Arg.Any<IMessageContext>());
         }
@@ -144,6 +145,7 @@ namespace DDD.Core.Application
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorReadingFailedEventStream(@event);
             var eventPublisher = FakeEventPublisher();
+            var fakeContext = new FakeContext();
             var boundedContexts = FakeBoundedContexts();
             var eventSerializers = FakeEventSerializersThrowingException(exception);
             var logger = FakeLogger();
@@ -153,7 +155,7 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            await commandProcessor.In<FakeContext>()
+            await commandProcessor.InGeneric(fakeContext)
                                   .Received(1)
                                   .ProcessAsync(Arg.Is<UpdateFailedEventStream>(c => c.EventId == @event.EventId && c.ExceptionMessage == exception.Message), Arg.Any<IMessageContext>());
         }
@@ -251,6 +253,7 @@ namespace DDD.Core.Application
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorReadingEventStream(@event);
             var eventPublisher = FakeEventPublisherThrowingException(exception);
+            var fakeContext = new FakeContext();
             var boundedContexts = FakeBoundedContexts();
             var eventSerializers = FakeEventSerializers();
             var logger = FakeLogger();
@@ -260,7 +263,7 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            await commandProcessor.In<FakeContext>()
+            await commandProcessor.InGeneric(fakeContext)
                                   .Received(1)
                                   .ProcessAsync(Arg.Is<ExcludeFailedEventStream>(c => c.EventId == @event.EventId && c.ExceptionMessage == exception.Message), Arg.Any<IMessageContext>());
         }
@@ -316,6 +319,7 @@ namespace DDD.Core.Application
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorReadingFailedEventStream(@event);
             var eventPublisher = FakeEventPublisherThrowingException(exception);
+            var fakeContext = new FakeContext();
             var boundedContexts = FakeBoundedContexts();
             var eventSerializers = FakeEventSerializers();
             var logger = FakeLogger();
@@ -325,7 +329,7 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            await commandProcessor.In<FakeContext>()
+            await commandProcessor.InGeneric(fakeContext)
                                   .Received(1)
                                   .ProcessAsync(Arg.Is<UpdateFailedEventStream>(c => c.EventId == @event.EventId && c.ExceptionMessage == exception.Message), Arg.Any<IMessageContext>());
         }
@@ -401,6 +405,7 @@ namespace DDD.Core.Application
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorReadingFailedEventStream(@event);
             var eventPublisher = FakeEventPublisher();
+            var fakeContext = new FakeContext();
             var boundedContexts = FakeBoundedContexts();
             var eventSerializers = FakeEventSerializers();
             var logger = FakeLogger();
@@ -410,14 +415,14 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            await commandProcessor.In<FakeContext>().Received(1)
+            await commandProcessor.InGeneric(fakeContext).Received(1)
                                   .ProcessAsync(Arg.Any<IncludeFailedEventStream>(), Arg.Any<IMessageContext>());
         }
         private static ICommandProcessor FakeCommandProcessor()
         {
             var contextualProcessor = Substitute.For<IContextualCommandProcessor<FakeContext>>();
             var commandProcessor = Substitute.For<ICommandProcessor>();
-            commandProcessor.In<FakeContext>().Returns(contextualProcessor);
+            commandProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return commandProcessor;
         }
 
@@ -427,7 +432,7 @@ namespace DDD.Core.Application
             contextualProcessor.When(p => p.ProcessAsync(Arg.Any<ExcludeFailedEventStream>(), Arg.Any<IMessageContext>()))
                                .Throw(exception);
             var commandProcessor = Substitute.For<ICommandProcessor>();
-            commandProcessor.In<FakeContext>().Returns(contextualProcessor);
+            commandProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return commandProcessor;
         }
 
@@ -437,7 +442,7 @@ namespace DDD.Core.Application
             contextualProcessor.When(p => p.ProcessAsync(Arg.Any<IncludeFailedEventStream>(), Arg.Any<IMessageContext>()))
                                .Throw(exception);
             var commandProcessor = Substitute.For<ICommandProcessor>();
-            commandProcessor.In<FakeContext>().Returns(contextualProcessor);
+            commandProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return commandProcessor;
         }
 
@@ -447,7 +452,7 @@ namespace DDD.Core.Application
             contextualProcessor.When(p => p.ProcessAsync(Arg.Any<UpdateFailedEventStream>(), Arg.Any<IMessageContext>()))
                                .Throw(exception);
             var commandProcessor = Substitute.For<ICommandProcessor>();
-            commandProcessor.In<FakeContext>().Returns(contextualProcessor);
+            commandProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return commandProcessor;
         }
 
@@ -509,8 +514,8 @@ namespace DDD.Core.Application
             contextualProcessorForFakeSourceContext.ProcessAsync(Arg.Any<ReadEventStream>(), Arg.Any<IMessageContext>())
                                                    .Returns(events);
             var queryProcessor = Substitute.For<IQueryProcessor>();
-            queryProcessor.In<FakeContext>().Returns(contextualProcessorForFakeContext);
-            queryProcessor.In(Arg.Any<BoundedContext>()).Returns(contextualProcessorForFakeSourceContext);
+            queryProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessorForFakeContext);
+            queryProcessor.InSpecific(Arg.Any<FakeSourceContext>()).Returns(contextualProcessorForFakeSourceContext);
             return queryProcessor;
         }
 
@@ -525,8 +530,8 @@ namespace DDD.Core.Application
             contextualProcessorForFakeSourceContext.ProcessAsync(Arg.Any<ReadFailedEventStream>(), Arg.Any<IMessageContext>())
                                                    .Returns(events);
             var queryProcessor = Substitute.For<IQueryProcessor>();
-            queryProcessor.In<FakeContext>().Returns(contextualProcessorForFakeContext);
-            queryProcessor.In(Arg.Any<BoundedContext>()).Returns(contextualProcessorForFakeSourceContext);
+            queryProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessorForFakeContext);
+            queryProcessor.InSpecific(Arg.Any<FakeSourceContext>()).Returns(contextualProcessorForFakeSourceContext);
             return queryProcessor;
         }
 
@@ -536,7 +541,7 @@ namespace DDD.Core.Application
             contextualProcessor.When(p => p.ProcessAsync(Arg.Any<FindEventStreams>(), Arg.Any<IMessageContext>()))
                                .Throw(exception);
             var queryProcessor = Substitute.For<IQueryProcessor>();
-            queryProcessor.In<FakeContext>().Returns(contextualProcessor);
+            queryProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return queryProcessor;
         }
 
@@ -546,7 +551,7 @@ namespace DDD.Core.Application
             contextualProcessor.When(p => p.ProcessAsync(Arg.Any<FindFailedEventStreams>(), Arg.Any<IMessageContext>()))
                                .Throw(exception);
             var queryProcessor = Substitute.For<IQueryProcessor>();
-            queryProcessor.In<FakeContext>().Returns(contextualProcessor);
+            queryProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessor);
             return queryProcessor;
         }
 
@@ -559,8 +564,8 @@ namespace DDD.Core.Application
             contextualProcessorForFakeSourceContext.When(p => p.ProcessAsync(Arg.Any<ReadEventStream>(), Arg.Any<IMessageContext>()))
                                                    .Throw(exception);
             var queryProcessor = Substitute.For<IQueryProcessor>();
-            queryProcessor.In<FakeContext>().Returns(contextualProcessorForFakeContext);
-            queryProcessor.In(Arg.Any<BoundedContext>()).Returns(contextualProcessorForFakeSourceContext);
+            queryProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessorForFakeContext);
+            queryProcessor.InSpecific(Arg.Any<FakeSourceContext>()).Returns(contextualProcessorForFakeSourceContext);
             return queryProcessor;
         }
 
@@ -575,12 +580,12 @@ namespace DDD.Core.Application
             contextualProcessorForFakeSourceContext.When(p => p.ProcessAsync(Arg.Any<ReadFailedEventStream>(), Arg.Any<IMessageContext>()))
                                                    .Throw(exception);
             var queryProcessor = Substitute.For<IQueryProcessor>();
-            queryProcessor.In<FakeContext>().Returns(contextualProcessorForFakeContext);
-            queryProcessor.In(Arg.Any<BoundedContext>()).Returns(contextualProcessorForFakeSourceContext);
+            queryProcessor.InGeneric(Arg.Any<FakeContext>()).Returns(contextualProcessorForFakeContext);
+            queryProcessor.InSpecific(Arg.Any<FakeSourceContext>()).Returns(contextualProcessorForFakeSourceContext);
             return queryProcessor;
         }
 
-        private static EventConsumerSettings<FakeContext> FakeSettings() => new EventConsumerSettings<FakeContext>(1, 1);
+        private static EventConsumerSettings<FakeContext> FakeSettings() => new EventConsumerSettings<FakeContext>(new FakeContext(), 1, 1);
 
         private static IEnumerable<BoundedContext> FakeBoundedContexts()
         {

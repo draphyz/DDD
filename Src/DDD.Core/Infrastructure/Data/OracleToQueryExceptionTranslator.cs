@@ -1,5 +1,4 @@
 ﻿using System.Data.Common;
-using System.Collections.Generic;
 using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Data
@@ -15,11 +14,11 @@ namespace DDD.Core.Infrastructure.Data
     {
         #region Methods
 
-        public override QueryException Translate(DbException exception, IDictionary<string, object> context = null)
+        public override QueryException Translate(DbException exception, IMappingContext context)
         {
             Ensure.That(exception, nameof(exception)).IsNotNull();
-            IQuery query = null;
-            context?.TryGetValue("Query", out query);
+            Ensure.That(context, nameof(context)).IsNotNull();
+            context.TryGetValue("Query", out IQuery query);
             dynamic oracleException = exception;
             foreach (dynamic error in oracleException.Errors)
             {

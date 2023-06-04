@@ -1,5 +1,4 @@
 ﻿using System.Data.Common;
-using System.Collections.Generic;
 using EnsureThat;
 
 namespace DDD.Core.Infrastructure.Data
@@ -12,11 +11,11 @@ namespace DDD.Core.Infrastructure.Data
     {
         #region Methods
 
-        public override CommandException Translate(DbException exception, IDictionary<string, object> context = null)
+        public override CommandException Translate(DbException exception, IMappingContext context)
         {
             Ensure.That(exception, nameof(exception)).IsNotNull();
-            ICommand command = null;
-            context?.TryGetValue("Command", out command);
+            Ensure.That(context, nameof(context)).IsNotNull();
+            context.TryGetValue("Command", out ICommand command);
             dynamic sqlServerException = exception;
             foreach (dynamic error in sqlServerException.Errors)
             {

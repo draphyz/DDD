@@ -40,8 +40,9 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Methods
 
-        public async Task HandleAsync(TCommand command, IMessageContext context = null)
+        public async Task HandleAsync(TCommand command, IMessageContext context)
         {
+            Ensure.That(context, nameof(context)).IsNotNull();
             await new SynchronizationContextRemover();
             using (AsyncScopedLifestyle.BeginScope(container))
             {
@@ -49,7 +50,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 {
                     var handler = this.handlerProvider();
                     await handler.HandleAsync(command, context);
-                    if (context?.IsEventHandling() == true) // Exception to the rule "One transaction per command" to avoid to handle the same event more than once
+                    if (context.IsEventHandling()) // Exception to the rule "One transaction per command" to avoid to handle the same event more than once
                         await UpdateEventStreamPositionAsync(context);
                     scope.Complete();
                 }

@@ -44,7 +44,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public void Handle(UpdateFailedEventStream command, IMessageContext context = null)
+        public void Handle(UpdateFailedEventStream command, IMessageContext context)
         {
             Ensure.That(command, nameof(command)).IsNotNull();
             try
@@ -70,15 +70,16 @@ namespace DDD.Core.Infrastructure.Data
             }
         }
 
-        public async Task HandleAsync(UpdateFailedEventStream command, IMessageContext context = null)
+        public async Task HandleAsync(UpdateFailedEventStream command, IMessageContext context)
         {
             Ensure.That(command, nameof(command)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    var cancellationToken = context?.CancellationToken() ?? default;
+                    var cancellationToken = context.CancellationToken();
                     var connection = await this.connectionProvider.GetOpenConnectionAsync(cancellationToken);
                     var expressions = connection.Expressions();
                     await connection.ExecuteAsync

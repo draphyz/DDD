@@ -33,7 +33,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public void Handle(TCommand command, IMessageContext context = null)
+        public void Handle(TCommand command, IMessageContext context)
         {
             if (this.logger.IsEnabled(LogLevel.Debug))
             {

@@ -57,22 +57,26 @@ namespace DDD.Mapping
         [MemberData(nameof(Sources))]
         public void TranslateCollection_OfObject_CallsExpectedTranslator(IEnumerable<FakeObject1> source)
         {
+            // Arrange
+            var context = new MappingContext();
             // Act
-            var destination = IMappingProcessorExtensions.TranslateCollection<FakeObject2>(this.processor, source)
-                                                         .ToList();
+            IMappingProcessorExtensions.TranslateCollection<FakeObject2>(this.processor, source, context)
+                                       .ToList();
             // Assert
-            this.translator1To2.Received(source.Count()).Translate(Arg.Is<FakeObject1>(x => source.Contains(x)));
+            this.translator1To2.Received(source.Count()).Translate(Arg.Is<FakeObject1>(x => source.Contains(x)), context);
         }
 
         [Theory]
         [MemberData(nameof(Sources))]
         public void TranslateCollection_OfSpecifiedType_CallsExpectedTranslator(IEnumerable<FakeObject1> source)
         {
+            // Arrange
+            var context = new MappingContext();
             // Act
-            var destination = IMappingProcessorExtensions.TranslateCollection<FakeObject1, FakeObject2>(this.processor, source)
-                                                         .ToList();
+            IMappingProcessorExtensions.TranslateCollection<FakeObject1, FakeObject2>(this.processor, source, context)
+                                       .ToList();
             // Assert
-            this.translator1To2.Received(source.Count()).Translate(Arg.Is<FakeObject1>(x => source.Contains(x)));
+            this.translator1To2.Received(source.Count()).Translate(Arg.Is<FakeObject1>(x => source.Contains(x)), context);
         }
 
         #endregion Methods

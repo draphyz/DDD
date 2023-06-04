@@ -27,12 +27,12 @@ namespace DDD.Core.Application
         /// <summary>
         /// Processes synchronously a query of a specified type and provides a result of a specified type.
         /// </summary>
-        TResult Process<TResult>(IQuery<TResult> query, IMessageContext context = null);
+        TResult Process<TResult>(IQuery<TResult> query, IMessageContext context);
 
         /// <summary>
         /// Processes asynchronously a query of a specified type and provides a result of a specified type.
         /// </summary>
-        Task<TResult> ProcessAsync<TResult>(IQuery<TResult> query, IMessageContext context = null);
+        Task<TResult> ProcessAsync<TResult>(IQuery<TResult> query, IMessageContext context);
 
         #endregion Methods
 

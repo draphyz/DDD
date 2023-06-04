@@ -105,7 +105,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
             var notNullPredicate = predicate ?? (t => true);
             container.Options.DefaultScopedLifestyle = Lifestyle.CreateHybrid(new ThreadScopedLifestyle(), new AsyncScopedLifestyle());
             container.RegisterInstance<IServiceProvider>(container);
-            container.Collection.Register<BoundedContext>(assemblies, Lifestyle.Singleton);
+            container.RegisterBoundedContexts(assemblies, notNullPredicate);
             container.RegisterSingleton<ICommandProcessor, CommandProcessor>();
             container.RegisterCommandHandlers(assemblies, notNullPredicate);
             container.RegisterSingleton<IQueryProcessor, QueryProcessor>();
@@ -121,7 +121,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         /// Registers an event consumer for a specific bounded context.
         /// </summary>
         public static void RegisterEventConsumer<TContext>(this Container container, EventConsumerSettings<TContext> settings)
-            where TContext : BoundedContext, new()
+            where TContext : BoundedContext
         {
             Ensure.That(container, nameof(container)).IsNotNull();
             Ensure.That(settings, nameof(settings)).IsNotNull();
@@ -134,7 +134,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         /// Registers a recurring command manager for a specific bounded context.
         /// </summary>
         public static void RegisterRecurringCommandManager<TContext>(this Container container, RecurringCommandManagerSettings<TContext> settings)
-            where TContext : BoundedContext, new()
+            where TContext : BoundedContext
         {
             Ensure.That(container, nameof(container)).IsNotNull();
             Ensure.That(settings, nameof(settings)).IsNotNull();
@@ -208,6 +208,15 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         {
             container.RegisterConditional(typeof(ISyncRepository<,>), assemblies, Lifestyle.Scoped, predicate);
             container.RegisterConditional(typeof(IAsyncRepository<,>), assemblies, Lifestyle.Scoped, predicate);
+        }
+
+        private static void RegisterBoundedContexts(this Container container, IEnumerable<Assembly> assemblies, Func<Type, bool> predicate)
+        {
+            var contextTypes = container.GetTypesToRegister<BoundedContext>(assemblies)
+                                        .Where(predicate);
+            foreach(var contextType in contextTypes)
+                container.RegisterSingleton(contextType, contextType);
+            container.Collection.Register<BoundedContext>(assemblies, Lifestyle.Singleton);
         }
 
         #endregion Methods

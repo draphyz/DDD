@@ -37,7 +37,7 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 
         #region Methods
 
-        public int Handle(GeneratePrescriptionIdentifier query, IMessageContext context = null)
+        public int Handle(GeneratePrescriptionIdentifier query, IMessageContext context)
         {
             Ensure.That(query, nameof(query)).IsNotNull();
             try
@@ -51,13 +51,14 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             }
         }
 
-        public async Task<int> HandleAsync(GeneratePrescriptionIdentifier query, IMessageContext context = null)
+        public async Task<int> HandleAsync(GeneratePrescriptionIdentifier query, IMessageContext context)
         {
             Ensure.That(query, nameof(query)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();
-                var cancellationToken = context?.CancellationToken() ?? default;
+                var cancellationToken = context.CancellationToken();
                 var connection = await this.connectionProvider.GetOpenConnectionAsync(cancellationToken);
                 return await connection.NextValueAsync<int>("PrescriptionId", null, cancellationToken);
             }

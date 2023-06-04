@@ -29,7 +29,7 @@ namespace DDD.Core.Application
         /// <summary>
         /// Handles synchronously an event of a specified type in a specific bounded context.
         /// </summary>
-        void Handle(IEvent @event, IMessageContext context = null);
+        void Handle(IEvent @event, IMessageContext context);
 
         #endregion Methods
 

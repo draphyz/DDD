@@ -37,7 +37,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Methods
 
-        public async Task<TResult> HandleAsync(TQuery query, IMessageContext context = null)
+        public async Task<TResult> HandleAsync(TQuery query, IMessageContext context)
         {
             using (AsyncScopedLifestyle.BeginScope(container))
             {

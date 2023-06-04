@@ -3,12 +3,19 @@ using System.Collections.Generic;
 
 namespace DDD.Mapping
 {
-    using Collections;
-
     public static class IObjectTranslatorExtensions
     {
 
         #region Methods
+
+        public static TDestination Translate<TSource, TDestination>(this IObjectTranslator<TSource, TDestination> translator,
+                                                                    TSource source)
+            where TSource : class
+            where TDestination : class
+        {
+            Ensure.That(translator, nameof(translator)).IsNotNull();
+            return translator.Translate(source, new MappingContext());
+        }
 
         public static TDestination Translate<TSource, TDestination>(this IObjectTranslator<TSource, TDestination> translator,
                                                                     TSource source,
@@ -17,18 +24,26 @@ namespace DDD.Mapping
             where TDestination : class
         {
             Ensure.That(translator, nameof(translator)).IsNotNull();
-            var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(context);
-            return translator.Translate(source, dictionary);
+            return translator.Translate(source, MappingContext.FromObject(context));
         }
 
         public static IEnumerable<TDestination> TranslateCollection<TSource, TDestination>(this IObjectTranslator<TSource, TDestination> translator,
-                                                                                           IEnumerable<TSource> source,
-                                                                                           IDictionary<string, object> context = null)
+                                                                                           IEnumerable<TSource> source)
             where TSource : class
             where TDestination : class
         {
             Ensure.That(translator, nameof(translator)).IsNotNull();
+            return translator.TranslateCollection(source, new MappingContext());
+        }
+
+        public static IEnumerable<TDestination> TranslateCollection<TSource, TDestination>(this IObjectTranslator<TSource, TDestination> translator,
+                                                                                           IEnumerable<TSource> source,
+                                                                                           IMappingContext context)
+            where TSource : class
+            where TDestination : class
+        {
+            Ensure.That(translator, nameof(translator)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             foreach (var item in source)
                 yield return translator.Translate(item, context);
         }
@@ -40,9 +55,7 @@ namespace DDD.Mapping
             where TDestination : class
         {
             Ensure.That(translator, nameof(translator)).IsNotNull();
-            var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(context);
-            return translator.TranslateCollection(source, dictionary);
+            return translator.TranslateCollection(source, MappingContext.FromObject(context));
         }
 
         #endregion Methods

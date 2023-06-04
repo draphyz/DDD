@@ -13,7 +13,7 @@ namespace DDD.Core.Application
     using Threading;
 
     public class RecurringCommandManager<TContext> : IRecurringCommandManager<TContext>, IDisposable 
-        where TContext : BoundedContext, new()
+        where TContext : BoundedContext
     {
 
         #region Fields
@@ -74,7 +74,7 @@ namespace DDD.Core.Application
             this.ValidateRecurringExpression(recurringExpression);
             await new SynchronizationContextRemover();
             var commandSerializer = this.commandSerializers.GetService(this.settings.CurrentSerializationFormat);
-            var commandId = this.queryProcessor.In<TContext>().Process(new GenerateRecurringCommandId(), MessageContext.CancellableContext(cancellationToken));
+            var commandId = this.queryProcessor.InGeneric(Context).Process(new GenerateRecurringCommandId(), MessageContext.CancellableContext(cancellationToken));
             var registrationCommand = new RegisterRecurringCommand
             {
                 CommandId = commandId,
@@ -83,7 +83,7 @@ namespace DDD.Core.Application
                 BodyFormat = commandSerializer.Format.ToString().ToUpper(),
                 RecurringExpression = recurringExpression
             };
-            await this.commandProcessor.In<TContext>().ProcessAsync(registrationCommand, MessageContext.CancellableContext(cancellationToken));
+            await this.commandProcessor.InGeneric(Context).ProcessAsync(registrationCommand, MessageContext.CancellableContext(cancellationToken));
         }
 
         public void Start()
@@ -168,7 +168,7 @@ namespace DDD.Core.Application
 
         private async Task<IEnumerable<(RecurringCommand RecurringCommand, IRecurringSchedule RecurringSchedule)>> FindAllRecurringCommandsAsync()
         {
-            var recurringCommands = await this.queryProcessor.In<TContext>().ProcessAsync(new FindRecurringCommands(), MessageContext.CancellableContext(this.CancellationToken));
+            var recurringCommands = await this.queryProcessor.InGeneric(Context).ProcessAsync(new FindRecurringCommands(), MessageContext.CancellableContext(this.CancellationToken));
             var results = new List<(RecurringCommand, IRecurringSchedule)>();
             foreach (var recurringCommand in recurringCommands)
                 results.Add((recurringCommand, this.recurringScheduleFactory.Create(recurringCommand.RecurringExpression)));
@@ -203,7 +203,7 @@ namespace DDD.Core.Application
                             ExecutionTime = nextOccurrence.Value,
                             ExceptionInfo = exception.ToString()
                         };
-                        await this.commandProcessor.In<TContext>().ProcessAsync(failureCommand);
+                        await this.commandProcessor.InGeneric(Context).ProcessAsync(failureCommand);
                     }
                     if (success)
                     {
@@ -213,7 +213,7 @@ namespace DDD.Core.Application
                             CommandId = recurringCommand.CommandId,
                             ExecutionTime = nextOccurrence.Value
                         };
-                        await this.commandProcessor.In<TContext>().ProcessAsync(successCommand);
+                        await this.commandProcessor.InGeneric(Context).ProcessAsync(successCommand);
                     }
                     now = SystemTime.Local();
                     nextOccurrence = recurringSchedule.GetNextOccurrence(now);

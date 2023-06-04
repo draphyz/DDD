@@ -40,14 +40,14 @@ namespace DDD.Mapping
         /// <remarks>
         /// The order of registrations is important. Register the translators from the most derived source type to the least derived source type.
         /// </remarks>
-        public void Register<TDerivedSource>(Func<TDerivedSource, IDictionary<string, object>, TDestination> translator)
+        public void Register<TDerivedSource>(Func<TDerivedSource, IMappingContext, TDestination> translator)
             where TDerivedSource : class, TSource
         {
             Ensure.That(translator, nameof(translator)).IsNotNull();
             this.translators.Add(new DelegatingTranslator<TDerivedSource, TDestination>(translator));
         }
 
-        public override TDestination Translate(TSource source, IDictionary<string, object> context)
+        public override TDestination Translate(TSource source, IMappingContext context)
         {
             if (source == null) return null;
             var translator = this.translators.FirstOrDefault(t => t.SourceType.IsAssignableFrom(source.GetType()));

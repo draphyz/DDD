@@ -47,7 +47,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public async Task HandleAsync(TEvent @event, IMessageContext context = null)
+        public async Task HandleAsync(TEvent @event, IMessageContext context)
         {
             if (this.logger.IsEnabled(LogLevel.Debug))
             {

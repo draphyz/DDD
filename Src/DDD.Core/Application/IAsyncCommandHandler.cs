@@ -14,7 +14,7 @@ namespace DDD.Core.Application
         /// <summary>
         /// Handles asynchronously a command of a specified type.
         /// </summary>
-        Task HandleAsync(TCommand command, IMessageContext context = null);
+        Task HandleAsync(TCommand command, IMessageContext context);
 
         #endregion Methods
 

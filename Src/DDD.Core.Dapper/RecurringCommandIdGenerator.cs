@@ -39,7 +39,7 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public Guid Handle(GenerateRecurringCommandId query, IMessageContext context = null)
+        public Guid Handle(GenerateRecurringCommandId query, IMessageContext context)
         {
             Ensure.That(query, nameof(query)).IsNotNull();
             try

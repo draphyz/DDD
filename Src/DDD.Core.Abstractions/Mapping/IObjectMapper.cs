@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DDD.Mapping
+﻿namespace DDD.Mapping
 {
     /// <summary>
     /// Defines a method that maps an input object of one type to an output object of a different type.
@@ -12,7 +10,7 @@ namespace DDD.Mapping
 
         #region Methods
 
-        void Map(TSource source, TDestination destination, IDictionary<string, object> context = null);
+        void Map(TSource source, TDestination destination, IMappingContext context);
 
         #endregion Methods
 

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DDD.Mapping
+﻿namespace DDD.Mapping
 {
     /// <summary>
     /// Defines a method that translates an input object of one type into an output object of a different type.
@@ -11,7 +9,7 @@ namespace DDD.Mapping
     {
         #region Methods
 
-        TDestination Translate(TSource source, IDictionary<string, object> context = null);
+        TDestination Translate(TSource source, IMappingContext context);
 
         #endregion Methods
     }

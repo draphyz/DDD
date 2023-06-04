@@ -30,16 +30,16 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public override CommandException Translate(DbException exception, IDictionary<string, object> context = null)
+        public override CommandException Translate(DbException exception, IMappingContext context)
         {
             Ensure.That(exception, nameof(exception)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             var exceptionType = exception.GetType().FullName;
             if (this.translators.TryGetValue(exceptionType, out var translator))
                 return translator.Translate(exception, context);
             else
             {
-                ICommand command = null;
-                context?.TryGetValue("Command", out command);
+                context.TryGetValue("Command", out ICommand command);
                 return new CommandException(isTransient: false, command, exception);
             }
         }

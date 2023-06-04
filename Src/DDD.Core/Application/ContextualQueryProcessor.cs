@@ -41,7 +41,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public TResult Process<TResult>(IQuery<TResult> query, IMessageContext context = null)
+        public TResult Process<TResult>(IQuery<TResult> query, IMessageContext context)
         {
             Ensure.That(query, nameof(query)).IsNotNull();
             var handlerType = typeof(ISyncQueryHandler<,,>).MakeGenericType(query.GetType(), typeof(TResult), typeof(TContext));
@@ -50,7 +50,7 @@ namespace DDD.Core.Application
             return handler.Handle((dynamic)query, context);
         }
 
-        public Task<TResult> ProcessAsync<TResult>(IQuery<TResult> query, IMessageContext context = null)
+        public Task<TResult> ProcessAsync<TResult>(IQuery<TResult> query, IMessageContext context)
         {
             Ensure.That(query, nameof(query)).IsNotNull();
             var handlerType = typeof(IAsyncQueryHandler<,,>).MakeGenericType(query.GetType(), typeof(TResult), typeof(TContext));

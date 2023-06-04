@@ -8,6 +8,15 @@ namespace DDD.Core.Application
 
         #region Methods
 
+        public static Task HandleAsync<TCommand>(this IAsyncCommandHandler<TCommand> handler,
+                                                TCommand command)
+            where TCommand : class, ICommand
+
+        {
+            Ensure.That(handler, nameof(handler)).IsNotNull();
+            return handler.HandleAsync(command, new MessageContext());
+        }
+
         public static Task HandleAsync<TCommand>(this IAsyncCommandHandler<TCommand> handler, 
                                                  TCommand command, 
                                                  object context)

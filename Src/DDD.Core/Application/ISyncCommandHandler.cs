@@ -12,7 +12,7 @@
         /// <summary>
         /// Handles synchronously a command of a specified type.
         /// </summary>
-        void Handle(TCommand command, IMessageContext context = null);
+        void Handle(TCommand command, IMessageContext context);
 
         #endregion Methods
 

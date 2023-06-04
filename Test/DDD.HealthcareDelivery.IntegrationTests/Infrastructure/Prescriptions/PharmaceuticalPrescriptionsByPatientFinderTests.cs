@@ -6,6 +6,7 @@ using System;
 
 namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
 {
+    using Core.Application;
     using Domain;
     using Application.Prescriptions;
     using Core.Infrastructure.Testing;
@@ -113,10 +114,11 @@ namespace DDD.HealthcareDelivery.Infrastructure.Prescriptions
             // Arrange
             this.Fixture.ExecuteScriptFromResources("FindPharmaceuticalPrescriptionsByPatient");
             var handler = new PharmaceuticalPrescriptionsByPatientFinder(this.ConnectionProvider);
+            var context = new MessageContext();
             // Act
-            var results = await handler.HandleAsync(query);
+            var results = await handler.HandleAsync(query, context);
             // Assert
-            results.Should().BeEquivalentTo(expectedResults, context => context.WithStrictOrdering());
+            results.Should().BeEquivalentTo(expectedResults, c => c.WithStrictOrdering());
         }
 
         public void Dispose()

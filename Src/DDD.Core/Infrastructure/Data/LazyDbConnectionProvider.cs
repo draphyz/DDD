@@ -8,7 +8,7 @@ namespace DDD.Core.Infrastructure.Data
     using Domain;
 
     public class LazyDbConnectionProvider<TContext>
-        : IDbConnectionProvider<TContext> where TContext : BoundedContext, new()
+        : IDbConnectionProvider<TContext> where TContext : BoundedContext
     {
 
         #region Fields
@@ -22,13 +22,14 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Constructors
 
-        public LazyDbConnectionProvider(string providerName, string connectionString)
+        public LazyDbConnectionProvider(TContext context, string providerName, string connectionString)
         {
+            Ensure.That(context, nameof(context)).IsNotNull();
             Ensure.That(providerName, nameof(providerName)).IsNotNullOrWhiteSpace();
             Ensure.That(connectionString, nameof(connectionString)).IsNotNullOrWhiteSpace();
+            this.Context = context;
             this.providerName = providerName;
             this.connectionString = connectionString;
-            this.Context = new TContext();
             this.lazyConnection = new Lazy<DbConnection>(() => this.CreateConnection());
         }
 

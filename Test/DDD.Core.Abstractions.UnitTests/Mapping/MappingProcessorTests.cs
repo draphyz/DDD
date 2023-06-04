@@ -46,10 +46,11 @@ namespace DDD.Mapping
             // Arrange
             var source = new FakeObject1();
             var destination = new FakeObject2();
+            var context = new MappingContext();
             // Act
-            this.processor.Map(source, destination);
+            this.processor.Map(source, destination, context);
             // Assert
-            this.mapper1To2.Received(1).Map(source, destination);
+            this.mapper1To2.Received(1).Map(source, destination, context);
         }
 
         [Fact]
@@ -57,10 +58,11 @@ namespace DDD.Mapping
         {
             // Arrange
             var source = new FakeObject1();
+            var context = new MappingContext();
             // Act
-            var destination = this.processor.Translate<FakeObject1, FakeObject2>(source);
+            this.processor.Translate<FakeObject1, FakeObject2>(source, context);
             // Assert
-            this.translator1To2.Received(1).Translate(source);
+            this.translator1To2.Received(1).Translate(source, context);
         }
 
         [Fact]
@@ -68,10 +70,11 @@ namespace DDD.Mapping
         {
             // Arrange
             var source = new FakeObject1();
+            var context = new MappingContext();
             // Act
-            var destination = this.processor.Translate<FakeObject2>(source);
+            this.processor.Translate<FakeObject2>(source, context);
             // Assert
-            this.translator1To2.Received(1).Translate(source);
+            this.translator1To2.Received(1).Translate(source, context);
         }
 
         #endregion Methods

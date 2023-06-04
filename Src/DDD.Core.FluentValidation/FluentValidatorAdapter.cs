@@ -1,22 +1,21 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
+﻿using System.Threading.Tasks;
 using EnsureThat;
-using System.Threading.Tasks;
-using System.Threading;
+using FluentValidation;
 
 namespace DDD.Core.Infrastructure.Validation
 {
     using Mapping;
     using Threading;
+    using DDD.Validation;
 
-    public class FluentValidatorAdapter<T> : DDD.Validation.IObjectValidator<T>
+    public class FluentValidatorAdapter<T> : IObjectValidator<T>
         where T : class
     {
 
         #region Fields
 
         private readonly IValidator<T> fluentValidator;
-        private readonly IObjectTranslator<ValidationResult, DDD.Validation.ValidationResult> resultTranslator;
+        private readonly IObjectTranslator<FluentValidation.Results.ValidationResult, ValidationResult> resultTranslator;
 
         #endregion Fields
 
@@ -37,14 +36,16 @@ namespace DDD.Core.Infrastructure.Validation
         /// Validates synchronously the specified object.
         /// </summary>
         /// <param name="obj">The object to validate.</param>
-        /// <param name="ruleSet">The rule set.</param>
-        public DDD.Validation.ValidationResult Validate(T obj, string ruleSet = null)
+        /// <param name="context">The validation context.</param>
+        public ValidationResult Validate(T obj, IValidationContext context)
         {
-            ValidationResult result;
-            if (string.IsNullOrWhiteSpace(ruleSet))
+            Ensure.That(context, nameof(context)).IsNotNull();
+            FluentValidation.Results.ValidationResult result;
+            var ruleSets = context.RuleSets();
+            if (ruleSets == null)
                 result = this.fluentValidator.Validate(obj);
             else
-                result = this.fluentValidator.Validate(obj, context => context.IncludeRuleSets(ruleSet.Split(',')));
+                result = this.fluentValidator.Validate(obj, c => c.IncludeRuleSets(ruleSets));
             return this.resultTranslator.Translate(result, new { ObjectName = obj.GetType().Name });
         }
 
@@ -52,16 +53,18 @@ namespace DDD.Core.Infrastructure.Validation
         /// Validates asynchronously the specified object.
         /// </summary>
         /// <param name="obj">The object to validate.</param>
-        /// <param name="ruleSet">The rule set.</param>
-        /// <param name="cancellationToken">A cancellation token.</param>
-        public async Task<DDD.Validation.ValidationResult> ValidateAsync(T obj, string ruleSet = null, CancellationToken cancellationToken = default)
+        /// <param name="context">The validation context.</param>
+        public async Task<ValidationResult> ValidateAsync(T obj, IValidationContext context)
         {
+            Ensure.That(context, nameof(context)).IsNotNull();
             await new SynchronizationContextRemover();
-            ValidationResult result;
-            if (string.IsNullOrWhiteSpace(ruleSet))
+            FluentValidation.Results.ValidationResult result;
+            var ruleSets = context.RuleSets();
+            var cancellationToken = context.CancellationToken();
+            if (ruleSets == null)
                 result = await this.fluentValidator.ValidateAsync(obj, cancellationToken);
             else
-                result = await this.fluentValidator.ValidateAsync(obj, context => context.IncludeRuleSets(ruleSet.Split(',')), cancellationToken);
+                result = await this.fluentValidator.ValidateAsync(obj, c => c.IncludeRuleSets(ruleSets), cancellationToken);
             return this.resultTranslator.Translate(result, new { ObjectName = obj.GetType().Name });
         }
 

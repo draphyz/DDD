@@ -2,7 +2,6 @@
 using FluentValidation;
 using EnsureThat;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace DDD.Core.Infrastructure.Validation
 {
@@ -14,10 +13,11 @@ namespace DDD.Core.Infrastructure.Validation
 
         #region Methods
 
-        public override DDD.Validation.ValidationResult Translate(ValidationResult result, IDictionary<string, object> context = null)
+        public override DDD.Validation.ValidationResult Translate(ValidationResult result, IMappingContext context)
         {
             Ensure.That(result, nameof(result)).IsNotNull();
-            Ensure.That(context, nameof(context)).ContainsKey("ObjectName");
+            Ensure.That(context, nameof(context)).IsNotNull();
+            Ensure.Collection.ContainsKey(context, "ObjectName", nameof(context));
             var objectName = (string)context["ObjectName"];
             var isSuccessful = result.Errors.All(f => f.Severity == Severity.Info);
             var failures = result.Errors.Select(f => ToFailure(f)).ToArray();

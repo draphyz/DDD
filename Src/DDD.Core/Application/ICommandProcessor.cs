@@ -1,10 +1,9 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace DDD.Core.Application
 {
-    using Domain;
     using Validation;
+    using Domain;
 
     /// <summary>
     /// Defines a component that validates and processes commands of any type.
@@ -17,32 +16,32 @@ namespace DDD.Core.Application
         /// <summary>
         /// Specify the bounded context in which the command must be processed.
         /// </summary>
-        IContextualCommandProcessor<TContext> In<TContext>(TContext context) where TContext : BoundedContext;
+        IContextualCommandProcessor<TContext> InGeneric<TContext>(TContext context) where TContext : BoundedContext;
 
         /// <summary>
         /// Specify the bounded context in which the command must be processed.
         /// </summary>
-        IContextualCommandProcessor In(BoundedContext context);
+        IContextualCommandProcessor InSpecific(BoundedContext context);
 
         /// <summary>
         /// Processes synchronously a command of a specified type.
         /// </summary>
-        void Process<TCommand>(TCommand command, IMessageContext context = null) where TCommand : class, ICommand;
+        void Process<TCommand>(TCommand command, IMessageContext context) where TCommand : class, ICommand;
 
         /// <summary>
         /// Processes asynchronously a command of a specified type.
         /// </summary>
-        Task ProcessAsync<TCommand>(TCommand command, IMessageContext context = null) where TCommand : class, ICommand;
+        Task ProcessAsync<TCommand>(TCommand command, IMessageContext context) where TCommand : class, ICommand;
 
         /// <summary>
         /// Validates synchronously a command of a specified type.
         /// </summary>
-        ValidationResult Validate<TCommand>(TCommand command, string ruleSet = null) where TCommand : class, ICommand;
+        ValidationResult Validate<TCommand>(TCommand command, IValidationContext context) where TCommand : class, ICommand;
 
         /// <summary>
         /// Validates asynchronously a command of a specified type.
         /// </summary>
-        Task<ValidationResult> ValidateAsync<TCommand>(TCommand command, string ruleSet = null, CancellationToken cancellationToken = default) where TCommand : class, ICommand;
+        Task<ValidationResult> ValidateAsync<TCommand>(TCommand command, IValidationContext context) where TCommand : class, ICommand;
 
         #endregion Methods
     }

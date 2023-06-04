@@ -16,8 +16,7 @@ namespace DDD.Core.Domain
             Ensure.That(translator, nameof(translator)).IsNotNull();
             translator.Register<Exception>((exception, context) =>
             {
-                Type entityType = null;
-                context?.TryGetValue("EntityType", out entityType);
+                context.TryGetValue("EntityType", out Type entityType);
                 return new RepositoryException(isTransient: false, entityType, exception);
             });
         }
@@ -27,8 +26,7 @@ namespace DDD.Core.Domain
             Ensure.That(translator, nameof(translator)).IsNotNull();
             translator.Register<Exception>((exception, context) =>
             {
-                Type serviceType = null;
-                context?.TryGetValue("ServiceType", out serviceType);
+                context.TryGetValue("ServiceType", out Type serviceType);
                 return new DomainServiceException(isTransient: false, serviceType, exception);
             });
         }

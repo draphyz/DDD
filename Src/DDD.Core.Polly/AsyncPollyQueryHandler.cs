@@ -34,7 +34,7 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         #region Methods
 
-        public async Task<TResult> HandleAsync(TQuery query, IMessageContext context = null)
+        public async Task<TResult> HandleAsync(TQuery query, IMessageContext context)
         {
             return await policy.ExecuteAsync(() => this.handler.HandleAsync(query, context));
         }

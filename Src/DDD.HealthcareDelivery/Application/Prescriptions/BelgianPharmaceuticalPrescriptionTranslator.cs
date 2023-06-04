@@ -1,6 +1,5 @@
 ﻿using EnsureThat;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DDD.HealthcareDelivery.Application.Prescriptions
@@ -20,9 +19,10 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
         #region Methods
 
         public override PharmaceuticalPrescription Translate(CreatePharmaceuticalPrescription command,
-                                                             IDictionary<string, object> context = null)
+                                                             IMappingContext context)
         {
             Ensure.That(command, nameof(command)).IsNotNull();
+            Ensure.That(context, nameof(context));
             return PharmaceuticalPrescription.Create
                 (
                     new PrescriptionIdentifier(command.PrescriptionIdentifier),

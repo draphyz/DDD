@@ -28,7 +28,7 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public async Task<TResult> HandleAsync(TQuery query, IMessageContext context = null)
+        public async Task<TResult> HandleAsync(TQuery query, IMessageContext context)
         {
             if (this.logger.IsEnabled(LogLevel.Debug))
             {

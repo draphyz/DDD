@@ -23,7 +23,7 @@
         /// <summary>
         /// Handles synchronously an event of a specified type in a specific bounded context.
         /// </summary>
-        void Handle(TEvent @event, IMessageContext context = null);
+        void Handle(TEvent @event, IMessageContext context);
 
         #endregion Methods
 

@@ -3,12 +3,36 @@ using System.Collections.Generic;
 
 namespace DDD.Mapping
 {
-    using Collections;
-
     public static class IMappingProcessorExtensions
     {
 
         #region Methods
+        public static void Map<TSource, TDestination>(this IMappingProcessor processor,
+                                                      TSource source,
+                                                      TDestination destination)
+            where TSource : class
+            where TDestination : class
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            processor.Map(source, destination, new MappingContext());
+        }
+
+        public static TDestination Translate<TDestination>(this IMappingProcessor processor,
+                                                           object source)
+            where TDestination : class
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.Translate<TDestination>(source, new MappingContext());
+        }
+
+        public static TDestination Translate<TSource, TDestination>(this IMappingProcessor processor,
+                                                                    TSource source)
+            where TSource : class
+            where TDestination : class
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.Translate<TSource, TDestination>(source, new MappingContext());
+        }
 
         public static void Map<TSource, TDestination>(this IMappingProcessor processor,
                                                       TSource source,
@@ -18,9 +42,7 @@ namespace DDD.Mapping
             where TDestination : class
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
-            var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(context);
-            processor.Map(source, destination, dictionary);
+            processor.Map(source, destination, MappingContext.FromObject(context));
         }
 
         public static TDestination Translate<TDestination>(this IMappingProcessor processor,
@@ -29,9 +51,7 @@ namespace DDD.Mapping
             where TDestination : class
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
-            var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(context);
-            return processor.Translate<TDestination>(source, dictionary);
+            return processor.Translate<TDestination>(source, MappingContext.FromObject(context));
         }
 
         public static TDestination Translate<TSource, TDestination>(this IMappingProcessor processor,
@@ -41,28 +61,45 @@ namespace DDD.Mapping
             where TDestination : class
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
-            var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(context);
-            return processor.Translate<TSource, TDestination>(source, dictionary);
+            return processor.Translate<TSource, TDestination>(source, MappingContext.FromObject(context));
         }
 
         public static IEnumerable<TDestination> TranslateCollection<TSource, TDestination>(this IMappingProcessor processor,
-                                                                                           IEnumerable<TSource> source,
-                                                                                           IDictionary<string, object> context = null)
+                                                                                           IEnumerable<TSource> source)
             where TSource : class
             where TDestination : class
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.TranslateCollection<TSource, TDestination>(source, new MappingContext());
+        }
+
+        public static IEnumerable<TDestination> TranslateCollection<TDestination>(this IMappingProcessor processor,
+                                                                                  IEnumerable<object> source)
+            where TDestination : class
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.TranslateCollection<TDestination>(source, new MappingContext());
+        }
+
+        public static IEnumerable<TDestination> TranslateCollection<TSource, TDestination>(this IMappingProcessor processor,
+                                                                                           IEnumerable<TSource> source,
+                                                                                           IMappingContext context)
+            where TSource : class
+            where TDestination : class
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             foreach (var item in source)
                 yield return processor.Translate<TSource, TDestination>(item, context);
         }
 
         public static IEnumerable<TDestination> TranslateCollection<TDestination>(this IMappingProcessor processor,
                                                                                   IEnumerable<object> source,
-                                                                                  IDictionary<string, object> context = null)
+                                                                                  IMappingContext context)
             where TDestination : class
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             foreach (var item in source)
                 yield return processor.Translate<TDestination>(item, context);
         }
@@ -74,9 +111,7 @@ namespace DDD.Mapping
             where TDestination : class
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
-            var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(context);
-            return processor.TranslateCollection<TSource, TDestination>(source, dictionary);
+            return processor.TranslateCollection<TSource, TDestination>(source, MappingContext.FromObject(context));
         }
 
         public static IEnumerable<TDestination> TranslateCollection<TDestination>(this IMappingProcessor processor,
@@ -85,9 +120,7 @@ namespace DDD.Mapping
             where TDestination : class
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
-            var dictionary = new Dictionary<string, object>();
-            dictionary.AddObject(context);
-            return processor.TranslateCollection<TDestination>(source, dictionary);
+            return processor.TranslateCollection<TDestination>(source, MappingContext.FromObject(context));
         }
 
         #endregion Methods

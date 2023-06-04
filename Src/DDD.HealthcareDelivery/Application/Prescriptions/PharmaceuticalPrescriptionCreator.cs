@@ -40,7 +40,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
-        public void Handle(CreatePharmaceuticalPrescription command, IMessageContext context = null)
+        public void Handle(CreatePharmaceuticalPrescription command, IMessageContext context)
         {
             Ensure.That(command, nameof(command)).IsNotNull();
             try
@@ -58,13 +58,14 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             }
         }
 
-        public async Task HandleAsync(CreatePharmaceuticalPrescription command, IMessageContext context = null)
+        public async Task HandleAsync(CreatePharmaceuticalPrescription command, IMessageContext context)
         {
             Ensure.That(command, nameof(command)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();
-                var cancellationToken = context?.CancellationToken() ?? default;
+                var cancellationToken = context.CancellationToken();
                 var prescription = this.commandTranslator.Translate(command);
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {

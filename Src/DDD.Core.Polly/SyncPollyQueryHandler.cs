@@ -33,7 +33,7 @@ namespace DDD.Core.Infrastructure.ErrorHandling
 
         #region Methods
 
-        public TResult Handle(TQuery query, IMessageContext context = null)
+        public TResult Handle(TQuery query, IMessageContext context)
         {
             return policy.Execute(() => this.handler.Handle(query, context));
         }

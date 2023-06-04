@@ -11,6 +11,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
     using Mapping;
     using Threading;
     
+
     public class PharmaceuticalPrescriptionRevoker
         : ICommandHandler<RevokePharmaceuticalPrescription>
     {
@@ -37,7 +38,7 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
 
         #region Methods
 
-        public void Handle(RevokePharmaceuticalPrescription command, IMessageContext context = null)
+        public void Handle(RevokePharmaceuticalPrescription command, IMessageContext context)
         {
             Ensure.That(command, nameof(command)).IsNotNull();
             try
@@ -56,13 +57,14 @@ namespace DDD.HealthcareDelivery.Application.Prescriptions
             }
         }
 
-        public async Task HandleAsync(RevokePharmaceuticalPrescription command, IMessageContext context = null)
+        public async Task HandleAsync(RevokePharmaceuticalPrescription command, IMessageContext context)
         {
             Ensure.That(command, nameof(command)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
             try
             {
                 await new SynchronizationContextRemover();
-                var cancellationToken = context?.CancellationToken() ?? default;
+                var cancellationToken = context.CancellationToken();
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     var prescription = await this.repository.FindAsync(new PrescriptionIdentifier(command.PrescriptionIdentifier), cancellationToken);

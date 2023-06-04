@@ -24,7 +24,7 @@ namespace DDD.Core.Application
             container.RegisterInstance(fakeHandler1);
             container.RegisterInstance(fakeHandler2);
             container.RegisterInstance(fakeHandler3);
-            var publisher = new EventPublisher<FakeContext>(container);
+            var publisher = new EventPublisher<FakeContext>(new FakeContext(), container);
             yield return new object[]
             {
                 publisher,
@@ -50,12 +50,11 @@ namespace DDD.Core.Application
             var fakeHandler1 = FakeHandler<FakeEvent1, FakeContext>();
             var fakeHandler2 = FakeHandler<FakeEvent2, FakeContext>();
             var fakeHandler3 = FakeHandler<FakeEvent3, FakeContext>();
-            var fakeHandler4 = FakeHandler<FakeEvent1, FakeSourceContext>();
             var container = new Container();
             container.RegisterInstance(fakeHandler1);
             container.RegisterInstance(fakeHandler2);
             container.RegisterInstance(fakeHandler3);
-            var publisher = new EventPublisher<FakeContext>(container);
+            var publisher = new EventPublisher<FakeContext>(new FakeContext(), container);
             yield return new object[]
             {
                 publisher,
@@ -84,11 +83,12 @@ namespace DDD.Core.Application
                                                                                         IAsyncEventHandler handlerOfThisEvent)
         {
             // Arrange
+            var context = new MessageContext();
             handlerOfThisEvent.ClearReceivedCalls();
             // Act
-            await publisher.PublishAsync(@event);
+            await publisher.PublishAsync(@event, context);
             // Assert
-            await handlerOfThisEvent.Received(1).HandleAsync(@event);
+            await handlerOfThisEvent.Received(1).HandleAsync(@event, context);
         }
 
 
@@ -99,11 +99,12 @@ namespace DDD.Core.Application
                                                                                              IEnumerable<IAsyncEventHandler> handlersOfOtherEvents)
         {
             // Arrange
+            var context = new MessageContext();
             handlersOfOtherEvents.ForEach(s => s.ClearReceivedCalls());
             // Act
-            await publisher.PublishAsync(@event);
+            await publisher.PublishAsync(@event, context);
             // Assert
-            Assert.All(handlersOfOtherEvents, s => s.DidNotReceive().HandleAsync(Arg.Any<IEvent>()));
+            Assert.All(handlersOfOtherEvents, s => s.DidNotReceive().HandleAsync(Arg.Any<IEvent>(), context));
         }
 
         private static IAsyncEventHandler<TEvent, TContext> FakeHandler<TEvent, TContext>()

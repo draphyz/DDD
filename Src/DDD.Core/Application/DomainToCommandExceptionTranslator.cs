@@ -1,5 +1,4 @@
 ﻿using EnsureThat;
-using System.Collections.Generic;
 
 namespace DDD.Core.Application
 {
@@ -12,11 +11,11 @@ namespace DDD.Core.Application
 
         #region Methods
 
-        public override CommandException Translate(DomainException exception, IDictionary<string, object> context = null)
+        public override CommandException Translate(DomainException exception, IMappingContext context)
         {
             Ensure.That(exception).IsNotNull();
-            ICommand command = null;
-            context?.TryGetValue("Command", out command);
+            Ensure.That(context, nameof(context)).IsNotNull();
+            context.TryGetValue("Command", out ICommand command);
             switch (exception)
             {
                 case DomainServiceConflictException _:
