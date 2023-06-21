@@ -24,7 +24,7 @@ The main components are developed from technologies commonly used by .NET develo
 
 **Architecture**
 
-The architecture of the project is based on the Hexagonal Architecture. The main concepts of the Hexagonal Architecture are clearly explained in the article [Hexagonal Architecture, there are always two sides to every story](https://medium.com/ssense-tech/hexagonal-architecture-there-are-always-two-sides-to-every-story-bc0780ed7d9c). Applying the architectural pattern CQRS in this architecture offers many benefits :
+The architecture of the project is based on the Hexagonal Architecture. The main concepts of the Hexagonal Architecture are clearly explained in the article ["Hexagonal Architecture, there are always two sides to every story"](https://medium.com/ssense-tech/hexagonal-architecture-there-are-always-two-sides-to-every-story-bc0780ed7d9c). Applying the architectural pattern CQRS in this architecture offers many benefits :
 -	the input ports (driving ports) of the application are represented by two generic fine-grained interfaces (ICommandHandler and IQueryHandler) defining the command and query handlers 
 -	on the query side, the architecture is simplified as shown in the diagrams below : the input and output ports are represented by the same interface (IQueryHandler) defining the query handlers, the application layer is reduced to a few objects (queries and results) participating to the definition of this interface 
 -	by separating command and query sides, the output ports (driven ports) used by the application to persist aggregates on the command side can also be represented by a generic fine-grained interface (IRepository)
@@ -34,6 +34,10 @@ The architecture of the project is based on the Hexagonal Architecture. The main
 ![Alt Architecture on command side](https://github.com/draphyz/DDD/blob/entityframework/Doc/CommandSide.png)
 
 ![Alt Architecture on query side](https://github.com/draphyz/DDD/blob/entityframework/Doc/QuerySide.png)
+
+**Packaging and deployment**
+
+In recent years, microservices architecture has become very popular in the IT community : this architecture has been popularized by the big tech companies. The main reason for adopting this architecture is organizational : each service can be developed in its own technology by its own team and  can be deployed separately. This architecture, presented as modular, is often contrasted with monolithic architecture, considered as non-modular. However, it is possible to modularize a monolithic application by distributing the application code in different libraries and by assembling them into a monolith for deployment. Such an application is called a modular monolith. As explained in the article ["Why should you build a (modular) monolith first?"](https://newsletter.techworld-with-milan.com/p/why-you-should-build-a-modular-monolith), an adequately produced modular monolith can be a good step that can be more or less transformed into a microservice solution tomorrow if needed. This project has been designed to support such type of application.
 
 **Message handling**
 
