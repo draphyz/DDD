@@ -33,15 +33,10 @@ namespace DDD.Core.Application
         {
             Ensure.That(@event, nameof(@event)).IsNotNull();
             Ensure.That(context, nameof(context)).IsNotNull();
-            Guid eventId = default;
-            string streamId = null, streamType = null, issuedBy = null;
-            if (context != null)
-            {
-                context.TryGetValue("EventId", out eventId);
-                context.TryGetValue("StreamId", out streamId);
-                context.TryGetValue("StreamType", out streamType);
-                context.TryGetValue("IssuedBy", out issuedBy);
-            }
+            context.TryGetValue("EventId", out Guid eventId);
+            context.TryGetValue("StreamId", out string streamId);
+            context.TryGetValue("StreamType", out string streamType);
+            context.TryGetValue("IssuedBy", out string issuedBy);
             var eventType = @event.GetType();
             return new Event()
             {
