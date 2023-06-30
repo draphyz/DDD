@@ -90,8 +90,11 @@ namespace DDD.Core.Application
         {
             if (!this.IsRunning)
             {
+                this.logger.LogInformation("RecurringCommandManager for the context '{Context}' is starting.", this.Context.Name);
+                this.logger.LogDebug("The manager settings for the context '{Context}' are as follows : {@Settings}", this.Context.Name, this.settings);
                 this.IsRunning = true;
                 this.manageCommands = Task.Run(async () => await ManageCommandsAsync());
+                this.logger.LogInformation("RecurringCommandManager for the context '{Context}' has started.", this.Context.Name);
             }
         }
 
@@ -99,6 +102,7 @@ namespace DDD.Core.Application
         {
             if (this.IsRunning)
             {
+                this.logger.LogInformation("RecurringCommandManager for the context '{Context}' is stopping.", this.Context.Name);
                 this.cancellationTokenSource.Cancel();
                 this.manageCommands.Wait();
             }    
@@ -138,8 +142,6 @@ namespace DDD.Core.Application
         {
             try
             {
-                this.logger.LogInformation("Recurring command management in the context '{Context}' has started.", this.Context.Name);
-                this.logger.LogDebug("The configuration settings of recurring command management in the context '{Context}' are the following : {@Settings}", this.Context.Name, this.settings);
                 this.CancellationToken.ThrowIfCancellationRequested(); 
                 await new SynchronizationContextRemover();
                 var commandInfos = await this.FindAllRecurringCommandsAsync();
@@ -147,18 +149,14 @@ namespace DDD.Core.Application
                 foreach (var commandInfo in commandInfos)
                     tasks.Add(ManageCommandAsync(commandInfo.RecurringCommand, commandInfo.RecurringSchedule));
                 await Task.WhenAll(tasks);
-                if (this.CancellationToken.IsCancellationRequested)
-                    this.logger.LogInformation("Recurring command management in the context '{Context}' has been stopped.", this.Context.Name);
-                else
-                    this.logger.LogInformation("Recurring command management in the context '{Context}' has finished.", this.Context.Name);
             }
-            catch (OperationCanceledException)
+            catch(OperationCanceledException)
             {
-                this.logger.LogInformation("Recurring command management in the context '{Context}' has been stopped.", this.Context.Name);
+                this.logger.LogInformation("RecurringCommandManager for the context '{Context}' has stopped.", this.Context.Name);
             }
             catch (Exception exception)
             {
-                this.logger.LogError(default, exception, "An error occurred during recurring command management in the context '{Context}'.", this.Context.Name);
+                this.logger.LogCritical(default, exception, "An error occurred while managing recurring commands in the context '{Context}'.", this.Context.Name);
             }
             finally
             {
@@ -179,14 +177,14 @@ namespace DDD.Core.Application
         {
             try
             {
-                this.logger.LogInformation("The management of the recurring command {CommandId} in the context '{Context}' has started.", recurringCommand.CommandId, this.Context.Name);
+                this.logger.LogInformation("Management of recurring command {CommandId} in the context '{Context}' has started.", recurringCommand.CommandId, this.Context.Name);
                 var command = this.DeserializeCommand(recurringCommand);
                 var now = SystemTime.Local();
                 var nextOccurrence = recurringSchedule.GetNextOccurrence(now);
                 while (nextOccurrence.HasValue)
                 {
                     this.CancellationToken.ThrowIfCancellationRequested();
-                    this.logger.LogDebug("The next processing of the recurring command {CommandId} in the context '{Context}' has been scheduled for {CommandExecutionTime}.", recurringCommand.CommandId, this.Context.Name, nextOccurrence);
+                    this.logger.LogDebug("Next processing of recurring command {CommandId} in the context '{Context}' is scheduled for {CommandExecutionTime}.", recurringCommand.CommandId, this.Context.Name, nextOccurrence);
                     bool success;
                     try
                     {
@@ -196,7 +194,7 @@ namespace DDD.Core.Application
                     catch (Exception exception) when (!(exception is OperationCanceledException))
                     {
                         success = false;
-                        this.logger.LogError(default, exception, "An error occurred during the processing of the recurring command {CommandId} in the context '{Context}'.", recurringCommand.CommandId, this.Context.Name);
+                        this.logger.LogError(default, exception, "An error occurred while processing recurring command {CommandId} in the context '{Context}'.", recurringCommand.CommandId, this.Context.Name);
                         var failureCommand = new MarkRecurringCommandAsFailed
                         {
                             CommandId = recurringCommand.CommandId,
@@ -207,7 +205,7 @@ namespace DDD.Core.Application
                     }
                     if (success)
                     {
-                        this.logger.LogDebug("The processing of the recurring command {CommandId} in the context '{Context}' has successfully finished.", recurringCommand.CommandId, this.Context.Name);
+                        this.logger.LogDebug("Processing of recurring command {CommandId} in the context '{Context}' has successfully finished.", recurringCommand.CommandId, this.Context.Name);
                         var successCommand = new MarkRecurringCommandAsSuccessful
                         {
                             CommandId = recurringCommand.CommandId,
@@ -218,19 +216,15 @@ namespace DDD.Core.Application
                     now = SystemTime.Local();
                     nextOccurrence = recurringSchedule.GetNextOccurrence(now);
                 }
-                if (this.CancellationToken.IsCancellationRequested)
-                    this.logger.LogInformation("The management of the recurring command {CommandId} in the context '{Context}' has been stopped.", recurringCommand.CommandId, this.Context.Name);
-                else
-                    this.logger.LogInformation("The management of the recurring command {CommandId} in the context '{Context}' has finished.", recurringCommand.CommandId, this.Context.Name);
             }
             catch(OperationCanceledException)
             {
-                this.logger.LogInformation("The management of the recurring command {CommandId} in the context '{Context}' has been stopped.", recurringCommand.CommandId, this.Context.Name);
+                this.logger.LogInformation("Management of recurring command {CommandId} in the context '{Context}' has stopped.", recurringCommand.CommandId, this.Context.Name);
                 throw;
             }
             catch (Exception exception) 
             {
-                this.logger.LogError(default, exception, "An error occurred during the management of the recurring command {CommandId} in the context '{Context}'.", recurringCommand.CommandId, this.Context.Name);
+                this.logger.LogError(default, exception, "An error occurred while managing recurring command {CommandId} in the context '{Context}'.", recurringCommand.CommandId, this.Context.Name);
             }
         }
 

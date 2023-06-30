@@ -104,7 +104,7 @@ namespace DDD.Core.Application
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            logger.Received(c => IsExpectedLogCall(c, LogLevel.Error, exception));
+            logger.Received(c => IsExpectedLogCall(c, LogLevel.Critical, exception));
         }
 
         [Fact]

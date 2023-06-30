@@ -178,7 +178,7 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            logger.Received(c => IsExpectedLogCall(c, LogLevel.Error, exception));
+            logger.Received(c => IsExpectedLogCall(c, LogLevel.Critical, exception));
         }
 
         [Fact]
@@ -199,7 +199,7 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            logger.Received(c => IsExpectedLogCall(c, LogLevel.Error, exception));
+            logger.Received(c => IsExpectedLogCall(c, LogLevel.Critical, exception));
         }
 
         [Fact]
@@ -220,7 +220,7 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            logger.Received(c => IsExpectedLogCall(c, LogLevel.Error, exception));
+            logger.Received(c => IsExpectedLogCall(c, LogLevel.Critical, exception));
         }
 
         [Fact]
@@ -241,7 +241,7 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            logger.Received(c => IsExpectedLogCall(c, LogLevel.Error, exception));
+            logger.Received(c => IsExpectedLogCall(c, LogLevel.Critical, exception));
         }
 
         [Fact]
@@ -352,7 +352,7 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            logger.Received(c => IsExpectedLogCall(c, LogLevel.Error, exception));
+            logger.Received(c => IsExpectedLogCall(c, LogLevel.Critical, exception));
         }
 
         [Fact]
@@ -373,7 +373,7 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            logger.Received(c => IsExpectedLogCall(c, LogLevel.Error, exception));
+            logger.Received(c => IsExpectedLogCall(c, LogLevel.Critical, exception));
         }
 
         [Fact]
@@ -394,7 +394,7 @@ namespace DDD.Core.Application
             consumer.Start();
             consumer.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            logger.Received(c => IsExpectedLogCall(c, LogLevel.Error, exception));
+            logger.Received(c => IsExpectedLogCall(c, LogLevel.Critical, exception));
         }
 
         [Fact]
