@@ -120,12 +120,16 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         /// <summary>
         /// Registers an event consumer for a specific bounded context.
         /// </summary>
-        public static void RegisterEventConsumer<TContext>(this Container container, EventConsumerSettings<TContext> settings)
+        public static void RegisterEventConsumer<TContext>(this Container container, EventConsumerSettings settings)
             where TContext : BoundedContext
         {
             Ensure.That(container, nameof(container)).IsNotNull();
             Ensure.That(settings, nameof(settings)).IsNotNull();
-            container.RegisterInstance(settings);
+            var context = container.GetAllInstances<BoundedContext>().FirstOrDefault(c => c.Name == settings.Context);
+            if (context == null)
+                throw new InvalidOperationException($"No bounded context with the name '{settings.Context}' is registered.");
+            var consumerSettings = new EventConsumerSettings<TContext>((TContext)context, TimeSpan.FromSeconds(settings.ConsumationDelay), settings.ConsumationMax);
+            container.RegisterInstance(consumerSettings);
             container.RegisterSingleton<IEventConsumer<TContext>, EventConsumer<TContext>>();
             container.Collection.Append<IEventConsumer, EventConsumer<TContext>>(Lifestyle.Singleton);
         }
@@ -133,11 +137,15 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         /// <summary>
         /// Registers a recurring command manager for a specific bounded context.
         /// </summary>
-        public static void RegisterRecurringCommandManager<TContext>(this Container container, RecurringCommandManagerSettings<TContext> settings)
+        public static void RegisterRecurringCommandManager<TContext>(this Container container, RecurringCommandManagerSettings settings)
             where TContext : BoundedContext
         {
             Ensure.That(container, nameof(container)).IsNotNull();
             Ensure.That(settings, nameof(settings)).IsNotNull();
+            var context = container.GetAllInstances<BoundedContext>().FirstOrDefault(c => c.Name == settings.Context);
+            if (context == null)
+                throw new InvalidOperationException($"No bounded context with the name '{settings.Context}' is registered.");
+            var managerSettings = new RecurringCommandManagerSettings<TContext>((TContext)context, settings.CurrentSerializationFormat);
             container.RegisterInstance(settings);
             container.RegisterSingleton<IRecurringCommandManager<TContext>, RecurringCommandManager<TContext>>();
             container.Collection.Append<IRecurringCommandManager, RecurringCommandManager<TContext>>(Lifestyle.Singleton);

@@ -1,4 +1,4 @@
-using EnsureThat;
+﻿using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -149,7 +149,7 @@ namespace DDD.Core.Application
                     await this.ConsumeAllStreamsAsync(streamsInfo);
                     this.IncrementConsumationCountIfRequired();
                     this.logger.LogInformation("Consumption of event streams in the context '{Context}' has finished.", this.Context.Name);
-                    await Task.Delay(TimeSpan.FromSeconds(this.settings.ConsumationDelay), this.CancellationToken);
+                    await Task.Delay(this.settings.ConsumationDelay, this.CancellationToken);
                 }
             }
             catch(OperationCanceledException)
