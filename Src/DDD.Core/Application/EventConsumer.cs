@@ -1,4 +1,4 @@
-﻿using EnsureThat;
+using EnsureThat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,9 +68,8 @@ namespace DDD.Core.Application
 
         public bool IsRunning { get; private set; }
 
-        protected CancellationToken CancellationToken => this.cancellationTokenSource.Token;
-
         BoundedContext IEventConsumer.Context => this.Context;
+        protected CancellationToken CancellationToken => this.cancellationTokenSource.Token;
 
         #endregion Properties
 
@@ -80,8 +79,11 @@ namespace DDD.Core.Application
         {
             if (!this.IsRunning)
             {
+                this.logger.LogInformation("EventConsumer for the context '{Context}' is starting.", this.Context.Name);
+                this.logger.LogDebug("The consumer settings for the context '{Context}' are as follows : {@Settings}", this.Context.Name, this.settings);
                 this.IsRunning = true;
                 this.consumeEvents = Task.Run(async () => await ConsumeEventsAsync());
+                this.logger.LogInformation("EventConsumer for the context '{Context}' has started.", this.Context.Name);
             }
         }
 
@@ -89,6 +91,7 @@ namespace DDD.Core.Application
         {
             if (this.IsRunning)
             {
+                this.logger.LogInformation("EventConsumer for the context '{Context}' is stopping.", this.Context.Name);
                 this.cancellationTokenSource.Cancel();
                 this.consumeEvents.Wait();
             }
@@ -124,35 +127,38 @@ namespace DDD.Core.Application
             }
         }
 
+        private static bool IsTransientException(Exception exception)
+        {
+            if (exception is TimestampedException ex)
+                return ex.IsTransient;
+            return false;
+        }
+
         private async Task ConsumeEventsAsync()
         {
-            this.logger.LogInformation("Event handling in the context '{Context}' has started.", this.Context.Name);
-            this.logger.LogDebug("The configuration settings of event handling in the context '{Context}' are the following : {@Settings}", this.Context.Name, this.settings);
             try
             {
                 await new SynchronizationContextRemover();
                 while (!ConsumationMaxReached())
                 {
                     this.CancellationToken.ThrowIfCancellationRequested();
-                    this.logger.LogInformation("Event stream consumption in the context '{Context}' has started.", this.Context.Name);
-                    var allStreams = await this.FindAllStreamsAsync();
-                    await this.ConsumeAllStreamsAsync(allStreams);
+                    this.logger.LogInformation("Consumption of event streams in the context '{Context}' has started.", this.Context.Name);
+                    var streamsInfo = await this.FindAllStreamsAsync();
+                    this.logger.LogInformation("{StreamsCount} event streams were found for the context '{Context}'.", streamsInfo.Streams.Count(), this.Context.Name);
+                    this.logger.LogInformation("{FailedStreamsCount} failed event streams were found for the context '{Context}'.", streamsInfo.FailedStreams.Count(), this.Context.Name);
+                    await this.ConsumeAllStreamsAsync(streamsInfo);
                     this.IncrementConsumationCountIfRequired();
-                    this.logger.LogInformation("Event stream consumption in the context '{Context}' has finished.", this.Context.Name);
+                    this.logger.LogInformation("Consumption of event streams in the context '{Context}' has finished.", this.Context.Name);
                     await Task.Delay(TimeSpan.FromSeconds(this.settings.ConsumationDelay), this.CancellationToken);
                 }
-                if (this.CancellationToken.IsCancellationRequested)
-                    this.logger.LogInformation("Event handling in the context '{Context}' has been stopped.", this.Context.Name);
-                else
-                    this.logger.LogInformation("Event handling in the context '{Context}' has finished.", this.Context.Name);
             }
-            catch (OperationCanceledException)
+            catch(OperationCanceledException)
             {
-                this.logger.LogInformation("Event handling in the context '{Context}' has been stopped.", this.Context.Name);
+                this.logger.LogInformation("EventConsumer for the context '{Context}' has stopped.", this.Context.Name);
             }
             catch (Exception exception)
             {
-                this.logger.LogError(default, exception, "An error occurred during event handling in the context '{Context}'.", this.Context.Name);
+                this.logger.LogCritical(default, exception, "An error occurred while consuming event streams in the context '{Context}'.", this.Context.Name);
             }
             finally
             {
@@ -160,24 +166,22 @@ namespace DDD.Core.Application
             }
         }
 
-        private async Task<(IEnumerable<EventStream>, IEnumerable<FailedEventStream>)> FindAllStreamsAsync()
+        private async Task<StreamsInfo> FindAllStreamsAsync()
         {
             var findStreams = this.queryProcessor.InGeneric(Context).ProcessAsync(new FindEventStreams(), MessageContext.CancellableContext(this.CancellationToken));
             var findFailedStreams = this.queryProcessor.InGeneric(Context).ProcessAsync(new FindFailedEventStreams(), MessageContext.CancellableContext(this.CancellationToken));
             await Task.WhenAll(findStreams, findFailedStreams);
-            return (findStreams.Result, findFailedStreams.Result);
+            return new StreamsInfo(findStreams.Result, findFailedStreams.Result);
         }
 
-        private async Task ConsumeAllStreamsAsync((IEnumerable<EventStream> Streams, IEnumerable<FailedEventStream> FailedStreams) allStreams)
+        private async Task ConsumeAllStreamsAsync(StreamsInfo streamsInfo)
         {
-            if (!allStreams.Streams.Any())
-                this.logger.LogInformation("No event stream is set up for the context '{Context}'.", this.Context.Name);
             var tasks = new List<Task>();
-            foreach (var stream in allStreams.Streams)
+            foreach (var stream in streamsInfo.Streams)
             {
-                var excludedStreams = allStreams.FailedStreams
-                                                .Where(s => s.StreamSource == stream.Source && s.StreamType == stream.Type)
-                                                .ToList();
+                var excludedStreams = streamsInfo.FailedStreams
+                                                 .Where(s => s.StreamSource == stream.Source && s.StreamType == stream.Type)
+                                                 .ToList();
                 tasks.Add(ConsumeStreamAsync(stream, excludedStreams));
             }
             await Task.WhenAll(tasks);
@@ -200,7 +204,7 @@ namespace DDD.Core.Application
 
         private async Task ConsumeStreamWithoutExcludedStreamsAsync(EventStream stream, List<FailedEventStream> excludedStreams)
         {
-            this.logger.LogInformation("The consumption of the following event stream in the context '{Context}' has started : {Stream}", this.Context.Name, stream);
+            this.logger.LogInformation("Consumption of the following event stream in the context '{Context}' has started : {Stream}", this.Context.Name, stream);
             var query = new ReadEventStream
             {
                 Top = stream.BlockSize,
@@ -215,15 +219,15 @@ namespace DDD.Core.Application
                 this.CancellationToken.ThrowIfCancellationRequested();
                 try
                 {
-                    this.logger.LogDebug("The handling of the event {EventId} in the context '{Context}' has started.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogDebug("Handling of event {EventId} in the context '{Context}' has started.", notifiedEvent.EventId, this.Context.Name);
                     var @event = this.DeserializeEvent(notifiedEvent);
                     await this.eventPublisher.PublishAsync(@event, CreateContext(notifiedEvent, stream));
                     stream.Position = notifiedEvent.EventId;
-                    this.logger.LogDebug("The handling of the event {EventId} in the context '{Context}' has finished.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogDebug("Handling of event {EventId} in the context '{Context}' has finished.", notifiedEvent.EventId, this.Context.Name);
                 }
                 catch (Exception exception) when (!(exception is OperationCanceledException))
                 {
-                    this.logger.LogError(default, exception, "An error occurred during the handling of the event {EventId} in the context '{Context}'.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogError(default, exception, "An error occurred while handling event {EventId} in the context '{Context}'.", notifiedEvent.EventId, this.Context.Name);
                     var isTransientException = IsTransientException(exception);
                     var baseException = exception.GetBaseException();
                     var command = new ExcludeFailedEventStream
@@ -250,12 +254,12 @@ namespace DDD.Core.Application
                     break;
                 }
             }
-            this.logger.LogInformation("The consumption of the following event stream in the context '{Context}' has finished : {Stream}", this.Context.Name, stream);
+            this.logger.LogInformation("Consumption of the following event stream in the context '{Context}' has finished : {Stream}", this.Context.Name, stream);
         }
 
         private async Task ConsumeExcludedStreamAsync(EventStream stream, FailedEventStream excludedStream, List<FailedEventStream> excludedStreams)
         {
-            this.logger.LogInformation("The consumption of the following failed event stream in the context '{Context}' has started : {FailedStream}", this.Context.Name, excludedStream);
+            this.logger.LogInformation("Consumption of the following failed event stream in the context '{Context}' has started : {FailedStream}", this.Context.Name, excludedStream);
             var query = new ReadFailedEventStream
             {
                 Top = excludedStream.BlockSize,
@@ -272,16 +276,16 @@ namespace DDD.Core.Application
                 this.CancellationToken.ThrowIfCancellationRequested();
                 try
                 {
-                    this.logger.LogDebug("The handling of the event {EventId} in the context '{Context}' has started.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogDebug("Handling of event {EventId} in the context '{Context}' has started.", notifiedEvent.EventId, this.Context.Name);
                     var @event = this.DeserializeEvent(notifiedEvent);
                     await this.eventPublisher.PublishAsync(@event, CreateContext(notifiedEvent, excludedStream));
                     excludedStream.StreamPosition = notifiedEvent.EventId;
-                    this.logger.LogDebug("The handling of the event {EventId} in the context '{Context}' has finished.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogDebug("Handling of event {EventId} in the context '{Context}' has finished.", notifiedEvent.EventId, this.Context.Name);
                 }
                 catch (Exception exception) when (!(exception is OperationCanceledException))
                 {
                     success = false;
-                    this.logger.LogError(default, exception, "An error occurred during the handling of the event {EventId} in the context '{Context}'.", notifiedEvent.EventId, this.Context.Name);
+                    this.logger.LogError(default, exception, "An error occurred while handling event {EventId} in the context '{Context}'.", notifiedEvent.EventId, this.Context.Name);
                     var isTransientException = IsTransientException(exception);
                     var isNewEvent = notifiedEvent.EventId != excludedStream.EventId;
                     var baseException = exception.GetBaseException();
@@ -319,16 +323,8 @@ namespace DDD.Core.Application
                 await this.commandProcessor.InGeneric(Context).ProcessAsync(command);
                 excludedStreams.Remove(excludedStream);
             }
-            this.logger.LogInformation("The consumption of the following failed event stream in the context '{Context}' has finished : {FailedStream}", this.Context.Name, excludedStream);
+            this.logger.LogInformation("Consumption of the following failed event stream in the context '{Context}' has finished : {FailedStream}", this.Context.Name, excludedStream);
         }
-
-        private static bool IsTransientException(Exception exception)
-        {
-            if (exception is TimestampedException ex)
-                return ex.IsTransient;
-            return false;
-        }
-
         private bool ConsumationMaxReached()
         {
             if (!this.settings.ConsumationMax.HasValue) return false;
@@ -380,6 +376,33 @@ namespace DDD.Core.Application
         }
 
         #endregion Methods
+
+        #region Classes
+
+        private class StreamsInfo
+        {
+
+            #region Constructors
+
+            public StreamsInfo(IEnumerable<EventStream> streams, IEnumerable<FailedEventStream> failedStreams)
+            {
+                this.Streams = streams;
+                this.FailedStreams = failedStreams;
+            }
+
+            #endregion Constructors
+
+            #region Properties
+
+            public IEnumerable<EventStream> Streams { get; }
+
+            public IEnumerable<FailedEventStream> FailedStreams { get; }
+
+            #endregion Properties
+
+        }
+
+        #endregion Classes
 
     }
 }
