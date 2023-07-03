@@ -3,20 +3,20 @@ using System.Runtime.Serialization;
 
 namespace DDD.Core.Application
 {
-    using Domain;
-
-    [DataContract()]
-    public class EventConsumerSettings<TContext>
-        where TContext : BoundedContext
+    /// <remarks>
+    /// Used for serialization
+    /// </remarks>
+    [DataContract]
+    public class EventConsumerSettings
     {
 
         #region Constructors
 
-        public EventConsumerSettings(TContext context,
+        public EventConsumerSettings(string context,
                                      short consumationDelay,
                                      long? consumationMax = null)
         {
-            Ensure.That(context, nameof(context)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNullOrWhiteSpace();
             Ensure.That(consumationDelay, nameof(consumationDelay)).IsGte((short)0);
             if (consumationMax != null)
                 Ensure.That(consumationMax.Value, nameof(consumationMax)).IsGte(0);
@@ -25,26 +25,32 @@ namespace DDD.Core.Application
             this.ConsumationMax = consumationMax;
         }
 
+        /// <remarks>
+        /// For serialization
+        /// </remarks>
+        private EventConsumerSettings() { }
+
         #endregion Constructors
 
         #region Properties
 
         /// <summary>
-        /// Gets the delay in seconds between two successive consumations.
+        /// Gets the associated context.
         /// </summary>
         [DataMember(Order = 1)]
-        public short ConsumationDelay { get; }
+        public string Context { get; private set; }
+
+        /// <summary>
+        /// Gets the delay in seconds between two successive consumations.
+        /// </summary>
+        [DataMember(Order = 2)]
+        public short ConsumationDelay { get; private set; }
 
         /// <summary>
         /// Gets the maximum number of successive consumations.
         /// </summary>
-        [DataMember(Order = 2)]
-        public long? ConsumationMax { get; }
-
-        /// <summary>
-        /// Gets the associated context.
-        /// </summary>
-        public TContext Context { get; }
+        [DataMember(Order = 3)]
+        public long? ConsumationMax { get; private set; }
 
         #endregion Properties
 

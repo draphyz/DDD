@@ -1,31 +1,26 @@
-﻿using System.Runtime.Serialization;
-using EnsureThat;
+﻿using EnsureThat;
 
 namespace DDD.Core.Application
 {
+    using Domain;
     using Serialization;
 
     /// <remarks>
-    /// Used for serialization
+    /// Used for dependency injection
     /// </remarks>
-    [DataContract]
-    public class RecurringCommandManagerSettings
+    public class RecurringCommandManagerSettings<TContext>
+        where TContext : BoundedContext
     {
 
         #region Constructors
 
-        public RecurringCommandManagerSettings(string context,
+        public RecurringCommandManagerSettings(TContext context,
                                                SerializationFormat currentSerializationFormat)
         {
-            Ensure.That(context, nameof(context)).IsNotNullOrWhiteSpace();
+            Ensure.That(context, nameof(context)).IsNotNull();
             this.Context= context;
             this.CurrentSerializationFormat = currentSerializationFormat;
         }
-
-        /// <remarks>
-        /// For serialization
-        /// </remarks>
-        private RecurringCommandManagerSettings() { }
 
         #endregion Constructors
 
@@ -34,14 +29,12 @@ namespace DDD.Core.Application
         /// <summary>
         /// Gets the associated context.
         /// </summary>
-        [DataMember(Order = 1)]
-        public string Context { get; private set; }
+        public TContext Context { get; }
 
         /// <summary>
         /// Gets the current serialization format of the recurring commands.
         /// </summary>
-        [DataMember(Order = 2)]
-        public SerializationFormat CurrentSerializationFormat { get; private set; }
+        public SerializationFormat CurrentSerializationFormat { get; }
 
         #endregion Properties
     }
