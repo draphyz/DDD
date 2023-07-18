@@ -8,10 +8,10 @@ using Microsoft.Extensions.Logging;
 
 namespace DDD.Core.Application
 {
-    using DependencyInjection;
     using Serialization;
     using Domain;
     using Threading;
+    using DDD;
 
     public class EventConsumer<TContext> : IEventConsumer<TContext>, IDisposable
         where TContext : BoundedContext
@@ -24,7 +24,7 @@ namespace DDD.Core.Application
         private readonly IQueryProcessor queryProcessor;
         private readonly IEventPublisher<TContext> eventPublisher;
         private readonly IEnumerable<BoundedContext> boundedContexts;
-        private readonly IKeyedServiceProvider<SerializationFormat, ITextSerializer> eventSerializers;
+        private readonly IEnumerable<ITextSerializer> eventSerializers;
         private readonly ILogger logger;
         private readonly EventConsumerSettings<TContext> settings;
         private long consumationCount;
@@ -39,7 +39,7 @@ namespace DDD.Core.Application
                              IQueryProcessor queryProcessor,
                              IEventPublisher<TContext> eventPublisher,
                              IEnumerable<BoundedContext> boundedContexts,
-                             IKeyedServiceProvider<SerializationFormat, ITextSerializer> eventSerializers,
+                             IEnumerable<ITextSerializer> eventSerializers,
                              ILogger logger,
                              EventConsumerSettings<TContext> settings)
         {
@@ -48,6 +48,7 @@ namespace DDD.Core.Application
             Ensure.That(eventPublisher, nameof(eventPublisher)).IsNotNull();
             Ensure.That(boundedContexts, nameof(boundedContexts)).IsNotNull();
             Ensure.Enumerable.HasItems(boundedContexts, nameof(boundedContexts));
+            Ensure.Enumerable.HasAny(boundedContexts, c => c is TContext, nameof(boundedContexts));
             Ensure.That(eventSerializers, nameof(eventSerializers)).IsNotNull();
             Ensure.That(logger, nameof(logger)).IsNotNull();
             Ensure.That(settings, nameof(settings)).IsNotNull();
@@ -58,13 +59,14 @@ namespace DDD.Core.Application
             this.eventSerializers = eventSerializers;
             this.logger = logger;
             this.settings = settings;
+            this.Context = (TContext)this.boundedContexts.First(c => c is TContext);
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public TContext Context => this.settings.Context;
+        public TContext Context { get; }
 
         public bool IsRunning { get; private set; }
 
@@ -80,7 +82,7 @@ namespace DDD.Core.Application
             if (!this.IsRunning)
             {
                 this.logger.LogInformation("EventConsumer for the context '{Context}' is starting.", this.Context.Name);
-                this.logger.LogDebug("The consumer settings for the context '{Context}' are as follows : {@Settings}", this.Context.Name, this.settings);
+                this.logger.LogDebug("The consumer settings for the context '{Context}' are as follows : {Settings}", this.Context.Name, this.settings);
                 this.IsRunning = true;
                 this.consumeEvents = Task.Run(async () => await ConsumeEventsAsync());
                 this.logger.LogInformation("EventConsumer for the context '{Context}' has started.", this.Context.Name);
@@ -149,7 +151,7 @@ namespace DDD.Core.Application
                     await this.ConsumeAllStreamsAsync(streamsInfo);
                     this.IncrementConsumationCountIfRequired();
                     this.logger.LogInformation("Consumption of event streams in the context '{Context}' has finished.", this.Context.Name);
-                    await Task.Delay(TimeSpan.FromSeconds(this.settings.ConsumationDelay), this.CancellationToken);
+                    await Task.Delay(this.settings.ConsumationDelay, this.CancellationToken);
                 }
             }
             catch(OperationCanceledException)
@@ -351,7 +353,7 @@ namespace DDD.Core.Application
         {
             var format = (SerializationFormat)Enum.Parse(typeof(SerializationFormat), notifiedEvent.BodyFormat, ignoreCase: true);
             var type = Type.GetType(notifiedEvent.EventType);
-            var serializer = this.eventSerializers.GetService(format);
+            var serializer = this.eventSerializers.First(s => s.Format == format);
             return (IEvent)serializer.DeserializeFromString(notifiedEvent.Body, type);
         }
 

@@ -153,6 +153,7 @@ namespace DDD.Core.Infrastructure.Data
             if (command.Body != recurringCommand.Body) return true;
             if (command.BodyFormat != recurringCommand.BodyFormat) return true;
             if (command.RecurringExpression != recurringCommand.RecurringExpression) return true;
+            if (command.RecurringExpressionFormat != recurringCommand.RecurringExpressionFormat) return true;
             return false;
         }
 
@@ -166,7 +167,8 @@ namespace DDD.Core.Infrastructure.Data
                     command.CommandType,
                     command.Body,
                     command.BodyFormat,
-                    command.RecurringExpression
+                    command.RecurringExpression,
+                    command.RecurringExpressionFormat
                 };
             return command;
         }

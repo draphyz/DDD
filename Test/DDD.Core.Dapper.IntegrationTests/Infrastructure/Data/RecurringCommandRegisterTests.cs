@@ -75,7 +75,8 @@ namespace DDD.Core.Infrastructure.Data
                 CommandType = "DDD.Core.Application.FakeCommand1, DDD.Core.Messages",
                 Body = "{\"Property1\":\"dummy\",\"Property2\":10}",
                 BodyFormat = "JSON",
-                RecurringExpression = "* * * * *"
+                RecurringExpression = "* * * * *",
+                RecurringExpressionFormat = "CRON"
             };
         }
 
@@ -84,7 +85,7 @@ namespace DDD.Core.Infrastructure.Data
             using (var connection = Fixture.CreateConnection())
             {
                 connection.Open();
-                return connection.Query<RecurringCommand>("SELECT CommandId, CommandType, Body, BodyFormat, RecurringExpression FROM Command");
+                return connection.Query<RecurringCommand>("SELECT CommandId, CommandType, Body, BodyFormat, RecurringExpression, RecurringExpressionFormat FROM Command");
             }
         }
 
@@ -96,7 +97,8 @@ namespace DDD.Core.Infrastructure.Data
                 CommandType = "DDD.Core.Application.FakeCommand1, DDD.Core.Messages",
                 Body = "{\"Property1\":\"dummy\",\"Property2\":10}",
                 BodyFormat = "JSON",
-                RecurringExpression = "* * * * *"
+                RecurringExpression = "* * * * *",
+                RecurringExpressionFormat = "CRON"
             };
         }
 

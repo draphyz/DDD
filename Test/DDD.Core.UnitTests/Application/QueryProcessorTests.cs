@@ -34,7 +34,7 @@ namespace DDD.Core.Application
                            .Returns(this.validatorOfQuery1);
             serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncObjectValidator<FakeQuery2>))))
                            .Returns(this.validatorOfQuery2);
-            processor = new QueryProcessor(serviceProvider);
+            processor = new QueryProcessor(serviceProvider, new QueryProcessorSettings());
         }
 
         #endregion Constructors

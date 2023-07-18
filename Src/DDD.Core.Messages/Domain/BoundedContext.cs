@@ -58,6 +58,9 @@ namespace DDD.Core.Domain
             return CombineHashCodes(Code, Name);
         }
 
+        public override string ToString() 
+            => $"{GetType().Name} [{nameof(Code)}={Code}, {nameof(Name)}={Name}]";
+
         private static int CombineHashCodes(params object[] collection)
         {
             Ensure.That(collection, nameof(collection)).IsNotNull();

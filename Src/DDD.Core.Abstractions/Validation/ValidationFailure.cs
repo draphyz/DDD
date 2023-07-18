@@ -88,10 +88,8 @@ namespace DDD.Validation
 
         #region Methods
 
-        public override string ToString()
-        {
-            return $"{this.GetType().Name} [message={this.Message}, code={this.Code}, level={this.Level}, propertyName={this.PropertyName}, propertyValue={this.PropertyValue}, category={this.Category}]";
-        }
+        public override string ToString() 
+            => $"{GetType().Name} [{nameof(Message)}={Message}, {nameof(Code)}={Code}, {nameof(Level)}={Level}, {nameof(PropertyName)}={PropertyName}, {nameof(PropertyValue)}={PropertyValue}, {nameof(Category)}={Category}]";
 
         #endregion Methods
 

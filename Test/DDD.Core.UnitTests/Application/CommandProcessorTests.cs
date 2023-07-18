@@ -35,7 +35,7 @@ namespace DDD.Core.Application
                            .Returns(this.validatorOfCommand1);
             serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(ISyncObjectValidator<FakeCommand2>))))
                            .Returns(this.validatorOfCommand2);
-            processor = new CommandProcessor(serviceProvider);
+            processor = new CommandProcessor(serviceProvider, new CommandProcessorSettings());
         }
 
         #endregion Constructors

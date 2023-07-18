@@ -107,10 +107,7 @@ namespace DDD.Common.Domain
         }
 
         public override string ToString()
-        {
-            var format = "{0} [street={1}, houseNumber={2}, boxNumber{3}, postalCode={4}, city={5}, countryCode={6}]";
-            return string.Format(format, this.GetType().Name, this.Street, this.HouseNumber, this.BoxNumber, this.PostalCode, this.City, this.CountryCode);
-        }
+            => $"{GetType().Name} [{nameof(Street)}={Street}, {nameof(HouseNumber)}={HouseNumber}, {nameof(BoxNumber)}{BoxNumber}, {nameof(PostalCode)}={PostalCode}, {nameof(City)}={City}, {nameof(CountryCode)}={CountryCode}]";
 
         #endregion Methods
 

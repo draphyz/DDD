@@ -83,7 +83,7 @@ namespace DDD.Core.Infrastructure.Data
             using (var connection = Fixture.CreateConnection())
             {
                 connection.Open();
-                var sql = "SELECT CommandId, CommandType, Body, BodyFormat, RecurringExpression, LastExecutionTime, CASE LastExecutionStatus WHEN 'F' THEN 'Failed' WHEN 'S' THEN 'Successful' END LastExecutionStatus, LastExceptionInfo FROM Command WHERE CommandId = @CommandId";
+                var sql = "SELECT CommandId, CommandType, Body, BodyFormat, RecurringExpression, RecurringExpressionFormat, LastExecutionTime, CASE LastExecutionStatus WHEN 'F' THEN 'Failed' WHEN 'S' THEN 'Successful' END LastExecutionStatus, LastExceptionInfo FROM Command WHERE CommandId = @CommandId";
                 sql = sql.Replace("@", connection.Expressions().ParameterPrefix());
                 return connection.QuerySingle<RecurringCommandDetail>(sql, Parameters(connection));
             }
@@ -106,6 +106,7 @@ namespace DDD.Core.Infrastructure.Data
                 Body = "{\"Property1\":\"dummy\",\"Property2\":10}",
                 BodyFormat = "JSON",
                 RecurringExpression = "* * * * *",
+                RecurringExpressionFormat = "CRON",
                 LastExecutionTime = new DateTime(2022, 1, 1),
                 LastExecutionStatus = CommandExecutionStatus.Failed,
                 LastExceptionInfo = "System.TimeoutException: The operation has timed-out."

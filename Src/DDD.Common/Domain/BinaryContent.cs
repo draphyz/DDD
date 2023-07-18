@@ -51,7 +51,7 @@ namespace DDD.Common.Domain
                 yield return this.Data[i];
         }
 
-        public override string ToString() => $"{this.GetType().Name} [data={this.Data}]";
+        public override string ToString() => $"{GetType().Name} [{nameof(Data)}={Data}]";
 
         #endregion Methods
 

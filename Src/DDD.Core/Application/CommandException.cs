@@ -43,10 +43,10 @@ namespace DDD.Core.Application
         public override string ToString()
         {
             var s = $"{this.GetType()}: {this.Message} ";
-            s += $"{Environment.NewLine}Timestamp: {this.Timestamp}";
-            s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
+            s += $"{Environment.NewLine}{nameof(Timestamp)}: {this.Timestamp}";
+            s += $"{Environment.NewLine}{nameof(IsTransient)}: {this.IsTransient}";
             if (this.Command != null)
-                s += $"{Environment.NewLine}Command: {this.Command}";
+                s += $"{Environment.NewLine}{nameof(Command)}: {this.Command}";
             if (this.InnerException != null)
                 s += $" ---> {this.InnerException}";
             if (this.StackTrace != null)

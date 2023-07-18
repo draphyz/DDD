@@ -66,7 +66,7 @@ namespace DDD.Common.Domain
 
         public override string ToString()
         {
-            return $"{this.GetType().Name} [lastName={this.LastName}, firstName={this.FirstName}]";
+            return $"{GetType().Name} [{nameof(LastName)}={LastName}, {nameof(FirstName)}={FirstName}]";
         }
 
         public FullName WithFirstName(string firstName)

@@ -16,12 +16,14 @@ namespace DDD.Core.Application
 
         public string RecurringExpression { get; set; }
 
+        public string RecurringExpressionFormat { get; set; }
+
         #endregion Properties
 
         #region Methods
 
         public override string ToString()
-            => $"{this.GetType().Name} [ {nameof(CommandId)}={this.CommandId}, {nameof(CommandType)}={this.CommandType}, {nameof(RecurringExpression)}={this.RecurringExpression}]";
+            => $"{this.GetType().Name} [ {nameof(CommandId)}={this.CommandId}, {nameof(CommandType)}={this.CommandType}, {nameof(RecurringExpression)}={this.RecurringExpression}, {nameof(RecurringExpressionFormat)}={this.RecurringExpressionFormat}]";
 
         #endregion Methods
     }

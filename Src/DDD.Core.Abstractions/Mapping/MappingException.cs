@@ -52,9 +52,9 @@ namespace DDD.Mapping
         {
             var s = $"{this.GetType()}: {this.Message} ";
             if (this.SourceType != null)
-                s += $"{Environment.NewLine}SourceType: {this.SourceType}";
+                s += $"{Environment.NewLine}{nameof(SourceType)}: {this.SourceType}";
             if (this.DestinationType != null)
-                s += $"{Environment.NewLine}DestinationType: {this.DestinationType}";
+                s += $"{Environment.NewLine}{nameof(DestinationType)}: {this.DestinationType}";
             if (this.InnerException != null)
                 s += $" ---> {this.InnerException}";
             if (this.StackTrace != null)

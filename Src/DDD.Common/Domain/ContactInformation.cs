@@ -126,8 +126,9 @@ namespace DDD.Common.Domain
         }
         public override string ToString()
         {
-            var format = "{0} [postalAddress={1}, primaryTelephoneNumber={2}, secondaryTelephoneNumber={3}, faxNumber={4}, primaryEmailAddress={5}, secondaryEmailAddress={6}, webSite={7}]";
-            return string.Format(format, this.GetType().Name, this.PostalAddress, this.PrimaryTelephoneNumber, this.SecondaryTelephoneNumber, this.FaxNumber, this.PrimaryEmailAddress, this.SecondaryEmailAddress, this.WebSite);
+            var s = $"{GetType().Name} [{nameof(PostalAddress)}={PostalAddress}, {nameof(PrimaryTelephoneNumber)}={PrimaryTelephoneNumber}, {nameof(SecondaryTelephoneNumber)}={SecondaryTelephoneNumber}, ";
+            s += $"{nameof(FaxNumber)}={FaxNumber}, {nameof(PrimaryEmailAddress)}={PrimaryEmailAddress}, {nameof(SecondaryEmailAddress)}={SecondaryEmailAddress}, {nameof(WebSite)}={WebSite}]";
+            return s;
         }
 
         private static bool IsEmpty(PostalAddress postalAddress = null,

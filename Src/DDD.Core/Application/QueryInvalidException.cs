@@ -58,10 +58,10 @@ namespace DDD.Core.Application
         public override string ToString()
         {
             var s = $"{this.GetType()}: {this.Message} ";
-            s += $"{Environment.NewLine}Timestamp: {this.Timestamp}";
-            s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
+            s += $"{Environment.NewLine}{nameof(Timestamp)}: {this.Timestamp}";
+            s += $"{Environment.NewLine}{nameof(IsTransient)}: {this.IsTransient}";
             if (this.Query != null)
-                s += $"{Environment.NewLine}Query: {this.Query}";
+                s += $"{Environment.NewLine}{nameof(Query)}: {this.Query}";
             if (this.Failures != null)
             {
                 for (var i = 0; i < this.Failures.Length; i++)

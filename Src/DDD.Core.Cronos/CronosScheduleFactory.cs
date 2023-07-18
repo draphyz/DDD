@@ -8,6 +8,11 @@ namespace DDD.Core.Infrastructure
 
     public class CronosScheduleFactory : IRecurringScheduleFactory
     {
+        #region Properties
+
+        public RecurringExpressionFormat Format { get; } = RecurringExpressionFormat.Cron;
+
+        #endregion Properties
 
         #region Methods
 
