@@ -24,7 +24,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Classes
 
-        public class Builder : IObjectBuilder<MappingRegistrationOptions>
+        public class Builder : FluentBuilder<MappingRegistrationOptions>
         {
 
             #region Fields
@@ -49,7 +49,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this;
             }
 
-            MappingRegistrationOptions IObjectBuilder<MappingRegistrationOptions>.Build() => this.options;
+            protected override MappingRegistrationOptions Build() => this.options;
 
             #endregion Methods
 

@@ -40,7 +40,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Classes
 
-        public class Builder : IObjectBuilder<CommandsRegistrationOptions>
+        public class Builder : FluentBuilder<CommandsRegistrationOptions>
         {
 
             #region Fields
@@ -101,7 +101,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 this.options.DefaultValidator = DelegatingValidator<ICommand>.Create(validator);
                 return this;
             }
-            CommandsRegistrationOptions IObjectBuilder<CommandsRegistrationOptions>.Build() => this.options;
+            protected override CommandsRegistrationOptions Build() => this.options;
 
             #endregion Methods
 
