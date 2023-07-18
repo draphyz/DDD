@@ -37,6 +37,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{862B0E9C-B68
 	ProjectSection(SolutionItems) = preProject
 		Doc\CommandComponents.png = Doc\CommandComponents.png
 		Doc\CommandSide.png = Doc\CommandSide.png
+		..\..\Users\olwallem\Downloads\DeploymentEvolution.png = ..\..\Users\olwallem\Downloads\DeploymentEvolution.png
 		Doc\EntityFrameworkMapping.png = Doc\EntityFrameworkMapping.png
 		Doc\NHibernateMapping.png = Doc\NHibernateMapping.png
 		Doc\PrescriptionLifecycle.png = Doc\PrescriptionLifecycle.png
@@ -73,7 +74,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.Cronos", "Src\DDD.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.SimpleInjector.FluentValidation", "Src\DDD.Core.SimpleInjector.FluentValidation\DDD.Core.SimpleInjector.FluentValidation.csproj", "{50B31BF5-F66F-4ED4-8D9F-C874264A1030}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DDD.Core.SimpleInjector.UnitTests", "Test\DDD.Core.SimpleInjector.UnitTests\DDD.Core.SimpleInjector.UnitTests.csproj", "{077DB696-B758-48B9-8775-2AD0039281D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DDD.Core.SimpleInjector.UnitTests", "Test\DDD.Core.SimpleInjector.UnitTests\DDD.Core.SimpleInjector.UnitTests.csproj", "{077DB696-B758-48B9-8775-2AD0039281D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
