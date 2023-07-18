@@ -117,8 +117,9 @@ namespace DDD.Common.Domain
 
         public override string ToString()
         {
-            return $"{this.GetType().Name} [value={this.Value}, code={this.Code}, name={this.Name}]";
+            return $"{GetType().Name} [{nameof(Value)}={Value}, {nameof(Code)}={Code}, {nameof(Name)}={Name}]";
         }
+
         private static IEnumerable<TEnum> GetAllInstances<TEnum>() where TEnum : Enumeration
         {
             var enumType = typeof(TEnum);

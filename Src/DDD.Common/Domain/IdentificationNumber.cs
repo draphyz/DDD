@@ -42,7 +42,7 @@ namespace DDD.Common.Domain
             yield return this.Value;
         }
 
-        public override string ToString() => $"{this.GetType().Name} [value={this.Value}]";
+        public override string ToString() => $"{GetType().Name} [{nameof(Value)}={Value}]";
 
         #endregion Methods
 

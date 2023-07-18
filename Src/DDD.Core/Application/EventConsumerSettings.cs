@@ -1,26 +1,23 @@
 ﻿using EnsureThat;
-using System.Runtime.Serialization;
+using System;
 
 namespace DDD.Core.Application
 {
     using Domain;
 
-    [DataContract()]
     public class EventConsumerSettings<TContext>
         where TContext : BoundedContext
     {
 
         #region Constructors
 
-        public EventConsumerSettings(TContext context,
-                                     short consumationDelay,
+        public EventConsumerSettings(TimeSpan consumationDelay,
                                      long? consumationMax = null)
         {
-            Ensure.That(context, nameof(context)).IsNotNull();
-            Ensure.That(consumationDelay, nameof(consumationDelay)).IsGte((short)0);
+            Ensure.That(consumationDelay, nameof(consumationDelay)).IsGte(TimeSpan.Zero);
             if (consumationMax != null)
                 Ensure.That(consumationMax.Value, nameof(consumationMax)).IsGte(0);
-            this.Context = context;
+            this.ContextType = typeof(TContext);
             this.ConsumationDelay = consumationDelay;
             this.ConsumationMax = consumationMax;
         }
@@ -30,23 +27,28 @@ namespace DDD.Core.Application
         #region Properties
 
         /// <summary>
-        /// Gets the delay in seconds between two successive consumations.
+        /// Gets the type of the associated context.
         /// </summary>
-        [DataMember(Order = 1)]
-        public short ConsumationDelay { get; }
+        public Type ContextType { get; }
+
+        /// <summary>
+        /// Gets the delay between two successive consumations.
+        /// </summary>
+        public TimeSpan ConsumationDelay { get; }
 
         /// <summary>
         /// Gets the maximum number of successive consumations.
         /// </summary>
-        [DataMember(Order = 2)]
         public long? ConsumationMax { get; }
 
-        /// <summary>
-        /// Gets the associated context.
-        /// </summary>
-        public TContext Context { get; }
-
         #endregion Properties
+
+        #region Methods
+
+        public override string ToString()
+            => $"{this.GetType().Name} [{nameof(ContextType)}={ContextType}, {nameof(ConsumationDelay)}={ConsumationDelay}, {nameof(ConsumationMax)}={ConsumationMax}]";
+
+        #endregion Methods
 
     }
 }

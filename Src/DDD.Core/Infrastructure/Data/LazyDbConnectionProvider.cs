@@ -13,23 +13,20 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Fields
 
-        private readonly string connectionString;
+        private readonly DbConnectionSettings<TContext> settings;
         private readonly Lazy<DbConnection> lazyConnection;
-        private readonly string providerName;
         private bool isDisposed;
 
         #endregion Fields
 
         #region Constructors
 
-        public LazyDbConnectionProvider(TContext context, string providerName, string connectionString)
+        public LazyDbConnectionProvider(TContext context, DbConnectionSettings<TContext> settings)
         {
             Ensure.That(context, nameof(context)).IsNotNull();
-            Ensure.That(providerName, nameof(providerName)).IsNotNullOrWhiteSpace();
-            Ensure.That(connectionString, nameof(connectionString)).IsNotNullOrWhiteSpace();
+            Ensure.That(settings, nameof(settings)).IsNotNull();
             this.Context = context;
-            this.providerName = providerName;
-            this.connectionString = connectionString;
+            this.settings = settings;
             this.lazyConnection = new Lazy<DbConnection>(() => this.CreateConnection());
         }
 
@@ -68,9 +65,9 @@ namespace DDD.Core.Infrastructure.Data
 
         private DbConnection CreateConnection()
         {
-            var providerFactory = DbProviderFactories.GetFactory(this.providerName);
+            var providerFactory = DbProviderFactories.GetFactory(this.settings.ProviderName);
             var connection = providerFactory.CreateConnection();
-            connection.ConnectionString = this.connectionString;
+            connection.ConnectionString = this.settings.ConnectionString;
             return connection;
         }
 

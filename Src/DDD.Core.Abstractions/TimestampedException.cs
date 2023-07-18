@@ -46,8 +46,8 @@ namespace DDD
         public override string ToString()
         {
             var s = $"{this.GetType()}: {this.Message} ";
-            s += $"{Environment.NewLine}Timestamp: {this.Timestamp}";
-            s += $"{Environment.NewLine}IsTransient: {this.IsTransient}";
+            s += $"{Environment.NewLine}{nameof(Timestamp)}: {this.Timestamp}";
+            s += $"{Environment.NewLine}{nameof(IsTransient)}: {this.IsTransient}";
             if (this.InnerException != null)
                 s += $" ---> {this.InnerException}";
             if (this.StackTrace != null)

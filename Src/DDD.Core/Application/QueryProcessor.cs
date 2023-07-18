@@ -1,6 +1,5 @@
 ﻿using EnsureThat;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
@@ -19,17 +18,19 @@ namespace DDD.Core.Application
 
         private static readonly ConcurrentDictionary<BoundedContext, IContextualQueryProcessor> contextualProcessors
             = new ConcurrentDictionary<BoundedContext, IContextualQueryProcessor>();
-
+        private readonly QueryProcessorSettings settings;
         private readonly IServiceProvider serviceProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public QueryProcessor(IServiceProvider serviceProvider)
+        public QueryProcessor(IServiceProvider serviceProvider, QueryProcessorSettings settings)
         {
             Ensure.That(serviceProvider, nameof(serviceProvider)).IsNotNull();
+            Ensure.That(settings, nameof(settings)).IsNotNull();
             this.serviceProvider = serviceProvider;
+            this.settings = settings;
         }
 
         #endregion Constructors
@@ -75,7 +76,12 @@ namespace DDD.Core.Application
         {
             Ensure.That(query, nameof(query)).IsNotNull();
             var validator = this.serviceProvider.GetService<ISyncObjectValidator<TQuery>>();
-            if (validator == null) throw new InvalidOperationException($"The query validator for type {typeof(ISyncObjectValidator<TQuery>)} could not be found.");
+            if (validator == null)
+            {
+                if (this.settings.DefaultValidator == null)
+                    throw new InvalidOperationException($"The query validator for type {typeof(ISyncObjectValidator<TQuery>)} could not be found.");
+                return this.settings.DefaultValidator.Validate(query, context);
+            } 
             return validator.Validate(query, context);
         }
 
@@ -83,7 +89,12 @@ namespace DDD.Core.Application
         {
             Ensure.That(query, nameof(query)).IsNotNull();
             var validator = this.serviceProvider.GetService<IAsyncObjectValidator<TQuery>>();
-            if (validator == null) throw new InvalidOperationException($"The query validator for type {typeof(IAsyncObjectValidator<TQuery>)} could not be found.");
+            if (validator == null)
+            {
+                if (this.settings.DefaultValidator == null)
+                    throw new InvalidOperationException($"The query validator for type {typeof(IAsyncObjectValidator<TQuery>)} could not be found.");
+                return this.settings.DefaultValidator.ValidateAsync(query, context);
+            }
             return validator.ValidateAsync(query, context);
         }
 

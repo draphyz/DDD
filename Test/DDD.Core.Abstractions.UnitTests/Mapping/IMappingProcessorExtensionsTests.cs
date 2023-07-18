@@ -28,7 +28,7 @@ namespace DDD.Mapping
                            .Returns(this.translator1To2);
             serviceProvider.GetService(Arg.Is<Type>(t => t.IsAssignableFrom(typeof(IObjectTranslator<FakeObject2, FakeObject1>))))
                            .Returns(this.translator2To1);
-            processor = new MappingProcessor(serviceProvider);
+            processor = new MappingProcessor(serviceProvider, new MappingProcessorSettings());
         }
 
         #endregion Constructors

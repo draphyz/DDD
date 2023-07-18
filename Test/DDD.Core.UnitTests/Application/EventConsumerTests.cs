@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using NSubstitute;
 using NSubstitute.Core;
 using System.Threading.Tasks;
@@ -10,7 +10,6 @@ using FluentAssertions;
 
 namespace DDD.Core.Application
 {
-    using DependencyInjection;
     using Serialization;
     using Domain;
     using Infrastructure.Testing;
@@ -481,24 +480,20 @@ namespace DDD.Core.Application
             return eventPublisher;
         }
 
-        private static IKeyedServiceProvider<SerializationFormat, ITextSerializer> FakeEventSerializers()
+        private static IEnumerable<ITextSerializer> FakeEventSerializers()
         {
             var jsonSerializer = Substitute.For<ITextSerializer>();
             jsonSerializer.Encoding.Returns(JsonSerializationOptions.Encoding);
             jsonSerializer.Deserialize(Arg.Any<Stream>(), Arg.Any<Type>()).Returns(Substitute.For<IEvent>());
-            var provider = Substitute.For<IKeyedServiceProvider<SerializationFormat, ITextSerializer>>();
-            provider.GetService(Arg.Is<SerializationFormat>(f => f == SerializationFormat.Json)).Returns(jsonSerializer);
-            return provider;
+            yield return jsonSerializer;
         }
 
-        private static IKeyedServiceProvider<SerializationFormat, ITextSerializer> FakeEventSerializersThrowingException(Exception exception)
+        private static IEnumerable<ITextSerializer> FakeEventSerializersThrowingException(Exception exception)
         {
             var jsonSerializer = Substitute.For<ITextSerializer>();
             jsonSerializer.Encoding.Returns(JsonSerializationOptions.Encoding);
             jsonSerializer.When(s => s.Deserialize(Arg.Any<Stream>(), Arg.Any<Type>())).Throw(exception);
-            var provider = Substitute.For<IKeyedServiceProvider<SerializationFormat, ITextSerializer>>();
-            provider.GetService(Arg.Is<SerializationFormat>(f => f == SerializationFormat.Json)).Returns(jsonSerializer);
-            return provider;
+            yield return jsonSerializer;
         }
 
         private static Exception FakeException() => new Exception("Fake exception.");
@@ -585,7 +580,7 @@ namespace DDD.Core.Application
             return queryProcessor;
         }
 
-        private static EventConsumerSettings<FakeContext> FakeSettings() => new EventConsumerSettings<FakeContext>(new FakeContext(), 1, 1);
+        private static EventConsumerSettings<FakeContext> FakeSettings() => new EventConsumerSettings<FakeContext>(TimeSpan.FromSeconds(1), 1);
 
         private static IEnumerable<BoundedContext> FakeBoundedContexts()
         {

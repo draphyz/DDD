@@ -58,7 +58,7 @@ namespace DDD.Common.Domain
 
         public IEnumerable<string> Parts() => this.Value.Split('@');
 
-        public override string ToString() => $"{this.GetType().Name} [value={this.Value}]";
+        public override string ToString() => $"{GetType().Name} [{nameof(Value)}={Value}]";
 
         public string Username() => this.Parts().First();
 

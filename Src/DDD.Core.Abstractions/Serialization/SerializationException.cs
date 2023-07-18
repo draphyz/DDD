@@ -43,7 +43,7 @@ namespace DDD.Serialization
         {
             var s = $"{this.GetType()}: {this.Message} ";
             if (this.ObjectType != null)
-                s += $"{Environment.NewLine}ObjectType: {this.ObjectType}";
+                s += $"{Environment.NewLine}{nameof(ObjectType)}: {this.ObjectType}";
             if (this.InnerException != null)
                 s += $" ---> {this.InnerException}";
             if (this.StackTrace != null)

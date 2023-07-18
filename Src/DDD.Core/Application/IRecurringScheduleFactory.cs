@@ -8,6 +8,12 @@ namespace DDD.Core.Application
     public interface IRecurringScheduleFactory
     {
 
+        #region Properties
+
+        RecurringExpressionFormat Format { get; }
+
+        #endregion Properties
+
         #region Methods
 
         /// <summary>
@@ -18,6 +24,5 @@ namespace DDD.Core.Application
         IRecurringSchedule Create(string recurringExpression);
 
         #endregion Methods
-
     }
 }

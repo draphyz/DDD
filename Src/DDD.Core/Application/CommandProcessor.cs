@@ -17,6 +17,7 @@ namespace DDD.Core.Application
         #region Fields
 
         private readonly IServiceProvider serviceProvider;
+        private readonly CommandProcessorSettings settings;
         private static readonly ConcurrentDictionary<BoundedContext, IContextualCommandProcessor> contextualProcessors
             = new ConcurrentDictionary<BoundedContext, IContextualCommandProcessor>();
 
@@ -24,10 +25,12 @@ namespace DDD.Core.Application
 
         #region Constructors
 
-        public CommandProcessor(IServiceProvider serviceProvider)
+        public CommandProcessor(IServiceProvider serviceProvider, CommandProcessorSettings settings)
         {
             Ensure.That(serviceProvider, nameof(serviceProvider)).IsNotNull();
+            Ensure.That(settings, nameof(settings)).IsNotNull();
             this.serviceProvider = serviceProvider;
+            this.settings = settings;
         }
 
         #endregion Constructors
@@ -71,7 +74,12 @@ namespace DDD.Core.Application
         {
             Ensure.That(command, nameof(command)).IsNotNull();
             var validator = this.serviceProvider.GetService<ISyncObjectValidator<TCommand>>();
-            if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(ISyncObjectValidator<TCommand>)} could not be found.");
+            if (validator == null)
+            {
+                if (this.settings.DefaultValidator == null)
+                    throw new InvalidOperationException($"The command validator for type {typeof(ISyncObjectValidator<TCommand>)} could not be found.");
+                return this.settings.DefaultValidator.Validate(command, context);
+            }
             return validator.Validate(command, context);
         }
 
@@ -79,7 +87,12 @@ namespace DDD.Core.Application
         {
             Ensure.That(command, nameof(command)).IsNotNull();
             var validator = this.serviceProvider.GetService<IAsyncObjectValidator<TCommand>>();
-            if (validator == null) throw new InvalidOperationException($"The command validator for type {typeof(IAsyncObjectValidator<TCommand>)} could not be found.");
+            if (validator == null)
+            {
+                if (this.settings.DefaultValidator == null)
+                    throw new InvalidOperationException($"The command validator for type {typeof(IAsyncObjectValidator<TCommand>)} could not be found.");
+                return this.settings.DefaultValidator.ValidateAsync(command, context);
+            }
             return validator.ValidateAsync(command, context);
         }
 

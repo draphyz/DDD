@@ -1,5 +1,6 @@
-using EnsureThat;
+﻿using EnsureThat;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,9 +9,9 @@ using Microsoft.Extensions.Logging;
 namespace DDD.Core.Application
 {
     using Domain;
-    using DependencyInjection;
     using Serialization;
     using Threading;
+    using DDD;
 
     public class RecurringCommandManager<TContext> : IRecurringCommandManager<TContext>, IDisposable 
         where TContext : BoundedContext
@@ -18,37 +19,40 @@ namespace DDD.Core.Application
 
         #region Fields
 
-        private readonly IQueryProcessor queryProcessor;
-        private readonly ICommandProcessor commandProcessor;
-        private readonly IKeyedServiceProvider<SerializationFormat, ITextSerializer> commandSerializers;
-        private readonly IRecurringScheduleFactory recurringScheduleFactory;
-        private readonly ILogger logger;
-        private readonly RecurringCommandManagerSettings<TContext> settings;
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        private Task manageCommands;
+        private readonly ICommandProcessor commandProcessor;
+        private readonly IEnumerable<ITextSerializer> commandSerializers;
+        private readonly ILogger logger;
+        private readonly IQueryProcessor queryProcessor;
+        private readonly IEnumerable<IRecurringScheduleFactory> recurringScheduleFactories;
+        private readonly RecurringCommandManagerSettings<TContext> settings;
         private bool disposed;
+        private Task manageCommands;
 
         #endregion Fields
 
         #region Constructors
 
-        public RecurringCommandManager(ICommandProcessor commandProcessor,
+        public RecurringCommandManager(TContext context,
+                                       ICommandProcessor commandProcessor,
                                        IQueryProcessor queryProcessor,
-                                       IKeyedServiceProvider<SerializationFormat, ITextSerializer> commandSerializers,
-                                       IRecurringScheduleFactory recurringScheduleFactory,
+                                       IEnumerable<ITextSerializer> commandSerializers,
+                                       IEnumerable<IRecurringScheduleFactory> recurringScheduleFactories,
                                        ILogger logger,
                                        RecurringCommandManagerSettings<TContext> settings)
         {
+            Ensure.That(context, nameof(context)).IsNotNull();
             Ensure.That(commandProcessor, nameof(commandProcessor)).IsNotNull();
             Ensure.That(queryProcessor, nameof(queryProcessor)).IsNotNull();
             Ensure.That(commandSerializers, nameof(commandSerializers)).IsNotNull();
-            Ensure.That(recurringScheduleFactory, nameof(recurringScheduleFactory)).IsNotNull();
+            Ensure.That(recurringScheduleFactories, nameof(recurringScheduleFactories)).IsNotNull();
             Ensure.That(logger, nameof(logger)).IsNotNull();
             Ensure.That(settings, nameof(settings)).IsNotNull();
+            this.Context = context;
             this.commandProcessor = commandProcessor;
             this.queryProcessor = queryProcessor;
             this.commandSerializers = commandSerializers;
-            this.recurringScheduleFactory = recurringScheduleFactory;
+            this.recurringScheduleFactories = recurringScheduleFactories;
             this.logger = logger;
             this.settings = settings;
         }
@@ -57,7 +61,7 @@ namespace DDD.Core.Application
 
         #region Properties
 
-        public TContext Context => this.settings.Context;
+        public TContext Context { get; }
 
         public bool IsRunning { get; private set; }
 
@@ -67,21 +71,29 @@ namespace DDD.Core.Application
 
         #region Methods
 
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
         public async Task RegisterAsync(ICommand command, string recurringExpression, CancellationToken cancellationToken = default)
         {
             Ensure.That(command, nameof(command)).IsNotNull();
             Ensure.That(recurringExpression, nameof(recurringExpression)).IsNotNull();
-            this.ValidateRecurringExpression(recurringExpression);
+            var recurringScheduleFactory = this.GetScheduleFactory(this.settings.CurrentExpressionFormat);
+            ValidateRecurringExpression(recurringScheduleFactory, recurringExpression);
             await new SynchronizationContextRemover();
-            var commandSerializer = this.commandSerializers.GetService(this.settings.CurrentSerializationFormat);
+            var serializer = this.GetSerializer(this.settings.CurrentSerializationFormat);
             var commandId = this.queryProcessor.InGeneric(Context).Process(new GenerateRecurringCommandId(), MessageContext.CancellableContext(cancellationToken));
             var registrationCommand = new RegisterRecurringCommand
             {
                 CommandId = commandId,
                 CommandType = command.GetType().ShortAssemblyQualifiedName(),
-                Body = commandSerializer.SerializeToString(command),
-                BodyFormat = commandSerializer.Format.ToString().ToUpper(),
-                RecurringExpression = recurringExpression
+                Body = serializer.SerializeToString(command),
+                BodyFormat = serializer.Format.ToString().ToUpper(),
+                RecurringExpression = recurringExpression,
+                RecurringExpressionFormat = recurringScheduleFactory.Format.ToString().ToUpper(),
             };
             await this.commandProcessor.InGeneric(Context).ProcessAsync(registrationCommand, MessageContext.CancellableContext(cancellationToken));
         }
@@ -91,7 +103,7 @@ namespace DDD.Core.Application
             if (!this.IsRunning)
             {
                 this.logger.LogInformation("RecurringCommandManager for the context '{Context}' is starting.", this.Context.Name);
-                this.logger.LogDebug("The manager settings for the context '{Context}' are as follows : {@Settings}", this.Context.Name, this.settings);
+                this.logger.LogDebug("The manager settings for the context '{Context}' are as follows : {Settings}", this.Context.Name, this.settings);
                 this.IsRunning = true;
                 this.manageCommands = Task.Run(async () => await ManageCommandsAsync());
                 this.logger.LogInformation("RecurringCommandManager for the context '{Context}' has started.", this.Context.Name);
@@ -118,13 +130,6 @@ namespace DDD.Core.Application
                     this.manageCommands.Wait();
             }
         }
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
@@ -138,30 +143,27 @@ namespace DDD.Core.Application
             }
         }
 
-        private async Task ManageCommandsAsync()
+        private static void ValidateRecurringExpression(IRecurringScheduleFactory recurringScheduleFactory, string recurringExpression)
         {
             try
             {
-                this.CancellationToken.ThrowIfCancellationRequested(); 
-                await new SynchronizationContextRemover();
-                var commandInfos = await this.FindAllRecurringCommandsAsync();
-                var tasks = new List<Task>();
-                foreach (var commandInfo in commandInfos)
-                    tasks.Add(ManageCommandAsync(commandInfo.RecurringCommand, commandInfo.RecurringSchedule));
-                await Task.WhenAll(tasks);
+                recurringScheduleFactory.Create(recurringExpression);
             }
-            catch(OperationCanceledException)
+            catch (Exception ex)
             {
-                this.logger.LogInformation("RecurringCommandManager for the context '{Context}' has stopped.", this.Context.Name);
+                throw new ArgumentException(
+                    "The recurring expression is invalid. Please see the inner exception for details.",
+                    nameof(recurringExpression),
+                    ex);
             }
-            catch (Exception exception)
-            {
-                this.logger.LogCritical(default, exception, "An error occurred while managing recurring commands in the context '{Context}'.", this.Context.Name);
-            }
-            finally
-            {
-                this.IsRunning = false;
-            }
+        }
+
+        private ICommand DeserializeCommand(RecurringCommand recurringCommand)
+        {
+            var format = (SerializationFormat)Enum.Parse(typeof(SerializationFormat), recurringCommand.BodyFormat, ignoreCase: true);
+            var type = Type.GetType(recurringCommand.CommandType);
+            var serializer = this.GetSerializer(format);
+            return (ICommand)serializer.DeserializeFromString(recurringCommand.Body, type);
         }
 
         private async Task<IEnumerable<(RecurringCommand RecurringCommand, IRecurringSchedule RecurringSchedule)>> FindAllRecurringCommandsAsync()
@@ -169,9 +171,17 @@ namespace DDD.Core.Application
             var recurringCommands = await this.queryProcessor.InGeneric(Context).ProcessAsync(new FindRecurringCommands(), MessageContext.CancellableContext(this.CancellationToken));
             var results = new List<(RecurringCommand, IRecurringSchedule)>();
             foreach (var recurringCommand in recurringCommands)
-                results.Add((recurringCommand, this.recurringScheduleFactory.Create(recurringCommand.RecurringExpression)));
+            {
+                var format = (RecurringExpressionFormat)Enum.Parse(typeof(RecurringExpressionFormat), recurringCommand.RecurringExpressionFormat, ignoreCase: true);
+                var recurringScheduleFactory = this.GetScheduleFactory(format);
+                results.Add((recurringCommand, recurringScheduleFactory.Create(recurringCommand.RecurringExpression)));
+            }  
             return results;
         }
+
+        private IRecurringScheduleFactory GetScheduleFactory(RecurringExpressionFormat format) => this.recurringScheduleFactories.First(f => f.Format == format);
+
+        private ITextSerializer GetSerializer(SerializationFormat format) => this.commandSerializers.First(s => s.Format == format);
 
         private async Task ManageCommandAsync(RecurringCommand recurringCommand, IRecurringSchedule recurringSchedule)
         {
@@ -217,37 +227,40 @@ namespace DDD.Core.Application
                     nextOccurrence = recurringSchedule.GetNextOccurrence(now);
                 }
             }
-            catch(OperationCanceledException)
+            catch (OperationCanceledException)
             {
                 this.logger.LogInformation("Management of recurring command {CommandId} in the context '{Context}' has stopped.", recurringCommand.CommandId, this.Context.Name);
                 throw;
             }
-            catch (Exception exception) 
+            catch (Exception exception)
             {
                 this.logger.LogError(default, exception, "An error occurred while managing recurring command {CommandId} in the context '{Context}'.", recurringCommand.CommandId, this.Context.Name);
             }
         }
 
-        private ICommand DeserializeCommand(RecurringCommand recurringCommand)
-        {
-            var format = (SerializationFormat)Enum.Parse(typeof(SerializationFormat), recurringCommand.BodyFormat, ignoreCase: true);
-            var type = Type.GetType(recurringCommand.CommandType);
-            var serializer = this.commandSerializers.GetService(format);
-            return (ICommand)serializer.DeserializeFromString(recurringCommand.Body, type);
-        }
-
-        private void ValidateRecurringExpression(string recurringExpression)
+        private async Task ManageCommandsAsync()
         {
             try
             {
-                this.recurringScheduleFactory.Create(recurringExpression);
+                this.CancellationToken.ThrowIfCancellationRequested(); 
+                await new SynchronizationContextRemover();
+                var commandInfos = await this.FindAllRecurringCommandsAsync();
+                var tasks = new List<Task>();
+                foreach (var commandInfo in commandInfos)
+                    tasks.Add(ManageCommandAsync(commandInfo.RecurringCommand, commandInfo.RecurringSchedule));
+                await Task.WhenAll(tasks);
             }
-            catch (Exception ex) 
+            catch(OperationCanceledException)
             {
-                throw new ArgumentException(
-                    "The recurring expression is invalid. Please see the inner exception for details.",
-                    nameof(recurringExpression),
-                    ex);
+                this.logger.LogInformation("RecurringCommandManager for the context '{Context}' has stopped.", this.Context.Name);
+            }
+            catch (Exception exception)
+            {
+                this.logger.LogCritical(default, exception, "An error occurred while managing recurring commands in the context '{Context}'.", this.Context.Name);
+            }
+            finally
+            {
+                this.IsRunning = false;
             }
         }
 

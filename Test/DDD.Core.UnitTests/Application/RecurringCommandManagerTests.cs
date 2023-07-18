@@ -1,15 +1,15 @@
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using FluentAssertions;
 using NSubstitute;
 using NSubstitute.Core;
 using System.Threading.Tasks;
 using System;
 using System.IO;
+using System.Collections.Generic;
 using Xunit;
 
 namespace DDD.Core.Application
 {
-    using DependencyInjection;
     using Serialization;
     using Infrastructure.Testing;
     using Domain;
@@ -37,13 +37,14 @@ namespace DDD.Core.Application
             var command = FakeCommand1();
             var recurringExpression = InvalidRecurringExpression();
             var recurringCommand = FakeCommand1ForSingleExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactories = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactories, logger, settings);
             // Act
             Func<Task> registerAsync = async () => await manager.RegisterAsync(command, recurringExpression);
             // Assert
@@ -55,13 +56,14 @@ namespace DDD.Core.Application
         {
             // Arrange
             var recurringCommand = FakeCommand1ForRecurringExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             // Assert
@@ -74,13 +76,14 @@ namespace DDD.Core.Application
             // Arrange
             var exception = FakeException();
             var recurringCommand = FakeCommand1ForSingleExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);
             var commandSerializers = FakeCommandSerializersThrowingException(exception);
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
@@ -93,13 +96,14 @@ namespace DDD.Core.Application
         {
             // Arrange
             var exception = FakeException();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorThrowingExceptionWhenFindingRecurringCommands(exception);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
@@ -112,13 +116,14 @@ namespace DDD.Core.Application
         {
             // Arrange
             var exception = FakeException();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorThrowingExceptionWhenFindingRecurringCommands(exception);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
@@ -132,13 +137,14 @@ namespace DDD.Core.Application
             // Arrange
             var exception = FakeException();
             var recurringCommand = FakeCommand1ForRecurringExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessorThrowingExceptionWhenMarkingRecurringCommandAsFailed(exception);
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
@@ -153,13 +159,14 @@ namespace DDD.Core.Application
             // Arrange
             var exception = FakeException();
             var recurringCommand = FakeCommand1ForSingleExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessorThrowingExceptionWhenMarkingRecurringCommandAsFailed(exception);
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
@@ -173,13 +180,14 @@ namespace DDD.Core.Application
             // Arrange
             var exception = FakeException();
             var recurringCommand = FakeCommand1ForRecurringExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessorThrowingExceptionWhenMarkingRecurringCommandAsSuccessful(exception);
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
@@ -194,13 +202,14 @@ namespace DDD.Core.Application
             // Arrange
             var exception = FakeException();
             var recurringCommand = FakeCommand1ForSingleExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessorThrowingExceptionWhenMarkingRecurringCommandAsSuccessful(exception);
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
@@ -213,13 +222,14 @@ namespace DDD.Core.Application
             // Arrange
             var exception = FakeException();
             var recurringCommand = FakeCommand1ForSingleExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessorThrowingExceptionWhenProcessingRecurringCommand(exception);
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
@@ -232,19 +242,19 @@ namespace DDD.Core.Application
             // Arrange
             var exception = FakeException();
             var recurringCommand = FakeCommand1ForSingleExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessorThrowingExceptionWhenProcessingRecurringCommand(exception);
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            var fakeContext = new FakeContext();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            await commandProcessor.InGeneric(fakeContext)
+            await commandProcessor.InGeneric(context)
                                   .Received(1)
                                   .ProcessAsync(Arg.Is<MarkRecurringCommandAsFailed>(c => c.CommandId == recurringCommand.CommandId && c.ExceptionInfo == exception.ToString()), Arg.Any<IMessageContext>());
         }
@@ -255,13 +265,14 @@ namespace DDD.Core.Application
             // Arrange
             var exception = FakeException();
             var recurringCommand = FakeCommand1ForDoubleExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessorThrowingExceptionWhenProcessingRecurringCommand(exception);
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
@@ -277,13 +288,14 @@ namespace DDD.Core.Application
             var exception = FakeException();
             var recurringCommand1 = FakeCommand1ForDoubleExecution();
             var recurringCommand2 = FakeCommand2ForDoubleExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessorThrowingExceptionWhenProcessingFakeCommand1(exception);
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand1, recurringCommand2);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
@@ -298,19 +310,19 @@ namespace DDD.Core.Application
         {
             // Arrange
             var recurringCommand = FakeCommand1ForSingleExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            var fakeContext = new FakeContext();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             // Act
             manager.Start();
             manager.Wait(TimeSpan.FromSeconds(5));
             // Assert
-            await commandProcessor.InGeneric(fakeContext)
+            await commandProcessor.InGeneric(context)
                                   .Received(1)
                                   .ProcessAsync(Arg.Is<MarkRecurringCommandAsSuccessful>(c => c.CommandId == recurringCommand.CommandId), Arg.Any<IMessageContext>());
         }
@@ -320,13 +332,14 @@ namespace DDD.Core.Application
         {
             // Arrange
             var recurringCommand = FakeCommand1ForRecurringExecution();
+            var context = new FakeContext();
             var commandProcessor = FakeCommandProcessor();
             var queryProcessor = FakeQueryProcessorFindingRecurringCommands(recurringCommand);;
             var commandSerializers = FakeCommandSerializers();
-            var recurringScheduleFactory = FakeRecurringScheduleFactory();
+            var recurringScheduleFactory = FakeRecurringScheduleFactories();
             var logger = FakeLogger();
             var settings = FakeSettings();
-            manager = new RecurringCommandManager<FakeContext>(commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
+            manager = new RecurringCommandManager<FakeContext>(context, commandProcessor, queryProcessor, commandSerializers, recurringScheduleFactory, logger, settings);
             manager.Start();
             // Act
             manager.Stop();
@@ -350,7 +363,8 @@ namespace DDD.Core.Application
                 CommandType = "DDD.Core.Application.FakeCommand1, DDD.Core.UnitTests",
                 Body = "{\"Property1\":\"dummy\",\"Property2\":10}",
                 BodyFormat = "JSON",
-                RecurringExpression = RecurringExpressionForDoubleExecution()
+                RecurringExpression = RecurringExpressionForDoubleExecution(),
+                RecurringExpressionFormat = "CRON"
             };
         }
 
@@ -362,7 +376,8 @@ namespace DDD.Core.Application
                 CommandType = "DDD.Core.Application.FakeCommand1, DDD.Core.UnitTests",
                 Body = "{\"Property1\":\"dummy\",\"Property2\":10}",
                 BodyFormat = "JSON",
-                RecurringExpression = RecurringExpressionForRecurringExecution()
+                RecurringExpression = RecurringExpressionForRecurringExecution(),
+                RecurringExpressionFormat = "CRON"
             };
         }
 
@@ -374,7 +389,8 @@ namespace DDD.Core.Application
                 CommandType = "DDD.Core.Application.FakeCommand1, DDD.Core.UnitTests",
                 Body = "{\"Property1\":\"dummy\",\"Property2\":10}",
                 BodyFormat = "JSON",
-                RecurringExpression = RecurringExpressionForSingleExecution()
+                RecurringExpression = RecurringExpressionForSingleExecution(),
+                RecurringExpressionFormat = "CRON"
             };
         }
 
@@ -388,30 +404,27 @@ namespace DDD.Core.Application
                 CommandType = "DDD.Core.Application.FakeCommand2, DDD.Core.UnitTests",
                 Body = "{\"Property1\":\"dummy\",\"Property2\":10}",
                 BodyFormat = "JSON",
-                RecurringExpression = RecurringExpressionForDoubleExecution()
+                RecurringExpression = RecurringExpressionForDoubleExecution(),
+                RecurringExpressionFormat = "CRON"
             };
         }
         private static Guid FakeCommandId() => new Guid("f7df5bd0-8763-677e-7e6b-3a0044746810");
 
-        private static IKeyedServiceProvider<SerializationFormat, ITextSerializer> FakeCommandSerializers()
+        private static IEnumerable<ITextSerializer> FakeCommandSerializers()
         {
             var jsonSerializer = Substitute.For<ITextSerializer>();
             jsonSerializer.Encoding.Returns(JsonSerializationOptions.Encoding);
             jsonSerializer.Deserialize(Arg.Any<Stream>(), Arg.Is(typeof(FakeCommand1))).Returns(FakeCommand1());
             jsonSerializer.Deserialize(Arg.Any<Stream>(), Arg.Is(typeof(FakeCommand2))).Returns(FakeCommand2());
-            var provider = Substitute.For<IKeyedServiceProvider<SerializationFormat, ITextSerializer>>();
-            provider.GetService(Arg.Is<SerializationFormat>(f => f == SerializationFormat.Json)).Returns(jsonSerializer);
-            return provider;
+            yield return jsonSerializer;
         }
 
-        private static IKeyedServiceProvider<SerializationFormat, ITextSerializer> FakeCommandSerializersThrowingException(Exception exception)
+        private static IEnumerable<ITextSerializer> FakeCommandSerializersThrowingException(Exception exception)
         {
             var jsonSerializer = Substitute.For<ITextSerializer>();
             jsonSerializer.Encoding.Returns(JsonSerializationOptions.Encoding);
             jsonSerializer.When(s => s.Deserialize(Arg.Any<Stream>(), Arg.Any<Type>())).Throw(exception);
-            var provider = Substitute.For<IKeyedServiceProvider<SerializationFormat, ITextSerializer>>();
-            provider.GetService(Arg.Is<SerializationFormat>(f => f == SerializationFormat.Json)).Returns(jsonSerializer);
-            return provider;
+            yield return jsonSerializer;
         }
 
         private static ICommandProcessor FakeCommandProcessor()
@@ -488,7 +501,7 @@ namespace DDD.Core.Application
             return queryProcessor;
         }
 
-        private static IRecurringScheduleFactory FakeRecurringScheduleFactory()
+        private static IEnumerable<IRecurringScheduleFactory> FakeRecurringScheduleFactories()
         {
             var recurringScheduleForSingleExecution1 = FakeRecurringScheduleForSingleExecution();
             var recurringScheduleForDoubleExecution1 = FakeRecurringScheduleForDoubleExecution();
@@ -497,6 +510,7 @@ namespace DDD.Core.Application
             var recurringScheduleForDoubleExecution2 = FakeRecurringScheduleForDoubleExecution();
             var recurringScheduleForRecurringExecution2 = FakeRecurringScheduleForRecurringExecution();
             var recurringSchedulefactory = Substitute.For<IRecurringScheduleFactory>();
+            recurringSchedulefactory.Format.Returns(RecurringExpressionFormat.Cron);
             recurringSchedulefactory.Create(RecurringExpressionForSingleExecution())
                                .Returns(recurringScheduleForSingleExecution1, recurringScheduleForSingleExecution2);
             recurringSchedulefactory.Create(RecurringExpressionForDoubleExecution())
@@ -505,7 +519,7 @@ namespace DDD.Core.Application
                                .Returns(recurringScheduleForRecurringExecution1, recurringScheduleForRecurringExecution2);
             recurringSchedulefactory.When(f => f.Create(InvalidRecurringExpression()))
                                .Throw<FormatException>();
-            return recurringSchedulefactory;
+            yield return recurringSchedulefactory;
         }
 
         private static IRecurringSchedule FakeRecurringScheduleForDoubleExecution()
@@ -528,7 +542,7 @@ namespace DDD.Core.Application
         {
             var recurringSchedule = Substitute.For<IRecurringSchedule>();
             recurringSchedule.GetNextOccurrence(Arg.Any<DateTime>())
-                        .Returns(x => ((DateTime)x[0]).AddSeconds(1), x => null);
+                             .Returns(x => ((DateTime)x[0]).AddSeconds(1), x => null);
             return recurringSchedule;
         }
 
@@ -536,7 +550,8 @@ namespace DDD.Core.Application
 
         private static ILogger FakeLogger() => Substitute.For<ILogger>();
 
-        private static RecurringCommandManagerSettings<FakeContext> FakeSettings() => new RecurringCommandManagerSettings<FakeContext>(new FakeContext(), SerializationFormat.Json);
+        private static RecurringCommandManagerSettings<FakeContext> FakeSettings() 
+            => new RecurringCommandManagerSettings<FakeContext>(SerializationFormat.Json, RecurringExpressionFormat.Cron);
 
         private static string InvalidRecurringExpression() => "* * * * * * * *";
 

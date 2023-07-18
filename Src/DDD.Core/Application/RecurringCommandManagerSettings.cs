@@ -1,24 +1,22 @@
-﻿using System.Runtime.Serialization;
-using EnsureThat;
+﻿using System;
 
 namespace DDD.Core.Application
 {
     using Domain;
     using Serialization;
 
-    [DataContract()]
     public class RecurringCommandManagerSettings<TContext>
         where TContext : BoundedContext
     {
 
         #region Constructors
 
-        public RecurringCommandManagerSettings(TContext context,
-                                               SerializationFormat currentSerializationFormat)
+        public RecurringCommandManagerSettings(SerializationFormat currentSerializationFormat, 
+                                               RecurringExpressionFormat currentExpressionFormat)
         {
-            Ensure.That(context, nameof(context)).IsNotNull();
-            this.Context= context;
+            this.ContextType= typeof(TContext);
             this.CurrentSerializationFormat = currentSerializationFormat;
+            this.CurrentExpressionFormat = currentExpressionFormat;
         }
 
         #endregion Constructors
@@ -26,16 +24,27 @@ namespace DDD.Core.Application
         #region Properties
 
         /// <summary>
-        /// Gets the associated context.
+        /// Gets the type of the associated context.
         /// </summary>
-        public TContext Context { get; }
+        public Type ContextType { get; }
 
         /// <summary>
         /// Gets the current serialization format of the recurring commands.
         /// </summary>
-        [DataMember(Order = 1)]
         public SerializationFormat CurrentSerializationFormat { get; }
 
+        /// <summary>
+        /// Gets the current recurring expression format.
+        /// </summary>
+        public RecurringExpressionFormat CurrentExpressionFormat { get; }
+
         #endregion Properties
+
+        #region Methods
+
+        public override string ToString()
+            => $"{this.GetType().Name} [{nameof(ContextType)}={ContextType}, {nameof(CurrentSerializationFormat)}={CurrentSerializationFormat}, {nameof(CurrentExpressionFormat)}={CurrentExpressionFormat}]";
+
+        #endregion Methods
     }
 }

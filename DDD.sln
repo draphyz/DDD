@@ -34,6 +34,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{862B0E9C-B685-4C40-ACFB-83A193C82254}"
 	ProjectSection(SolutionItems) = preProject
 		Doc\CommandComponents.png = Doc\CommandComponents.png
+		Doc\DeploymentEvolution.png = Doc\DeploymentEvolution.png
 		Doc\EntityFrameworkMapping.png = Doc\EntityFrameworkMapping.png
 		Doc\NHibernateMapping.png = Doc\NHibernateMapping.png
 		Doc\PrescriptionLifecycle.png = Doc\PrescriptionLifecycle.png
