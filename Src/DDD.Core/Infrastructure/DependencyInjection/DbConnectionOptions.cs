@@ -47,7 +47,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Classes
 
-        public class Builder<TContext> : IObjectBuilder<DbConnectionOptions>
+        public class Builder<TContext> : FluentBuilder<DbConnectionOptions>
             where TContext : BoundedContext
         {
 
@@ -82,7 +82,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this;
             }
 
-            DbConnectionOptions IObjectBuilder<DbConnectionOptions>.Build() => this.options;
+            protected override DbConnectionOptions Build() => this.options;
 
             #endregion Methods
 

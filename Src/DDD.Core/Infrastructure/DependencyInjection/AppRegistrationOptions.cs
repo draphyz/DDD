@@ -58,7 +58,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Classes
 
-        public class Builder : IObjectBuilder<AppRegistrationOptions>
+        public class Builder : FluentBuilder<AppRegistrationOptions>
         {
 
             #region Fields
@@ -179,7 +179,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this;
             }
 
-            AppRegistrationOptions IObjectBuilder<AppRegistrationOptions>.Build() => this.options;
+            protected override AppRegistrationOptions Build() => this.options;
 
             #endregion Methods
 

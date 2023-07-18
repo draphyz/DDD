@@ -48,7 +48,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Classes
 
-        public class Builder<TContext> : IObjectBuilder<EventConsumerOptions>
+        public class Builder<TContext> : FluentBuilder<EventConsumerOptions>
             where TContext : BoundedContext
         {
 
@@ -86,7 +86,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this;
             }
 
-            EventConsumerOptions IObjectBuilder<EventConsumerOptions>.Build() => this.options;
+            protected override EventConsumerOptions Build() => this.options;
 
             #endregion Methods
 

@@ -48,7 +48,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Classes
 
-        public class Builder<TContext> : IObjectBuilder<RecurringCommandManagerOptions>
+        public class Builder<TContext> : FluentBuilder<RecurringCommandManagerOptions>
             where TContext : BoundedContext
         {
 
@@ -77,7 +77,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this;
             }
 
-            RecurringCommandManagerOptions IObjectBuilder<RecurringCommandManagerOptions>.Build() => this.options;
+            protected override RecurringCommandManagerOptions Build() => this.options;
 
             #endregion Methods
 

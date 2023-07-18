@@ -23,7 +23,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Classes
 
-        public class Builder : IObjectBuilder<QueriesRegistrationOptions>
+        public class Builder : FluentBuilder<QueriesRegistrationOptions>
         {
 
             #region Fields
@@ -48,7 +48,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this.RegisterDefaultValidator(validator);
             }
 
-            QueriesRegistrationOptions IObjectBuilder<QueriesRegistrationOptions>.Build() => this.options;
+            protected override QueriesRegistrationOptions Build() => this.options;
 
             #endregion Methods
 

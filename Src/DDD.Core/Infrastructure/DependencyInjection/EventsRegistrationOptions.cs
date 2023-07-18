@@ -35,7 +35,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Classes
 
-        public class Builder : IObjectBuilder<EventsRegistrationOptions>
+        public class Builder : FluentBuilder<EventsRegistrationOptions>
         {
 
             #region Fields
@@ -82,7 +82,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this;
             }
 
-            EventsRegistrationOptions IObjectBuilder<EventsRegistrationOptions>.Build() => this.options;
+            protected override EventsRegistrationOptions Build() => this.options;
 
             #endregion Methods
 
