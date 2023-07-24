@@ -58,13 +58,14 @@ namespace DDD.Core.Infrastructure.DependencyInjection
         /// <summary>
         /// Configures application core components.
         /// </summary>
-        public static void ConfigureApp(this Container container, Action<AppRegistrationOptions.Builder> configureOptions)
+        public static void ConfigureApp(this Container container, Action<AppRegistrationOptions.Builder<Container>> configureOptions)
         {
             Ensure.That(container, nameof(container)).IsNotNull();
             Ensure.That(configureOptions, nameof(configureOptions)).IsNotNull();
-            var builder = new AppRegistrationOptions.Builder();
+            var builder = new AppRegistrationOptions.Builder<Container>();
+            var extendableBuilder = (IExtendableRegistrationOptionsBuilder<AppRegistrationOptions, Container>)builder;
             configureOptions(builder);
-            var appOptions = ((IObjectBuilder<AppRegistrationOptions>)builder).Build();
+            var appOptions = extendableBuilder.Build();
             container.Options.DefaultScopedLifestyle = Lifestyle.CreateHybrid(new ThreadScopedLifestyle(), new AsyncScopedLifestyle());
             container.RegisterInstance<IServiceProvider>(container);
             container.RegisterLogger(appOptions);
@@ -109,6 +110,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 container.RegisterSingleton<IMappingProcessor, MappingProcessor>();
                 container.RegisterMappersAndTranslators(appOptions);
             }
+            extendableBuilder.ApplyExtensions(container);
         }
 
         public static void RegisterConditional<TService>(this Container container,

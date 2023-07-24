@@ -1,8 +1,7 @@
-﻿namespace DDD.Core.Infrastructure.DependencyInjection
-{
-    using Application;
-    using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
+namespace DDD.Core.Application
+{
     public class FakeQueryHandler : IQueryHandler<FakeQuery, string>
     {
         #region Methods

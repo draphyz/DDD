@@ -401,6 +401,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
             var contexts = registration.GetInstance();
             contexts.Should().BeEquivalentTo(expectedContexts);
         }
+
         [Fact]
         public void ConfigureApp_WithRegisterTypesFrom_RegistersSameInstancesOfBoundedContextsAsSingletonAndInCollection()
         {

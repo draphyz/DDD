@@ -1,5 +1,6 @@
-﻿namespace DDD.Core.Infrastructure.DependencyInjection
+﻿namespace DDD.Core.Application
 {
+    using Domain;
     using Mapping;
 
     public class FakeMapper : IObjectMapper<FakeEvent, FakeCommand>

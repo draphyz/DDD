@@ -1,7 +1,8 @@
 ﻿using System;
 
-namespace DDD.Core.Infrastructure.DependencyInjection
+namespace DDD.Core.Application
 {
+    using Domain;
     using Mapping;
 
     public class FakeTranslator : IObjectTranslator<FakeEvent, FakeCommand>

@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
-namespace DDD.Core.Infrastructure.DependencyInjection
+namespace DDD.Core.Application
 {
-    using Application;
-    using DDD.Core.Domain;
-    using System.Threading.Tasks;
-
-    public class FakeEventHandler 
-        : ISyncEventHandler<FakeEvent, FakeContext>, 
+    using Domain;
+    
+    public class FakeEventHandler
+        : ISyncEventHandler<FakeEvent, FakeContext>,
           IAsyncEventHandler<FakeEvent, FakeContext>
     {
 
@@ -17,9 +16,9 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         public Type EventType => typeof(FakeEvent);
 
-        BoundedContext ISyncEventHandler.Context => this.Context;
+        BoundedContext ISyncEventHandler.Context => Context;
 
-        BoundedContext IAsyncEventHandler.Context => this.Context;
+        BoundedContext IAsyncEventHandler.Context => Context;
 
         #endregion Properties
 
