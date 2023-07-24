@@ -1,9 +1,7 @@
 ﻿using System;
 
-namespace DDD.Core.Infrastructure.DependencyInjection
+namespace DDD.Core.Domain
 {
-    using Domain;
-
     public class FakeEvent : IEvent
     {
 

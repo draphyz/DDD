@@ -58,7 +58,8 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
         #region Classes
 
-        public class Builder : FluentBuilder<AppRegistrationOptions>
+        public class Builder<TContainer> : ExtendableRegistrationOptionsBuilder<AppRegistrationOptions, TContainer>
+            where TContainer : class
         {
 
             #region Fields
@@ -69,35 +70,35 @@ namespace DDD.Core.Infrastructure.DependencyInjection
 
             #region Methods
 
-            public Builder RegisterTypesFrom(IEnumerable<Assembly> assemblies)
+            public Builder<TContainer> RegisterTypesFrom(IEnumerable<Assembly> assemblies)
             {
                 Ensure.That(assemblies, nameof(assemblies)).IsNotNull();
                 this.options.assembliesToScan.AddRange(assemblies);
                 return this;
             }
 
-            public Builder RegisterTypesFrom(params Assembly[] assemblies)
+            public Builder<TContainer> RegisterTypesFrom(params Assembly[] assemblies)
             {
                 Ensure.That(assemblies, nameof(assemblies)).IsNotNull();
                 this.options.assembliesToScan.AddRange(assemblies);
                 return this;
             }
 
-            public Builder FilterTypesWith(Func<Type, bool> filter)
+            public Builder<TContainer> FilterTypesWith(Func<Type, bool> filter)
             {
                 Ensure.That(filter, nameof(filter)).IsNotNull();
                 this.options.TypeFilter = filter;
                 return this;
             }
 
-            public Builder RegisterSerializer(SerializationFormat format, Func<ITextSerializer> serializerCreator)
+            public Builder<TContainer> RegisterSerializer(SerializationFormat format, Func<ITextSerializer> serializerCreator)
             {
                 Ensure.That(serializerCreator, nameof(serializerCreator)).IsNotNull();
                 this.options.serializers[format] = serializerCreator;
                 return this;
             }
 
-            public Builder ConfigureDbConnectionFor<TContext>(Action<DbConnectionOptions.Builder<TContext>> configureOptions)
+            public Builder<TContainer> ConfigureDbConnectionFor<TContext>(Action<DbConnectionOptions.Builder<TContext>> configureOptions)
                 where TContext : BoundedContext
             {
                 Ensure.That(configureOptions, nameof(configureOptions)).IsNotNull();
@@ -107,26 +108,26 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this;
             }
 
-            public Builder ConfigureDbConnections(IEnumerable<DbConnectionOptions> optionsCollection)
+            public Builder<TContainer> ConfigureDbConnections(IEnumerable<DbConnectionOptions> optionsCollection)
             {
                 Ensure.That(optionsCollection, nameof(optionsCollection)).IsNotNull();
                 options.dbConnectionOptionsCollection.AddRange(optionsCollection);
                 return this;
             }
 
-            public Builder ConfigureDbConnections(params DbConnectionOptions[] optionsCollection)
+            public Builder<TContainer> ConfigureDbConnections(params DbConnectionOptions[] optionsCollection)
             {
                 Ensure.That(optionsCollection, nameof(optionsCollection)).IsNotNull();
                 options.dbConnectionOptionsCollection.AddRange(optionsCollection);
                 return this;
             }
 
-            public Builder ConfigureCommands()
+            public Builder<TContainer> ConfigureCommands()
             {
                 return this.ConfigureCommands(_ => { });
             }
 
-            public Builder ConfigureCommands(Action<CommandsRegistrationOptions.Builder> configureOptions) 
+            public Builder<TContainer> ConfigureCommands(Action<CommandsRegistrationOptions.Builder> configureOptions) 
             {
                 Ensure.That(configureOptions, nameof(configureOptions)).IsNotNull();
                 var builder = new CommandsRegistrationOptions.Builder();
@@ -135,12 +136,12 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this;
             }
 
-            public Builder ConfigureQueries()
+            public Builder<TContainer> ConfigureQueries()
             {
                 return this.ConfigureQueries(_ => { });
             }
 
-            public Builder ConfigureQueries(Action<QueriesRegistrationOptions.Builder> configureOptions)
+            public Builder<TContainer> ConfigureQueries(Action<QueriesRegistrationOptions.Builder> configureOptions)
             {
                 Ensure.That(configureOptions, nameof(configureOptions)).IsNotNull();
                 var builder = new QueriesRegistrationOptions.Builder();
@@ -149,7 +150,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this;
             }
 
-            public Builder ConfigureEvents(Action<EventsRegistrationOptions.Builder> configureOptions)
+            public Builder<TContainer> ConfigureEvents(Action<EventsRegistrationOptions.Builder> configureOptions)
             {
                 Ensure.That(configureOptions, nameof(configureOptions)).IsNotNull();
                 var builder = new EventsRegistrationOptions.Builder();
@@ -158,12 +159,12 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this;
             }
 
-            public Builder ConfigureMapping()
+            public Builder<TContainer> ConfigureMapping()
             {
                 return this.ConfigureMapping(_ => { });
             }
 
-            public Builder ConfigureMapping(Action<MappingRegistrationOptions.Builder> configureOptions)
+            public Builder<TContainer>  ConfigureMapping(Action<MappingRegistrationOptions.Builder> configureOptions)
             {
                 Ensure.That(configureOptions, nameof(configureOptions)).IsNotNull();
                 var builder = new MappingRegistrationOptions.Builder();
@@ -172,7 +173,7 @@ namespace DDD.Core.Infrastructure.DependencyInjection
                 return this;
             }
 
-            public Builder ConfigureLogging(Func<ILoggerFactory> loggerFactoryCreator)
+            public Builder<TContainer> ConfigureLogging(Func<ILoggerFactory> loggerFactoryCreator)
             {
                 Ensure.That(loggerFactoryCreator, nameof(loggerFactoryCreator)).IsNotNull();
                 this.options.loggerFactoryCreator = loggerFactoryCreator;
@@ -182,7 +183,6 @@ namespace DDD.Core.Infrastructure.DependencyInjection
             protected override AppRegistrationOptions Build() => this.options;
 
             #endregion Methods
-
         }
 
         #endregion Classes
