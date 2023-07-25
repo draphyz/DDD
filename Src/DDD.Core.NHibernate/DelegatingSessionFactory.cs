@@ -10,7 +10,7 @@ namespace DDD.Core.Infrastructure.Data
     using Domain;
 
     public class DelegatingSessionFactory<TContext> : ISessionFactory<TContext>, IDisposable
-        where TContext : BoundedContext, new()
+        where TContext : BoundedContext
     {
 
         #region Fields
@@ -25,10 +25,12 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Constructors
 
-        public DelegatingSessionFactory(Configuration configuration, 
+        public DelegatingSessionFactory(TContext context, 
+                                        Configuration configuration, 
                                         Action<ISessionBuilder> options, 
                                         Func<ISessionBuilder, CancellationToken, Task> asyncOptions) 
         {
+            Ensure.That(context, nameof(context)).IsNotNull();
             Ensure.That(configuration, nameof(configuration)).IsNotNull();
             Ensure.That(options, nameof(options)).IsNotNull();
             Ensure.That(asyncOptions, nameof(asyncOptions)).IsNotNull();
@@ -36,7 +38,7 @@ namespace DDD.Core.Infrastructure.Data
             this.options = options;
             this.asyncOptions = asyncOptions;
             this.lazySessionFactory = new Lazy<ISessionFactory>(() => this.configuration.BuildSessionFactory());
-            this.Context = new TContext();
+            this.Context = context;
         }
 
         #endregion Constructors
@@ -51,12 +53,12 @@ namespace DDD.Core.Infrastructure.Data
 
         #region Methods
 
-        public static ISessionFactory<TContext> Create(Configuration configuration, Action<ISessionBuilder> options)
+        public static ISessionFactory<TContext> Create(TContext context, Configuration configuration, Action<ISessionBuilder> options)
         {
             Ensure.That(configuration, nameof(configuration)).IsNotNull();
             Ensure.That(options, nameof(options)).IsNotNull();
             Func<ISessionBuilder, CancellationToken, Task> asyncOptions = (b, t) => { options(b); return Task.CompletedTask; };
-            return new DelegatingSessionFactory<TContext>(configuration, options, asyncOptions);
+            return new DelegatingSessionFactory<TContext>(context, configuration, options, asyncOptions);
         }
 
         public ISession CreateSession()

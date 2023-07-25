@@ -46,6 +46,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
             });
             return new DelegatingSessionFactory<HealthcareDeliveryContext>
             (
+                new HealthcareDeliveryContext(),
                 configuration,
                 options =>
                 {
@@ -57,7 +58,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
                     var connection = await connectionProvider.GetOpenConnectionAsync(cancellationToken);
                     options.Connection(connection);
                 }
-            );
+            ) ;
         }
 
         protected override void CreateDatabase()

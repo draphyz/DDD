@@ -46,6 +46,7 @@ namespace DDD.HealthcareDelivery.Infrastructure
             });
             return new DelegatingSessionFactory<HealthcareDeliveryContext>
             (
+                new HealthcareDeliveryContext(),
                 configuration,
                 options =>
                 {

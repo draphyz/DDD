@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net48;netstandard2.1</TargetFrameworks>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DDD.Core.Infrastructure.DependencyInjection</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DDD.Core.NHibernate\DDD.Core.NHibernate.csproj" />
+    <ProjectReference Include="..\DDD.Core.SimpleInjector\DDD.Core.SimpleInjector.csproj" />
+  </ItemGroup>
+</Project>

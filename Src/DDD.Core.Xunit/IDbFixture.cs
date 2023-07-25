@@ -6,7 +6,7 @@ namespace DDD.Core.Infrastructure.Testing
     using Domain;
 
     public interface IDbFixture<TContext>
-        where TContext : BoundedContext, new()
+        where TContext : BoundedContext
     {
 
         #region Methods
