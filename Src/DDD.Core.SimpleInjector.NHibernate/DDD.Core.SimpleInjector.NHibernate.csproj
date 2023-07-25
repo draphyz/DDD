@@ -6,6 +6,9 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\Build\CommonAssemblyInfo.cs" Link="Properties\CommonAssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\DDD.Core.NHibernate\DDD.Core.NHibernate.csproj" />
     <ProjectReference Include="..\DDD.Core.SimpleInjector\DDD.Core.SimpleInjector.csproj" />
   </ItemGroup>
