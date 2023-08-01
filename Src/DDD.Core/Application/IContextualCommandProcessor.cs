@@ -29,9 +29,19 @@ namespace DDD.Core.Application
         void Process<TCommand>(TCommand command, IMessageContext context) where TCommand : class, ICommand;
 
         /// <summary>
+        /// Processes synchronously a command in the specific bounded context.
+        /// </summary>
+        void Process(ICommand command, IMessageContext context);
+
+        /// <summary>
         /// Processes asynchronously a command of a specified type in the specific bounded context.
         /// </summary>
         Task ProcessAsync<TCommand>(TCommand command, IMessageContext context) where TCommand : class, ICommand;
+
+        /// <summary>
+        /// Processes asynchronously a command in the specific bounded context.
+        /// </summary>
+        Task ProcessAsync(ICommand command, IMessageContext context);
 
         #endregion Methods
     }

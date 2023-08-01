@@ -43,7 +43,7 @@ namespace DDD.Core.Application
         #region Methods
 
         [Fact]
-        public void Process_WhenCommandDefined_CallsExpectedHandler()
+        public void Process_WhenConcreteCommand_CallsExpectedHandler()
         {
             // Arrange
             var command = new FakeCommand1();
@@ -55,13 +55,37 @@ namespace DDD.Core.Application
         }
 
         [Fact]
-        public void Validate_WhenCommandDefined_CallsExpectedValidator()
+        public void Process_WhenAbstractCommand_CallsExpectedHandler()
+        {
+            // Arrange
+            var command = new FakeCommand1();
+            var context = new MessageContext();
+            // Act
+            this.processor.Process((ICommand)command, context);
+            // Assert
+            this.handlerOfCommand1.Received(1).Handle(command, context);
+        }
+
+        [Fact]
+        public void Validate_WhenConcreteCommand_CallsExpectedValidator()
         {
             // Arrange
             var command = new FakeCommand1();
             var context = new ValidationContext();
             // Act
             this.processor.Validate(command, context);
+            // Assert
+            this.validatorOfCommand1.Received(1).Validate(command, context);
+        }
+
+        [Fact]
+        public void Validate_WhenAbstractCommand_CallsExpectedValidator()
+        {
+            // Arrange
+            var command = new FakeCommand1();
+            var context = new ValidationContext();
+            // Act
+            this.processor.Validate((ICommand)command, context);
             // Assert
             this.validatorOfCommand1.Received(1).Validate(command, context);
         }

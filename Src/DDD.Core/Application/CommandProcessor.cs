@@ -1,11 +1,11 @@
 ﻿using EnsureThat;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace DDD.Core.Application
 {
     using Domain;
-    using System.Collections.Concurrent;
     using Validation;
 
     /// <summary>
@@ -62,12 +62,30 @@ namespace DDD.Core.Application
             handler.Handle(command, context);
         }
 
+        public void Process(ICommand command, IMessageContext context)
+        {
+            Ensure.That(command, nameof(command)).IsNotNull();
+            var handlerType = typeof(ISyncCommandHandler<>).MakeGenericType(command.GetType());
+            dynamic handler = this.serviceProvider.GetService(handlerType);
+            if (handler == null) throw new InvalidOperationException($"The command handler for type {handlerType} could not be found.");
+            handler.Handle((dynamic)command, context);
+        }
+
         public Task ProcessAsync<TCommand>(TCommand command, IMessageContext context) where TCommand : class, ICommand
         {
             Ensure.That(command, nameof(command)).IsNotNull();
             var handler = this.serviceProvider.GetService<IAsyncCommandHandler<TCommand>>();
             if (handler == null) throw new InvalidOperationException($"The command handler for type {typeof(IAsyncCommandHandler<TCommand>)} could not be found.");
             return handler.HandleAsync(command, context);
+        }
+
+        public Task ProcessAsync(ICommand command, IMessageContext context)
+        {
+            Ensure.That(command, nameof(command)).IsNotNull();
+            var handlerType = typeof(IAsyncCommandHandler<>).MakeGenericType(command.GetType());
+            dynamic handler = this.serviceProvider.GetService(handlerType);
+            if (handler == null) throw new InvalidOperationException($"The command handler for type {handlerType} could not be found.");
+            return handler.HandleAsync((dynamic)command, context);
         }
 
         public ValidationResult Validate<TCommand>(TCommand command, IValidationContext context) where TCommand : class, ICommand
@@ -83,6 +101,20 @@ namespace DDD.Core.Application
             return validator.Validate(command, context);
         }
 
+        public ValidationResult Validate(ICommand command, IValidationContext context)
+        {
+            Ensure.That(command, nameof(command)).IsNotNull();
+            var validatorType = typeof(ISyncObjectValidator<>).MakeGenericType(command.GetType());
+            dynamic validator = this.serviceProvider.GetService(validatorType);
+            if (validator == null)
+            {
+                if (this.settings.DefaultValidator == null)
+                    throw new InvalidOperationException($"The command validator for type {validatorType} could not be found.");
+                return this.settings.DefaultValidator.Validate(command, context);
+            }
+            return validator.Validate((dynamic)command, context);
+        }
+
         public Task<ValidationResult> ValidateAsync<TCommand>(TCommand command, IValidationContext context) where TCommand : class, ICommand
         {
             Ensure.That(command, nameof(command)).IsNotNull();
@@ -94,6 +126,20 @@ namespace DDD.Core.Application
                 return this.settings.DefaultValidator.ValidateAsync(command, context);
             }
             return validator.ValidateAsync(command, context);
+        }
+
+        public Task<ValidationResult> ValidateAsync(ICommand command, IValidationContext context)
+        {
+            Ensure.That(command, nameof(command)).IsNotNull();
+            var validatorType = typeof(IAsyncObjectValidator<>).MakeGenericType(command.GetType());
+            dynamic validator = this.serviceProvider.GetService(validatorType);
+            if (validator == null)
+            {
+                if (this.settings.DefaultValidator == null)
+                    throw new InvalidOperationException($"The command validator for type {validatorType} could not be found.");
+                return this.settings.DefaultValidator.ValidateAsync(command, context);
+            }
+            return validator.ValidateAsync((dynamic)command, context);
         }
 
         #endregion Methods
