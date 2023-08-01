@@ -29,9 +29,19 @@ namespace DDD.Core.Application
         void Process<TCommand>(TCommand command, IMessageContext context) where TCommand : class, ICommand;
 
         /// <summary>
+        /// Processes synchronously a command.
+        /// </summary>
+        void Process(ICommand command, IMessageContext context);
+
+        /// <summary>
         /// Processes asynchronously a command of a specified type.
         /// </summary>
         Task ProcessAsync<TCommand>(TCommand command, IMessageContext context) where TCommand : class, ICommand;
+
+        /// <summary>
+        /// Processes asynchronously a command.
+        /// </summary>
+        Task ProcessAsync(ICommand command, IMessageContext context);
 
         /// <summary>
         /// Validates synchronously a command of a specified type.
@@ -39,9 +49,19 @@ namespace DDD.Core.Application
         ValidationResult Validate<TCommand>(TCommand command, IValidationContext context) where TCommand : class, ICommand;
 
         /// <summary>
+        /// Validates synchronously a command.
+        /// </summary>
+        ValidationResult Validate(ICommand command, IValidationContext context);
+
+        /// <summary>
         /// Validates asynchronously a command of a specified type.
         /// </summary>
         Task<ValidationResult> ValidateAsync<TCommand>(TCommand command, IValidationContext context) where TCommand : class, ICommand;
+
+        /// <summary>
+        /// Validates asynchronously a command.
+        /// </summary>
+        Task<ValidationResult> ValidateAsync(ICommand command, IValidationContext context);
 
         #endregion Methods
     }

@@ -301,7 +301,7 @@ namespace DDD.Core.Application
             manager.Wait(TimeSpan.FromSeconds(5));
             // Assert
             await commandProcessor.Received(2)
-                                  .ProcessAsync(Arg.Any<FakeCommand2>(), Arg.Any<IMessageContext>());
+                                  .ProcessAsync(Arg.Is<ICommand>(c => c is FakeCommand2), Arg.Any<IMessageContext>());
         }
 
 

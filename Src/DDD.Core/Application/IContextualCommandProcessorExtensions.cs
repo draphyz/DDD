@@ -28,6 +28,21 @@ namespace DDD.Core.Application
             processor.Process(command, MessageContext.FromObject(context));
         }
 
+        public static void Process(this IContextualCommandProcessor processor,
+                                   ICommand command)
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            processor.Process(command, new MessageContext());
+        }
+
+        public static void Process(this IContextualCommandProcessor processor,
+                                   ICommand command,
+                                   object context)
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            processor.Process(command, MessageContext.FromObject(context));
+        }
+
         public static Task ProcessAsync<TCommand>(this IContextualCommandProcessor processor,
                                                   TCommand command)
             where TCommand : class, ICommand
@@ -40,6 +55,21 @@ namespace DDD.Core.Application
                                                   TCommand command,
                                                   object context)
             where TCommand : class, ICommand
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.ProcessAsync(command, MessageContext.FromObject(context));
+        }
+
+        public static Task ProcessAsync(this IContextualCommandProcessor processor,
+                                        ICommand command)
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.ProcessAsync(command, new MessageContext());
+        }
+
+        public static Task ProcessAsync(this IContextualCommandProcessor processor,
+                                        ICommand command,
+                                        object context)
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
             return processor.ProcessAsync(command, MessageContext.FromObject(context));
@@ -73,6 +103,36 @@ namespace DDD.Core.Application
                                                            TimeSpan delay,
                                                            object context)
             where TCommand : class, ICommand
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.ProcessWithDelayAsync(command, delay, MessageContext.FromObject(context));
+        }
+
+        public static Task ProcessWithDelayAsync(this IContextualCommandProcessor processor,
+                                                 ICommand command,
+                                                 TimeSpan delay)
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.ProcessWithDelayAsync(command, delay, new MessageContext());
+        }
+
+        public static async Task ProcessWithDelayAsync(this IContextualCommandProcessor processor,
+                                                       ICommand command,
+                                                       TimeSpan delay,
+                                                       IMessageContext context)
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            Ensure.That(context, nameof(context)).IsNotNull();
+            await new SynchronizationContextRemover();
+            var cancellationToken = context.CancellationToken();
+            await Task.Delay(delay, cancellationToken);
+            await processor.ProcessAsync(command, context);
+        }
+
+        public static Task ProcessWithDelayAsync(this IContextualCommandProcessor processor,
+                                                 ICommand command,
+                                                 TimeSpan delay,
+                                                 object context)
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
             return processor.ProcessWithDelayAsync(command, delay, MessageContext.FromObject(context));
