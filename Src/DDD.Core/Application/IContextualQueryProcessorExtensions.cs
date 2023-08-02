@@ -23,6 +23,21 @@ namespace DDD.Core.Application
             return processor.Process(query, MessageContext.FromObject(context));
         }
 
+        public static object Process(this IContextualQueryProcessor processor,
+                                     IQuery query)
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.Process(query, new MessageContext());
+        }
+
+        public static object Process(this IContextualQueryProcessor processor,
+                                     IQuery query,
+                                     object context)
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.Process(query, MessageContext.FromObject(context));
+        }
+
         public static Task<TResult> ProcessAsync<TResult>(this IContextualQueryProcessor processor,
                                                           IQuery<TResult> query)
         {
@@ -33,6 +48,21 @@ namespace DDD.Core.Application
         public static Task<TResult> ProcessAsync<TResult>(this IContextualQueryProcessor processor,
                                                           IQuery<TResult> query,
                                                           object context)
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.ProcessAsync(query, MessageContext.FromObject(context));
+        }
+
+        public static Task<object> ProcessAsync(this IContextualQueryProcessor processor,
+                                                IQuery query)
+        {
+            Ensure.That(processor, nameof(processor)).IsNotNull();
+            return processor.ProcessAsync(query, new MessageContext());
+        }
+
+        public static Task<object> ProcessAsync(this IContextualQueryProcessor processor,
+                                                IQuery query,
+                                                object context)
         {
             Ensure.That(processor, nameof(processor)).IsNotNull();
             return processor.ProcessAsync(query, MessageContext.FromObject(context));

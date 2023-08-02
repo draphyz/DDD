@@ -1,5 +1,6 @@
 ﻿using EnsureThat;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DDD.Core.Application
@@ -7,6 +8,7 @@ namespace DDD.Core.Application
     using Domain;
     using System.Collections.Concurrent;
     using Validation;
+    using Threading;
 
     /// <summary>
     /// The default query processor for processing and validating queries of any type.  
@@ -63,6 +65,19 @@ namespace DDD.Core.Application
             return handler.Handle((dynamic)query, context);
         }
 
+        public object Process(IQuery query, IMessageContext context)
+        {
+            Ensure.That(query, nameof(query)).IsNotNull();
+            var queryType = query.GetType();
+            var queryInterfaceType = queryType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQuery<>));
+            if (queryInterfaceType == null) throw new ArgumentException($"{queryType.Name} does not implement {typeof(IQuery<>).Name}.", nameof(query));
+            var resultType = queryInterfaceType.GetGenericArguments()[0];
+            var handlerType = typeof(ISyncQueryHandler<,>).MakeGenericType(queryType, resultType);
+            dynamic handler = this.serviceProvider.GetService(handlerType);
+            if (handler == null) throw new InvalidOperationException($"The query handler for type {handlerType} could not be found.");
+            return handler.Handle((dynamic)query, context);
+        }
+
         public Task<TResult> ProcessAsync<TResult>(IQuery<TResult> query, IMessageContext context)
         {
             Ensure.That(query, nameof(query)).IsNotNull();
@@ -70,6 +85,20 @@ namespace DDD.Core.Application
             dynamic handler = this.serviceProvider.GetService(handlerType);
             if (handler == null) throw new InvalidOperationException($"The query handler for type {handlerType} could not be found.");
             return handler.HandleAsync((dynamic)query, context);
+        }
+
+        public async Task<object> ProcessAsync(IQuery query, IMessageContext context)
+        {
+            Ensure.That(query, nameof(query)).IsNotNull();
+            await new SynchronizationContextRemover();
+            var queryType = query.GetType();
+            var queryInterfaceType = queryType.GetInterfaces().FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IQuery<>));
+            if (queryInterfaceType == null) throw new ArgumentException($"{queryType.Name} does not implement {typeof(IQuery<>).Name}.", nameof(query));
+            var resultType = queryInterfaceType.GetGenericArguments()[0];
+            var handlerType = typeof(IAsyncQueryHandler<,>).MakeGenericType(query.GetType(), resultType);
+            dynamic handler = this.serviceProvider.GetService(handlerType);
+            if (handler == null) throw new InvalidOperationException($"The query handler for type {handlerType} could not be found.");
+            return await handler.HandleAsync((dynamic)query, context);
         }
 
         public ValidationResult Validate<TQuery>(TQuery query, IValidationContext context) where TQuery : class, IQuery
@@ -85,6 +114,20 @@ namespace DDD.Core.Application
             return validator.Validate(query, context);
         }
 
+        public ValidationResult Validate(IQuery query, IValidationContext context)
+        {
+            Ensure.That(query, nameof(query)).IsNotNull();
+            var validatorType = typeof(ISyncObjectValidator<>).MakeGenericType(query.GetType());
+            dynamic validator = this.serviceProvider.GetService(validatorType);
+            if (validator == null)
+            {
+                if (this.settings.DefaultValidator == null)
+                    throw new InvalidOperationException($"The query validator for type {validatorType} could not be found.");
+                return this.settings.DefaultValidator.Validate(query, context);
+            }
+            return validator.Validate((dynamic)query, context);
+        }
+
         public Task<ValidationResult> ValidateAsync<TQuery>(TQuery query, IValidationContext context) where TQuery : class, IQuery
         {
             Ensure.That(query, nameof(query)).IsNotNull();
@@ -96,6 +139,20 @@ namespace DDD.Core.Application
                 return this.settings.DefaultValidator.ValidateAsync(query, context);
             }
             return validator.ValidateAsync(query, context);
+        }
+
+        public Task<ValidationResult> ValidateAsync(IQuery query, IValidationContext context)
+        {
+            Ensure.That(query, nameof(query)).IsNotNull();
+            var validatorType = typeof(IAsyncObjectValidator<>).MakeGenericType(query.GetType());
+            dynamic validator = this.serviceProvider.GetService(validatorType);
+            if (validator == null)
+            {
+                if (this.settings.DefaultValidator == null)
+                    throw new InvalidOperationException($"The query validator for type {validatorType} could not be found.");
+                return this.settings.DefaultValidator.ValidateAsync(query, context);
+            }
+            return validator.ValidateAsync((dynamic)query, context);
         }
 
         #endregion Methods
